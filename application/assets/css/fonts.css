@@ -1,0 +1,42 @@
+/*
+    Copyright 2015 Cédric Levieux, Parti Pirate
+
+    This file is part of PPMoney.
+
+    PPMoney is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PPMoney is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('../fonts/ubuntu-R.eot');
+    src: url('../fonts/ubuntu-R.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu-R.woff2') format('woff2'),
+         url('../fonts/ubuntu-R.woff') format('woff'),
+         url('../fonts/ubuntu-R.ttf') format('truetype'),
+         url('../fonts/ubuntu-R.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ubuntu Bold';
+    src: url('../fonts/ubuntu-B.eot');
+    src: url('../fonts/ubuntu-B.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu-B.woff2') format('woff2'),
+         url('../fonts/ubuntu-B.woff') format('woff'),
+         url('../fonts/ubuntu-B.ttf') format('truetype'),
+         url('../fonts/ubuntu-B.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -22,16 +22,22 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
+
+$meetingId = $_REQUEST["not_meeting_id"];
+$memcacheKey = "do_getAgenda_$meetingId";
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
 $noticeBo = NoticeBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["not_meeting_id"]);
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -69,6 +75,8 @@ if (isset($_REQUEST["not_target_type"])) {
 }
 
 $noticeBo->save($notice);
+
+$memcache->delete($memcacheKey);
 
 $data["ok"] = "ok";
 $data["notice"] = $notice;

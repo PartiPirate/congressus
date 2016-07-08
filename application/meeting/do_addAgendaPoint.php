@@ -22,16 +22,22 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
+
+$meetingId = $_REQUEST["meetingId"];
+$memcacheKey = "do_getAgenda_$meetingId";
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
 $agendaBo = AgendaBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -58,6 +64,8 @@ if (isset($_REQUEST["parentId"]) && $_REQUEST["parentId"]) {
 	// TODO verify if the parent is in the same meeting
 	$agenda["age_parent_id"] = $_REQUEST["parentId"];
 }
+
+$memcache->delete($memcacheKey);
 
 $agendaBo->save($agenda);
 

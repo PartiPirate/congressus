@@ -22,16 +22,22 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/PingBo.php");
+
+$meetingId = $_REQUEST["meetingId"];
+$memcacheKey = "do_getAgenda_$meetingId";
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
 $pingBo = PingBo::newInstance($connection, $config);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -54,6 +60,8 @@ if (count($ping)) {
 
 	$pingBo->save($ping);
 }
+
+$memcache->delete($memcacheKey);
 
 $data["ok"] = "ok";
 

@@ -22,6 +22,7 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
@@ -30,6 +31,11 @@ require_once("engine/bo/PingBo.php");
 require_once("engine/bo/FixationBo.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
+
+$meetingId = $_REQUEST["meetingId"];
+$memcacheKey = "do_getPeople_$meetingId";
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -41,7 +47,7 @@ $fixationBo = FixationBo::newInstance($connection, $config);
 $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -67,6 +73,8 @@ $meeting = array($meetingBo->ID_FIELD => $meeting[$meetingBo->ID_FIELD]);
 $meeting["mee_$type" . "_member_id"] = $memberId;
 
 $meetingBo->save($meeting);
+
+$memcache->delete($memcacheKey);
 
 $data["ok"] = "ok";
 

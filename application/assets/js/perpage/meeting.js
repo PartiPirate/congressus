@@ -49,10 +49,15 @@ function addAgendaPointHandlers() {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
+	
 	$("#agenda_point .objects").on("mouseleave", "li#description", function(event) {
 		$(this).find(".glyphicon-pencil").hide();
 	});
+	
 	$("#agenda_point .objects").on("click", "li#description", function(event) {
+		if (!hasWritingRight(getUserId())) {
+			return;
+		}
 		if ($(this).find(".description-editor+div:visible").length) {
 			$(this).find(".description-editor+div .Editor-editor").focus();
 			return;
@@ -885,6 +890,8 @@ function addMotionHandlers() {
 	});
 
 	$("#agenda_point ul.objects").on("click", ".motion-description", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
 		if ($(this).find("textarea").length) {
 			$(this).find("textarea").focus();
 			return;

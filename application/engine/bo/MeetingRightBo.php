@@ -17,21 +17,26 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class NoticeBo {
+class MeetingRightBo {
+	const HANDLE_MOTION = "handle_motion";
+	const HANDLE_AGENDA = "handle_agenda";
+	const HANDLE_CONCLUSION = "handle_conclusion";
+	const HANDLE_NOTICE = "handle_notice";
+	
 	var $pdo = null;
 
-	var $TABLE = "notices";
-	var $ID_FIELD = "not_id";
+	var $TABLE = "meeting_rights";
+	var $ID_FIELD = "mri_id";
 
 	function __construct($pdo) {
 		$this->pdo = $pdo;
 	}
 
 	static function newInstance($pdo) {
-		return new NoticeBo($pdo);
+		return new MeetingRightBo($pdo);
 	}
 
-	function create(&$notice) {
+	function create(&$right) {
 		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
@@ -39,7 +44,7 @@ class NoticeBo {
 
 		try {
 			$statement->execute();
-			$notice[$this->ID_FIELD] = $this->pdo->lastInsertId();
+			$right[$this->ID_FIELD] = $this->pdo->lastInsertId();
 
 			return true;
 		}
@@ -50,11 +55,11 @@ class NoticeBo {
 		return false;
 	}
 
-	function update($notice) {
+	function update($right) {
 		$query = "	UPDATE $this->TABLE SET ";
 
 		$separator = "";
-		foreach($notice as $field => $value) {
+		foreach($right as $field => $value) {
 			$query .= $separator;
 			$query .= $field . " = :". $field;
 			$separator = ", ";
@@ -62,28 +67,28 @@ class NoticeBo {
 
 		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
 
-//		echo showQuery($query, $notice);
+//		echo showQuery($query, $right);
 
 		$statement = $this->pdo->prepare($query);
-		$statement->execute($notice);
+		$statement->execute($right);
 	}
 
-	function save(&$notice) {
- 		if (!isset($notice[$this->ID_FIELD]) || !$notice[$this->ID_FIELD]) {
-			$this->create($notice);
+	function save(&$right) {
+ 		if (!isset($right[$this->ID_FIELD]) || !$right[$this->ID_FIELD]) {
+			$this->create($right);
 		}
 
-		$this->update($notice);
+		$this->update($right);
 	}
 
-	function delete($notice) {
+	function delete($right) {
 		$query = "	DELETE FROM $this->TABLE ";
 
 		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
 
-		//		echo showQuery($query, $notice);
+		//		echo showQuery($query, $right);
 
-		$args = array($this->ID_FIELD => $notice[$this->ID_FIELD]);
+		$args = array($this->ID_FIELD => $right[$this->ID_FIELD]);
 
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
@@ -116,8 +121,8 @@ class NoticeBo {
 		}
 
 		if (isset($filters["not_meeting_id"])) {
-			$args["not_meeting_id"] = $filters["not_meeting_id"];
-			$query .= " AND not_meeting_id = :not_meeting_id \n";
+			$args["not_meeting_id"] = $filters["mri_meeting_id"];
+			$query .= " AND mri_meeting_id = :mri_meeting_id \n";
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";

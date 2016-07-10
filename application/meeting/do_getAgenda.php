@@ -25,6 +25,7 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/MeetingRightBo.php");
 require_once("engine/bo/AgendaBo.php");
 
 $meetingId = $_REQUEST["id"];
@@ -37,6 +38,7 @@ if (!$json) {
 	$connection = openConnection();
 
 	$meetingBo = MeetingBo::newInstance($connection);
+	$meetingRightBo = MeetingRightBo::newInstance($connection);
 	$agendaBo = AgendaBo::newInstance($connection);
 
 	$meeting = $meetingBo->getById($meetingId);
@@ -60,6 +62,8 @@ if (!$json) {
 	$meeting["mee_end_datetime"] = $end->add($duration);
 	$meeting["mee_end_datetime"] = $meeting["mee_end_datetime"]->format("Y-m-d H:i:s");
 
+	$meeting["mee_rights"] = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
+	
 	$data["meeting"] = $meeting;
 	$data["agendas"] = $agendas;
 

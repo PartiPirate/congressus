@@ -664,7 +664,11 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("mouseenter", ".panel-heading", function() {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasWritingRight(getUserId())) {
+			$(this).children("button.btn-hide-missing").show();
+
+			return;
+		}
 
 		$(this).children("button").show();
 	});

@@ -22,6 +22,7 @@ class MeetingRightBo {
 	const HANDLE_AGENDA = "handle_agenda";
 	const HANDLE_CONCLUSION = "handle_conclusion";
 	const HANDLE_NOTICE = "handle_notice";
+	const HANDLE_DESK = "handle_desk";
 	
 	var $pdo = null;
 

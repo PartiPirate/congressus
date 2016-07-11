@@ -81,6 +81,7 @@ $lang["meeting_noticed_people"] = "Personnes convoqués";
 $lang["meeting_visitors"] = "Visiteurs";
 $lang["meeting_agenda"] = "Ordre du jour";
 $lang["meeting_agenda_point"] = "Point en cours : ";
+$lang["meeting_rights"] = "Gestion des droits";
 
 $lang["myMeetings_waiting"] = "Prochaines réunions";
 $lang["myMeetings_construction"] = "Réunions en construction";

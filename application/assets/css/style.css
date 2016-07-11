@@ -119,3 +119,7 @@ a.page.active {
 #meeting-agenda li li {
 	padding-right: 0px;
 }
+
+#meeting-rights label, .right-label {
+	font-weight: normal;
+}

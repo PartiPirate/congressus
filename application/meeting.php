@@ -185,6 +185,24 @@ if (!$userId) {
 			</div>
 		</div>
 		<div class="col-md-4" id="right-panel">
+			<div id="meeting_rights" class="panel panel-default" style="display: none;">
+				<div class="panel-heading">
+<!--  				
+					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"
+						title="Montrer / cacher les absents" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-eye-open"></span></button>
+					<button class="btn btn-primary btn-xs pull-right btn-add-notice" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
+-->					
+					<a data-toggle="collapse" data-target="#meeting_rights_list" href="#"><?php echo lang("meeting_rights"); ?></a>
+				</div>
+				<ul class="list-group panel-collapse collapse in" id="meeting_rights_list">
+					<li class="list-group-item"><label for="handle_notice_checkbox" class="right-label"><input type="checkbox" id="handle_notice_checkbox" value="handle_notice" class="right" /> Ajout/Suppression/Gestion des convoqués</label></li>
+					<li class="list-group-item"><label for="handle_agenda_checkbox" class="right-label"><input type="checkbox" id="handle_agenda_checkbox" value="handle_agenda" class="right" /> Ajout/Suppression/Gestion des points de la réunion</label></li>
+					<li class="list-group-item"><label for="handle_motion_checkbox" class="right-label"><input type="checkbox" id="handle_motion_checkbox" value="handle_motion" class="right" /> Ajout/Suppression/Gestion des motions</label></li>
+					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> Ajout/Suppression des conclusion</label></li>
+				</ul>
+			</div>
+		
 			<div id="noticed-people" class="panel panel-default">
 				<div class="panel-heading">
 					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"

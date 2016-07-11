@@ -25,8 +25,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/MeetingRightBo.php");
 
 $meetingId = $_REQUEST["meetingId"];
 $memcacheKey = "do_getAgenda_$meetingId";
@@ -36,7 +36,7 @@ $memcache = openMemcacheConnection();
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
-$agendaBo = AgendaBo::newInstance($connection);
+$meetingRightBo = MeetingRightBo::newInstance($connection);
 
 $meeting = $meetingBo->getById($meetingId);
 
@@ -52,25 +52,23 @@ if (false) {
 	exit();
 }
 
-$data = array();
-
-$agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
-$agenda["age_order"] = time();
-$agenda["age_active"] = 0;
-$agenda["age_expected_duration"] = 0;
-$agenda["age_label"] = "Nouveau point";
-$agenda["age_objects"] = "[]";
-$agenda["age_description"] = "Pas de description";
-if (isset($_REQUEST["parentId"]) && $_REQUEST["parentId"]) {
-	// TODO verify if the parent is in the same meeting
-	$agenda["age_parent_id"] = $_REQUEST["parentId"];
+// Delete old rights
+$meetingRights = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
+foreach($meetingRights as $meetingRight) {
+	$meetingRightBo->delete($meetingRight);
 }
+
+// Add new rights
+$rights = $_REQUEST["rights"];
+foreach($rights as $right) {
+	$meetingRight = array("mri_meeting_id" => $meetingId, "mri_right" => $right);
+	$meetingRightBo->save($meetingRight);
+}
+
+$data = array();
 
 $memcache->delete($memcacheKey);
 
-$agendaBo->save($agenda);
-
-$data["agenda"] = $agenda;
 $data["ok"] = "ok";
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

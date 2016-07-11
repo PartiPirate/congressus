@@ -21,6 +21,17 @@ function getVotingPower(id) {
 	return $("#noticed-people .members li#member-"+id+" .power").text();
 }
 
+function hasRight(userId, right) {
+	var meeting = $(".meeting").data("json");
+
+	hasRight = false;
+
+	hasRight |= $(".mee_president_member_id").data("id") == id;
+	hasRight |= $(".mee_secretary_member_id").data("id") == id;
+	
+	return hasRight;
+}
+
 function hasWritingRight(id) {
 	var meeting = $(".meeting").data("json");
 

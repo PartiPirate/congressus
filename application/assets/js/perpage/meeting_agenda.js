@@ -176,6 +176,11 @@ function updateMeeting(meeting) {
 			$("#meeting-status-panel br.export-br").show();
 			break;
 	}
+	
+	$("#meeting_rights_list input").prop("checked", false);
+	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
+		$("input[value=" + meeting["mee_rights"][index] + "]").prop("checked", true);
+	}
 
 	if (!hasWritingRight(getUserId())) {
 		$("#meeting-status-panel button.btn-waiting-meeting").hide();
@@ -237,6 +242,13 @@ function updateAgenda() {
 
 		updateMeeting(data.meeting);
 
+		if (hasWritingRight(getUserId())) {
+			$("#meeting_rights").show();
+		}
+		else {
+			$("#meeting_rights").hide();
+		}
+		
 		initAgenda();
 		initAgenda = function() {};
 
@@ -265,6 +277,18 @@ function addMeetingHandlers() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "closed"},
+				function(data) {}, "json");
+	});
+	
+	$("#meeting_rights_list").on("click", "input", function() {
+		if (!hasWritingRight(getUserId())) return;
+		var meetingId = $(".meeting").data("id");
+		var rights = [];
+		$("#meeting_rights_list input:checked").each(function() {
+			rights[rights.length] = $(this).val();
+		});
+		
+		$.post("meeting/do_changeRights.php", {meetingId: meetingId, "rights[]": rights},
 				function(data) {}, "json");
 	});
 }

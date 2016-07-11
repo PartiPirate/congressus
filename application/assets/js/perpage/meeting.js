@@ -29,6 +29,10 @@ function hasRight(userId, right) {
 	hasRight |= $(".mee_president_member_id").data("id") == id;
 	hasRight |= $(".mee_secretary_member_id").data("id") == id;
 	
+	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
+		hasRight |= meeting["mee_rights"][index] == right;
+	}
+	
 	return hasRight;
 }
 

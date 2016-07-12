@@ -24,31 +24,20 @@ function getVotingPower(id) {
 function hasRight(userId, right) {
 	var meeting = $(".meeting").data("json");
 
-	hasRight = false;
+	var has = false;
 
-	hasRight |= $(".mee_president_member_id").data("id") == id;
-	hasRight |= $(".mee_secretary_member_id").data("id") == id;
+	has |= $(".mee_president_member_id").data("id") == userId;
+	has |= $(".mee_secretary_member_id").data("id") == userId;
 	
 	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
-		hasRight |= meeting["mee_rights"][index] == right;
+		has |= meeting["mee_rights"][index] == right;
 	}
 	
-	return hasRight;
+	return has;
 }
 
 function hasWritingRight(id) {
-	var meeting = $(".meeting").data("json");
-
-	hasRight = false;
-
-	// TODO discuss around this point
-
-//	hasRight |= $("#noticed-people .members li#member-"+id).length > 0 && meeting.mee_status != "closed";
-	hasRight |= $(".mee_president_member_id").data("id") == id;
-	hasRight |= $(".mee_secretary_member_id").data("id") == id;
-//	hasRight |= $(".mee_secretary_member_id").data("id") == id && meeting.mee_status != "closed";
-
-	return hasRight;
+	return hasRight(id, null);
 }
 
 function isPresident(id) {

@@ -862,7 +862,7 @@ function addNoticeHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 
-		$.post("meeting/do_noticePeople.php", {meetingId: meetingId}, function(data) {}, "json");
+		$.post("meeting_api.php?method=do_noticePeople", {meetingId: meetingId}, function(data) {}, "json");
 	});
 
 	$("#visitors").on("mouseenter", "li.member", function() {

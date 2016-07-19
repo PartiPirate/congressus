@@ -1,37 +1,24 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015 Cédric Levieux, Parti Pirate
 
-	This file is part of OpenTweetBar.
+	This file is part of Congressus.
 
-    OpenTweetBar is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    OpenTweetBar is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-
-include_once("config/database.php");
-include_once("config/memcache.php");
-include_once("config/mail.php");
-require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/MeetingBo.php");
-require_once("engine/bo/LocationBo.php");
-require_once("engine/bo/NoticeBo.php");
-
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $meetingId = $_REQUEST["meetingId"];
 $memcacheKey = "do_getPeople_$meetingId";
@@ -46,6 +33,8 @@ $noticeBo = NoticeBo::newInstance($connection);
 
 $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);
+$fixationBo = FixationBo::newInstance($connection, $config);
+
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 $meeting = $meetingBo->getById($meetingId);
@@ -78,9 +67,10 @@ foreach($notices as $notice) {
 		}
 	}
 	else if ($notice["not_target_type"] == "dlp_themes") {
+		$theme = $themeBo->getTheme($notice["not_target_id"]);
 		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
-		foreach($fixationMembers as $members) {
+		foreach($fixationMembers as $member) {
 			$membersToNotice[$member["id_adh"]] = $member;
 		}
 	}
@@ -106,18 +96,18 @@ if (count($membersToNotice)) {
 		$message->addBCC($member["email_adh"], $member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . " " . $member["prenom_adh"]);
 	}
 
-	$subject = lang("notice_mail_subject");
+	$subject = utf8_decode(lang("notice_mail_subject", false));
 	$subject = str_replace("{meeting_label}", $meeting["mee_label"], $subject);
 
 	$meetingLink = $config["server"]["base"] . "meeting.php?id=" . $meeting[$meetingBo->ID_FIELD];
 
-	$body = lang("notice_mail_content");
+	$body = utf8_decode(lang("notice_mail_content", false));
 	$body = str_replace("{meeting_label}", $meeting["mee_label"], $body);
 	$body = str_replace("{meeting_link}", $meetingLink, $body);
 
 	$locations = $locationBo->getByFilters(array("loc_meeting_id" => $meeting[$meetingBo->ID_FIELD], "loc_principal" => 1));
 	if (count($locations)) {
-		$location = $location[0];
+		$location = $locations[0];
 	}
 	else {
 		$location = array("loc_type" => "unknown", "loc_extra" => "");
@@ -128,6 +118,7 @@ if (count($membersToNotice)) {
 
 	$message->Subject = $subject;
 	$message->Body = $body;
+	$message->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
 
 	$message->send();
 }

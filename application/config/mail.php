@@ -40,7 +40,7 @@ function getMailInstance() {
     $mail->Port = $config["smtp"]["port"];
 
     ////Set the encryption system to use - ssl (deprecated) or tls
-    $mail->SMTPSecure = "tls";
+    $mail->SMTPSecure = $config["smtp"]["secure"];
 
     $mail->SMTPAuth = true;
     $mail->Username = $config["smtp"]["username"];

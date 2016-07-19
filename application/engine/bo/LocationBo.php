@@ -19,21 +19,16 @@
 
 class LocationBo {
 	var $pdo = null;
-	var $galetteDatabase = "";
-	var $personaeDatabase = "";
 
 	var $TABLE = "locations";
 	var $ID_FIELD = "loc_id";
 
-	function __construct($pdo, $config) {
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
-
+	function __construct($pdo) {
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo, $config) {
-		return new LocationBo($pdo, $config);
+	static function newInstance($pdo) {
+		return new LocationBo($pdo);
 	}
 
 	function create(&$location) {

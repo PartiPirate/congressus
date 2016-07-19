@@ -77,6 +77,7 @@ if (!$userId) {
 				<span class="time-control">
 					<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
+				</span>
 			</span>
 		</div>
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">

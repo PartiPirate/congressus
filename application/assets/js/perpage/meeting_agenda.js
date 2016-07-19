@@ -1,6 +1,6 @@
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
-		if (hasWritingRight(getUserId())) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			$(this).children(".glyphicon-pencil").show();
 			$(this).children("button").show();
 		}
@@ -11,7 +11,7 @@ function addAgendaHandlers() {
 	});
 
 	$("#meeting-agenda").on("mouseenter", ".panel-heading", function(event) {
-		if (hasWritingRight(getUserId())) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			$(this).children("button").show();
 		}
 	});
@@ -22,7 +22,7 @@ function addAgendaHandlers() {
 	$("#meeting-agenda").on("click", "button.btn-remove-point", function(event) {
 		event.stopPropagation();
 
-		if (hasWritingRight(getUserId())) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			var pointId = $(this).data("id");
 			var meetingId = $(".meeting").data("id");
 
@@ -40,7 +40,7 @@ function addAgendaHandlers() {
 	$("#meeting-agenda").on("click", "button.btn-add-point", function(event) {
 		event.stopPropagation();
 
-		if (hasWritingRight(getUserId())) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			var meetingId = $(".meeting").data("id");
 			var parentId = $(this).data("parent-id") ? $(this).data("parent-id") : null;
 
@@ -69,7 +69,7 @@ function addAgendaHandlers() {
 			return;
 		}
 
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_agenda")) return;
 
 		var input = $("<input />", {"class": "form-control", "style": "display: inline-block;"});
 		var propertyText = $(this).children("a");

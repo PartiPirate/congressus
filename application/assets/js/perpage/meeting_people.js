@@ -521,7 +521,7 @@ function updatePeople() {
 			meeting = {mee_status: ''};
 		}
 
-		if (meeting.mee_status != "construction" || isPeopleNoticed || !hasWritingRight(getUserId())) {
+		if (meeting.mee_status != "construction" || isPeopleNoticed || !hasRight(getUserId(), "handle_notice")) {
 			$("#noticed-people .panel-footer").hide();
 		}
 		else {
@@ -664,7 +664,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("mouseenter", ".panel-heading", function() {
-		if (!hasWritingRight(getUserId())) {
+		if (!hasRight(getUserId(), "handle_notice")) {
 			$(this).children("button.btn-hide-missing").show();
 
 			return;
@@ -678,7 +678,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("mouseenter", "li h5", function() {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		$(this).children("button").show();
 	});
@@ -718,7 +718,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("click", ".btn-modify-notice", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		var meetingId = $(".meeting").data("id");
 		var noticeId = $(this).data("id");
@@ -774,7 +774,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("click", ".panel-heading .btn-add-notice", function() {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		var meetingId = $(".meeting").data("id");
 
@@ -816,7 +816,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("click", ".btn-remove-notice", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		var noticeId = $(this).data("id");
 		var meetingId = $(".meeting").data("id");
@@ -834,7 +834,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people").on("click", ".btn-modify-voting", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		var meetingId = $(".meeting").data("id");
 		var noticeId = $(this).data("id");
@@ -856,7 +856,7 @@ function addNoticeHandlers() {
 	});
 
 	$("#noticed-people .panel-footer").on("click", ".btn-notice-people", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_notice")) return;
 
 		$(this).addClass("disabled");
 

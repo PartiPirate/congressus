@@ -49,7 +49,7 @@ function isPresident(id) {
 
 function addAgendaPointHandlers() {
 	$("#agenda_point .objects").on("mouseenter", "li#description", function(event) {
-		if (hasWritingRight(getUserId())) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
@@ -59,7 +59,7 @@ function addAgendaPointHandlers() {
 	});
 	
 	$("#agenda_point .objects").on("click", "li#description", function(event) {
-		if (!hasWritingRight(getUserId())) {
+		if (!hasRight(getUserId(), "handle_agenda")) {
 			return;
 		}
 		if ($(this).find(".description-editor+div:visible").length) {
@@ -240,7 +240,7 @@ function setAgendaMotion(id, motions) {
 
 	propositions.children(".to-delete").remove();
 
-	if (hasWritingRight(getUserId())) {
+	if (hasRight(getUserId(), "handle_motion")) {
 //		motionActions.show();
 	}
 	else {
@@ -550,7 +550,7 @@ function addMotionProposition(event) {
 
 	button.parent().children("button").addClass("disabled");
 
-	if (!hasWritingRight(getUserId())) return;
+	if (!hasRight(getUserId(), "handle_motion")) return;
 
 	$.post("meeting/do_addMotionProposition.php", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
 	}, "json");
@@ -569,7 +569,7 @@ function removeMotion(event) {
 
 	button.parent().children("button").addClass("disabled");
 
-	if (!hasWritingRight(getUserId())) return;
+	if (!hasRight(getUserId(), "handle_motion")) return;
 
 	bootbox.setLocale("fr");
 	bootbox.confirm("Supprimer la motion \"" + motionTitle + "\" ?", function(result) {
@@ -594,7 +594,7 @@ function changeMotionStatus(event) {
 
 	button.parent().children("button").addClass("disabled");
 
-	if (!hasWritingRight(getUserId())) return;
+	if (!hasRight(getUserId(), "handle_motion")) return;
 
 	$.post("meeting/do_changeMotionStatus.php", {meetingId: meetingId, pointId: pointId, motionId: motionId, status: status}, function(data) {
 		dumpMotion(motion);
@@ -709,7 +709,7 @@ function addChatHandlers() {
 
 function addConclusionHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", "li.conclusion", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_conclusion")) return;
 
 		$(this).find(".glyphicon-pencil").show();
 		$(this).find(".btn-remove-conclusion").show();
@@ -721,7 +721,7 @@ function addConclusionHandlers() {
 	});
 
 	$("#agenda_point ul.objects").on("click", "li.conclusion .btn-remove-conclusion", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_conclusion")) return;
 
 		var agendaId = $("#agenda_point").data("id");
 		var meetingId = $(".meeting").data("id");
@@ -784,7 +784,7 @@ function addConclusionHandlers() {
 
 function addMotionHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", ".motion h4,.proposition,.motion-description", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_motion")) return;
 		if ($(this).parents(".motion").data("status") == "resolved") return;
 
 		$(this).find(".glyphicon-pencil").show();
@@ -797,7 +797,7 @@ function addMotionHandlers() {
 	});
 
 	$("#agenda_point ul.objects").on("click", ".proposition button.btn-remove-proposition", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_motion")) return;
 		if ($(this).parents(".motion").data("status") == "resolved") return;
 
 		var agendaId = $("#agenda_point").data("id");
@@ -826,7 +826,7 @@ function addMotionHandlers() {
 		if ($(event.target).hasClass("btn")) return;
 		if ($(event.target).hasClass("glyphicon")) return;
 
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_motion")) return;
 
 		if ($(this).find("input").length) {
 			$(this).find("input").focus();
@@ -894,7 +894,7 @@ function addMotionHandlers() {
 	});
 
 	$("#agenda_point ul.objects").on("click", ".motion-description", function(event) {
-		if (!hasWritingRight(getUserId())) return;
+		if (!hasRight(getUserId(), "handle_motion")) return;
 
 		if ($(this).find("textarea").length) {
 			$(this).find("textarea").focus();

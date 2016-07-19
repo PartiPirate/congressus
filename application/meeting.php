@@ -406,7 +406,7 @@ if (!$userId) {
 
 		<li data-template-id="agenda-point" id="agenda-${age_id}" class="template list-group-item"
 				style="padding-top: 2px; padding-bottom: 2px;" data-id="${age_id}">
-			<a class="agenda-link" style="margin: 0;" href="#" data-id="${age_id}"></a>
+			<a class="agenda-link" style="margin: 0;" href="#" id="agenda-link-${age_id}" data-id="${age_id}"></a>
 			<span class="fa fa-archive to-vote"
 				title="Contient au moins une motion à voter"
 				style="margin-right: 5px; display: none;"></span>

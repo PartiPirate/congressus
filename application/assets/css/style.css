@@ -138,3 +138,7 @@ a.agenda-link {
     display: inline-block;
     min-height: 0;
 }
+
+.secretary-reading {
+	font-style: italic;
+}

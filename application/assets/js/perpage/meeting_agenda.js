@@ -223,6 +223,11 @@ function updateMeeting(meeting) {
 		$(".mee_finish .span-date").text(moment(date).format("DD/MM/YYYY"));
 		$(".mee_finish .span-time").text(moment(date).format("HH:mm"));
 	}
+	
+	$(".agenda-link").removeClass("secretary-reading");
+	if (meeting.mee_secretary_agenda_id) {
+		$(".agenda-link#agenda-link-" + meeting.mee_secretary_agenda_id).addClass("secretary-reading");
+	}
 }
 
 function updateAgenda() {

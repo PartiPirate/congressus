@@ -22,6 +22,7 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
@@ -29,6 +30,8 @@ require_once("engine/bo/ConclusionBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -39,10 +42,20 @@ $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
 $voteBo = VoteBo::newInstance($connection, $config);
 
-$meeting = $meetingBo->getById($_REQUEST["id"]);
+$meetingId = $_REQUEST["id"];
+
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
+}
+
+if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == $meeting["mee_secretary_member_id"]) {
+	$meeting["mee_secretary_agenda_id"] = $_REQUEST["pointId"];
+	$meetingBo->save($meeting);
+	
+	$memcacheKey = "do_getAgenda_$meetingId";
+	$memcache->delete($memcacheKey);
 }
 
 // TODO Compute the key // Verify the key

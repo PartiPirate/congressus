@@ -22,9 +22,12 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -57,6 +60,10 @@ $vote["mem_nickname"] = $vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["pin_n
 
 $data["ok"] = "ok";
 $data["vote"] = $vote;
+
+$pointId = $motion["mot_agenda_id"];
+$memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

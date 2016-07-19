@@ -30,6 +30,8 @@ require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
 
+$memcache = openMemcacheConnection();
+
 $connection = openConnection();
 
 $agendaBo = AgendaBo::newInstance($connection);
@@ -50,8 +52,8 @@ if (false) {
 	exit();
 }
 
-
-$agenda = $agendaBo->getById($_REQUEST["pointId"]);
+$pointId = $_REQUEST["pointId"];
+$agenda = $agendaBo->getById($pointId);
 
 if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 	echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
@@ -85,6 +87,9 @@ else if ($motion["mot_status"] == "resolved") {
 }
 
 $data["ok"] = "ok";
+
+$memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

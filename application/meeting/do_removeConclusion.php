@@ -22,10 +22,13 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/ConclusionBo.php");
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -47,8 +50,8 @@ if (false) {
 	exit();
 }
 
-
-$agenda = $agendaBo->getById($_REQUEST["pointId"]);
+$pointId = $_REQUEST["pointId"];
+$agenda = $agendaBo->getById($pointId);
 
 if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 	echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
@@ -82,6 +85,9 @@ $agenda["age_objects"] = json_encode($newObjects);
 $agendaBo->save($agenda);
 
 $data["ok"] = "ok";
+
+$memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

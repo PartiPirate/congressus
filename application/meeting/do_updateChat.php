@@ -22,10 +22,13 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/MeetingBo.php");
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -42,8 +45,14 @@ if ($chat) {
 	$chat["cha_text"] = $_REQUEST["text"];
 
 	$chatBo->save($chat);
+
+	$pointId = $conclusion["cha_agenda_id"];
+	$memcacheKey = "do_getAgendaPoint_$pointId";
+	$memcache->delete($memcacheKey);
 }
 
 $data = array("ok" => "ok");
+
+
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

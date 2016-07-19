@@ -22,6 +22,7 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 include_once("config/mail.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
@@ -31,6 +32,11 @@ require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
+
+$meetingId = $_REQUEST["meetingId"];
+$memcacheKey = "do_getPeople_$meetingId";
+
+$memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
@@ -42,7 +48,7 @@ $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -128,6 +134,8 @@ if (count($membersToNotice)) {
 
 $data["number_of_noticed_people"] = count($membersToNotice);
 $data["ok"] = "ok";
+
+$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

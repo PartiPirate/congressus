@@ -123,3 +123,18 @@ a.page.active {
 #meeting-rights label, .right-label {
 	font-weight: normal;
 }
+
+a.agenda-link {
+    display: inline-block;
+    min-height: 22px;
+}
+
+#noticed-people h5 {
+    display: inline-block;
+    min-height: 19px;
+}
+
+#noticed-people ul ul h5 {
+    display: inline-block;
+    min-height: 0;
+}

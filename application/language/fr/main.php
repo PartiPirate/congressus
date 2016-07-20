@@ -47,6 +47,11 @@ $lang["menu_login"] = "Se connecter";
 $lang["menu_administration"] = "Administration";
 
 $lang["administration_guide"] = "Gérez ici les informations de gestion de l'application";
+$lang["administration_server"] = "Information serveur";
+$lang["administration_database"] = "Information base de données";
+$lang["administration_memcached"] = "Information memcached";
+$lang["administration_mail"] = "Information mail";
+$lang["administration_account"] = "Identifiant de l'administrateur";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";

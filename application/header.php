@@ -26,6 +26,7 @@ require_once("engine/utils/SessionUtils.php");
 // $userId = SessionUtils::getUserId($_SESSION);
 
 $isConnected = false;
+$isAdministrator = false;
 $sessionUserId = 0;
 
 if (SessionUtils::getUserId($_SESSION)) {
@@ -35,6 +36,10 @@ if (SessionUtils::getUserId($_SESSION)) {
 	$isConnected = true;
 }
 
+if ($_SESSION["administrator"]) {
+	$isAdministrator = true;
+}
+
 $language = SessionUtils::getLanguage($_SESSION);
 
 $page = $_SERVER["SCRIPT_NAME"];
@@ -42,6 +47,10 @@ if (strrpos($page, "/") !== false) {
 	$page = substr($page, strrpos($page, "/") + 1);
 }
 $page = str_replace(".php", "", $page);
+
+if ($page == "administration" && !$isAdministrator) {
+	header('Location: index.php');
+}
 
 $connection = openConnection();
 
@@ -100,7 +109,12 @@ $connection = openConnection();
 					<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	} else {?>
 					<?php 	}?>
+					
+					<?php 	if ($isAdministrator) {?>
+					<li <?php if ($page == "administration") echo 'class="active"'; ?>><a href="administration.php"><?php echo lang("menu_administration"); ?><?php if ($page == "administration") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<?php 	} else {?>
 					<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<?php 	}?>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 
@@ -112,6 +126,7 @@ $connection = openConnection();
 						</ul>
 					</li>
 
+					<?php 	if ($isConnected || $isAdministrator) {?>
 					<?php 	if ($isConnected) {?>
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $sessionUser["pseudo_adh"]; ?> <span
 							class="caret"></span> </a>
@@ -121,6 +136,7 @@ $connection = openConnection();
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>
 						</ul>
 					</li>
+					<?php 	}?>
 					<li><a class="logoutLink" href="do_logout.php" title="<?php echo lang("menu_logout"); ?>"
 						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>
 					<?php 	} else { ?>
@@ -128,12 +144,15 @@ $connection = openConnection();
 						data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
 					<?php 	}?>
 				</ul>
+				<?php 	if ($isAdministrator) {?>
+				<?php 	} else {?>
 				<form action="search.php" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
 						<input type="text" class="form-control" name="query" placeholder="Rechercher">
 					</div>
 					<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
 				</form>
+				<?php 	} ?>
 			</div>
 		</div>
 	</nav>

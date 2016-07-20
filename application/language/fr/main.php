@@ -44,6 +44,9 @@ $lang["menu_groupMeetings"] = "Réunions d'instance";
 $lang["menu_mypreferences"] = "Mes préférences";
 $lang["menu_logout"] = "Se déconnecter";
 $lang["menu_login"] = "Se connecter";
+$lang["menu_administration"] = "Administration";
+
+$lang["administration_guide"] = "Gérez ici les informations de gestion de l'application";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
@@ -62,6 +65,7 @@ $lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
 $lang["breadcrumb_about"] = "À Propos";
 $lang["breadcrumb_search"] = "Rechercher";
 $lang["breadcrumb_connect"] = "Se connecter";
+$lang["breadcrumb_administration"] = "Administration";
 
 $lang["index_guide"] = "<p>Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
 fournir l'infrastructure Galette + Personae.</p>

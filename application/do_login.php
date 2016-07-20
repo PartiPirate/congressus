@@ -35,6 +35,14 @@ $password = $_REQUEST["password"];
 
 $data = array();
 
+if ($login == $config["administrator"]["login"] && $password == $config["administrator"]["password"]) {
+	$_SESSION["administrator"] = true;
+	$data["ok"] = "ok";
+
+	header('Location: administration.php');
+	exit();
+}
+
 $member = $galetteAuthenticator->authenticate($login, $password);
 if ($member) {
 	$data["ok"] = "ok";

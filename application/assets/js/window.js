@@ -18,7 +18,7 @@
 */
 
 function resizeWindow() {
-	$(".theme-showcase").css("min-height", ($(window).height() - 94) + "px");
+	$(".theme-showcase").css("min-height", ($(window).height() - 166) + "px");
 }
 
 function toHumanDate(selector) {

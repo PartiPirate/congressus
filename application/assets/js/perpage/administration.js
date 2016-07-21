@@ -7,7 +7,7 @@ $(function() {
 	
 	submitAdministrationForm = function() {
 		$.post("do_updateAdministration.php", $("#administration-form").serialize(), function(data) {
-			
+			$("#administration_save_successAlert").show().delay(2000).fadeOut(1000);
 		}, "json");
 	}
 	
@@ -24,4 +24,6 @@ $(function() {
 	});
 	
 	checkMailSecure();
+	
+	$("#btn-administration-save").prop("disabled", false);
 })

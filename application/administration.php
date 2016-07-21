@@ -231,10 +231,12 @@ include_once("header.php");
 		</div>
 		
 		<div class="row text-center">
-			<button id="btn-administration-save" class="btn btn-primary btn-primary"><?php echo lang("common_save"); ?></button>
+			<button id="btn-administration-save" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("common_save"); ?></button>
 		</div>
 
 	</form>
+
+	<?php echo addAlertDialog("administration_save_successAlert", lang("administration_alert_ok"), "success"); ?>
 
 </div>
 

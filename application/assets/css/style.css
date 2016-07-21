@@ -142,3 +142,14 @@ a.agenda-link {
 .secretary-reading {
 	font-style: italic;
 }
+
+.form-alert {
+	height: 34px;
+    margin: 0;
+    border-radius: 4px;
+    padding: 7px 10px;	
+}
+
+.simply-hidden {
+	display: none;
+}

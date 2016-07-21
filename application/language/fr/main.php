@@ -29,6 +29,7 @@ $lang["common_fork"] = "Copier";
 $lang["common_reject"] = "Rejeter";
 $lang["common_connect"] = "Connecter";
 $lang["common_ask_for_modification"] = "Demander modification";
+$lang["common_save"] = "Sauvegarder";
 
 $lang["language_fr"] = "Français";
 $lang["language_en"] = "Anglais";
@@ -69,6 +70,9 @@ $lang["administration_mail_host"] = "Hôte SMTP";
 $lang["administration_mail_port"] = "Port SMTP";
 $lang["administration_mail_secure"] = "Sécurisation Mail";
 $lang["administration_mail_secure_none"] = "Aucune";
+$lang["administration_mail_secure_none_alert"] = "Les mails partent en clair et sont interceptables";
+$lang["administration_mail_secure_ssl_alert"] = "Les mails partent chiffrés mais semblent interceptables";
+$lang["administration_mail_secure_tls_alert"] = "Les mails partent chiffrés, c'est la bonne pratique actuelle";
 $lang["administration_mail_username"] = "Username SMTP";
 $lang["administration_mail_password"] = "Password SMTP";
 $lang["administration_mail_from_address"] = "Adresse From";

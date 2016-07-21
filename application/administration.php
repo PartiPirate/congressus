@@ -33,7 +33,7 @@ include_once("header.php");
 
 	<br />
 
-	<form class="form-horizontal">
+	<form id="administration-form" class="form-horizontal">
 
 		<div id="server-panel" class="panel panel-default">
 			<div class="panel-heading">
@@ -172,6 +172,11 @@ include_once("header.php");
 							<option value="tls" <?php if ("tls" == $config["smtp"]["secure"]) echo "selected"; ?>>TLS</option>
 						</select>
 					</div>
+					<div class="col-md-6">
+						<p class="bg-danger form-alert simply-hidden secure-message secure-value-"><?php echo lang("administration_mail_secure_none_alert"); ?></p>
+						<p class="bg-warning form-alert simply-hidden secure-message secure-value-ssl"><?php echo lang("administration_mail_secure_ssl_alert"); ?></p>
+						<p class="bg-success form-alert simply-hidden secure-message secure-value-tls"><?php echo lang("administration_mail_secure_tls_alert"); ?></p>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -223,6 +228,10 @@ include_once("header.php");
 				</div>
 			
 			</div>
+		</div>
+		
+		<div class="row text-center">
+			<button id="btn-administration-save" class="btn btn-primary btn-primary"><?php echo lang("common_save"); ?></button>
 		</div>
 
 	</form>

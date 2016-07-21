@@ -46,3 +46,9 @@ $(function() {
 		  $(this).find('.dropdown-menu').stop(true, true).delay(100).fadeOut(300);
 		});
 });
+
+$(function() {
+	$("body").on("click", "a[href=#]", function(event) {
+		event.preventDefault();
+	})
+});

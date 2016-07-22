@@ -26,6 +26,7 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/PingBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $meetingId = $_REQUEST["meetingId"];
 $memcacheKey = "do_getPeople_$meetingId";
@@ -76,6 +77,8 @@ foreach ($pings as $ping) {
 	$myping["pin_speaking_request"] = 0;
 
 	$pingBo->save($myping);
+	
+	addEvent($meetingId, EVENT_SPEAK_SET, "", array("userId" => $userId));
 }
 
 $memcache->delete($memcacheKey);

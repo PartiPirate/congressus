@@ -985,14 +985,34 @@ function computeEventPositions() {
 	});
 }
 
+function getEventText(event) {
+	if (event.text) return event.text;
+	
+	var text = "";
+	
+	if (event.type == "speak_request") {
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		text = userNickname + " demande la parole";
+	}
+	else if (event.type == "speak_set") {
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		text = userNickname + " a la parole";
+	}
+	
+	return text;
+}
+
 function showEvent(event) {
 	
 	var eventClass = "success";
 	
 	switch(event.type) {
 		case "motion_add":
+		case "join": 
+			eventClass = "success";
 			break;
 		case "motion_remove": 
+		case "left": 
 			eventClass = "danger";
 			break;
 		default:
@@ -1000,7 +1020,9 @@ function showEvent(event) {
 			break;
 	}
 	
-	var eventAlert = $("<p style='width: 350px; height: 55px; z-index: 1000; position: fixed; right: 10px;' class='congressus-event form-alert simply-hidden bg-" + eventClass + "'>" + event.text + "</p>");
+	var text = getEventText(event);
+	
+	var eventAlert = $("<p style='width: 350px; height: 55px; z-index: 1000; position: fixed; right: 10px;' class='congressus-event form-alert simply-hidden bg-" + eventClass + "'>" + text + "</p>");
 	var body = $("body");
 	body.append(eventAlert);
 

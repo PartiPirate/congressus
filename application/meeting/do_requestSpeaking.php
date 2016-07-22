@@ -26,6 +26,7 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/PingBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $meetingId = $_REQUEST["id"];
 $memcacheKey = "do_getPeople_$meetingId";
@@ -56,9 +57,11 @@ $ping = array("pin_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
 
 if (!$userId) {
 	$ping["pin_guest_id"] = $_SESSION["guestId"];
+	$pingUserId = "G" . $_SESSION["guestId"];
 }
 else {
 	$ping["pin_member_id"] = $userId;
+	$pingUserId = $userId;
 }
 
 $now = new DateTime();
@@ -78,6 +81,7 @@ if ($ping["pin_speaking_request"]) {
 }
 else {
 	$ping["pin_speaking_request"] = time();
+	addEvent($meetingId, EVENT_SPEAK_REQUEST, "", array("userId" => $pingUserId));
 }
 
 $pingBo->save($ping);

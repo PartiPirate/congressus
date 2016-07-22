@@ -30,6 +30,7 @@ require_once("engine/bo/ConclusionBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $memcache = openMemcacheConnection();
 
@@ -52,11 +53,15 @@ if (!$meeting) {
 }
 
 if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == $meeting["mee_secretary_member_id"]) {
-	$meeting["mee_secretary_agenda_id"] = $_REQUEST["pointId"];
-	$meetingBo->save($meeting);
-	
-	$memcacheKey = "do_getAgenda_$meetingId";
-	$memcache->delete($memcacheKey);
+	if ($meeting["mee_secretary_agenda_id"] != $_REQUEST["pointId"]) {
+		$meeting["mee_secretary_agenda_id"] = $_REQUEST["pointId"];
+		$meetingBo->save($meeting);
+		
+		$memcacheKey = "do_getAgenda_$meetingId";
+		$memcache->delete($memcacheKey);
+		
+		addEvent($meetingId, EVENT_SECRETARY_READS_ANOTHER_POINT, "Le secrétaire de séance vient de changer de point");
+	}
 }
 
 // TODO Compute the key // Verify the key

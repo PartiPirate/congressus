@@ -27,6 +27,7 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $memcache = openMemcacheConnection();
 
@@ -36,7 +37,8 @@ $agendaBo = AgendaBo::newInstance($connection);
 $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meetingId = $_REQUEST["meetingId"];
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -65,6 +67,8 @@ if (!$motion || $motion["mot_agenda_id"] != $agenda[$agendaBo->ID_FIELD]) {
 	exit();
 }
 
+$motionTitle = $motion["mot_title"];
+
 $motion = array($motionBo->ID_FIELD => $motion[$motionBo->ID_FIELD]);
 $motion["mot_deleted"] = 1;
 
@@ -88,6 +92,10 @@ $data["ok"] = "ok";
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
+
+addEvent($meetingId, EVENT_MOTION_REMOVE, "La motion \"$motionTitle\" a été retiré du point \"".$agenda["age_label"]."\"");
+
+$data["event"] = "La motion \"$motionTitle\" a été retiré du point \"".$agenda["age_label"]."\"";
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

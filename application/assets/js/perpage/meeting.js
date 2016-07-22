@@ -969,6 +969,14 @@ function testMeetingReady() {
 	$("#start-meeting-modal").modal("hide");
 }
 
+function getEvents() {
+	var meetingId = $(".meeting").data("id");
+
+	$.post("meeting_api.php?method=do_getEvents", {meetingId : meetingId}, function(data) {
+		
+	}, "json");
+}
+
 $(function() {
 	$("#start-meeting-modal").modal({
 		  keyboard: false
@@ -976,6 +984,9 @@ $(function() {
 //		  show: true
 		});
 	$("#start-meeting-modal").modal("show");
+
+	var getEventsTimer = $.timer(getEvents);
+	getEventsTimer.set({ time : 1000, autostart : true });
 
 	var getAgendaPointTimer = $.timer(updateAgendaPoint);
 	getAgendaPointTimer.set({ time : 1000, autostart : true });

@@ -16,6 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 $path = "../";
@@ -29,6 +33,7 @@ require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $memcache = openMemcacheConnection();
 
@@ -38,7 +43,9 @@ $agendaBo = AgendaBo::newInstance($connection);
 $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meetingId = $_REQUEST["meetingId"];
+
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -82,6 +89,8 @@ $data["motion"] = $motion;
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
+
+addEvent($meetingId, EVENT_MOTION_ADD, "Une nouvelle motion dans le point \"".$agenda["age_label"]."\"");
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

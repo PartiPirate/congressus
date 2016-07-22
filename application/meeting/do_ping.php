@@ -22,16 +22,19 @@ $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 include_once("config/database.php");
+include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/PingBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
 $pingBo = PingBo::newInstance($connection, $config);
 
-$meeting = $meetingBo->getById($_REQUEST["id"]);
+$meetingId = $_REQUEST["id"];
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -64,7 +67,21 @@ $previousPings = $pingBo->getByFilters($ping);
 //error_log("Number of pings : " . count($previousPings));
 
 if (count($previousPings)) {
-	$ping[$pingBo->ID_FIELD] = $previousPings[0][$pingBo->ID_FIELD];
+	$previousPing = $previousPings[0];
+	$ping[$pingBo->ID_FIELD] = $previousPing[$pingBo->ID_FIELD];
+	
+	$now = new DateTime();
+	$lastPing = new DateTime($previousPing["pin_datetime"]);
+	
+	$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
+	
+	if ($diff > 60) {
+		addEvent($meetingId, EVENT_JOIN, "", array("userId" => $userId ? $userId : "G" . $_SESSION["guestId"]));
+	}
+}
+else {
+	// first time
+	addEvent($meetingId, EVENT_JOIN, "", array("userId" => $userId ? $userId : "G" . $_SESSION["guestId"]));
 }
 
 $pingBo->save($ping);

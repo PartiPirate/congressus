@@ -1002,6 +1002,12 @@ function getEventText(event) {
 		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
 		text = "<i><b>" + userNickname + "</b></i> a renoncé à prendre la parole";
 	}
+	else if (event.type == "join") {
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		if (userNickname) {
+			text = "<i><b>" + userNickname + "</b></i> vient d'arriver à la réunion";
+		}
+	}
 	
 	return text;
 }

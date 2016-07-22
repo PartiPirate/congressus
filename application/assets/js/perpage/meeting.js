@@ -969,11 +969,66 @@ function testMeetingReady() {
 	$("#start-meeting-modal").modal("hide");
 }
 
+var lastEventTimestamp = 0;
+
+function computeEventPositions() {
+	var margin = 5;
+	var currentPosition = 60;
+
+	$(".congressus-event").each(function() {
+		var eventAlert = $(this);
+
+		eventAlert.css({"bottom" : currentPosition + "px"});
+
+		currentPosition += (eventAlert.height() + margin + 16);
+
+	});
+}
+
+function showEvent(event) {
+	
+	var eventClass = "success";
+	
+	switch(event.type) {
+		case "motion_add":
+			break;
+		case "motion_remove": 
+			eventClass = "danger";
+			break;
+		default:
+			eventClass = "info";
+			break;
+	}
+	
+	var eventAlert = $("<p style='width: 350px; height: 55px; z-index: 1000; position: fixed; right: 10px;' class='congressus-event form-alert simply-hidden bg-" + eventClass + "'>" + event.text + "</p>");
+	var body = $("body");
+	body.append(eventAlert);
+
+	computeEventPositions();
+
+	eventAlert.show().delay(2000).fadeOut(1000, function() {
+		$(this).remove();
+		computeEventPositions();
+	});
+}
+
 function getEvents() {
 	var meetingId = $(".meeting").data("id");
 
 	$.post("meeting_api.php?method=do_getEvents", {meetingId : meetingId}, function(data) {
-		
+		if (data.ok) {
+			for(var index = 0; index < data.events.length; ++index) {
+				var event = data.events[index];
+				
+				if (event.timestamp <= lastEventTimestamp) continue;
+				
+				showEvent(event);
+			}
+			
+			if (data.events.length > 0) {
+				lastEventTimestamp = data.events[data.events.length - 1].timestamp;
+			}
+		}
 	}, "json");
 }
 

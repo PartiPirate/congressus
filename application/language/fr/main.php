@@ -80,7 +80,12 @@ $lang["administration_mail_from_name"] = "Nom From";
 $lang["administration_account"] = "Identifiant de l'administrateur";
 $lang["administration_account_login"] = "Login Administrateur";
 $lang["administration_account_password"] = "Password Administrateur";
+$lang["administration_ping_database"] = "Tester";
 $lang["administration_alert_ok"] = "La configuration a été mise à jour avec succès";
+$lang["administration_alert_ping_ok"] = "La configuration base de données est bonne";
+$lang["administration_alert_ping_no_host"] = "Hôte inconnu";
+$lang["administration_alert_ping_bad_credentials"] = "Mauvais compte";
+$lang["administration_alert_ping_no_database"] = "Base de données inexistante";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";

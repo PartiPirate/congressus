@@ -20,25 +20,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once("config/database.php");
-include_once("config/memcache.php");
-include_once("config/mail.php");
-include_once("language/language.php");
-require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/MeetingBo.php");
-require_once("engine/bo/LocationBo.php");
-require_once("engine/bo/NoticeBo.php");
-
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
-require_once("engine/bo/FixationBo.php");
-
 session_start();
 
 $method = $_GET["method"];
 
-error_log("Meeting API Method : $method");
+error_log("Administration API Method : $method");
 
 // Security
 
@@ -47,16 +33,22 @@ if (strpos($method, "..") !== false) {
 	exit();
 }
 
-if (!file_exists("meeting/$method.php")) {
+if (!file_exists("administration/$method.php")) {
 	echo json_encode(array("error" => "not_a_service"));
 	exit();
 }
+
+if (!$_SESSION["administrator"]) {
+	echo json_encode(array("error" => "not_enough_rights"));
+	exit();
+}
+
 
 $arguments = $_POST;
 $api = true;
 
 //error_log(print_r($_POST, true));
 
-include("meeting/$method.php");
+include("administration/$method.php");
 
 ?>

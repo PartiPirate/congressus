@@ -118,7 +118,11 @@ include_once("header.php");
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
-			
+
+				<div class="row text-center">
+					<button id="btn-ping-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
+				</div>
+
 			</div>
 		</div>
 	
@@ -229,7 +233,7 @@ include_once("header.php");
 			
 			</div>
 		</div>
-		
+
 		<div class="row text-center">
 			<button id="btn-administration-save" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("common_save"); ?></button>
 		</div>
@@ -237,6 +241,11 @@ include_once("header.php");
 	</form>
 
 	<?php echo addAlertDialog("administration_save_successAlert", lang("administration_alert_ok"), "success"); ?>
+
+	<?php echo addAlertDialog("administration_ping_successAlert", 			lang("administration_alert_ping_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_ping_no_hostAlert", 			lang("administration_alert_ping_no_host"), "danger"); ?>
+	<?php echo addAlertDialog("administration_ping_bad_credentialsAlert", 	lang("administration_alert_ping_bad_credentials"), "danger"); ?>
+	<?php echo addAlertDialog("administration_ping_no_databaseAlert", 		lang("administration_alert_ping_no_database"), "warning"); ?>
 
 </div>
 

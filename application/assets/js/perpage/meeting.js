@@ -992,11 +992,15 @@ function getEventText(event) {
 	
 	if (event.type == "speak_request") {
 		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
-		text = userNickname + " demande la parole";
+		text = "<i><b>" + userNickname + "</b></i> demande la parole";
 	}
 	else if (event.type == "speak_set") {
 		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
-		text = userNickname + " a la parole";
+		text = "<i><b>" + userNickname + "</b></i> a la parole";
+	}
+	else if (event.type == "speak_renounce") {
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		text = "<i><b>" + userNickname + "</b></i> a renoncé à prendre la parole";
 	}
 	
 	return text;
@@ -1014,6 +1018,9 @@ function showEvent(event) {
 		case "motion_remove": 
 		case "left": 
 			eventClass = "danger";
+			break;
+		case "speak_renounce": 
+			eventClass = "warning";
 			break;
 		default:
 			eventClass = "info";

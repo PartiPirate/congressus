@@ -7,6 +7,7 @@ define("EVENT_MOTION_TO_VOTE", "motion_to_vote");
 define("EVENT_MOTION_REMOVE", "motion_remove");
 define("EVENT_SECRETARY_READS_ANOTHER_POINT", "secretary_reads_another_point");
 define("EVENT_SPEAK_REQUEST", "speak_request");
+define("EVENT_SPEAK_RENOUNCE", "speak_renounce");
 define("EVENT_SPEAK_SET", "speak_set");
 
 function addEvent($meetingId, $type, $text, $options = null) {

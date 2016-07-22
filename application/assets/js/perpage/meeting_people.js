@@ -403,11 +403,11 @@ function addNotice(notice, parent) {
 
 		if (people.mem_id == userId) {
 			if (people.mem_meeting_president == 1 || people.mem_meeting_secretary == 1) {
-				$(".president-panels").show();
+//				$(".president-panels").show();
 				$(".president-panels .speaking-requesters button").removeClass("disabled");
 			}
 			else {
-				$(".president-panels").show();
+//				$(".president-panels").show();
 				$(".president-panels .speaking-requesters button").addClass("disabled");
 
 				$("#meeting-status-panel .btn-waiting-meeting").addClass("disabled");
@@ -563,6 +563,7 @@ function setSpeaking(event) {
 
 function requestSpeaking(event) {
 	event.preventDefault();
+	event.stopPropagation();
 
 	$(this).addClass("disabled");
 
@@ -866,13 +867,13 @@ function addNoticeHandlers() {
 	});
 
 	$("#visitors").on("mouseenter", "li.member", function() {
-		if ($(this).data("id") == getUserId()) {
+		if ($(this).data("id") == getUserId() && (""+getUserId()).substr(0, 1) == "G") {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
 
 	$("#visitors").on("mouseleave", "li.member", function() {
-		if ($(this).data("id") == getUserId()) {
+		if ($(this).data("id") == getUserId() && (""+getUserId()).substr(0, 1) == "G") {
 			$(this).find(".glyphicon-pencil").hide();
 		}
 	});
@@ -880,9 +881,11 @@ function addNoticeHandlers() {
 	$("#visitors").on("click", "li.member", function(event) {
 
 		if ($(event.target).hasClass("btn")) return;
+		if ($(event.target).hasClass("fa")) return;
+		if ($(event.target).hasClass("badge")) return;
 		if ($(event.toElement).hasClass("btn")) return;
 		if ($(this).data("id") != getUserId()) return;
-
+		if ((""+getUserId()).substr(0, 1) != "G") return;
 
 		if ($(this).find("input").length) {
 			$(this).find("input").focus();

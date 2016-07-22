@@ -117,7 +117,7 @@ if (!$userId) {
 		</div>
 	</div>
 
-	<div class="row president-panels" style="margin-bottom: 5px; display: none;">
+	<div class="row president-panels" style="margin-bottom: 5px; ">
 		<div class="col-md-8">
 			<div id="speaking-panel" class="panel panel-default">
 				<div class="panel-heading">

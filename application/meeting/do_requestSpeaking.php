@@ -78,6 +78,7 @@ if (count($previousPings)) {
 
 if ($ping["pin_speaking_request"]) {
 	$ping["pin_speaking_request"] = 0;
+	addEvent($meetingId, EVENT_SPEAK_RENOUNCE, "", array("userId" => $pingUserId));
 }
 else {
 	$ping["pin_speaking_request"] = time();

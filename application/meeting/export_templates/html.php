@@ -188,16 +188,18 @@ foreach ($notices as $notice) {
 		$separator = " ";
 		foreach($notice["not_people"] as $people) {
 
-			$powers += $people["mem_power"];
-
+			if ($people["mem_voting"] == 1) {
+				$powers += $people["mem_power"];
+			}
+			
 			if ($people["mem_present"] != 1) continue;
 
-			$presentPowers += $people["mem_power"];
 
 			echo "$separator<span class=\"people\">";
 			echo $people["mem_nickname"];
 
 			if ($people["mem_voting"] == 1) {
+				$presentPowers += $people["mem_power"];
 				echo "&nbsp;(";
 				echo $people["mem_power"];
 				echo ")";
@@ -207,9 +209,114 @@ foreach ($notices as $notice) {
 			$separator = ", ";
 		}
 
+		foreach($notice["not_children"] as $child_notice) {
+			echo "<div class=\"indent notice\">";
+		
+			echo "<p class=\"label\">" . $child_notice["not_label"] . "</p>";
+			
+			$separator = " ";
+				
+			$child_presentPowers = 0;
+			$child_powers = 0;
+
+			if (isset($child_notice["not_people"])) {
+				echo "<p class=\"indent presents\">";
+					
+				foreach($child_notice["not_people"] as $people) {
+					
+					if ($people["mem_voting"] == 1) {
+						$powers += $people["mem_power"];
+						$child_powers += $people["mem_power"];
+					}
+			
+					if ($people["mem_present"] != 1) continue;
+			
+					echo "$separator<span class=\"people\">";
+					echo $people["mem_nickname"];
+			
+					if ($people["mem_voting"] == 1) {
+						$presentPowers += $people["mem_power"];
+						$child_presentPowers += $people["mem_power"];
+			
+						echo " (";
+						echo $people["mem_power"];
+						echo ")";
+					}
+					echo "</span>";
+	
+					$separator = ", ";
+				}
+
+				echo "</p>";
+				echo "<p class=\"powers\">";
+				echo $child_presentPowers . "/" . $child_powers;
+				echo "</p>";
+			}
+
+			echo "</div>";
+		}
+		
 		echo "</p>";
 		echo "<p class=\"powers\">";
 		echo $presentPowers . "/" . $powers;
+		echo "</p>";
+	}
+
+	echo "</div>";
+}
+?>
+
+<h2>Absents</h2>
+
+<?php
+
+foreach ($notices as $notice) {
+	echo "<div class=\"indent notice\">";
+
+	echo "<p class=\"label\">" . $notice["not_label"] . "</p>";
+
+	if (isset($notice["not_people"])) {
+		echo "<p class=\"indent presents\">";
+
+		$separator = " ";
+		foreach($notice["not_people"] as $people) {
+
+			if ($people["mem_present"] != 0) continue;
+
+			echo "$separator<span class=\"people\">";
+			echo $people["mem_nickname"];
+			echo "</span>";
+
+			$separator = ", ";
+		}
+
+		foreach($notice["not_children"] as $child_notice) {
+			echo "<div class=\"indent notice\">";
+
+			echo "<p class=\"label\">" . $child_notice["not_label"] . "</p>";
+
+			$separator = " ";
+
+			if (isset($child_notice["not_people"])) {
+				echo "<p class=\"indent presents\">";
+	
+				foreach($child_notice["not_people"] as $people) {
+					
+					if ($people["mem_present"] != 0) continue;
+			
+					echo "$separator<span class=\"people\">";
+					echo $people["mem_nickname"];
+					echo "</span>";
+	
+					$separator = ", ";
+				}
+	
+				echo "</p>";
+			}
+
+			echo "</div>";
+		}
+		
 		echo "</p>";
 	}
 

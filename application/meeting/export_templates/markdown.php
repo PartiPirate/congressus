@@ -217,6 +217,8 @@ function showLevel($agendas, $level, $parent) {
 
 <?php
 
+//print_r($notices);
+
 foreach ($notices as $notice) {
 
 	echo "* " . $notice["not_label"] . " : \n";
@@ -229,26 +231,104 @@ foreach ($notices as $notice) {
 		$separator = " ";
 		foreach($notice["not_people"] as $people) {
 
-			$powers += $people["mem_power"];
-
+			if ($people["mem_voting"] == 1) {
+				$powers += $people["mem_power"];
+			}
+			
 			if ($people["mem_present"] != 1) continue;
-
-			$presentPowers += $people["mem_power"];
 
 			echo "** ";
 			echo $people["mem_nickname"];
-
+			
 			if ($people["mem_voting"] == 1) {
+				$presentPowers += $people["mem_power"];
 				echo " (";
 				echo $people["mem_power"];
 				echo ")";
 			}
 			echo "\n";
-
 		}
 
+		foreach($notice["not_children"] as $child_notice) {
+			echo "** " . $child_notice["not_label"] . " : \n";
+				
+			$separator = " ";
+			
+			$child_presentPowers = 0;
+			$child_powers = 0;
+				
+			foreach($child_notice["not_people"] as $people) {
+	
+				if ($people["mem_voting"] == 1) {
+					$powers += $people["mem_power"];
+					$child_powers += $people["mem_power"];
+				}
+				
+				if ($people["mem_present"] != 1) continue;
+				
+				echo "*** ";
+				echo $people["mem_nickname"];
+	
+				if ($people["mem_voting"] == 1) {
+					$presentPowers += $people["mem_power"];
+					$child_presentPowers += $people["mem_power"];
+
+					echo " (";
+					echo $people["mem_power"];
+					echo ")";
+				}
+				echo "\n";
+			}
+
+			echo "**** ";
+			echo $child_presentPowers . "/" . $child_powers;
+			echo "\n";
+		}
+		
 		echo "*** ";
 		echo $presentPowers . "/" . $powers;
+		echo "\n";
+	}
+
+}
+?>
+
+==Absents==
+
+<?php
+
+//print_r($notices);
+
+foreach ($notices as $notice) {
+
+	echo "* " . $notice["not_label"] . " : \n";
+
+	if (isset($notice["not_people"])) {
+
+		$separator = " ";
+		foreach($notice["not_people"] as $people) {
+
+			if ($people["mem_present"] != 0) continue;
+
+			echo "** ";
+			echo $people["mem_nickname"];
+			echo "\n";
+		}
+
+		foreach($notice["not_children"] as $child_notice) {
+			echo "** " . $child_notice["not_label"] . " : \n";
+				
+			$separator = " ";
+			
+			foreach($child_notice["not_people"] as $people) {
+	
+				if ($people["mem_present"] != 0) continue;
+				
+				echo "*** ";
+				echo $people["mem_nickname"];
+				echo "\n";
+			}
+		}
 	}
 
 }

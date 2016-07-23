@@ -45,7 +45,7 @@ include_once("header.php");
 				<button class="btn btn-warning" data-calendar-view="day">Jour</button>
 			</div>
 		</div>
-		<h3></h3>
+		<h3>&nbsp;</h3>
 	</div>
 
 	<br />

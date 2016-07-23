@@ -106,11 +106,11 @@ $lang["breadcrumb_search"] = "Rechercher";
 $lang["breadcrumb_connect"] = "Se connecter";
 $lang["breadcrumb_administration"] = "Administration";
 
-$lang["index_guide"] = "<p>Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
-fournir l'infrastructure Galette + Personae.</p>
-<p>Ainsi vous pouvez définir qui est convoqué aux réunions, qui a le droit de vote, définir des motions, ...</p>
-<p>Un outil de recherche permet de rechercher tout ou parti d'un propos, d'une motion, d'une proposition... et
-ainsi de retrouver rapidement un point de détail.</p>";
+$lang["index_guide"] = "Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
+fournir l'infrastructure Galette + Personae.<br>
+Ainsi vous pouvez définir qui est convoqué aux réunions, qui a le droit de vote, définir des motions, ...<br>
+Un outil de recherche permet de rechercher tout ou parti d'un propos, d'une motion, d'une proposition... et
+ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
 
 $lang["connect_guide"] = "Bienvenue sur l'écran de connexion de Congressus";

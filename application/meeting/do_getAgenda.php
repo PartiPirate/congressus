@@ -65,7 +65,7 @@ if (!$json) {
 
 	$meeting["mee_rights"] = array();
 	
-	$rights = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
+	$rights = $meetingRightBo->getByFilters(array("mri_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 	foreach($rights as $right) {
 		$meeting["mee_rights"][] = $right["mri_right"];
 	}

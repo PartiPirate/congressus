@@ -121,8 +121,8 @@ class MeetingRightBo {
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 		}
 
-		if (isset($filters["not_meeting_id"])) {
-			$args["not_meeting_id"] = $filters["mri_meeting_id"];
+		if (isset($filters["mri_meeting_id"])) {
+			$args["mri_meeting_id"] = $filters["mri_meeting_id"];
 			$query .= " AND mri_meeting_id = :mri_meeting_id \n";
 		}
 

@@ -21,6 +21,17 @@ function addEvent($meetingId, $type, $text, $options = null) {
 	$event["text"] = $text;
 	$event["options"] = $options;
 	
+	foreach($events as $previousEvent) {
+		if (($previousEvent["timestamp"] - $event["timestamp"]) < 0 && ($previousEvent["timestamp"] - $event["timestamp"]) > -5) {
+			if ($event["type"] == $previousEvent["type"]) {
+				// If same text, don't add it
+				if ($event["text"] != "" && $event["text"] == $previousEvent["text"]) return;
+				// If same options, don't add it
+				if ($event["text"] == "" && json_encode($event["options"]) == json_encode($previousEvent["text"])) return;
+			}
+		}
+	}
+	
 	$events[] = $event;
 	
 	$json = json_encode($events);

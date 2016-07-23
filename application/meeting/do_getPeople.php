@@ -24,6 +24,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
+require_once("engine/utils/EventStackUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/PingBo.php");
@@ -79,16 +80,23 @@ if (!$json) {
 	$now = new DateTime();
 
 	foreach($pings as $index => $ping) {
-		if (!$ping["pin_speaking_request"]) continue;
-		if ($ping["pin_guest_id"])
-		{
-			$lastPing = new DateTime($ping["pin_datetime"]);
+		$lastPing = new DateTime($ping["pin_datetime"]);
 
-			$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
+		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-			if ($diff >= 60) continue;
+		if ($diff >= 60) {
+			if ($diff <= 65) {
+				addEvent($meetingId, EVENT_LEFT, "", array("userId" => $ping["pin_member_id"] ? $ping["pin_member_id"] : "G" . $ping["pin_guest_id"]));
+			}
+			
+			if ($ping["pin_guest_id"])
+			{
+				continue;
+			}
 		}
 
+		if (!$ping["pin_speaking_request"]) continue;
+		
 		$pings[$index]["pin_speaking_request"] = $order;
 		$order++;
 	}

@@ -991,21 +991,33 @@ function getEventText(event) {
 	var text = "";
 	
 	if (event.type == "speak_request") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> demande la parole";
 	}
 	else if (event.type == "speak_set") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> a la parole";
 	}
 	else if (event.type == "speak_renounce") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> a renoncé à prendre la parole";
 	}
 	else if (event.type == "join") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").text();
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		if (userNickname) {
 			text = "<i><b>" + userNickname + "</b></i> vient d'arriver à la réunion";
+		}
+		else {
+			text = "<i><b>Guest</b></i> vient d'arriver à la réunion";
+		}
+	}
+	else if (event.type == "left") {
+		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+		if (userNickname) {
+			text = "<i><b>" + userNickname + "</b></i> vient de sortir de la réunion";
+		}
+		else {
+			text = "<i><b>Guest</b></i> vient de sortir de la réunion";
 		}
 	}
 	

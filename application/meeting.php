@@ -143,19 +143,19 @@ if (!$userId) {
 				</div>
 				<div class="panel-body text-center">
 
-					<button class="btn btn-primary btn-waiting-meeting">Prête</button>
-					<button class="btn btn-success btn-open-meeting">Ouvrir la séance</button>
-					<button class="btn btn-danger btn-close-meeting">Clore la séance</button>
+					<button class="btn btn-primary btn-waiting-meeting simply-hidden">Prête</button>
+					<button class="btn btn-success btn-open-meeting simply-hidden">Ouvrir la séance</button>
+					<button class="btn btn-danger btn-close-meeting simply-hidden">Clore la séance</button>
 					<button class="btn btn-default request-speaking">Demander la parole
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>
 					</button>
 					<br />
-					<span class="closed-meeting">Séance fermée</span>
-					<br class="export-br">
-					<a href="meeting/do_export.php?template=html&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-html">Export HTML</a>
-					<a href="meeting/do_export.php?template=pdf&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-pdf">Export PDF</a>
-					<a href="meeting/do_export.php?template=markdown&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-markdown">Export Markdown</a>
+					<span class="closed-meeting simply-hidden">Séance fermée</span>
+					<br class="export-br simply-hidden">
+					<a href="meeting/do_export.php?template=html&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
+					<a href="meeting/do_export.php?template=pdf&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
+					<a href="meeting/do_export.php?template=markdown&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a>
 				</div>
 			</div>
 		</div>
@@ -507,10 +507,19 @@ if (!$userId) {
 <script>
 </script>
 <?php include("footer.php");?>
+<script>
+$("#start-meeting-modal").modal({
+	  keyboard: false
+//	  ,
+//	  show: true
+	});
+$("#start-meeting-modal").modal("show");
+</script>
 <script src="assets/js/perpage/meeting_time.js"></script>
 <script src="assets/js/perpage/meeting_agenda.js"></script>
 <script src="assets/js/perpage/meeting_people.js"></script>
 <script src="assets/js/perpage/meeting_motion.js"></script>
+<script src="assets/js/perpage/meeting_events.js"></script>
 
 <script type="text/javascript">
 

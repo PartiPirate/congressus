@@ -62,7 +62,10 @@ $data = array();
 $chat = array();
 $chat["cha_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
 $chat["cha_text"] = "";
+
+// TODO pb timezone
 $now = new DateTime();
+$now->add(new DateInterval('PT2H'));
 $chat["cha_datetime"] = $now->format("Y-m-d H:i:s");
 
 $userId = $_REQUEST["userId"];

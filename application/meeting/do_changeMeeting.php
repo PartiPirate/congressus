@@ -45,13 +45,16 @@ if (false) {
 
 $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
 
+// TODO pb timezone
+$date = new DateTime();
+//$date->setTimezone('Europe/Paris');
+$date->add(new DateInterval('PT2H'));
+
 if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "open") {
-	$meeting["mee_start_time"] = new DateTime();
-	$meeting["mee_start_time"] = $meeting["mee_start_time"]->format("Y-m-d H:i:s");
+	$meeting["mee_start_time"] = $date->format("Y-m-d H:i:s");
 }
 else if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "closed") {
-	$meeting["mee_finish_time"] = new DateTime();
-	$meeting["mee_finish_time"] = $meeting["mee_finish_time"]->format("Y-m-d H:i:s");
+	$meeting["mee_finish_time"] = $date->format("Y-m-d H:i:s");
 }
 
 $meetingBo->save($meeting);

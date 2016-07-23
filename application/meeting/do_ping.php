@@ -59,7 +59,10 @@ else {
 	$ping["pin_member_id"] = $userId;
 }
 
+// TODO pb timezone
 $now = new DateTime();
+$now->add(new DateInterval('PT2H'));
+
 $ping["pin_datetime"] = $now->format("Y-m-d H:i:s");
 
 $previousPings = $pingBo->getByFilters($ping);

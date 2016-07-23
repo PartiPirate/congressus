@@ -77,8 +77,10 @@ if (!$json) {
 	$order = 1;
 
 	//print_r($pings);
+	// TODO pb timezone
 	$now = new DateTime();
-
+	$now->add(new DateInterval('PT2H'));
+	
 	foreach($pings as $index => $ping) {
 		$lastPing = new DateTime($ping["pin_datetime"]);
 

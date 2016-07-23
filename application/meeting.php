@@ -345,7 +345,7 @@ if (!$userId) {
 			<span class="conclusion-text"></span>
 		</li>
 
-		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" class="template list-group-item motion" style="display: block;">
+		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" class="template list-group-item motion simply-hidden">
 			<h4>
 				<span class="fa fa-archive"></span>
 				<span class="motion-title"></span>
@@ -392,6 +392,10 @@ if (!$userId) {
 					style="display: none;">
 					Fermer le vote&nbsp;<span class="fa fa-archive"></span>
 				</button>
+				
+				<span class="simply-hidden voters badge pull-right">
+					<span class="number-of-voters">XX</span> votants
+				</span>
 			</div>
 		</li>
 

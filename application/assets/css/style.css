@@ -153,3 +153,12 @@ a.agenda-link {
 .simply-hidden {
 	display: none;
 }
+
+body {
+    background-image: url(../images/background_lightgrey.png);
+    background-size: cover;	
+}
+
+.breadcrumb {
+	background-color: rgba(245,245,245,0.55);
+}

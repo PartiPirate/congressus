@@ -121,6 +121,8 @@ include_once("header.php");
 <div class="container otbHidden">
 </div>
 
+<div class="lastDiv"></div>
+
 <script>
 </script>
 <?php include("footer.php");?>

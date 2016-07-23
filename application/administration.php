@@ -65,7 +65,7 @@ include_once("header.php");
 	
 		<div id="database-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" data-target="#database-panel-body" href="#"><?php echo lang("administration_database"); ?></a>
+				<a data-toggle="collapse" data-target="#database-panel-body" class="collapsed" href="#"><?php echo lang("administration_database"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="database-panel-body">
 			
@@ -128,7 +128,7 @@ include_once("header.php");
 	
 		<div id="memcached-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" data-target="#memcached-panel-body" href="#"><?php echo lang("administration_memcached"); ?></a>
+				<a data-toggle="collapse" data-target="#memcached-panel-body" class="collapsed" href="#"><?php echo lang("administration_memcached"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="memcached-panel-body">
 			
@@ -150,7 +150,7 @@ include_once("header.php");
 	
 		<div id="mail-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" data-target="#mail-panel-body" href="#"><?php echo lang("administration_mail"); ?></a>
+				<a data-toggle="collapse" data-target="#mail-panel-body" class="collapsed" href="#"><?php echo lang("administration_mail"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="mail-panel-body">
 
@@ -214,7 +214,7 @@ include_once("header.php");
 	
 		<div id="account-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" data-target="#account-panel-body" href="#"><?php echo lang("administration_account"); ?></a>
+				<a data-toggle="collapse" data-target="#account-panel-body" class="collapsed" href="#"><?php echo lang("administration_account"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="account-panel-body">
 

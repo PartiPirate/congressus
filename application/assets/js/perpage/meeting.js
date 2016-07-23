@@ -1030,10 +1030,12 @@ function showEvent(event) {
 	
 	switch(event.type) {
 		case "motion_add":
+		case "motion_to_vote":
 		case "join": 
 			eventClass = "success";
 			break;
 		case "motion_remove": 
+		case "motion_close_vote":
 		case "left": 
 			eventClass = "danger";
 			break;

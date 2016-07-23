@@ -1,21 +1,25 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015 Cédric Levieux, Parti Pirate
 
-	This file is part of OpenTweetBar.
+	This file is part of Congressus.
 
-    OpenTweetBar is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    OpenTweetBar is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 $path = "../";
@@ -29,6 +33,7 @@ require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 $memcache = openMemcacheConnection();
 
@@ -38,7 +43,8 @@ $agendaBo = AgendaBo::newInstance($connection);
 $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
+$meetingId = $_REQUEST["meetingId"];
+$meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -62,11 +68,12 @@ if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 
 $motion = $motionBo->getById($_REQUEST["motionId"]);
 
-
 if (!$motion || $motion["mot_agenda_id"] != $agenda[$agendaBo->ID_FIELD]) {
 	echo json_encode(array("ko" => "ko", "message" => "motion_not_accessible"));
 	exit();
 }
+
+$motionTitle = $motion["mot_title"];
 
 $motion = array($motionBo->ID_FIELD => $motion[$motionBo->ID_FIELD]);
 $motion["mot_status"] = $_REQUEST["status"];
@@ -81,8 +88,11 @@ if ($motion["mot_status"] == "voting") {
 	$proposition["mpr_neutral"] = 1;
 
 	$motionBo->saveProposition($proposition);
+
+	addEvent($meetingId, EVENT_MOTION_TO_VOTE, "La motion \"".$motionTitle."\" dans le point \"".$agenda["age_label"]."\" est mise au vote");
 }
 else if ($motion["mot_status"] == "resolved") {
+	addEvent($meetingId, EVENT_MOTION_CLOSE_VOTE, "La motion \"".$motionTitle."\" dans le point \"".$agenda["age_label"]."\" est fermée au vote");
 	// TODO compute result
 }
 

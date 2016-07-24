@@ -222,21 +222,34 @@ function setAgendaMotion(id, motions) {
 
 					motionActions.find(".btn-motion-limits").show();
 					motionActions.find(".btn-motion-limits").removeClass("active").removeClass("disabled");
+					motionActions.find(".btn-motion-anonymous").show();
 					break;
 				case "voting":
 					motionActions.find(".btn-do-close").show();
 					motionActions.find(".btn-remove-motion").show();
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
+					motionActions.find(".btn-motion-anonymous").show();
 					break;
 				case "resolved":
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
+					motionActions.find(".btn-motion-anonymous").hide();
 					break;
 				default:
 			}
 
+			
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
+			
+			if (motion.mot_anonymous) {
+				motionActions.find(".btn-motion-anonymous").addClass("active");
+			}
+			else {
+				motionActions.find(".btn-motion-anonymous").removeClass("active");
+			}
+			
+			motionActions.find(".btn-motion-anonymous").prop("disabled", !hasRight(getUserId(), "handle_motion"));
 		}
 
 		if (!motion.mpr_id) continue;
@@ -909,7 +922,27 @@ function addMotionHandlers() {
 		input.focus();
 	});
 
+	$("#agenda_point ul.objects").on("click", ".btn-motion-anonymous", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		var button = $(this);
+		button.addClass("disabled");
+
+		button.toggleClass("active");
+		var checked = button.hasClass("active");
+		
+		var motionId = $(this).parents(".motion").data("id");
+		var property = "mot_anonymous";
+		var propositionId = 0;
+		var newText = checked ? 1 : 0;
+
+		$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+		}, "json");
+	});
+
 	$("#agenda_point ul.objects").on("click", ".btn-motion-limits", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
 		$(this).parents(".motion").find(".btn-motion-limits").addClass("disabled");
 
 		var motionId = $(this).parents(".motion").data("id");

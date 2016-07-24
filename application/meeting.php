@@ -377,6 +377,8 @@ if (!$userId) {
 					<button value="66" type="button" style="display: none;" class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-66">Majorité 66%</button>
 				</div>
 
+				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous">Vote anonyme</button>
+
 				<button class="btn btn-success btn-xs btn-do-vote"
 					title="Passer la motion au vote"
 					style="display: none;">

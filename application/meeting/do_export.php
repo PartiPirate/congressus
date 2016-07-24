@@ -39,6 +39,9 @@ require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
 
+require_once("engine/utils/LogUtils.php");
+addLog($_SERVER, $_SESSION, null, $_POST);
+
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);

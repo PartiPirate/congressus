@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -34,6 +35,9 @@ require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/EventStackUtils.php");
+
+require_once("engine/utils/LogUtils.php");
+addLog($_SERVER, $_SESSION, null, $_POST);
 
 $memcache = openMemcacheConnection();
 

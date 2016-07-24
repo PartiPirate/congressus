@@ -17,10 +17,17 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once("config/database.php");
 include_once("language/language.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
+include_once("engine/utils/LogUtils.php");
+
+addLog($_SERVER, $_SESSION);
 
 // $user = SessionUtils::getUser($_SESSION);
 // $userId = SessionUtils::getUserId($_SESSION);
@@ -36,7 +43,7 @@ if (SessionUtils::getUserId($_SESSION)) {
 	$isConnected = true;
 }
 
-if ($_SESSION["administrator"]) {
+if (isset($_SESSION["administrator"]) && $_SESSION["administrator"]) {
 	$isAdministrator = true;
 }
 

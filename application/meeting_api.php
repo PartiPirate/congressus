@@ -39,7 +39,6 @@ session_start();
 $method = $_GET["method"];
 
 error_log("Meeting API Method : $method");
-
 // Security
 
 if (strpos($method, "..") !== false) {
@@ -54,6 +53,9 @@ if (!file_exists("meeting/$method.php")) {
 
 $arguments = $_POST;
 $api = true;
+
+require_once("engine/utils/LogUtils.php");
+addLog($_SERVER, $_SESSION, $method, $arguments);
 
 //error_log(print_r($_POST, true));
 

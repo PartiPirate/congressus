@@ -38,10 +38,10 @@ require_once("engine/utils/SessionUtils.php");
 			<?php
 
 				$referer = "index.php";
-				if ($_GET["referer"]) {
+				if (isset($_GET["referer"]) && $_GET["referer"]) {
 					$referer = $_GET["referer"];
 				}
-				else if ($_SERVER["HTTP_REFERER"]) {
+				else if (isset($_SERVER["HTTP_REFERER"]) && $_SERVER["HTTP_REFERER"]) {
 					$referer = $_SERVER["HTTP_REFERER"];
 				}
 			?>

@@ -18,6 +18,7 @@
 */
 include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
+require_once("engine/utils/LogUtils.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/authenticators/GaletteAuthenticator.php");
 
@@ -39,6 +40,8 @@ if ($login == $config["administrator"]["login"] && $password == $config["adminis
 	$_SESSION["administrator"] = true;
 	$data["ok"] = "ok";
 
+	addLog($_SERVER, $_SESSION, null, array("result" => "administrator"));
+	
 	header('Location: administration.php');
 	exit();
 }
@@ -52,10 +55,12 @@ if ($member) {
 
 	$_SESSION["member"] = json_encode($connectedMember);
 	$_SESSION["memberId"] = $member["id_adh"];
+	addLog($_SERVER, $_SESSION, null, array("result" => "ok"));
 }
 else {
 	$data["ko"] = "ko";
 	$data["message"] = "error_login_bad";
+	addLog($_SERVER, $_SESSION, null, array("result" => "ko"));
 }
 
 session_write_close();

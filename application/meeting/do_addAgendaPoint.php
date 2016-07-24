@@ -28,6 +28,9 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
 
+require_once("engine/utils/LogUtils.php");
+addLog($_SERVER, $_SESSION, null, $_POST);
+
 $meetingId = $_REQUEST["meetingId"];
 $memcacheKey = "do_getAgenda_$meetingId";
 

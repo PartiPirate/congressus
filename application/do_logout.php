@@ -16,8 +16,15 @@
     You should have received a copy of the GNU General Public License
     along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include("config/database.php");
+require_once("engine/utils/LogUtils.php");
 
 session_start();
+addLog($_SERVER, $_SESSION);
 session_destroy();
 
 /*

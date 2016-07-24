@@ -29,6 +29,8 @@
 	var sessionLanguage = "<?php echo $language; ?>";
 	var fullDateFormat = "<?php echo lang("fulldate_format"); ?>";
 </script>
+<script src="assets/js/min.js.php"></script>
+<!--
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/calendar.min.js"></script>
@@ -38,26 +40,17 @@
 <script src="assets/js/bootstrap-datetimepicker.js"></script>
 <script src="assets/js/jquery.timer.js"></script>
 <script src="assets/js/jquery.scrollTo.min.js"></script>
-<script src="assets/js/ekko-lightbox.min.js"></script>
-<script type="text/javascript">
-
-$(function() {
-	$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-	    event.preventDefault();
-	    $(this).ekkoLightbox();
-	});
-});
-</script>
 <script src="assets/js/jquery.template.js"></script>
 <script src="assets/js/bootstrap-treeview.js"></script>
 <script src="assets/js/strings.js"></script>
 <script src="assets/js/user.js"></script>
 <script src="assets/js/window.js"></script>
+<script src="assets/js/editor.js"></script>
+<script src="assets/js/search.js"></script>
+ -->
 <!--
 <script src="assets/js/pagination.js"></script>
  -->
-<script src="assets/js/editor.js"></script>
-<script src="assets/js/search.js"></script>
 
 <!-- <?php echo "js/perpage/" . $page . ".js"; ?> -->
 <?php

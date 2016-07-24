@@ -55,7 +55,11 @@ $arguments = $_POST;
 $api = true;
 
 require_once("engine/utils/LogUtils.php");
-addLog($_SERVER, $_SESSION, $method, $arguments);
+
+// We don't log the get methods => A LOT OF THEM
+if (strpos($method, "do_get") === false) {
+	addLog($_SERVER, $_SESSION, $method, $arguments);
+}
 
 //error_log(print_r($_POST, true));
 

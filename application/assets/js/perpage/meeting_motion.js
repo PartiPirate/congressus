@@ -18,13 +18,11 @@
 */
 
 function areVotesAnonymous(motion) {
-	if (motion.data("status") == "resolved") {
-		return false;
-	}
+	if (motion.data("status") == "resolved") return false;
 
-	if (motion.data("anonymous")) {
-		return true;
-	}
+	if (motion.data("anonymous")) return true;
+	
+	if ($(".btn-local-anonymous").hasClass("active")) return true;
 
 	return false;
 }
@@ -214,3 +212,9 @@ function dumpMotion(motion) {
 	$.post("meeting/do_computeVote.php", {motionId: motionId, explanations: JSON.stringify(explanations)}, function(data) {
 	}, "json");
 }
+
+$(function() {
+	$(".btn-local-anonymous").click(function() {
+		$(this).toggleClass("active");
+	})
+})

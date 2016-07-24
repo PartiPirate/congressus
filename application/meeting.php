@@ -151,6 +151,10 @@ if (!$userId) {
 						<span class="badge" style="display: none;"></span>
 					</button>
 					<br />
+					<button class="btn btn-default btn-local-anonymous" data-toggle="tooltip" data-placement="bottom"
+						title="Se cacher les votes jusqu'à la résolution">J'ai peur d'être influencé <span class="fa fa-archive"></span>
+					</button>
+					<br />
 					<span class="closed-meeting simply-hidden">Séance fermée</span>
 					<br class="export-br simply-hidden">
 					<a href="meeting/do_export.php?template=html&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>

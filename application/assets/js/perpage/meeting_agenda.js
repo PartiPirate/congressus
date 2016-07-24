@@ -159,7 +159,7 @@ function addAgenda(agendas, parent, parentId) {
 function updateMeeting(meeting) {
 	$(".meeting").data("json", meeting);
 
-	$("#meeting-status-panel button:not(.request-speaking), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
+	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
 	switch (meeting.mee_status) {
 		case "construction":
 			$("#meeting-status-panel button.btn-waiting-meeting").show();
@@ -349,7 +349,7 @@ function showPreviousPoint() {
 
 $(function() {
 	var getAgendaTimer = $.timer(updateAgenda);
-	getAgendaTimer.set({ time : 2000, autostart : true });
+	getAgendaTimer.set({ time : 5000, autostart : true });
 
 	$(".meeting .row").on("click", "a.agenda-link", showAgendaPoint);
 	$("body").on("click", ".btn-next-point", showNextPoint);

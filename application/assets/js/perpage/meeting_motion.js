@@ -17,6 +17,18 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function areVotesAnonymous(motion) {
+	if (motion.data("status") == "resolved") {
+		return false;
+	}
+
+	if (motion.data("anonymous")) {
+		return true;
+	}
+
+	return false;
+}
+
 function computeMotion(motion) {
 	var votes = motion.find(".vote");
 	var voters = {};
@@ -27,6 +39,13 @@ function computeMotion(motion) {
 
 	motion.find(".proposition").each(function() {
 		propositionPowers[$(this).data("id")] = 0;
+		
+		if (areVotesAnonymous(motion)) {
+			$("#proposition-" + $(this).data("id") + " .powers").hide();
+		}
+		else {
+			$("#proposition-" + $(this).data("id") + " .powers").show();
+		}
 	});
 
 	var winLimit = motion.data("win-limit");
@@ -86,24 +105,26 @@ function computeMotion(motion) {
 	
 	motion.find(".number-of-voters").text(numberOfVoters);
 	
-	for(var id in propositionPowers) {
-		var propositionPower = propositionPowers[id];
-
-		var percent = 0;
-		if (totalPowers) {
-			percent = Math.round(propositionPower / totalPowers * 1000, 1) / 10;
+	if (!areVotesAnonymous(motion)) {
+		for(var id in propositionPowers) {
+			var propositionPower = propositionPowers[id];
+	
+			var percent = 0;
+			if (totalPowers) {
+				percent = Math.round(propositionPower / totalPowers * 1000, 1) / 10;
+			}
+	
+			if ((winLimit && percent >= winLimit) || (!winLimit && propositionPower == max)) {
+				$("#proposition-" + id).addClass("text-success");
+				$("#proposition-" + id).removeClass("text-danger");
+			}
+			else {
+				$("#proposition-" + id).removeClass("text-success");
+				$("#proposition-" + id).addClass("text-danger");
+			}
+	
+			$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
 		}
-
-		if ((winLimit && percent >= winLimit) || (!winLimit && propositionPower == max)) {
-			$("#proposition-" + id).addClass("text-success");
-			$("#proposition-" + id).removeClass("text-danger");
-		}
-		else {
-			$("#proposition-" + id).removeClass("text-success");
-			$("#proposition-" + id).addClass("text-danger");
-		}
-
-		$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
 	}
 //	console.log(propositionPowers);
 }

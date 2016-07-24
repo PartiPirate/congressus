@@ -48,8 +48,10 @@ function hasRight(userId, right) {
 	has |= $(".mee_president_member_id").data("id") == userId;
 	has |= $(".mee_secretary_member_id").data("id") == userId;
 	
-	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
-		has |= meeting["mee_rights"][index] == right;
+	if (meeting && meeting["mee_rights"]) {
+		for(var index = 0; index < meeting["mee_rights"].length; ++index) {
+			has |= meeting["mee_rights"][index] == right;
+		}
 	}
 	
 	return has;
@@ -209,6 +211,7 @@ function setAgendaMotion(id, motions) {
 			motionActions.children("button").removeClass("disabled");
 
 			motionContainer.data("status", motion.mot_status);
+			motionContainer.data("anonymous", motion.mot_anonymous);
 			motionContainer.data("win-limit", motion.mot_win_limit);
 
 			switch(motion.mot_status) {
@@ -443,8 +446,9 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 
 		$("#agenda_point .motion .proposition").each(function() {
 			var proposition = $(this);
+			var motion = proposition.parents(".motion");
 
-			addVotes(data.votes, proposition);
+			addVotes(data.votes, proposition, motion);
 		});
 
 		$("#agenda_point .panel-footer button").removeClass("disabled");
@@ -475,7 +479,7 @@ function showAgendaPoint(event) {
 	_updateAgendaPoint(meetingId, agendaId, true);
 }
 
-function addVotes(votes, proposition) {
+function addVotes(votes, proposition, motion) {
 	var propositionId = proposition.data("id");
 
 	for(var index = 0; index < votes.length; ++index) {
@@ -494,8 +498,11 @@ function addVotes(votes, proposition) {
 		voteLi.find(".nickname").text(vote.mem_nickname);
 		voteLi.data("memberId", vote.mem_id);
 		voteLi.find(".power").text(vote.vot_power);
-
-		if (vote.vot_power != 0) {
+		
+		if (vote.mem_id != getUserId() && areVotesAnonymous(motion)) {
+			voteLi.hide();
+		}
+		else  if (vote.vot_power != 0) {
 			voteLi.show();
 		}
 		else {
@@ -542,7 +549,7 @@ function vote(event) {
                 										"propositionId": proposition.data("id"),
                 										"power": power}, function(data) {
                 			if (data.ok) {
-                				addVotes([data.vote], proposition);
+                				addVotes([data.vote], proposition, motion);
                 			}
                 		}, "json");
                     }

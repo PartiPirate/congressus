@@ -84,7 +84,7 @@ function showEvent(event) {
 
 	computeEventPositions();
 
-	eventAlert.show().delay(2000).fadeOut(1000, function() {
+	eventAlert.show().delay(5000).fadeOut(1000, function() {
 		$(this).remove();
 		computeEventPositions();
 	});

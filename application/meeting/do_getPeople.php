@@ -26,6 +26,8 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/EventStackUtils.php");
+require_once("engine/utils/DateTimeUtils.php");
+
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/PingBo.php");
@@ -78,10 +80,8 @@ if (!$json) {
 	$order = 1;
 
 	//print_r($pings);
-	// TODO pb timezone
-	$now = new DateTime();
-	$now->add(new DateInterval('PT2H'));
-	
+	$now = getNow();
+
 	foreach($pings as $index => $ping) {
 		$lastPing = new DateTime($ping["pin_datetime"]);
 

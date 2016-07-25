@@ -25,6 +25,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
@@ -49,10 +50,7 @@ if (false) {
 
 $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
 
-// TODO pb timezone
-$date = new DateTime();
-//$date->setTimezone('Europe/Paris');
-$date->add(new DateInterval('PT2H'));
+$date = getNow();
 
 if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "open") {
 	$meeting["mee_start_time"] = $date->format("Y-m-d H:i:s");

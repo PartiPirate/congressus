@@ -28,6 +28,7 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/PingBo.php");
 require_once("engine/utils/EventStackUtils.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
@@ -63,9 +64,7 @@ else {
 	$ping["pin_member_id"] = $userId;
 }
 
-// TODO pb timezone
-$now = new DateTime();
-$now->add(new DateInterval('PT2H'));
+$now = getNow();
 
 $ping["pin_datetime"] = $now->format("Y-m-d H:i:s");
 

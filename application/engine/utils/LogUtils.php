@@ -1,6 +1,7 @@
 <?php
 
-@include("engine/bo/LogBo.php");
+@include_once("engine/bo/LogBo.php");
+@include_once("engine/utils/DateTimeUtils.php");
 
 function addLog($server, $session, $action = null, $data = null) {
 	
@@ -33,9 +34,7 @@ function addLog($server, $session, $action = null, $data = null) {
 		$log["log_user_id"] = "G" . $session["guestId"];
 	}
 	
-	// TODO pb timezone
-	$now = new DateTime();
-	$now->add(new DateInterval('PT2H'));
+	$now = getNow();
 	
 	$log["log_datetime"] = $now->format("Y-m-d H:i:s");
 

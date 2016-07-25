@@ -56,6 +56,7 @@ if(!isset(\$config)) {
 \$config[\"server\"][\"base\"] = \"" . $_REQUEST["server_base_input"] . "\";
 // The server line, ex : dev, beta - Leave it empty for production
 \$config[\"server\"][\"line\"] = \"" . $_REQUEST["server_line_input"] . "\";
+\$config[\"server\"][\"timezone\"] = \"" . $_REQUEST["server_timezone_input"] . "\";
 
 ?>";
 

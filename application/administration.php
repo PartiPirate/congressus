@@ -60,6 +60,16 @@ include_once("header.php");
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="server_timezone_input"><?php echo lang("administration_server_timezone"); ?></label>
+					<div class="col-md-4">
+						<select id="server_timezone_input" name="server_timezone_input" class="form-control">
+							<option value=""    		 <?php if (!$config["server"]["timezone"]) 					echo "selected"; ?>><?php echo lang("administration_server_timezone_none"); ?></option>
+							<option value="Europe/Paris" <?php if ("Europe/Paris" == $config["server"]["timezone"]) echo "selected"; ?>><?php echo lang("administration_server_timezone_europeparis"); ?></option>
+						</select>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	

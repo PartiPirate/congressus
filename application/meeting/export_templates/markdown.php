@@ -188,8 +188,13 @@ function showLevel($agendas, $level, $parent) {
 			echo str_repeat("=", $level);
 			echo "\n\n";
 
+			$descriptions = explode("\n", $agenda["age_description"]);
+			foreach($descriptions as $index => $description) {
+				$descriptions[$index] = trim($description);
+			}
+			$descriptions = implode(" ", $descriptions);
 
-			echo $agenda["age_description"] ."\n\n";
+			echo $descriptions ."\n\n";
 
 //			print_r($agenda["age_objects"]);
 

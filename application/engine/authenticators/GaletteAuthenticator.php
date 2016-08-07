@@ -55,6 +55,33 @@ class GaletteAuthenticator {
 		$statement->execute($args);
 	}
 
+	function get($userId) {
+		$query = "	SELECT *
+					FROM ".$this->database."galette_adherents
+					WHERE
+						id_adh = :userId \n";
+	
+		$args = array("userId" => $userId);
+		$statement = $this->pdo->prepare($query);
+	
+		//		echo showQuery($query, $args);
+	
+		$statement->execute($args);
+		$results = $statement->fetchAll();
+	
+		foreach($results as $key => $member) {
+			foreach($member as $field => $value) {
+				if (is_numeric($field)) {
+					unset($results[$key][$field]);
+				}
+			}
+	
+			return $results[$key];
+		}
+	
+		return false;
+	}
+
 	function authenticate($login, $password) {
 
 		$query = "	SELECT *

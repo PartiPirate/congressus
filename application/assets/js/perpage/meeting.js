@@ -99,6 +99,30 @@ function addAgendaPointHandlers() {
 	});
 }
 
+function editorBlurHandler(event) {
+	var description = $("li#description");
+	var editor = description.find(".description-editor+div");
+	
+	if (editor.length == 0) return;
+	if (!editor.is(":visible")) return;
+
+	var agendaId = $("#agenda_point").data("id");
+	var meetingId = $(".meeting").data("id");
+	
+	var descriptionEditor = description.find("div.description-editor");
+	
+	clearKeyup();
+	// update the text into the server
+	var newText = descriptionEditor.Editor("getText");
+
+	$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
+		description.find("p").html(newText);
+		description.find("p").show();
+
+		editor.hide();
+	}, "json");
+}
+
 function getDescriptionLi(list) {
 	var description = list.find("li#description");
 
@@ -122,29 +146,6 @@ function getDescriptionLi(list) {
 		var agendaId = $("#agenda_point").data("id");
 		var meetingId = $(".meeting").data("id");
 
-		editor.find("*[contenteditable=true]").blur(function(event) {
-			return;
-//			if ($(this).parents("li#description").lenght > 0) {
-//				event.stopPropagation();
-//				return;
-//			}
-//
-//			if (!editor.is(":visible")) {
-//				return;
-//			}
-
-			clearKeyup();
-			// update the text into the server
-			var newText = descriptionEditor.Editor("getText");
-
-			$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
-				description.find("p").html(newText);
-				description.find("p").show();
-
-				editor.hide();
-			}, "json");
-		});
-
 		editor.find("*[contenteditable=true]").keyup(function() {
 			clearKeyup();
 			keyupTimeoutId = setTimeout(function() {
@@ -160,7 +161,11 @@ function getDescriptionLi(list) {
 }
 
 function updateDescription(description, agenda) {
-	description.children("p").html(agenda.age_description);
+	var descriptionP = description.children("p");
+
+	if (descriptionP.html() != $("<div />").html(agenda.age_description).html()) {
+		descriptionP.html(agenda.age_description);
+	}
 }
 
 function setAgendaPoint(point) {
@@ -543,8 +548,6 @@ function addVotes(votes, proposition, motion) {
 
 	computeMotion(proposition.parents(".motion"));
 }
-
-
 
 function vote(event) {
 	event.stopPropagation();
@@ -1055,7 +1058,22 @@ $(function() {
 ////		  show: true
 //		});
 //	$("#start-meeting-modal").modal("show");
+	
+	$("ul.objects").click(function(event) {
+		event.stopPropagation();
+	});
+	
+	$("html").on("click", "*", function(event) {
+		var description = $("ul.objects");
 
+//		if (description.contains($(this))) {
+		if ($.contains(description.get(0), this)) {
+			return;
+		}
+
+		editorBlurHandler(event);
+	});
+	
 	var getAgendaPointTimer = $.timer(updateAgendaPoint);
 	getAgendaPointTimer.set({ time : 1000, autostart : true });
 

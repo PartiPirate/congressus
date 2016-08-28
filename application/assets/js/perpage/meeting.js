@@ -205,8 +205,13 @@ function setAgendaMotion(id, motions) {
 		if (first) {
 			first = false;
 
-			title.text(motion.mot_title);
-			description.html(motion.mot_description);
+			if (title.text() != motion.mot_title) {
+				title.text(motion.mot_title);
+			}
+
+			if (description.html() != $("<div />").html(motion.mot_description).html()) {
+				description.html(motion.mot_description);
+			}
 
 			motionActions.children("button").removeClass("disabled");
 
@@ -271,7 +276,9 @@ function setAgendaMotion(id, motions) {
 		}
 
 		proposition.data("neutral", motion.mpr_neutral);
-		proposition.find(".proposition-label").text(motion.mpr_label);
+		if (proposition.find(".proposition-label").text() != motion.mpr_label) {
+			proposition.find(".proposition-label").text(motion.mpr_label);
+		}
 		proposition.removeClass("to-delete");
 	}
 
@@ -341,10 +348,17 @@ function setAgendaChat(id, chats) {
 		var chat = chats[index];
 		if (chat.cha_id != id) continue;
 
-		nickname.text(chat.mem_nickname);
-		text.text(chat.cha_text);
+		if (nickname.text() != chat.mem_nickname) {
+			nickname.text(chat.mem_nickname);
+		}
+		
+		if (text.text() != chat.cha_text) {
+			text.text(chat.cha_text);
+		}
 
 		chatContainer.data("json", chat);
+		
+		break;
 	}
 }
 
@@ -369,7 +383,11 @@ function setAgendaConclusion(id, conclusions) {
 		var conclusion = conclusions[index];
 		if (conclusion.con_id != id) continue;
 
-		text.text(conclusion.con_text);
+		if (text.text() != conclusion.con_text) {
+			text.text(conclusion.con_text);
+		}
+		
+		break;
 	}
 }
 

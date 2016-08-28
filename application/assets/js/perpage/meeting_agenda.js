@@ -148,7 +148,10 @@ function addAgenda(agendas, parent, parentId) {
 			toVote.hide();
 		}
 
-		title.text(agenda.age_label);
+		if (title.text() != agenda.age_label) { 
+			title.text(agenda.age_label);
+		}
+
 		addAgenda(agendas, ul, agenda.age_id);
 
 		var addPointLi = ul.children("li.add-point-li").detach();

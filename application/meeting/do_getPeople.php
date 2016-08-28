@@ -398,5 +398,9 @@ else {
 	$data["cached"] = true;
 }
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	$data["notices"] = array();
+}
+
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

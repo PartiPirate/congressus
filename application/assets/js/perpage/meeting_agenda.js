@@ -165,10 +165,12 @@ function updateMeeting(meeting) {
 	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
 	switch (meeting.mee_status) {
 		case "construction":
+			$("#meeting-status-panel button.btn-delete-meeting").show();
 			$("#meeting-status-panel button.btn-waiting-meeting").show();
 			break;
 		case "waiting":
 			$("#meeting-status-panel button.btn-open-meeting").show();
+			$("#meeting-status-panel button.btn-waiting-meeting").show();
 			break;
 		case "open":
 			$("#meeting-status-panel button.btn-close-meeting").show();
@@ -267,6 +269,13 @@ function updateAgenda() {
 }
 
 function addMeetingHandlers() {
+	$("#meeting-status-panel .btn-delete-meeting").click(function() {
+		if (!hasWritingRight(getUserId())) return;
+		var meetingId = $(".meeting").data("id");
+		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "deleted"},
+				function(data) {}, "json");
+	});
+
 	$("#meeting-status-panel .btn-waiting-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");

@@ -144,6 +144,7 @@ if (!$userId) {
 				<div class="panel-body text-center">
 
 					<button class="btn btn-primary btn-waiting-meeting simply-hidden">Prête</button>
+					<button class="btn btn-danger btn-delete-meeting simply-hidden">Supprimer</button>
 					<button class="btn btn-success btn-open-meeting simply-hidden">Ouvrir la séance</button>
 					<button class="btn btn-danger btn-close-meeting simply-hidden">Clore la séance</button>
 					<button class="btn btn-default request-speaking">Demander la parole

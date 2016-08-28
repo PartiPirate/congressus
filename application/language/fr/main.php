@@ -133,6 +133,7 @@ $lang["myMeetings_waiting"] = "Prochaines réunions";
 $lang["myMeetings_construction"] = "Réunions en construction";
 $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_closed"] = "Réunions terminés";
+$lang["myMeetings_deleted"] = "Réunions supprimées";
 
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";

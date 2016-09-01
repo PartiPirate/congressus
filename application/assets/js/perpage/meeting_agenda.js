@@ -170,7 +170,7 @@ function updateMeeting(meeting) {
 			break;
 		case "waiting":
 			$("#meeting-status-panel button.btn-open-meeting").show();
-			$("#meeting-status-panel button.btn-waiting-meeting").show();
+			$("#meeting-status-panel button.btn-delete-meeting").show();
 			break;
 		case "open":
 			$("#meeting-status-panel button.btn-close-meeting").show();

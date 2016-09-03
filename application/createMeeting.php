@@ -25,7 +25,7 @@ include_once("header.php");
 		<li class="active"><?php echo lang("breadcrumb_createMeeting"); ?></li>
 	</ol>
 
-	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal">
+	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal" id="create-meeting-form">
 
 		<div class="form-group">
 			<label for="mee_label" class="col-md-4 control-label">Nom de la réunion :</label>
@@ -37,14 +37,15 @@ include_once("header.php");
 			<label for="mee_date" class="col-md-4 control-label">Date et heure de la réunion :</label>
 			<div class="col-md-2">
 				<input type="date" class="form-control input-md"
-					placeholder="aaaa-mm-jj"
-					id="mee_date" name="mee_date" />
+					placeholder="aaaa-mm-jj" id="mee_date" name="mee_date" />
 			</div>
 			<div class="col-md-2">
 				<input type="time" class="form-control input-md"
-					placeholder="hh:mm"
-					id="mee_time" name="mee_time" />
+					placeholder="hh:mm" id="mee_time" name="mee_time" />
 			</div>
+		</div>
+		<div class="alert alert-danger simply-hidden" id="date-time-error-alert">
+			Veuillez entre une date au format AAAA-MM-JJ et un horaire au format HH:MM
 		</div>
 		<div class="form-group">
 			<label for="mee_expected_duration" class="col-md-4 control-label">Durée prévue :</label>

@@ -334,8 +334,11 @@ if (!$userId) {
 				<optgroup class="noticed" label="Convoqués"></optgroup>
 				<optgroup class="connected" label="Connectés"></optgroup>
 				<optgroup class="unknown" label="Inconnus"></optgroup>
-			</select> </span> : <span class="chat-text"></span>
+			</select> </span> 
+			<span> : </span>
+			<span class="chat-text"></span>
 		</li>
+
 		<li data-template-id="conclusion" id="conclusion-${con_id}"
 				class="template list-group-item conclusion" data-id="${con_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-conclusion pull-right"

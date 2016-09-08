@@ -170,7 +170,10 @@ function updateDescription(description, agenda) {
 
 function setAgendaPoint(point) {
 	var list = $("#agenda_point ul");
-	$("#agenda_point .agenda-label").text(point.agenda.age_label);
+	
+	if ($("#agenda_point .agenda-label").text() != point.agenda.age_label) { 
+		$("#agenda_point .agenda-label").text(point.agenda.age_label);
+	}
 
 	var description = getDescriptionLi(list);
 	updateDescription(description, point.agenda);
@@ -1059,20 +1062,20 @@ $(function() {
 //		});
 //	$("#start-meeting-modal").modal("show");
 	
-	$("ul.objects").click(function(event) {
-		event.stopPropagation();
-	});
-	
-	$("html").on("click", "*", function(event) {
-		var description = $("ul.objects");
-
-//		if (description.contains($(this))) {
-		if ($.contains(description.get(0), this)) {
-			return;
-		}
-
-		editorBlurHandler(event);
-	});
+//	$("ul.objects").click(function(event) {
+//		event.stopPropagation();
+//	});
+//	
+//	$("html").on("click", "*", function(event) {
+//		var description = $("ul.objects");
+//
+////		if (description.contains($(this))) {
+//		if ($.contains(description.get(0), this)) {
+//			return;
+//		}
+//
+//		editorBlurHandler(event);
+//	});
 	
 	var getAgendaPointTimer = $.timer(updateAgendaPoint);
 	getAgendaPointTimer.set({ time : 1000, autostart : true });

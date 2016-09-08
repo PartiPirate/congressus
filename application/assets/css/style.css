@@ -188,3 +188,23 @@ a.skip-main:focus, a.skip-main:active {
     font-size:1.2em;
     z-index:999;
 }
+
+li.chat span {
+	vertical-align: top;
+}
+
+span.chat-member {
+    display: inline-block;
+    width: 70px;
+}
+
+span.chat-nickname {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+
+span.chat-text {
+    display: inline-block;
+    width: 510px;
+}

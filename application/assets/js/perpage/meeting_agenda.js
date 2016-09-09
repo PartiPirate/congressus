@@ -191,6 +191,7 @@ function updateMeeting(meeting) {
 		$("#meeting-status-panel button.btn-waiting-meeting").hide();
 		$("#meeting-status-panel button.btn-open-meeting").hide();
 		$("#meeting-status-panel button.btn-close-meeting").hide();
+		$("#meeting-status-panel button.btn-delete-meeting").hide();
 //		$("#meeting-status-panel span.closed-meeting").hide();
 	}
 

@@ -27,6 +27,7 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/ChatAdviceBo.php");
 require_once("engine/bo/ConclusionBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
@@ -39,6 +40,7 @@ $connection = openConnection();
 
 $agendaBo = AgendaBo::newInstance($connection);
 $chatBo = ChatBo::newInstance($connection, $config);
+$chatAdviceBo = ChatAdviceBo::newInstance($connection);
 $conclusionBo = ConclusionBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
@@ -99,6 +101,8 @@ if (!$json) {
 			if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
 				unset($data["chats"][$index][$key]);
 			}
+			
+			$data["chats"][$index]["advices"] = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat[$chatBo->ID_FIELD]));
 		}
 	}
 	

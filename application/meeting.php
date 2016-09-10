@@ -325,6 +325,21 @@ if (!$userId) {
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
+			
+			<button class="btn btn-default btn-xs btn-advice btn-thumb-down pull-right"
+				data-advice="thumb_down" data-chat-id="${cha_id}"
+				title="Je désapprouve ce message"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-thumbs-down"></span>
+			</button>
+			
+			<button class="btn btn-default btn-xs btn-advice btn-thumb-up pull-right"
+				data-advice="thumb_up" data-chat-id="${cha_id}"
+				title="J'apprécie ce message"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-thumbs-up"></span>
+			</button>
+			
 			<span class="glyphicon glyphicon-pencil pull-right"
 				title="Cliquer pour éditer"
 				style="margin-right: 5px; display: none;"></span>
@@ -337,6 +352,22 @@ if (!$userId) {
 			</select> </span> 
 			<span> : </span>
 			<span class="chat-text"></span>
+
+			<div class="progress" style="margin-top: 5px; margin-bottom: 0; height: 3px;">
+				<div class="progress-bar progress-bar-danger" role="progressbar"
+					data-advice="thumb_down"
+					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
+					style="width: 0%">
+					<span class="sr-only"></span>
+				</div>
+				<div class="progress-bar progress-bar-success" role="progressbar"
+					data-advice="thumb_up"
+					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
+					style="width: 0%">
+					<span class="sr-only"></span>
+				</div>
+			</div>
+
 		</li>
 
 		<li data-template-id="conclusion" id="conclusion-${con_id}"

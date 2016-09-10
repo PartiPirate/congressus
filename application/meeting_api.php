@@ -25,6 +25,7 @@ include_once("config/memcache.php");
 include_once("config/mail.php");
 include_once("language/language.php");
 require_once("engine/utils/SessionUtils.php");
+require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/NoticeBo.php");
@@ -35,6 +36,10 @@ require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/FixationBo.php");
 
 session_start();
+
+xssCleanArray($_REQUEST);
+xssCleanArray($_GET);
+xssCleanArray($_POST);
 
 $method = $_GET["method"];
 

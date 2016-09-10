@@ -260,3 +260,14 @@ CREATE TABLE IF NOT EXISTS `votes` (
   KEY `vot_member_id` (`vot_member_id`),
   KEY `vot_motion_proposition_id` (`vot_motion_proposition_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Structure de la table `chat_advices`
+--
+
+CREATE TABLE `chat_advices` (
+  `cad_id` bigint(20) NOT NULL,
+  `cad_chat_id` bigint(20) DEFAULT NULL,
+  `cad_user_id` bigint(20) DEFAULT NULL,
+  `cad_advice` enum('thumb_up','thumb_down') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

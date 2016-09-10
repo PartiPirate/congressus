@@ -304,6 +304,23 @@ function setAgendaMotion(id, motions) {
 	}
 }
 
+function setAdvice() {
+	var userId = $(".meeting").data("user-id");
+	var agendaId = $("#agenda_point").data("id");
+	var meetingId = $(".meeting").data("id");
+	
+	var button = $(this);
+	
+	var chatId = button.data("chat-id");
+	var advice = button.data("advice");
+
+	$.post("meeting_api.php?method=do_setAdvice", {meetingId : meetingId, agendaId: agendaId, chatId: chatId, advice: advice}, function(data) {
+		if (data.ok) {
+		}
+	}, "json");
+
+}
+
 function addOwnChat() {
 	var userId = $(".meeting").data("user-id");
 	var agendaId = $("#agenda_point").data("id");
@@ -364,6 +381,45 @@ function setAgendaChat(id, chats) {
 			text.text(chat.cha_text);
 		}
 
+		var advices = {};
+
+		advices["thumb_up"] = 0;
+		advices["thumb_down"] = 0;
+		advices["total"] = 0;
+		
+		for(var jndex = 0; jndex < chat.advices.length; ++jndex) {
+			var advice = chat.advices[jndex];
+			
+			advices[advice.cad_advice]++;
+			advices["total"]++;
+
+			if (advice.cad_user_id == getUserId()) {
+				chatContainer.find(".btn-advice").each(function() {
+					if ($(this).data("advice") == advice.cad_advice) {
+						$(this).addClass("disabled").prop("disabled", true);
+					}
+					else {
+						$(this).removeClass("disabled").prop("disabled", false);
+					}
+				});
+			}
+		}
+		
+		var progress = chatContainer.find(".progress");
+		
+		if (advices["total"] == 0) {
+			progress.hide();
+		}
+		else {
+			progress.show();
+			
+			progress.find(".progress-bar").each(function() {
+				var percent = advices[$(this).data("advice")] * 100 / advices["total"];
+				$(this).css({width: percent + "%"});
+				$(this).attr("title", advices[$(this).data("advice")]);
+			});
+		}
+		
 		chatContainer.data("json", chat);
 		
 		break;
@@ -668,6 +724,12 @@ function changeMotionStatus(event) {
 
 function addChatHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", "li.chat", function(event) {
+		
+		if (Number.isInteger(getUserId())) {
+			$(this).find(".btn-thumb-up").show();
+			$(this).find(".btn-thumb-down").show();
+		}
+
 		if (!hasWritingRight(getUserId())) return;
 
 		$(this).find(".glyphicon-pencil").show();
@@ -677,6 +739,8 @@ function addChatHandlers() {
 	$("#agenda_point ul.objects").on("mouseleave", "li.chat", function(event) {
 		$(this).find(".glyphicon-pencil").hide();
 		$(this).find(".btn-remove-chat").hide();
+		$(this).find(".btn-thumb-up").hide();
+		$(this).find(".btn-thumb-down").hide();
 	});
 
 	$("#agenda_point ul.objects").on("mouseenter", "li.chat .chat-member", function(event) {
@@ -1084,6 +1148,7 @@ $(function() {
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);
 	$("#agenda_point").on("click", "button.btn-add-conclusion", addConclusion);
 	$("#agenda_point").on("click", "button.btn-add-motion", addMotion);
+	$("#agenda_point").on("click", "button.btn-advice", setAdvice); 
 
 	$("#agenda_point ul.objects").on("click", ".btn-do-vote, .btn-do-close", changeMotionStatus);
 	$("#agenda_point ul.objects").on("click", ".btn-remove-motion", removeMotion);

@@ -206,5 +206,10 @@ span.chat-nickname {
 
 span.chat-text {
     display: inline-block;
-    width: 510px;
+    width: 500px;
+}
+
+.btn-group-xs>.btn, .btn-xs {
+	padding: 1px 2px 1px 3px;
+    line-height: 1.2;
 }

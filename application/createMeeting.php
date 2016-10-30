@@ -95,6 +95,7 @@ include_once("header.php");
 				<select class="form-control input-md" id="loc_type" name="loc_type">
 					<option value="afk">En espace réel</option>
 					<option value="mumble">Sur mumble</option>
+					<option value="mumble">Sur framatalk</option>
 					<!--
 					<option value="irc">IRC</option>
 					 -->

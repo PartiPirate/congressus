@@ -83,9 +83,13 @@ class MeetingBo {
 		$this->update($meeting);
 	}
 
-	function getById($id) {
+	function getById($id, $withLocation = false) {
 		$filters = array($this->ID_FIELD => intval($id));
 
+		if ($withLocation) {
+			$filters["with_principal_location"] = true;			
+		}
+		
 		$results = $this->getByFilters($filters);
 
 		if (count($results)) {

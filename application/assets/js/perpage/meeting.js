@@ -426,6 +426,35 @@ function setAgendaChat(id, chats) {
 	}
 }
 
+function setAgendaTask(id, tasks) {
+	var list = $("#agenda_point ul.objects");
+	var taskContainer = list.find("li#task-" + id);
+
+	if (!taskContainer.length) {
+		taskContainer = $("li[data-template-id=task]").template("use", {data: {tas_id: id}});
+		taskContainer.find("*").tooltip({placement: "left"});
+
+		list.append(taskContainer);
+
+		taskContainer.hide().fadeIn(400);
+	}
+
+	taskContainer.removeClass("to-delete");
+
+	var text = taskContainer.find(".task-label");
+
+	for(var index = 0; index < tasks.length; ++index) {
+		var task = tasks[index];
+		if (task.tas_id != id) continue;
+
+		if (text.text() != task.tas_label) {
+			text.text(task.tas_label);
+		}
+
+		break;
+	}
+}
+
 function setAgendaConclusion(id, conclusions) {
 	var list = $("#agenda_point ul.objects");
 	var conclusionContainer = list.find("li#conclusion-" + id);
@@ -464,6 +493,9 @@ function setAgendaObject(object, data) {
 	}
 	else if (object.type == "conclusion") {
 		setAgendaConclusion(object.id, data.conclusions);
+	}
+	else if (object.type == "task") {
+		setAgendaTask(object.id, data.tasks);
 	}
 }
 
@@ -534,6 +566,10 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 			else if (object.conclusionId) {
 				object.type = "conclusion";
 				object.id = object.conclusionId;
+			}
+			else if (object.taskId) {
+				object.type = "task";
+				object.id = object.taskId;
 			}
 
 			setAgendaObject(object, data);
@@ -1089,27 +1125,27 @@ function addMotionHandlers() {
 	});
 }
 
-function addVideoHandlers() {
-	$("body").on("click", "#videoDock .reductor", function() {
-//		if ($("#videoDock .dock").height() > 0) {
-//			$("#videoDock .dock").height(0);
-//			$("#videoDock .reductor").css({cursor: "s-resize"});
-//		}
-//		else {
-//			$("#videoDock .dock").height(120);
-//			$("#videoDock .reductor").css({cursor: "n-resize"});
-//		}
-
-		$("#videoDock .dock").animate({height: "toggle"}, 400, function() {
-			if (!$("#videoDock .dock").is(":visible")) {
-				$("#videoDock .reductor").css({cursor: "s-resize"});
-			}
-			else {
-				$("#videoDock .reductor").css({cursor: "n-resize"});
-			}
-		});
-	});
-}
+//function addVideoHandlers() {
+//	$("body").on("click", "#videoDock .reductor", function() {
+////		if ($("#videoDock .dock").height() > 0) {
+////			$("#videoDock .dock").height(0);
+////			$("#videoDock .reductor").css({cursor: "s-resize"});
+////		}
+////		else {
+////			$("#videoDock .dock").height(120);
+////			$("#videoDock .reductor").css({cursor: "n-resize"});
+////		}
+//
+//		$("#videoDock .dock").animate({height: "toggle"}, 400, function() {
+//			if (!$("#videoDock .dock").is(":visible")) {
+//				$("#videoDock .reductor").css({cursor: "s-resize"});
+//			}
+//			else {
+//				$("#videoDock .reductor").css({cursor: "n-resize"});
+//			}
+//		});
+//	});
+//}
 
 function testMeetingReady() {
 	if (!isPeopleReady) return;
@@ -1159,7 +1195,29 @@ $(function() {
 	addMotionHandlers();
 	addAgendaPointHandlers();
 
-	addVideoHandlers();
+//	addVideoHandlers();
 
 	updateAgendaPoint();
+});
+
+// Framatalk
+
+function setFramatalkPosition(position) {
+	
+	var leftSpace = $(".breadcrumb").offset();
+	var videoWidth = leftSpace.left - 20;
+	var videoTop = leftSpace.top;
+	
+	var css = {"top": videoTop + "px", "width": videoWidth + "px"};
+	
+	if (position == "left") {
+		css["height"] = videoWidth + "px";
+	}
+	
+	$("#framatalk").css(css);
+	
+}
+
+$(function() {
+	setFramatalkPosition("left");
 });

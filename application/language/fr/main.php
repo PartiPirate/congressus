@@ -138,6 +138,7 @@ $lang["myMeetings_deleted"] = "Réunions supprimées";
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";
 $lang["loc_type_irc"] = "Sur irc";
+$lang["loc_type_framatalk"] = "Sur framatalk";
 $lang["loc_type_unknown"] = "à un endroit inconnu";
 
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";

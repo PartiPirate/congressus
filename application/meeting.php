@@ -23,7 +23,7 @@ require_once("engine/bo/GuestBo.php");
 
 $meetingBo = MeetingBo::newInstance($connection);
 
-$meeting = $meetingBo->getById($_REQUEST["id"]);
+$meeting = $meetingBo->getById($_REQUEST["id"], true);
 
 if (!$meeting) {
 	// Ask for creation
@@ -34,6 +34,10 @@ else {
 	$end = new DateTime($meeting["mee_datetime"]);
 	$duration = new DateInterval("PT" . ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60) . "M");
 	$end = $end->add($duration);
+	
+	if ($meeting["loc_type"] == "framatalk") {
+		$framachan = sha1($meeting["mee_id"] . "framatalk" . $meeting["mee_id"]);
+	}
 }
 
 $userId = SessionUtils::getUserId($_SESSION);
@@ -253,17 +257,6 @@ if (!$userId) {
 
 <div class="lastDiv"></div>
 
-<div id="videoDockPlaceholder" style="height: 130px; display: none;">
-</div>
-
-<div id="videoDock"
-	class="panel"
-	style="display: none; width: 100%; position: fixed; bottom: 0px; opacity: 0.75; box-shadow: 0px -10px 5px 0px #c0c0c0;">
-	<div class="dock" style="height: 120px; width: 100%; "></div>
-	<div class="reductor"
-		style="height: 5px; width: 100%; background: #000000; cursor: n-resize;"></div>
-</div>
-
 <div class="container otbHidden">
 </div>
 
@@ -318,6 +311,22 @@ if (!$userId) {
 	</form>
 
 	<ul>
+		<li data-template-id="task" id="task-${tas_id}"
+				class="template list-group-item task" data-id="${tas_id}" style="display: block;">
+			<button class="btn btn-danger btn-xs btn-remove-task pull-right"
+				title="Supprimer la tâche"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
+			
+			<span class="glyphicon glyphicon-pencil pull-right"
+				title="Cliquer pour éditer"
+				style="margin-right: 5px; display: none;"></span>
+			<span class="fa fa-tasks"></span>
+			<span class="task-label"></span>
+		</li>
+	
+	
 		<li data-template-id="chat" id="chat-${cha_id}"
 				class="template list-group-item chat" data-id="${cha_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-chat pull-right"
@@ -626,6 +635,12 @@ var initObject = function() {
 };
 
 </script>
+
+<?php 
+if (isset($framachan)) {?>
+	<iframe id="framatalk" src="https://framatalk.org/<?php echo $framachan; ?>" style=""/>
+<?php 
+} ?>
 
 </body>
 </html>

@@ -55,8 +55,6 @@ function computeMotion(motion) {
 		var propositionId = vote.data("propositionId");
 		var parentNotice = $("#member-" + memberId).parents(".notice").eq(0);
 		var themePower = parentNotice.children("h5").find(".power").text();
-
-		voters[memberId] = memberId;
 		
 		var proposition = $("#proposition-" + propositionId);
 		var neutral = proposition.data("neutral");
@@ -84,10 +82,14 @@ function computeMotion(motion) {
 
 			votePower += themePower * vote.find(".power").text() / membersPower * (1 - neutral);
 		}
-		else {
+		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
 			votePower += vote.find(".power").text() * (1 - neutral);
 		}
 
+		if (vote.find(".power").text() != 0) {
+			voters[memberId] = memberId;
+		}
+		
 		propositionPowers[propositionId] += votePower;
 		totalPowers += votePower;
 
@@ -180,8 +182,11 @@ function dumpMotion(motion) {
 
 			propositionVote["votePower"] = themePower * vote.find(".power").text() / membersPower * (1 - neutral);
 		}
-		else {
+		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
 			propositionVote["votePower"] = vote.find(".power").text() * (1 - neutral);
+		}
+		else {
+			propositionVote["votePower"] = 0;
 		}
 
 		totalPowers += propositionVote["votePower"];

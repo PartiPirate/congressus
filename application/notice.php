@@ -48,9 +48,11 @@ $galetteGroups = $galetteBo->getGroups();
 				<select class="form-control input-md" id="not_target_type" name="not_target_type">
 					<option value="dlp_groups">Groupe</option>
 					<option value="dlp_themes">Theme</option>
+<!-- 					
 					<option value="galette_groups">Groupe Galette</option>
 					<option value="galette_adherents">Adh&eacute;rents Galette</option>
 					<option value="con_external">Par mail</option>
+ -->					
 				</select>
 			</div>
 		</div>

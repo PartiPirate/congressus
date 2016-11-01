@@ -37,7 +37,7 @@ function hasVotingRight(id) {
 }
 
 function getVotingPower(id) {
-	return $("#noticed-people .members li#member-"+id+" .power").text();
+	return $("#noticed-people .members li#member-"+id+" .power:visible").text();
 }
 
 function hasRight(userId, right) {

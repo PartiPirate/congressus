@@ -639,6 +639,10 @@ var initObject = function() {
 <?php 
 if (isset($framachan)) {?>
 	<iframe id="framatalk" src="https://framatalk.org/<?php echo $framachan; ?>" style=""/>
+<!-- 	
+	<iframe id="framatalk" src="framatalk.php?channel=<?php echo $framachan; ?>" style=""/>
+ -->
+ 	
 <?php 
 } ?>
 

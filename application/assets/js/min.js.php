@@ -26,6 +26,7 @@ if (!$js) {
 	include ('jquery.timer.js');
 	include ('jquery.scrollTo.min.js');
 	include ('jquery.template.js');
+	include ('jquery-ui.min.js');
 	include ('bootstrap-treeview.js');
 	include ('strings.js');
 	include ('user.js');

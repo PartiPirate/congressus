@@ -638,7 +638,14 @@ var initObject = function() {
 
 <?php 
 if (isset($framachan)) {?>
-	<iframe id="framatalk" src="https://framatalk.org/<?php echo $framachan; ?>" style=""/>
+
+	<style>
+		.ui-resizable-helper { border: 1px dotted gray; }
+	</style>
+
+	<div id="framatalk" class="resizable" >
+		<iframe src="https://framatalk.org/<?php echo $framachan; ?>" />
+	</div>
 <!-- 	
 	<iframe id="framatalk" src="framatalk.php?channel=<?php echo $framachan; ?>" style=""/>
  -->

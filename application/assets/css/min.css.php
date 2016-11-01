@@ -29,6 +29,7 @@ if (!$css) {
 	include ('bootstrap-datetimepicker.min.css');
 	include ('ekko-lightbox.min.css');
 	include ('jquery.template.css');
+	include ('jquery-ui.min.css');
 	include ('opentweetbar.css');
 	include ('calendar.min.css');
 	include ('flags.css');

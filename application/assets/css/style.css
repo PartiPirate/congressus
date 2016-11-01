@@ -220,6 +220,11 @@ span.chat-text {
 	top: 70px;
 	left: 10px; 
 	height: 350px;	
-	border: 1px solid #ddd;
-    border-radius: 3px;
+	border: 0;
+}
+
+#framatalk iframe {
+	width: calc(100% - 5px);
+	height: calc(100% - 5px);	
+	border: 0;
 }

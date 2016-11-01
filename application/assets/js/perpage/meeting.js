@@ -1198,6 +1198,10 @@ $(function() {
 //	addVideoHandlers();
 
 	updateAgendaPoint();
+	
+	$(".resizable").resizable({
+		animate: true
+	});
 });
 
 // Framatalk

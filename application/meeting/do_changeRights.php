@@ -55,6 +55,11 @@ if (false) {
 	exit();
 }
 
+if ($meeting["mee_president_member_id"] != SessionUtils::getUserId($_SESSION) && $meeting["mee_secretary_member_id"] != SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "meeting_not_enough_rights"));
+	exit();
+}
+
 // Delete old rights
 $meetingRights = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 foreach($meetingRights as $meetingRight) {

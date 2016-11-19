@@ -293,6 +293,7 @@ function addMeetingHandlers() {
 
 	$("#meeting-status-panel .btn-close-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "closed"},
 				function(data) {}, "json");
@@ -300,13 +301,14 @@ function addMeetingHandlers() {
 	
 	$("#meeting_rights_list").on("click", "input", function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		var rights = [];
 		$("#meeting_rights_list input:checked").each(function() {
 			rights[rights.length] = $(this).val();
 		});
 		
-		$.post("meeting/do_changeRights.php", {meetingId: meetingId, "rights[]": rights},
+		$.post("meeting/do_changeRights.php", {meetingId: meetingId, "rights[]": rights, "empty": rights.length ? null : "empty"},
 				function(data) {}, "json");
 	});
 }

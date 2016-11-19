@@ -60,22 +60,25 @@ if ($meeting["mee_president_member_id"] != SessionUtils::getUserId($_SESSION) &&
 	exit();
 }
 
-// Delete old rights
-$meetingRights = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
-foreach($meetingRights as $meetingRight) {
-	$meetingRightBo->delete($meetingRight);
-}
-
-// Add new rights
-$rights = $_REQUEST["rights"];
-foreach($rights as $right) {
-	$meetingRight = array("mri_meeting_id" => $meetingId, "mri_right" => $right);
-	$meetingRightBo->save($meetingRight);
-}
-
 $data = array();
+$rights = $_REQUEST["rights"];
 
-$memcache->delete($memcacheKey);
+if (count($rights) || $_REQUEST["empty"] == "empty") {
+	
+	// Delete old rights
+	$meetingRights = $meetingRightBo->getByFilters(array("mee_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
+	foreach($meetingRights as $meetingRight) {
+		$meetingRightBo->delete($meetingRight);
+	}
+	
+	// Add new rights
+	foreach($rights as $right) {
+		$meetingRight = array("mri_meeting_id" => $meetingId, "mri_right" => $right);
+		$meetingRightBo->save($meetingRight);
+	}
+	
+	$memcache->delete($memcacheKey);
+}
 
 $data["ok"] = "ok";
 

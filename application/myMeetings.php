@@ -80,7 +80,7 @@ foreach($meetings as $meeting) {
 				<tbody>
 <?php 			foreach($meetings as $meeting) {?>
 					<tr>
-						<td><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></td>
+						<td><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"] ? $meeting["mee_label"] : "-"; ?></a></td>
 						<td><?php
 								$start = new DateTime($meeting["mee_datetime"]);
 

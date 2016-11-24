@@ -353,7 +353,7 @@ if (!$userId) {
 				title="Cliquer pour éditer"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-comment"></span>
-			<span class="chat-member"><span class="chat-nickname"></span><select class="chat-select-member" style="display: none;">
+			<span class="chat-member"><span class="chat-nickname"></span><select class="chat-select-member" style="display: none; width: 100%;">
 				<optgroup class="voting" label="Votants"></optgroup>
 				<optgroup class="noticed" label="Convoqués"></optgroup>
 				<optgroup class="connected" label="Connectés"></optgroup>

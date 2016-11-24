@@ -356,12 +356,23 @@ function setAgendaChat(id, chats) {
 	var list = $("#agenda_point ul.objects");
 	var chatContainer = list.find("li#chat-" + id);
 
+	var memberSelect = null;
+
 	if (!chatContainer.length) {
 		chatContainer = $("li[data-template-id=chat]").template("use", {data: {cha_id: id}});
 		chatContainer.find("*").tooltip({placement: "left"});
 		list.append(chatContainer);
 
 		chatContainer.hide().fadeIn(400);
+		
+		var memberSelect = chatContainer.find("select.chat-select-member");
+		memberSelect.find(".voting").append($(".president select .voting option").clone());
+		memberSelect.find(".unknown").append($(".president select .unknown option").clone());
+		memberSelect.find(".noticed").append($(".president select .noticed option").clone());
+		memberSelect.find(".connected").append($(".president select .connected option").clone());
+	}
+	else {
+		memberSelect = 	chatContainer.find("select.chat-select-member");
 	}
 
 	chatContainer.removeClass("to-delete");
@@ -372,6 +383,8 @@ function setAgendaChat(id, chats) {
 	for(var index = 0; index < chats.length; ++index) {
 		var chat = chats[index];
 		if (chat.cha_id != id) continue;
+
+		memberSelect.val(chat.cha_member_id);
 
 		if (nickname.text() != chat.mem_nickname) {
 			nickname.text(chat.mem_nickname);
@@ -387,21 +400,23 @@ function setAgendaChat(id, chats) {
 		advices["thumb_down"] = 0;
 		advices["total"] = 0;
 		
-		for(var jndex = 0; jndex < chat.advices.length; ++jndex) {
-			var advice = chat.advices[jndex];
-			
-			advices[advice.cad_advice]++;
-			advices["total"]++;
-
-			if (advice.cad_user_id == getUserId()) {
-				chatContainer.find(".btn-advice").each(function() {
-					if ($(this).data("advice") == advice.cad_advice) {
-						$(this).addClass("disabled").prop("disabled", true);
-					}
-					else {
-						$(this).removeClass("disabled").prop("disabled", false);
-					}
-				});
+		if (typeof chat.advices != "undefined") {
+			for(var jndex = 0; jndex < chat.advices.length; ++jndex) {
+				var advice = chat.advices[jndex];
+				
+				advices[advice.cad_advice]++;
+				advices["total"]++;
+	
+				if (advice.cad_user_id == getUserId()) {
+					chatContainer.find(".btn-advice").each(function() {
+						if ($(this).data("advice") == advice.cad_advice) {
+							$(this).addClass("disabled").prop("disabled", true);
+						}
+						else {
+							$(this).removeClass("disabled").prop("disabled", false);
+						}
+					});
+				}
 			}
 		}
 		

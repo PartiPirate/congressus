@@ -364,7 +364,7 @@ if (!$json) {
 
 	foreach($pings as $ping) {
 		$people = array("mem_id" => $ping["id_adh"] ? $ping["id_adh"] : "G" . $ping["pin_guest_id"]);
-		$people["mem_nickname"] = $ping["id_adh"] ? $ping["pseudo_adh"] : $ping["pin_nickname"];
+		$people["mem_nickname"] = htmlspecialchars(utf8_encode($ping["id_adh"] ? $ping["pseudo_adh"] : $ping["pin_nickname"]));
 		$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
 		$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
 

@@ -390,8 +390,9 @@ function setAgendaChat(id, chats) {
 			nickname.text(chat.mem_nickname);
 		}
 		
-		if (text.text() != chat.cha_text) {
-			text.text(chat.cha_text);
+		if (text.data("text") != chat.cha_text) {
+			text.html(chat.cha_text.replace(/\n/g, "<br>"));
+			text.data("text", chat.cha_text);
 		}
 
 		var advices = {};
@@ -853,18 +854,19 @@ function addChatHandlers() {
 			return;
 		}
 
-		var textarea = $("<textarea />", {"style": "width: 100%;"});
+		var textarea = $("<textarea />", {"style": "width: 100%;", "class": "autogrow"});
 		var chatText = $(this).find(".chat-text");
 		var chatId = $(this).data("id");
 
-		textarea.text(chatText.text());
+		textarea.text(chatText.data("text"));
 		textarea.blur(function() {
 			clearKeyup();
 			// update the text into the server
 			var newText = textarea.val();
 
 			$.post("meeting/do_changeChat.php", {chatId: chatId, property: "cha_text", text: newText}, function(data) {
-				chatText.text(newText);
+				chatText.data("text", newText);
+				chatText.html(newText.replace(/\n/g, "<br>"));
 				chatText.show();
 				textarea.remove();
 			}, "json");
@@ -1237,6 +1239,46 @@ function setFramatalkPosition(position) {
 	
 }
 
+function autogrowEvent() {
+	parent = $(window);
+	if ($(this).parents(".list-group objects").length) {
+		parent = $(this).parents(".list-group objects").get(0);
+	}
+
+	var maxHeight = parent.height() - 50;
+	var currentScroll = this.scrollTop;
+
+	$(this).css({"height": "auto"});
+
+	var currentHeight = $(this).height();
+	var currentContentHeight = this.scrollHeight;
+
+	var offset= 0;
+
+	if ($(this).hasClass("grown")) {
+			offset = 2;
+	}
+	else {
+			offset = 4;
+		$(this).addClass("grown")
+	}
+
+//		if (this.tagName == "TEXTAREA") {
+	currentHeight += offset;
+	currentContentHeight += offset;
+//		}
+
+	if (currentContentHeight >= currentHeight) {
+		var newHeight = Math.min(currentContentHeight, maxHeight);
+		$(this).height(newHeight);
+	}
+
+	this.scrollTop = currentScroll;
+}
+
+
 $(function() {
 	setFramatalkPosition("left");
+	$("body").on("keyup", "textarea.autogrow, div.autogrow", autogrowEvent);
+	$("body").on("focus", "textarea.autogrow, div.autogrow", autogrowEvent);
 });

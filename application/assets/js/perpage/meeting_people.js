@@ -904,6 +904,10 @@ function addNoticeHandlers() {
 			// update the text into the server
 			var newText = input.val();
 
+			if (newText == "") {
+				newText == "Guest";
+			}
+			
 			$.post("meeting/do_changeGuest.php", {meetingId: meetingId, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
@@ -917,6 +921,10 @@ function addNoticeHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = input.val();
 
+				if (newText == "") {
+					newText == "Guest";
+				}
+				
 				$.post("meeting/do_changeGuest.php", {meetingId: meetingId, text: newText}, function(data) {
 				}, "json");
 			}, 1500);

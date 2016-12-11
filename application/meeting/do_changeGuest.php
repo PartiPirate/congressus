@@ -57,6 +57,11 @@ if (false) {
 
 $ping = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID_FIELD], "pin_guest_id" => $_SESSION["guestId"]));
 
+// Set default "guest" nickname if text is empty 
+if (!$_REQUEST["text"]) {
+	$_REQUEST["text"] = "Guest";
+}
+
 if (count($ping)) {
 	$ping = array($pingBo->ID_FIELD => $ping[0][$pingBo->ID_FIELD]);
 	$ping["pin_nickname"] = $_REQUEST["text"];

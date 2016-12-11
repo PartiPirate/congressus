@@ -277,6 +277,19 @@ function handlePages(notice) {
 		}
 	});
 
+	memberPages.find(".page-first").attr("disabled", "disabled");
+	memberPages.find(".page-previous").attr("disabled", "disabled");
+	memberPages.find(".page-next").attr("disabled", "disabled");
+	memberPages.find(".page-last").attr("disabled", "disabled");
+	if (currentPage != 1) {
+		memberPages.find(".page-first").removeAttr("disabled");
+		memberPages.find(".page-previous").removeAttr("disabled");
+	}
+	if (currentPage != numberOfPages) {
+		memberPages.find(".page-next").removeAttr("disabled");
+		memberPages.find(".page-last").removeAttr("disabled");
+	}
+	
 	if (numberOfPages < 2) {
 		memberPages.hide();
 	}
@@ -635,7 +648,10 @@ function addNoticeHandlers() {
 		event.stopPropagation();
 		event.preventDefault();
 
-		$(this).parent().data("current-page", $(this).parent().data("current-page") - 1);
+		var page = $(this).parent().data("current-page") - 1;
+		if (page < 1) page = 1;
+		
+		$(this).parent().data("current-page", page);
 		toggleMissingPeople();
 	});
 
@@ -643,7 +659,20 @@ function addNoticeHandlers() {
 		event.stopPropagation();
 		event.preventDefault();
 
-		$(this).parent().data("current-page", $(this).parent().data("current-page") - (-1));
+		var page = $(this).parent().data("current-page") - (-1);
+
+		var numberOfMembers = 0;
+		$(this).parent().parent().children(".members").children("li.member").each(function() {
+			if (!$(this).hasClass("hide-missing")) {
+				numberOfMembers++;
+			}
+		});
+
+		var numberOfPages = Math.ceil(numberOfMembers / 10);
+
+		if (page > numberOfPages) page = numberOfPages;
+		
+		$(this).parent().data("current-page", page);
 		toggleMissingPeople();
 	});
 

@@ -228,3 +228,7 @@ span.chat-text {
 	height: calc(100% - 5px);	
 	border: 0;
 }
+
+a[disabled] {
+	color: lightgrey;
+}

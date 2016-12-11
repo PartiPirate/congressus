@@ -136,10 +136,11 @@ function getDescriptionLi(list) {
 		var descriptionEditor = description.find("div.description-editor");
 		descriptionEditor.Editor();
 
+		list.append(description);
+		
 		var editor = description.find(".description-editor+div");
 		editor.hide();
-
-		list.append(description);
+		editor.children(".Editor-editor").css({"max-height": "300px", "overflow-y": "scroll"});
 
 		description.hide().fadeIn(400);
 

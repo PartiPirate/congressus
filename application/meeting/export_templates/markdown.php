@@ -72,7 +72,7 @@ function showMotion($motions, $id) {
 }
 */
 
-function showMotion($motions, $id) {
+function showMotion($motions, $id, &$voters) {
 	$first = true;
 
 	echo "{{motion|title=";
@@ -118,6 +118,7 @@ function showMotion($motions, $id) {
 				echo " (" . $vote["power"] . ")";
 
 				$voteSeparator = ", ";
+				$voters[$vote["memberId"]] = $vote["memberLabel"];
 			}
 
 			echo "\n";
@@ -179,7 +180,7 @@ function showConclusion($conclusions, $id) {
 	}
 }
 
-function showLevel($agendas, $level, $parent) {
+function showLevel($agendas, $level, $parent, &$voters) {
 	foreach($agendas as $agenda) {
 		if ($agenda["age_parent_id"] == $parent) {
 			echo "\n";
@@ -206,11 +207,11 @@ function showLevel($agendas, $level, $parent) {
 					showChat($agenda["chats"], $object["chatId"]);
 				}
 				else if (isset($object["motionId"])) {
-					showMotion($agenda["motions"], $object["motionId"]);
+					showMotion($agenda["motions"], $object["motionId"], $voters);
 				}
 			}
 
-			showLevel($agendas, $level + 1, $agenda["age_id"]);
+			showLevel($agendas, $level + 1, $agenda["age_id"], $voters);
 		}
 	}
 }
@@ -285,14 +286,18 @@ foreach ($notices as $notice) {
 				echo "\n";
 			}
 
-			echo "**** ";
-			echo $child_presentPowers . "/" . $child_powers;
-			echo "\n";
+			if ($child_presentPowers) {
+				echo "**** ";
+				echo $child_presentPowers . "/" . $child_powers;
+				echo "\n";
+			}
 		}
 		
-		echo "*** ";
-		echo $presentPowers . "/" . $powers;
-		echo "\n";
+		if ($presentPowers) {
+			echo "*** ";
+			echo $presentPowers . "/" . $powers;
+			echo "\n";
+		}
 	}
 
 }
@@ -337,7 +342,23 @@ foreach ($notices as $notice) {
 	}
 
 }
+
+$voters = array();
 ?>
 
+<?php showLevel($agendas, 2, null , $voters); ?>
 
-<?php showLevel($agendas, 2, null); ?>
+<?php
+if (count($voters)) {
+?>
+==Ayant participé à un vote==
+
+<?php 
+	foreach($voters as $memberId => $memberLabel) {
+?>
+* <?php echo $memberId . " - " . $memberLabel; ?>
+
+<?php 
+	}
+}
+?>

@@ -17,7 +17,7 @@
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function showMotion($motions, $id) {
+function showMotion($motions, $id, &$voters) {
 	$first = true;
 
 	echo "<div class=\"motion\">\n";
@@ -43,6 +43,8 @@ function showMotion($motions, $id) {
 				echo "&nbsp;(" . $vote["power"] . ")";
 				echo "</span>";
 				$voteSeparator = ", ";
+
+				$voters[$vote["memberId"]] = $vote["memberLabel"];
 			}
 
 			echo "</div>\n";
@@ -94,7 +96,7 @@ function showConclusion($conclusions, $id) {
 	}
 }
 
-function showLevel($agendas, $level, $parent) {
+function showLevel($agendas, $level, $parent, &$voters) {
 	foreach($agendas as $agenda) {
 		if ($agenda["age_parent_id"] == $parent) {
 			echo "<h$level>";
@@ -117,11 +119,11 @@ function showLevel($agendas, $level, $parent) {
 					showChat($agenda["chats"], $object["chatId"]);
 				}
 				else if (isset($object["motionId"])) {
-					showMotion($agenda["motions"], $object["motionId"]);
+					showMotion($agenda["motions"], $object["motionId"], $voters);
 				}
 			}
 
-			showLevel($agendas, $level + 1, $agenda["age_id"]);
+			showLevel($agendas, $level + 1, $agenda["age_id"], $voters);
 
 			echo "</div>";
 		}
@@ -322,10 +324,28 @@ foreach ($notices as $notice) {
 
 	echo "</div>";
 }
+
+$voters = array();
 ?>
 
-<?php showLevel($agendas, 2, null); ?>
+<?php showLevel($agendas, 2, null , $voters); ?>
 
+<?php
+if (count($voters)) {
+?>
+<h2>Ayant participé à un vote</h2>
+<div class="indent">
+<?php 
+	foreach($voters as $memberId => $memberLabel) {
+?>
+<p><span class="people"><?php echo $memberId . " - " . $memberLabel; ?></p>
+<?php 
+	}
+?>
+</div>
+<?php 
+}
+?>
 
 </body>
 </html>

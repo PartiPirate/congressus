@@ -162,7 +162,7 @@ function showChat($chats, $id) {
 
 			echo ": ";
 
-			echo $chat["cha_text"] . "\n";
+			echo str_replace("\n", "\n\n", $chat["cha_text"]) . "\n";
 
 			return;
 		}

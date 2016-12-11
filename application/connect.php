@@ -51,6 +51,15 @@ require_once("engine/utils/SessionUtils.php");
 			<!-- Form Name -->
 			<legend><?php echo lang("connect_form_legend"); ?></legend>
 
+<?php 
+
+if (isset($_GET["error"])) {
+?><div class="text-danger text-center"><?php 
+	echo lang($_GET["error"]);
+?></div><?php 
+}
+?>
+
 			<input id="mail" name="mail" value="" type="text" class="mailForm" />
 
 			<!-- Text input-->

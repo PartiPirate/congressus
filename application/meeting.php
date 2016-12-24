@@ -420,9 +420,10 @@ if (!$userId) {
 				</button>
 
 				<div id="motionLimitsButtons" class="btn-group" role="group">
-					<button value="0" type="button" style="display: none;" class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-0">La meilleure</button>
-					<button value="50" type="button" style="display: none;" class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-50">Majorité simple</button>
-					<button value="66" type="button" style="display: none;" class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-66">Majorité 66%</button>
+<?php foreach($config["congressus"]["ballot_majorities"] as $majority) {?>
+					<button value="<?php echo $majority; ?>" type="button" style="display: none;" 
+						class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-<?php echo $majority; ?>"><?php echo lang("motion_ballot_majority_$majority"); ?></button>
+<?php }?>
 				</div>
 
 				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous">Vote anonyme</button>

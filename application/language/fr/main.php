@@ -135,6 +135,11 @@ $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_closed"] = "Réunions terminés";
 $lang["myMeetings_deleted"] = "Réunions supprimées";
 
+$lang["motion_ballot_majority_0"] = "La meilleure";
+$lang["motion_ballot_majority_50"] = "Majorité simple";
+$lang["motion_ballot_majority_66"] = "Majorité 66%";
+$lang["motion_ballot_majority_80"] = "Majorité 80%";
+
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";
 $lang["loc_type_irc"] = "Sur irc";

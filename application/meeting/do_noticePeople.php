@@ -50,6 +50,10 @@ if (false) {
 	exit();
 }
 
+$meeting_date = "inconnu";
+$start = new DateTime($meeting["mee_datetime"]);
+$meeting_date = @$start->format(lang("datetime_format"));
+
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 
 $data = array();
@@ -103,7 +107,8 @@ if (count($membersToNotice)) {
 	$body = utf8_decode(lang("notice_mail_content", false));
 	$body = str_replace("{meeting_label}", $meeting["mee_label"], $body);
 	$body = str_replace("{meeting_link}", $meetingLink, $body);
-
+	$body = str_replace("{meeting_date}", $meeting_date, $body);
+	
 	$locations = $locationBo->getByFilters(array("loc_meeting_id" => $meeting[$meetingBo->ID_FIELD], "loc_principal" => 1));
 	if (count($locations)) {
 		$location = $locations[0];

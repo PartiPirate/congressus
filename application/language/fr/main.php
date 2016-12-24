@@ -151,14 +151,14 @@ $lang["notice_mail_content"] = "Bonjour,
 
 Vous êtes convoqué-e à la réunion \"{meeting_label}\".
 
-Vous pouvez consulter l'ordre du jour et participer à la réunion  en cliquant sur le lien ci-dessous :
+Vous pouvez consulter l'ordre du jour et participer à la réunion en cliquant sur le lien ci-dessous :
 {meeting_link}
 
-L'espace de rencontre se fera {location_type} à cette adresse :
+L'espace de rencontre {location_type} se fera à cette adresse :
 {location_extra}
+L'horaire de début : {meeting_date}
 
 Congressus";
-
 
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";

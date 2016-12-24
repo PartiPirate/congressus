@@ -51,8 +51,14 @@ if (false) {
 }
 
 $meeting_date = "inconnu";
+$meeting_time = "inconnu";
 $start = new DateTime($meeting["mee_datetime"]);
-$meeting_date = @$start->format(lang("datetime_format"));
+
+$meeting_date = @$start->format(lang("date_format"));
+$meeting_time = @$start->format(lang("time_format"));
+
+$meeting_date = str_replace("{date}", $meeting_date, utf8_decode(lang("datetime_format", false)));
+$meeting_date = str_replace("{time}", $meeting_time, $meeting_date);
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 

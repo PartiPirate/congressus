@@ -97,8 +97,13 @@ class TaskBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT DISTINCT $this->TABLE.*
-					FROM $this->TABLE";
+		$query = "	SELECT DISTINCT $this->TABLE.* ";
+		
+		if ($filters && isset($filters["notices"])) {
+			$query .= ", age_meeting_id as tas_meeting_id ";
+		}
+		
+		$query .= "	FROM $this->TABLE";
 
 		if ($filters && isset($filters["notices"])) {
 			$query .= "	JOIN agendas ON age_id = tas_agenda_id

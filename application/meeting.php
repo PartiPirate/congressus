@@ -319,7 +319,11 @@ if (!$userId) {
 
 	<ul>
 		<li data-template-id="old-task" id="task-${tas_id}" 
-			class="template list-group-item task" data-id="${tas_id}" style="display: block;">
+			class="template list-group-item task" 
+			data-id="${tas_id}" 
+			data-agenda-id="${tas_agenda_id}"
+			data-meeting-id="${tas_meeting_id}"
+			style="display: block;">
 
 			<button class="btn btn-success btn-xs btn-finish-task pull-right"
 				title="Indiquer que la tâche est finie"

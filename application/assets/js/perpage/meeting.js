@@ -1258,7 +1258,7 @@ function updateTasks() {
 			else {
 				$("#tasks .tasks-counter").hide();				
 			}
-			
+
 			$("#tasks-list li").addClass("to-remove");
 			
 			for(var index = 0; index < data.tasks.length; ++index) {
@@ -1266,7 +1266,7 @@ function updateTasks() {
 				
 				var taskLi = $("#tasks-list li[data-id=" + task.tas_id + "]");
 				if (taskLi.length == 0) {
-					taskLi = $("li[data-template-id=old-task]").template("use", {data: {tas_id: task.tas_id}});
+					taskLi = $("li[data-template-id=old-task]").template("use", {data: {tas_id: task.tas_id, tas_agenda_id: task.tas_agenda_id, tas_meeting_id: task.tas_meeting_id}});
 					taskLi.find("*").tooltip({placement: "right"});
 					$("#tasks-list").append(taskLi);
 				}

@@ -794,10 +794,12 @@ function addTaskHandlers() {
 		if (!hasWritingRight(getUserId())) return;
 
 		$(this).find(".btn-finish-task").show();
+		$(this).find(".btn-link-task").show();
 	});
 	
 	$("#tasks-list").on("mouseleave", "li.task", function(event) {
 		$(this).find(".btn-finish-task").hide();
+		$(this).find(".btn-link-task").hide();
 	});
 	
 	$("#agenda_point ul.objects").on("mouseenter", "li.task", function(event) {

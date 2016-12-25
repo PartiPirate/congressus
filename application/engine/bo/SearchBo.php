@@ -42,6 +42,7 @@ class SearchBo {
 		$results = array_merge($results, $this->meetingSearch($filters));
 		$results = array_merge($results, $this->agendaSearch($filters));
 		$results = array_merge($results, $this->chatSearch($filters));
+		$results = array_merge($results, $this->taskSearch($filters));
 		$results = array_merge($results, $this->conclusionSearch($filters));
 		$results = array_merge($results, $this->motionSearch($filters));
 		$results = array_merge($results, $this->propositionSearch($filters));
@@ -155,6 +156,33 @@ class SearchBo {
 		return $queryResults;
 	}
 
+	function taskSearch($filters) {
+		$likeQuery = "%" . $filters["query"] . "%";
+	
+		$query = "	SELECT
+						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"task\",\"id\":\"', tas_id, '\"}', ']') AS object,
+						tas_label AS text,
+						meetings.*,
+						agendas.*,
+						tasks.*
+					FROM  meetings
+					JOIN agendas ON age_meeting_id = mee_id
+					JOIN tasks ON tas_agenda_id = age_id
+					WHERE tas_label LIKE :likeQuery";
+	
+		$args = array("likeQuery" => $likeQuery);
+
+//		echo showQuery($query, $args);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
+		$queryResults = $statement->fetchAll();
+	
+		return $queryResults;
+	}
+	
 	function motionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 

@@ -331,6 +331,12 @@ if (!$userId) {
 				<span class="glyphicon glyphicon-ok"></span>
 			</button>
 
+			<a class="btn btn-info btn-xs btn-link-task pull-right" 
+				title="Voir la tâche dans son contexte"
+				style="margin-right: 5px; display: none;"
+				target="_blank" 
+				href="meeting.php?id=${tas_meeting_id}#agenda-${tas_agenda_id}|task-${tas_id}"><span class="glyphicon glyphicon-eye-open"></span></a>
+
 			<span class="fa fa-tasks"></span>
 			<span class="task-label"></span>
 		</li>

@@ -45,7 +45,7 @@ if (!$meeting) {
 }
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
-$tasks = $taskBo->getByFilters(array("notices" => $notices));
+$tasks = $taskBo->getByFilters(array("notices" => $notices, "only_open" => true));
 
 $data["tasks"] = $tasks;
 

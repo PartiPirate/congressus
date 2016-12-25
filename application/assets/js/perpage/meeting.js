@@ -823,7 +823,7 @@ function addTaskHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeChat.php", {
+				$.post("meeting/do_removeTask.php", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					taskId: taskId
@@ -875,6 +875,32 @@ function addTaskHandlers() {
 		taskText.hide();
 
 		textarea.focus();
+	});
+
+	$("#tasks-list").on("click", "li.task .btn-finish-task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		var button = $(this);
+		var task = $(this).parents(".task");
+		var taskId = task.data("id");
+		var agendaId = task.data("agenda-id");
+		var meetingId = task.data("meeting-id");
+
+		bootbox.setLocale("fr");
+		bootbox.confirm("Finir la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
+			if (result) {
+				button.attr("disabled", "disabled");
+				$(".ui-tooltip").remove();
+
+				$.post("meeting/do_finishTask.php", {
+					meetingId: meetingId,
+					pointId: agendaId,
+					taskId: taskId
+				}, function(data) {
+					task.addClass("list-group-item-success");
+				}, "json");
+			}
+		});
 	});
 }
 

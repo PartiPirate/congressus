@@ -122,7 +122,11 @@ class TaskBo {
 			$args["tas_agenda_id"] = $filters["tas_agenda_id"];
 			$query .= " AND tas_agenda_id = :tas_agenda_id \n";
 		}
-
+		
+		if ($filters && isset($filters["only_open"]) && $filters["only_open"]) {
+			$query .= " AND tas_finish_datetime IS NULL \n";
+		}
+		
 		if ($filters && isset($filters["notices"])) {
 			
 			$noticeOrs = "not_id = -1";

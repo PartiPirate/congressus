@@ -702,6 +702,7 @@ function vote(event) {
                 		var dialog = $(this);
 
                 		var power = dialog.find(".power").val();
+                		if (power > maxPower) return;
 
                 		$.post("meeting/do_vote.php", {"motionId": motion.data("id"),
                 										"propositionId": proposition.data("id"),

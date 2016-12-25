@@ -480,6 +480,13 @@ function setAgendaTask(id, tasks) {
 			text.text(task.tas_label);
 		}
 
+		if (task.tas_finish_datetime) {
+			taskContainer.addClass("list-group-item-success");
+		}
+		else {
+			taskContainer.removeClass("list-group-item-success");
+		}
+
 		break;
 	}
 }
@@ -1302,7 +1309,7 @@ function updateTasks() {
 				taskLi.removeClass("to-remove");
 				taskLi.find(".task-label").text(task.tas_label);
 			}
-			
+
 			$("#tasks-list li.to-remove").remove();
 		}
 	}, "json");

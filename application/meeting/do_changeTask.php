@@ -26,7 +26,7 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
-require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/TaskBo.php");
 require_once("engine/bo/MeetingBo.php");
 
 if (!SessionUtils::getUserId($_SESSION)) {
@@ -42,33 +42,34 @@ $memcache = openMemcacheConnection();
 $connection = openConnection();
 
 //$agendaBo = AgendaBo::newInstance($connection);
-$chatBo = ChatBo::newInstance($connection, $config);
+$taskBo = TaskBo::newInstance($connection, $config);
 //$meetingBo = MeetingBo::newInstance($connection);
 
-$chatId = $_REQUEST["chatId"];
+$taskId = $_REQUEST["taskId"];
 
-$chat = $chatBo->getById($chatId);
+$task = $taskBo->getById($taskId);
 
-if ($chat) {
-	$chat = array($chatBo->ID_FIELD => $chatId);
-	$chat[$_REQUEST["property"]] = $_REQUEST["text"];
+$data = array("ok" => "ok");
 
-	if ($_REQUEST["property"] == "cha_member_id") {
-		$chat["cha_guest_id"] = 0;
-	}
-	else if ($_REQUEST["property"] == "cha_guest_id") {
-		$chat["cha_member_id"] = 0;
-	}
+if ($task) {
+	$task = array($taskBo->ID_FIELD => $taskId);
+	$task[$_REQUEST["property"]] = $_REQUEST["text"];
 
-	$chatBo->save($chat);
+// 	if ($_REQUEST["property"] == "tas_member_id") {
+// 		$task["tas_guest_id"] = 0;
+// 	}
+// 	else if ($_REQUEST["property"] == "tas_guest_id") {
+// 		$task["tas_member_id"] = 0;
+// 	}
 
+	$taskBo->save($task);
 
-	$pointId = $chat["cha_agenda_id"];
+	$data["task"] = $task;
+	
+	$pointId = $task["tas_agenda_id"];
 	$memcacheKey = "do_getAgendaPoint_$pointId";
 	$memcache->delete($memcacheKey);
 }
-
-$data = array("ok" => "ok");
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

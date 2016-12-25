@@ -26,7 +26,7 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
-require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/TaskBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/utils/DateTimeUtils.php");
 
@@ -43,7 +43,7 @@ $memcache = openMemcacheConnection();
 $connection = openConnection();
 
 $agendaBo = AgendaBo::newInstance($connection);
-$chatBo = ChatBo::newInstance($connection, $config);
+$taskBo = TaskBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection);
 
 $meeting = $meetingBo->getById($_REQUEST["id"]);
@@ -69,38 +69,35 @@ $agenda["age_objects"] = json_decode($agenda["age_objects"]);
 
 $data = array();
 
-$chat = array();
-$chat["cha_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
-$chat["cha_text"] = "";
+$task = array();
+$task["tas_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
+$task["tas_label"] = "";
 
 $now = getNow();
-$chat["cha_datetime"] = $now->format("Y-m-d H:i:s");
+$task["tas_start_datetime"] = $now->format("Y-m-d H:i:s");
 
-$userId = $_REQUEST["userId"];
-if (substr($userId, 0, 1) == "G") {
-	$chat["cha_guest_id"] = substr($userId, 1);
-}
-else {
-	$chat["cha_member_id"] = $userId;
-}
+$targetId = $_REQUEST["targetId"];
+$targetType = $_REQUEST["targetType"];
 
-$chatBo->save($chat);
-$chat = $chatBo->getById($chat[$chatBo->ID_FIELD]);
+$task["tas_target_id"] = $targetId;
+$task["tas_target_type"] = $targetType;
 
-$chat["mem_id"] = $chat["id_adh"] ? $chat["id_adh"] : "G" . $chat["chat_guest_id"];
-$chat["mem_nickname"] = $chat["pin_nickname"] ? $chat["pin_nickname"] : $chat["pseudo_adh"];
+$taskBo->save($task);
+$task = $taskBo->getById($task[$taskBo->ID_FIELD]);
 
-foreach($chat as $key => $value) {
-	if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
-		unset($chat[$key]);
+// $task["mem_id"] = $task["id_adh"] ? $task["id_adh"] : "G" . $task["chat_guest_id"];
+// $task["mem_nickname"] = $task["pin_nickname"] ? $task["pin_nickname"] : $task["pseudo_adh"];
+
+foreach($task as $key => $value) {
+	if (substr($key, 0, 4) != "tas_" && substr($key, 0, 4) != "mem_") {
+		unset($task[$key]);
 	}
 }
 
-
 $data["ok"] = "ok";
-$data["chat"] = $chat;
+$data["task"] = $task;
 
-$agenda["age_objects"][] = array("chatId" => $chat[$chatBo->ID_FIELD]);
+$agenda["age_objects"][] = array("taskId" => $task[$taskBo->ID_FIELD]);
 $agenda["age_objects"] = json_encode($agenda["age_objects"]);
 
 $agendaBo->save($agenda);

@@ -186,9 +186,7 @@ if (!$userId) {
 				</ul>
 				<div class="panel-footer">
 					<button class="btn btn-default btn-xs btn-add-motion disabled">Motion <span class="fa fa-archive"></span></button>
-					<!--
 					<button class="btn btn-default btn-xs btn-add-task disabled">Tâche <span class="fa fa-tasks"></span></button>
-					 -->
 					<button class="btn btn-default btn-xs btn-add-chat disabled">Parole <span class="fa fa-comment"></span></button>
 					<button class="btn btn-default btn-xs btn-add-conclusion disabled">Conclusion <span class="fa fa-lightbulb-o"></span></button>
 				</div>

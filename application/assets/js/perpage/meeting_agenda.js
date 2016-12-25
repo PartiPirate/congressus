@@ -366,6 +366,9 @@ $(function() {
 	var getAgendaTimer = $.timer(updateAgenda);
 	getAgendaTimer.set({ time : 5000, autostart : true });
 
+	var getAgendaPointTimer = $.timer(updateAgendaPoint);
+	getAgendaPointTimer.set({ time : 1500, autostart : true });
+	
 	$(".meeting .row").on("click", "a.agenda-link", showAgendaPoint);
 	$("body").on("click", ".btn-next-point", showNextPoint);
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);

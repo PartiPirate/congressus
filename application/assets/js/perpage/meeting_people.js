@@ -968,7 +968,7 @@ function addNoticeHandlers() {
 
 $(function() {
 	var getPeopleTimer = $.timer(updatePeople);
-	getPeopleTimer.set({ time : 2000, autostart : true });
+	getPeopleTimer.set({ time : 2500, autostart : true });
 
 	var pingTimer = $.timer(ping);
 	pingTimer.set({ time : 40000, autostart : true });

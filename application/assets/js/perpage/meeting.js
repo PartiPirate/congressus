@@ -333,6 +333,18 @@ function addOwnChat() {
 	}, "json");
 }
 
+function addOwnTask() {
+	var targetId = $(".meeting").data("user-id");
+	var targetType = "galette_adherent";
+	var agendaId = $("#agenda_point").data("id");
+	var meetingId = $(".meeting").data("id");
+
+	$.get("meeting/do_addTask.php", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType}, function(data) {
+		setAgendaTask(data.task.task_id, [data.task]);
+		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
+	}, "json");
+}
+
 function addConclusion() {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
@@ -775,6 +787,85 @@ function changeMotionStatus(event) {
 	}, "json");
 }
 
+function addTaskHandlers() {
+	$("#agenda_point ul.objects").on("mouseenter", "li.task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		$(this).find(".glyphicon-pencil").show();
+		$(this).find(".btn-remove-task").show();
+	});
+
+	$("#agenda_point ul.objects").on("mouseleave", "li.task", function(event) {
+		$(this).find(".glyphicon-pencil").hide();
+		$(this).find(".btn-remove-task").hide();
+	});
+
+	$("#agenda_point ul.objects").on("click", "li.task .btn-remove-task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		var agendaId = $("#agenda_point").data("id");
+		var meetingId = $(".meeting").data("id");
+		var task = $(this).parents(".task");
+		var taskId = task.data("id");
+
+		bootbox.setLocale("fr");
+		bootbox.confirm("Supprimer la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
+			if (result) {
+				$.post("meeting/do_removeChat.php", {
+					meetingId: meetingId,
+					pointId: agendaId,
+					taskId: taskId
+				}, function(data) {}, "json");
+			}
+		});
+	});
+
+	$("#agenda_point ul.objects").on("click", "li.task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		if ($(event.target).hasClass("glyphicon")) return;
+		if ($(event.target).hasClass("task-select-member")) return;
+
+		if ($(this).find("textarea").length) {
+			$(this).find("textarea").focus();
+			return;
+		}
+
+		var textarea = $("<textarea />", {"style": "width: 100%;", "class": "autogrow"});
+		var taskText = $(this).find(".task-label");
+		var taskId = $(this).data("id");
+
+		textarea.text(taskText.data("text"));
+		textarea.blur(function() {
+			clearKeyup();
+			// update the text into the server
+			var newText = textarea.val();
+
+			$.post("meeting/do_changeTask.php", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
+				taskText.data("text", newText);
+				taskText.html(newText.replace(/\n/g, "<br>"));
+				taskText.show();
+				textarea.remove();
+			}, "json");
+		});
+
+		textarea.keyup(function() {
+			clearKeyup();
+			keyupTimeoutId = setTimeout(function() {
+				var newText = textarea.val();
+
+				$.post("meeting/do_changeTask.php", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
+				}, "json");
+			}, 1500);
+		});
+
+		taskText.after(textarea);
+		taskText.hide();
+
+		textarea.focus();
+	});
+}
+
 function addChatHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", "li.chat", function(event) {
 		
@@ -1195,11 +1286,12 @@ $(function() {
 //		editorBlurHandler(event);
 //	});
 	
-	var getAgendaPointTimer = $.timer(updateAgendaPoint);
-	getAgendaPointTimer.set({ time : 1000, autostart : true });
+//	var getAgendaPointTimer = $.timer(updateAgendaPoint);
+//	getAgendaPointTimer.set({ time : 1500, autostart : true });
 
 	$("#agenda_point").on("click", ".motion button.btn-vote", vote);
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);
+	$("#agenda_point").on("click", "button.btn-add-task", addOwnTask);
 	$("#agenda_point").on("click", "button.btn-add-conclusion", addConclusion);
 	$("#agenda_point").on("click", "button.btn-add-motion", addMotion);
 	$("#agenda_point").on("click", "button.btn-advice", setAdvice); 
@@ -1209,6 +1301,7 @@ $(function() {
 	$("#agenda_point ul.objects").on("click", ".btn-add-proposition", addMotionProposition);
 
 	addChatHandlers();
+	addTaskHandlers();
 	addConclusionHandlers();
 	addMotionHandlers();
 	addAgendaPointHandlers();

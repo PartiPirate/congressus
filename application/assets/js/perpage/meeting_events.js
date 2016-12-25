@@ -112,8 +112,8 @@ function getEvents() {
 
 $(function() {
 	var getEventsTimer = $.timer(getEvents);
-	getEventsTimer.set({ time : 1000, autostart : true });
+	getEventsTimer.set({ time : 1500, autostart : true });
 
-	var getAgendaPointTimer = $.timer(updateAgendaPoint);
-	getAgendaPointTimer.set({ time : 1000, autostart : true });
+//	var getAgendaPointTimer = $.timer(updateAgendaPoint);
+//	getAgendaPointTimer.set({ time : 1500, autostart : true });
 });

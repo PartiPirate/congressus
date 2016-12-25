@@ -31,6 +31,7 @@ require_once("engine/bo/ChatAdviceBo.php");
 require_once("engine/bo/ConclusionBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/TaskBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/EventStackUtils.php");
 
@@ -44,6 +45,7 @@ $chatAdviceBo = ChatAdviceBo::newInstance($connection);
 $conclusionBo = ConclusionBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection);
 $motionBo = MotionBo::newInstance($connection);
+$taskBo = TaskBo::newInstance($connection, $config);
 $voteBo = VoteBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["id"];
@@ -97,13 +99,13 @@ if (!$json) {
 	//	$data["chats"][$index]["mem_nickname"] = $chat["pin_nickname"] ? $chat["pin_nickname"] : $chat["pseudo_adh"];
 		$data["chats"][$index]["mem_nickname"] = htmlspecialchars(utf8_encode($chat["pin_nickname"] ? $chat["pin_nickname"] : ($chat["pseudo_adh"] ? $chat["pseudo_adh"] : $chat["nom_adh"] . ' ' . $chat["prenom_adh"])), ENT_SUBSTITUTE);
 	
-		foreach($chat as $key => $value) {
-			if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
-				unset($data["chats"][$index][$key]);
-			}
+// 		foreach($chat as $key => $value) {
+// 			if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
+// 				unset($data["chats"][$index][$key]);
+// 			}
 			
-			$data["chats"][$index]["advices"] = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat[$chatBo->ID_FIELD]));
-		}
+// 			$data["chats"][$index]["advices"] = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat[$chatBo->ID_FIELD]));
+// 		}
 	}
 	
 	$data["votes"] = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
@@ -119,6 +121,8 @@ if (!$json) {
 			}
 		}
 	}
+
+	$data["tasks"] = $taskBo->getByFilters(array("tas_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	
 	$data["conclusions"] = $conclusionBo->getByFilters(array("con_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	

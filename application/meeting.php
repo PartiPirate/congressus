@@ -172,6 +172,15 @@ if (!$userId) {
 
 	<div class="row">
 		<div class="col-md-8" id="main-panel">
+			<div id="tasks" class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" class="collapsed" data-target="#tasks-list" href="#"><?php echo lang("meeting_tasks"); ?> <span 
+						class="badge tasks-counter" style="display: none;">0</span></a>
+				</div>
+				<ul class="list-group panel-collapse collapse" id="tasks-list">
+				</ul>
+			</div>
+		
 			<div id="agenda_point" class="panel panel-default" data-id="0" style="display: none;">
 				<div class="panel-heading">
 					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
@@ -210,7 +219,7 @@ if (!$userId) {
 					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> Ajout/Suppression des conclusion</label></li>
 				</ul>
 			</div>
-		
+
 			<div id="noticed-people" class="panel panel-default">
 				<div class="panel-heading">
 					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"
@@ -309,6 +318,20 @@ if (!$userId) {
 	</form>
 
 	<ul>
+		<li data-template-id="old-task" id="task-${tas_id}" 
+			class="template list-group-item task" data-id="${tas_id}" style="display: block;">
+
+			<button class="btn btn-success btn-xs btn-finish-task pull-right"
+				title="Indiquer que la tâche est finie"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-ok"></span>
+			</button>
+
+			<span class="fa fa-tasks"></span>
+			<span class="task-label"></span>
+		</li>
+	
+	
 		<li data-template-id="task" id="task-${tas_id}"
 				class="template list-group-item task" data-id="${tas_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-task pull-right"
@@ -316,7 +339,7 @@ if (!$userId) {
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
-			
+
 			<span class="glyphicon glyphicon-pencil pull-right"
 				title="Cliquer pour éditer"
 				style="margin-right: 5px; display: none;"></span>

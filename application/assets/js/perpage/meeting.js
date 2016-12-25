@@ -789,6 +789,17 @@ function changeMotionStatus(event) {
 }
 
 function addTaskHandlers() {
+	
+	$("#tasks-list").on("mouseenter", "li.task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		$(this).find(".btn-finish-task").show();
+	});
+	
+	$("#tasks-list").on("mouseleave", "li.task", function(event) {
+		$(this).find(".btn-finish-task").hide();
+	});
+	
 	$("#agenda_point ul.objects").on("mouseenter", "li.task", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
@@ -1240,9 +1251,33 @@ function updateTasks() {
 
 	$.post("meeting_api.php?method=do_getTasks", {meetingId : meetingId}, function(data) {
 		if (data.ok) {
+			$("#tasks .tasks-counter").text(data.tasks.length);
+			if (data.tasks.length) {
+				$("#tasks .tasks-counter").show();
+			}
+			else {
+				$("#tasks .tasks-counter").hide();				
+			}
 			
+			$("#tasks-list li").addClass("to-remove");
+			
+			for(var index = 0; index < data.tasks.length; ++index) {
+				var task = data.tasks[index];
+				
+				var taskLi = $("#tasks-list li[data-id=" + task.tas_id + "]");
+				if (taskLi.length == 0) {
+					taskLi = $("li[data-template-id=old-task]").template("use", {data: {tas_id: task.tas_id}});
+					taskLi.find("*").tooltip({placement: "right"});
+					$("#tasks-list").append(taskLi);
+				}
+
+				taskLi.removeClass("to-remove");
+				taskLi.find(".task-label").text(task.tas_label);
+			}
+			
+			$("#tasks-list li.to-remove").remove();
 		}
-	});
+	}, "json");
 }
 
 //function addVideoHandlers() {

@@ -97,22 +97,53 @@ class TaskBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM $this->TABLE
-					WHERE
+		$query = "	SELECT DISTINCT $this->TABLE.*
+					FROM $this->TABLE";
+
+		if ($filters && isset($filters["notices"])) {
+			$query .= "	JOIN agendas ON age_id = tas_agenda_id
+						JOIN notices ON not_meeting_id = age_meeting_id ";
+		}
+		
+		$query .= "	WHERE
 						1 = 1 \n";
 
-		if (isset($filters[$this->ID_FIELD])) {
+		if ($filters && isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 		}
 
-		if (isset($filters["tas_agenda_id"])) {
+		if ($filters && isset($filters["tas_agenda_id"])) {
 			$args["tas_agenda_id"] = $filters["tas_agenda_id"];
 			$query .= " AND tas_agenda_id = :tas_agenda_id \n";
 		}
 
-//		$query .= "	ORDER BY tas_parent_id ASC , tas_order ASC ";
+		if ($filters && isset($filters["notices"])) {
+			
+			$noticeOrs = "not_id = -1";
+			$noticeOr = " OR ";
+			
+			foreach($filters["notices"] as $notice) {
+				$noticeOrs .= $noticeOr;
+				$noticeOrs .= "(";
+				
+				$noticeOrs .= "not_target_type = '" . $notice["not_target_type"];
+				$noticeOrs .= "' AND ";
+				$noticeOrs .= "not_target_id = " . $notice["not_target_id"];
+				
+				
+				$noticeOrs .= ")";
+			}
+			
+			$query .= " AND ($noticeOrs) \n";
+		}
+		
+// 		if ($filters && isset($filters["tas_agenda_id"])) {
+// 			$args["tas_agenda_id"] = $filters["tas_agenda_id"];
+			$query .= " AND tas_deleted = 0 \n";
+// 		}
+		
+		$query .= "	ORDER BY tas_start_datetime ASC ";
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

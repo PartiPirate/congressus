@@ -1235,6 +1235,16 @@ function addMotionHandlers() {
 	});
 }
 
+function updateTasks() {
+	var meetingId = $(".meeting").data("id");
+
+	$.post("meeting_api.php?method=do_getTasks", {meetingId : meetingId}, function(data) {
+		if (data.ok) {
+			
+		}
+	});
+}
+
 //function addVideoHandlers() {
 //	$("body").on("click", "#videoDock .reductor", function() {
 ////		if ($("#videoDock .dock").height() > 0) {
@@ -1309,6 +1319,10 @@ $(function() {
 
 //	addVideoHandlers();
 
+	var getTasksTimer = $.timer(updateTasks);
+	getTasksTimer.set({ time : 60000, autostart : true });
+	
+	updateTasks();
 	updateAgendaPoint();
 	
 	$(".resizable").resizable({

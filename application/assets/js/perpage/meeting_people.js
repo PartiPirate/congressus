@@ -721,8 +721,8 @@ function addNoticeHandlers() {
 		if (type != "con_external") {
 			$(".bootbox .not_mails").show();
 			$(".bootbox .mails").hide();
-			$(".bootbox #not_target_id option").hide();
-			$(".bootbox #not_target_id option." + type).show();
+			$(".bootbox #not_target_id option, .bootbox #not_target_id optgroup").hide();
+			$(".bootbox #not_target_id option." + type + ", .bootbox #not_target_id optgroup." + type).show();
 			$(".bootbox #not_target_id option").removeAttr("selected");
 			$(".bootbox #not_target_id option." + type).eq(0).attr("selected", "selected");
 		}
@@ -754,7 +754,7 @@ function addNoticeHandlers() {
 		var noticeId = $(this).data("id");
 
 		var notice = $(this).data("json");
-
+		
 		$.get("notice.php", {meetingId: meetingId, noticeId: noticeId}, function(data) {
 			var dialog = $(data);
 
@@ -785,8 +785,7 @@ function addNoticeHandlers() {
 		        className: "not-large-dialog"
 			});
 
-
-			dialog.find("#not_target_id option").hide();
+			dialog.find("#not_target_id option, #not_target_id optgroup").hide();
 			dialog.find("#not_target_id option.dlp_groups").show();
 			dialog.find(".mails").hide();
 
@@ -811,7 +810,7 @@ function addNoticeHandlers() {
 		$.get("notice.php", {meetingId: meetingId}, function(data) {
 			var dialog = $(data);
 
-			dialog.find("#not_target_id option").hide();
+			dialog.find("#not_target_id option, #not_target_id optgroup").hide();
 			dialog.find("#not_target_id option.dlp_groups").show();
 			dialog.find(".mails").hide();
 

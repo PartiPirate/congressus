@@ -104,9 +104,19 @@ class ThemeBo {
 	function getThemes($filters = null) {
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  ".$this->personaeDatabase."dlp_themes";
+		$query = "	SELECT dlp_themes.* ";
 
+		if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {
+			$query .= ", dlp_groups.* ";
+		}
+
+		$query .= "	FROM  ".$this->personaeDatabase."dlp_themes";
+
+		if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {
+			$query .= "	LEFT JOIN ".$this->personaeDatabase."dlp_group_themes ON gth_theme_id = the_id";
+			$query .= "	LEFT JOIN ".$this->personaeDatabase."dlp_groups ON gth_group_id = gro_id";
+		}
+		
 		if ($filters && isset($filters["with_fixation_information"]) && $filters["with_fixation_information"]) {
 			$query .= "	LEFT JOIN ".$this->personaeDatabase."dlp_fixations ON fix_id = the_current_fixation_id";
 		}
@@ -128,7 +138,12 @@ class ThemeBo {
 			$query .= " AND the_deleted = 0 \n";
 		}
 
-//		$query .= "	ORDER BY gro_label, the_label ";
+		if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {
+			$query .= "	ORDER BY gro_label, the_label ";
+		}
+		else {
+			$query .= "	ORDER BY the_label ";
+		}
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

@@ -28,7 +28,7 @@ $themeBo = ThemeBo::newInstance($connection, $config);
 $groupBo = GroupBo::newInstance($connection, $config);
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
-$themes = $themeBo->getThemes();
+$themes = $themeBo->getThemes(array("with_group_information" => true));
 $groups = $groupBo->getGroups();
 $galetteGroups = $galetteBo->getGroups();
 
@@ -72,18 +72,30 @@ $galetteGroups = $galetteBo->getGroups();
 
 					<!-- Themes -->
 					<option class="dlp_themes" value="0" >Veuillez choisir un theme</option>
-			<?php 	foreach($themes as $listTheme) {?>
+			<?php 	$groupLabel = null; 
+					foreach($themes as $listTheme) {
+						if ($listTheme["gro_label"] != $groupLabel) {
+							if ($groupLabel) {
+								?></optgroup><?php 
+							}
+							$groupLabel = $listTheme["gro_label"];
+							?><optgroup class="dlp_themes" label="<?php echo $groupLabel; ?>"><?php 
+						}
+			?>
 					<option class="dlp_themes"
 						value="<?php echo $listTheme["the_id"]; ?>"
 					><?php echo $listTheme["the_label"]; ?></option>
-			<?php 	}?>
-
+			<?php 	}
+					if ($groupLabel) {
+						?></optgroup><?php
+					}
+			?>
 					<!-- Galette groups -->
 					<option class="galette_groups" value="0" >Veuillez choisir un groupe</option>
 			<?php 	foreach($galetteGroups as $listGroup) {?>
 					<option class="galette_groups"
 						value="<?php echo $listGroup["id_group"]; ?>"
-					><?php echo $listGroup["group_name"]; ?></option>
+					><?php echo utf8_encode($listGroup["group_name"]); ?></option>
 			<?php 	}?>
 
 

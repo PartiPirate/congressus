@@ -170,6 +170,8 @@ class GaletteBo {
 			$args["id_group"] = $filters["id_group"];
 		}
 
+		$query .= "	ORDER BY group_name ";
+		
 		//		echo showQuery($query, $args);
 		$statement = $this->pdo->prepare($query);
 

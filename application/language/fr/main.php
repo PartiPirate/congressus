@@ -115,6 +115,7 @@ Ainsi vous pouvez définir qui est convoqué aux réunions, qui a le droit de vo
 Un outil de recherche permet de rechercher tout ou parti d'un propos, d'une motion, d'une proposition... et
 ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
+$lang["index_downloadCalendar"] = "Télécharger le calendrier iCal";
 
 $lang["connect_guide"] = "Bienvenue sur l'écran de connexion de Congressus";
 $lang["connect_form_legend"] = "Connexion";

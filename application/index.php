@@ -51,6 +51,8 @@ include_once("header.php");
 	<br />
 
 	<div id="calendar"></div>
+	
+	<div class="text-center"><a href="do_downloadCalendar.php"><?php echo lang("index_downloadCalendar"); ?></a></div>
 
 
 <?php 	if ($isConnected) {?>

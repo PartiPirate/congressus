@@ -92,7 +92,9 @@ if (!$json) {
 	
 	$data["motions"] = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	$data["chats"] = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
-	
+
+	$chatAdvices = $chatAdviceBo->getByFilters(array("cad_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+
 	foreach($data["chats"] as $index => $chat) {
 		$data["chats"][$index]["mem_id"] = $chat["id_adh"] ? $chat["id_adh"] : "G" . $chat["cha_guest_id"];
 	//	$data["chats"][$index]["mem_nickname"] = $chat["pin_nickname"] ? $chat["pin_nickname"] : $chat["pseudo_adh"];
@@ -103,7 +105,12 @@ if (!$json) {
  				unset($data["chats"][$index][$key]);
  			}
 			
-// 			$data["chats"][$index]["advices"] = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat[$chatBo->ID_FIELD]));
+ 			$data["chats"][$index]["advices"] = array();
+ 			foreach($chatAdvices as $advice) {
+ 				if ($advice["cad_chat_id"] != $chat["cha_id"]) continue;
+
+ 				$data["chats"][$index]["advices"][] = $advice;
+ 			}
  		}
 	}
 	

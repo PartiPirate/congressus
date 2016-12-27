@@ -107,12 +107,12 @@ class ChatAdviceBo {
 
 		$query = "	SELECT * ";
 
-		if (isset($filters["with_count_motions"]) && $filters["with_count_motions"]) {
-			$query .= "	, (SELECT COUNT(*) FROM motions WHERE mot_chatAdvice_id = age_id AND mot_deleted = 0) AS age_number_of_motions ";
-		}
 
-		$query .= "	FROM  $this->TABLE
-					WHERE
+		$query .= "	FROM  $this->TABLE ";
+		if (isset($filters["cad_agenda_id"]) && $filters["cad_agenda_id"]) {
+			$query .= "	LEFT JOIN chats ON cha_id = cad_chat_id ";
+		}
+		$query .= "	WHERE
 						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
@@ -120,6 +120,11 @@ class ChatAdviceBo {
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 		}
 
+		if (isset($filters["cad_agenda_id"]) && $filters["cad_agenda_id"]) {
+			$args["cad_agenda_id"] = $filters["cad_agenda_id"];
+			$query .= " AND cha_agenda_id = :cad_agenda_id \n";
+		}
+		
 		if (isset($filters["cad_chat_id"])) {
 			$args["cad_chat_id"] = $filters["cad_chat_id"];
 			$query .= " AND cad_chat_id = :cad_chat_id \n";

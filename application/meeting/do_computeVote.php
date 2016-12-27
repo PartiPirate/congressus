@@ -53,7 +53,5 @@ foreach($results as $key => $explanation) {
 	}
 }
 
-$data["vote"] = $vote;
-
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

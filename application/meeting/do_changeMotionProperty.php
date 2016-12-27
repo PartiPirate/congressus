@@ -17,10 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+if (!isset($api)) exit();
 
 include_once("config/database.php");
 include_once("config/memcache.php");
@@ -42,6 +39,8 @@ if (!$motion) {
 	echo json_encode(array("ko" => "ko", "message" => "motion_not_accessible"));
 	exit();
 }
+
+$pointId = $motion["mot_agenda_id"];
 
 if ($_REQUEST["propositionId"] != "0") {
 	$proposition = $motionBo->getByFilters(array($motionBo->ID_FIELD => $motion[$motionBo->ID_FIELD],
@@ -66,7 +65,6 @@ else {
 
 $data["ok"] = "ok";
 
-$pointId = $motion["mot_agenda_id"];
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
 

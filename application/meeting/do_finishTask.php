@@ -17,10 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+if (!isset($api)) exit();
 
 include_once("config/database.php");
 include_once("config/memcache.php");
@@ -52,6 +49,7 @@ $task = $taskBo->getById($taskId);
 $data = array("ok" => "ok");
 
 if ($task) {
+	$pointId = $task["tas_agenda_id"];
 	$task = array($taskBo->ID_FIELD => $taskId);
 
 	$now = getNow();
@@ -61,7 +59,6 @@ if ($task) {
 
 	$data["task"] = $task;
 
-	$pointId = $task["tas_agenda_id"];
 	$memcacheKey = "do_getAgendaPoint_$pointId";
 	$memcache->delete($memcacheKey);
 }

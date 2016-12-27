@@ -17,10 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+if (!isset($api)) exit();
 
 include_once("config/database.php");
 include_once("config/memcache.php");
@@ -55,6 +52,7 @@ $meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
+	exit();
 }
 
 if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == $meeting["mee_secretary_member_id"]) {
@@ -73,6 +71,7 @@ if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == 
 
 if (false) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
+	exit();
 }
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
@@ -99,13 +98,13 @@ if (!$json) {
 	//	$data["chats"][$index]["mem_nickname"] = $chat["pin_nickname"] ? $chat["pin_nickname"] : $chat["pseudo_adh"];
 		$data["chats"][$index]["mem_nickname"] = htmlspecialchars(utf8_encode($chat["pin_nickname"] ? $chat["pin_nickname"] : ($chat["pseudo_adh"] ? $chat["pseudo_adh"] : $chat["nom_adh"] . ' ' . $chat["prenom_adh"])), ENT_SUBSTITUTE);
 	
-// 		foreach($chat as $key => $value) {
-// 			if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
-// 				unset($data["chats"][$index][$key]);
-// 			}
+ 		foreach($chat as $key => $value) {
+ 			if (substr($key, 0, 4) != "cha_" && substr($key, 0, 4) != "mem_") {
+ 				unset($data["chats"][$index][$key]);
+ 			}
 			
 // 			$data["chats"][$index]["advices"] = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat[$chatBo->ID_FIELD]));
-// 		}
+ 		}
 	}
 	
 	$data["votes"] = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));

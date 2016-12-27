@@ -115,7 +115,7 @@ function editorBlurHandler(event) {
 	// update the text into the server
 	var newText = descriptionEditor.Editor("getText");
 
-	$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
+	$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
 		description.find("p").html(newText);
 		description.find("p").show();
 
@@ -152,7 +152,7 @@ function getDescriptionLi(list) {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = descriptionEditor.Editor("getText");
 
-				$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -327,7 +327,7 @@ function addOwnChat() {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
-	$.get("meeting/do_addChat.php", {id: meetingId, pointId: agendaId, userId: userId}, function(data) {
+	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
 		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
 	}, "json");
@@ -339,7 +339,7 @@ function addOwnTask() {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
-	$.get("meeting/do_addTask.php", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType}, function(data) {
+	$.get("meeting_api.php?method=do_addTask", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType}, function(data) {
 		setAgendaTask(data.task.task_id, [data.task]);
 		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
 	}, "json");
@@ -349,7 +349,7 @@ function addConclusion() {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
-	$.get("meeting/do_addConclusion.php", {id: meetingId, pointId: agendaId}, function(data) {
+	$.get("meeting_api.php?method=do_addConclusion", {id: meetingId, pointId: agendaId}, function(data) {
 		setAgendaConclusion(data.conclusion.con_id, [data.conclusion]);
 		$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
 	}, "json");
@@ -359,7 +359,7 @@ function addMotion(event) {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
-	$.get("meeting/do_addMotion.php", {meetingId: meetingId, pointId: agendaId}, function(data) {
+	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId}, function(data) {
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
 	}, "json");
@@ -402,7 +402,7 @@ function setAgendaChat(id, chats) {
 		if (nickname.text() != chat.mem_nickname) {
 			nickname.text(chat.mem_nickname);
 		}
-		
+
 		if (text.data("text") != chat.cha_text) {
 			text.html(chat.cha_text.replace(/\n/g, "<br>"));
 			text.data("text", chat.cha_text);
@@ -476,8 +476,9 @@ function setAgendaTask(id, tasks) {
 		var task = tasks[index];
 		if (task.tas_id != id) continue;
 
-		if (text.text() != task.tas_label) {
-			text.text(task.tas_label);
+		if (text.data("text") != task.tas_label) {
+			text.html(task.tas_label.replace(/\n/g, "<br>"));
+			text.data("text", task.tas_label);
 		}
 
 		if (task.tas_finish_datetime) {
@@ -547,7 +548,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 		absoluteRequestId = requestId;
 	}
 
-	$.get("meeting/do_getAgendaPoint.php", {id: meetingId, pointId: agendaId, requestId: requestId}, function(data) {
+	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: requestId}, function(data) {
 
 		if (absoluteRequestId && data.requestId != absoluteRequestId) return;
 
@@ -585,7 +586,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 
 		absoluteRequestId = null;
 
-		$("li.motion,li.chat,li.conclusion").addClass("to-delete");
+		$("#agenda_point li.motion, #agenda_point li.chat, #agenda_point li.conclusion, #agenda_point li.task").addClass("to-delete");
 
 		setAgendaPoint(data);
 
@@ -711,7 +712,7 @@ function vote(event) {
                 		var power = dialog.find(".power").val();
                 		if (power > maxPower) return;
 
-                		$.post("meeting/do_vote.php", {"motionId": motion.data("id"),
+                		$.post("meeting_api.php?method=do_vote", {"motionId": motion.data("id"),
                 										"propositionId": proposition.data("id"),
                 										"power": power}, function(data) {
                 			if (data.ok) {
@@ -746,7 +747,7 @@ function addMotionProposition(event) {
 
 	if (!hasRight(getUserId(), "handle_motion")) return;
 
-	$.post("meeting/do_addMotionProposition.php", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
+	$.post("meeting_api.php?method=do_addMotionProposition", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
 	}, "json");
 }
 
@@ -768,7 +769,7 @@ function removeMotion(event) {
 	bootbox.setLocale("fr");
 	bootbox.confirm("Supprimer la motion \"" + motionTitle + "\" ?", function(result) {
 		if (result) {
-			$.post("meeting/do_removeMotion.php", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
+			$.post("meeting_api.php?method=do_removeMotion", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
 			}, "json");
 		}
 	});
@@ -790,7 +791,7 @@ function changeMotionStatus(event) {
 
 	if (!hasRight(getUserId(), "handle_motion")) return;
 
-	$.post("meeting/do_changeMotionStatus.php", {meetingId: meetingId, pointId: pointId, motionId: motionId, status: status}, function(data) {
+	$.post("meeting_api.php?method=do_changeMotionStatus", {meetingId: meetingId, pointId: pointId, motionId: motionId, status: status}, function(data) {
 		dumpMotion(motion);
 	}, "json");
 }
@@ -832,7 +833,7 @@ function addTaskHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeTask.php", {
+				$.post("meeting_api.php?method=do_removeTask", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					taskId: taskId
@@ -862,7 +863,7 @@ function addTaskHandlers() {
 			// update the text into the server
 			var newText = textarea.val();
 
-			$.post("meeting/do_changeTask.php", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeTask", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
 				taskText.data("text", newText);
 				taskText.html(newText.replace(/\n/g, "<br>"));
 				taskText.show();
@@ -875,7 +876,7 @@ function addTaskHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = textarea.val();
 
-				$.post("meeting/do_changeTask.php", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeTask", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -901,7 +902,7 @@ function addTaskHandlers() {
 				button.attr("disabled", "disabled");
 				$(".ui-tooltip").remove();
 
-				$.post("meeting/do_finishTask.php", {
+				$.post("meeting_api.php?method=do_finishTask", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					taskId: taskId
@@ -960,7 +961,7 @@ function addChatHandlers() {
 			form["text"] = userId;
 		}
 
-		$.post("meeting/do_changeChat.php", form, function(data) {
+		$.post("meeting_api.php?method=do_changeChat", form, function(data) {
 		}, "json");
 	});
 
@@ -975,7 +976,7 @@ function addChatHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer le chat \"" + chat.children(".chat-text").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeChat.php", {
+				$.post("meeting_api.php?method=do_removeChat", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					chatId: chatId
@@ -1003,7 +1004,7 @@ function addChatHandlers() {
 			// update the text into the server
 			var newText = textarea.val();
 
-			$.post("meeting/do_changeChat.php", {chatId: chatId, property: "cha_text", text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeChat", {chatId: chatId, property: "cha_text", text: newText}, function(data) {
 				chatText.data("text", newText);
 				chatText.html(newText.replace(/\n/g, "<br>"));
 				chatText.show();
@@ -1016,7 +1017,7 @@ function addChatHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = textarea.val();
 
-				$.post("meeting/do_changeChat.php", {chatId: chatId, property: "cha_text", text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeChat", {chatId: chatId, property: "cha_text", text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -1052,7 +1053,7 @@ function addConclusionHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer la conclusion \"" + conclusion.children(".conclusion-text").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeConclusion.php", {
+				$.post("meeting_api.php?method=do_removeConclusion", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					conclusionId: conclusionId
@@ -1079,7 +1080,7 @@ function addConclusionHandlers() {
 			// update the text into the server
 			var newText = textarea.val();
 
-			$.post("meeting/do_changeConclusion.php", {conclusionId: conclusionId, text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeConclusion", {conclusionId: conclusionId, text: newText}, function(data) {
 				conclusionText.text(newText);
 				conclusionText.show();
 				textarea.remove();
@@ -1091,7 +1092,7 @@ function addConclusionHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = textarea.val();
 
-				$.post("meeting/do_changeConclusion.php", {conclusionId: conclusionId, text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeConclusion", {conclusionId: conclusionId, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -1132,7 +1133,7 @@ function addMotionHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer la proposition \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeMotionProposition.php", {
+				$.post("meeting_api.php?method=do_removeMotion", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					motionId: motionId,
@@ -1178,7 +1179,7 @@ function addMotionHandlers() {
 			// update the text into the server
 			var newText = input.val();
 
-			$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
 				input.remove();
@@ -1191,7 +1192,7 @@ function addMotionHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = input.val();
 
-				$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -1216,7 +1217,7 @@ function addMotionHandlers() {
 		var propositionId = 0;
 		var newText = checked ? 1 : 0;
 
-		$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 		}, "json");
 	});
 
@@ -1230,7 +1231,7 @@ function addMotionHandlers() {
 		var propositionId = 0;
 		var newText = $(this).val();
 
-		$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 		}, "json");
 	});
 
@@ -1256,7 +1257,7 @@ function addMotionHandlers() {
 			// update the text into the server
 			var newText = input.val();
 
-			$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
 				input.remove();
@@ -1269,7 +1270,7 @@ function addMotionHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = input.val();
 
-				$.post("meeting/do_changeMotionProperty.php", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -1307,7 +1308,8 @@ function updateTasks() {
 				}
 
 				taskLi.removeClass("to-remove");
-				taskLi.find(".task-label").text(task.tas_label);
+
+				taskLi.find(".task-label").html(task.tas_label.replace(/\n/g, "<br>"));
 			}
 
 			$("#tasks-list li.to-remove").remove();

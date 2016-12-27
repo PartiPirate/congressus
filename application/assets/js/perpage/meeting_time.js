@@ -41,7 +41,7 @@ function addTimeHandlers() {
 
 		var mee_datetime = date + " " + time;
 
-		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_datetime", text: mee_datetime},
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_datetime", text: mee_datetime},
 				function(data) {}, "json");
 	});
 }

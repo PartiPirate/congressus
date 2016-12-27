@@ -17,14 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+if (!isset($api)) exit();
 
 include_once("config/database.php");
 include_once("config/memcache.php");

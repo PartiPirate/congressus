@@ -465,7 +465,7 @@ function updatePeople() {
 
 //	console.log("Do get people @ " + new Date());
 
-	$.get("meeting/do_getPeople.php", {id: meetingId}, function(data) {
+	$.get("meeting_api.php?method=do_getPeople", {id: meetingId}, function(data) {
 //		console.log("Get people @ " + new Date());
 
 		var parent = $("#noticed-people > ul");
@@ -556,7 +556,7 @@ function updatePeople() {
 
 function ping() {
 	var meetingId = $(".meeting").data("id");
-	$.get("meeting/do_ping.php", {id: meetingId}, function(data) {
+	$.post("meeting_api.php?method=do_ping.php", {id: meetingId}, function(data) {
 	}, "json");
 }
 
@@ -570,7 +570,7 @@ function setSpeaking(event) {
 	var meetingId = $(".meeting").data("id");
 	var userId = $(this).data("id");
 
-	$.get("meeting/do_setSpeaking.php", {meetingId: meetingId, userId: userId}, function(data) {
+	$.get("meeting_api.php?method=do_setSpeaking", {meetingId: meetingId, userId: userId}, function(data) {
 	}, "json");
 }
 
@@ -581,7 +581,7 @@ function requestSpeaking(event) {
 	$(this).addClass("disabled");
 
 	var meetingId = $(".meeting").data("id");
-	$.get("meeting/do_requestSpeaking.php", {id: meetingId}, function(data) {
+	$.get("meeting_api.php?method=do_requestSpeaking", {id: meetingId}, function(data) {
 	}, "json");
 }
 
@@ -592,7 +592,7 @@ function changeOffice(event) {
 	var userId = $(".meeting").data("user-id");
 
 	if (hasWritingRight(userId)) {
-		$.post("meeting/do_changeOfficeMember.php", {meetingId: meetingId, memberId: memberId, type: type}, function(data) {
+		$.post("meeting_api.php?method=do_changeOfficeMember", {meetingId: meetingId, memberId: memberId, type: type}, function(data) {
 		}, "json");
 	}
 }
@@ -770,7 +770,7 @@ function addNoticeHandlers() {
 
 		                		var form = dialog.find("form");
 
-		                		$.post("meeting/do_changeNotice.php", form.serialize(), function(data) {
+		                		$.post("meeting_api.php?method=do_changeNotice", form.serialize(), function(data) {
 		                		}, "json");
 		                    }
 		                },
@@ -826,7 +826,7 @@ function addNoticeHandlers() {
 
 		                		var form = dialog.find("form");
 
-		                		$.post("meeting/do_addNotice.php", form.serialize(), function(data) {
+		                		$.post("meeting_api.php?method=do_addNotice", form.serialize(), function(data) {
 		                		}, "json");
 		                    }
 		                },
@@ -855,7 +855,7 @@ function addNoticeHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm("Supprimer la convocation de \"" + text + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting/do_removeNotice.php", {meetingId: meetingId, noticeId: noticeId}, function(data) {
+				$.post("meeting_api.php?method=do_removeNotice", {meetingId: meetingId, noticeId: noticeId}, function(data) {
 					$("#notice-" + noticeId).remove();
 				}, "json");
 			}
@@ -881,7 +881,7 @@ function addNoticeHandlers() {
 
 		var form = {not_meeting_id: meetingId, not_id: noticeId, not_voting: voting};
 
-		$.post("meeting/do_changeNotice.php", form, function(data) {}, "json");
+		$.post("meeting_api.php?method=do_changeNotice", form, function(data) {}, "json");
 	});
 
 	$("#noticed-people .panel-footer").on("click", ".btn-notice-people", function(event) {
@@ -936,7 +936,7 @@ function addNoticeHandlers() {
 				newText == "Guest";
 			}
 			
-			$.post("meeting/do_changeGuest.php", {meetingId: meetingId, text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeGuest", {meetingId: meetingId, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
 				input.remove();
@@ -953,7 +953,7 @@ function addNoticeHandlers() {
 					newText == "Guest";
 				}
 				
-				$.post("meeting/do_changeGuest.php", {meetingId: meetingId, text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeGuest", {meetingId: meetingId, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});

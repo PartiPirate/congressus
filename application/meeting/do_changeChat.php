@@ -17,10 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-session_start();
-
-$path = "../";
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+if (!isset($api)) exit();
 
 include_once("config/database.php");
 include_once("config/memcache.php");
@@ -50,6 +47,8 @@ $chatId = $_REQUEST["chatId"];
 $chat = $chatBo->getById($chatId);
 
 if ($chat) {
+	$pointId = $chat["cha_agenda_id"];
+	
 	$chat = array($chatBo->ID_FIELD => $chatId);
 	$chat[$_REQUEST["property"]] = $_REQUEST["text"];
 
@@ -62,8 +61,6 @@ if ($chat) {
 
 	$chatBo->save($chat);
 
-
-	$pointId = $chat["cha_agenda_id"];
 	$memcacheKey = "do_getAgendaPoint_$pointId";
 	$memcache->delete($memcacheKey);
 }

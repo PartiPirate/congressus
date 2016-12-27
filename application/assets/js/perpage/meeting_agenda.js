@@ -29,7 +29,7 @@ function addAgendaHandlers() {
 			bootbox.setLocale("fr");
 			bootbox.confirm("Supprimer le point \""+$(this).siblings("a").text()+"\" ?", function(result) {
 				if (result) {
-					$.post("meeting/do_removeAgendaPoint.php", {meetingId: meetingId, pointId: pointId}, function(data) {
+					$.post("meeting_api.php?method=do_removeAgendaPoint", {meetingId: meetingId, pointId: pointId}, function(data) {
 						$("#agenda-" + pointId).remove();
 					}, "json");
 				}
@@ -49,7 +49,7 @@ function addAgendaHandlers() {
 				adder = $(this).parent().siblings("ul");
 			}
 
-			$.post("meeting/do_addAgendaPoint.php", {meetingId: meetingId, parentId: parentId}, function(data) {
+			$.post("meeting_api.php?method=do_addAgendaPoint", {meetingId: meetingId, parentId: parentId}, function(data) {
 				var agendaLi = getAgendaLi(data.agenda);
 				adder.append(agendaLi);
 
@@ -85,7 +85,7 @@ function addAgendaHandlers() {
 			// update the text into the server
 			var newText = input.val();
 
-			$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: pointId, property: property, text: newText}, function(data) {
+			$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: pointId, property: property, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
 				input.remove();
@@ -98,7 +98,7 @@ function addAgendaHandlers() {
 			keyupTimeoutId = setTimeout(function() {
 				var newText = input.val();
 
-				$.post("meeting/do_changeAgendaPoint.php", {meetingId: meetingId, pointId: pointId, property: property, text: newText}, function(data) {
+				$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: pointId, property: property, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
 		});
@@ -238,7 +238,7 @@ function updateMeeting(meeting) {
 
 function updateAgenda() {
 	var meetingId = $(".meeting").data("id");
-	$.get("meeting/do_getAgenda.php", {id: meetingId}, function(data) {
+	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
 		var parent = $("#meeting-agenda>ul");
 		parent.find("li").addClass("to-delete");
 //		parent.children().remove();
@@ -273,21 +273,21 @@ function addMeetingHandlers() {
 	$("#meeting-status-panel .btn-delete-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "deleted"},
+		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "deleted"},
 				function(data) {}, "json");
 	});
 
 	$("#meeting-status-panel .btn-waiting-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "waiting"},
+		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "waiting"},
 				function(data) {}, "json");
 	});
 
 	$("#meeting-status-panel .btn-open-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "open"},
+		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "open"},
 				function(data) {}, "json");
 	});
 
@@ -295,7 +295,7 @@ function addMeetingHandlers() {
 		if (!hasWritingRight(getUserId())) return;
 
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting/do_changeMeeting.php", {meetingId: meetingId, property: "mee_status", text: "closed"},
+		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
 				function(data) {}, "json");
 	});
 	
@@ -308,7 +308,7 @@ function addMeetingHandlers() {
 			rights[rights.length] = $(this).val();
 		});
 		
-		$.post("meeting/do_changeRights.php", {meetingId: meetingId, "rights[]": rights, "empty": rights.length ? null : "empty"},
+		$.post("meeting_api.php?method=do_changeRights", {meetingId: meetingId, "rights[]": rights, "empty": rights.length ? null : "empty"},
 				function(data) {}, "json");
 	});
 }

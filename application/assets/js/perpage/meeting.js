@@ -445,7 +445,7 @@ function setAgendaChat(id, chats) {
 			progress.find(".progress-bar").each(function() {
 				var percent = advices[$(this).data("advice")] * 100 / advices["total"];
 				$(this).css({width: percent + "%"});
-				$(this).attr("title", advices[$(this).data("advice")]);
+//				$(this).attr("title", advices[$(this).data("advice")]);
 				$(this).find(".value").text(advices[$(this).data("advice")]);
 				
 				if (advices[$(this).data("advice")]) {

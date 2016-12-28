@@ -393,18 +393,20 @@ if (!$userId) {
 			<span> : </span>
 			<span class="chat-text"></span>
 
-			<div class="progress" style="margin-top: 5px; margin-bottom: 0; height: 3px;">
+			<div class="progress" style="margin-top: 5px; margin-bottom: 0; /*height: 3px;*/">
 				<div class="progress-bar progress-bar-danger" role="progressbar"
 					data-advice="thumb_down"
 					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
-					style="width: 0%">
-					<span class="sr-only"></span>
+					style="width: 0%; padding: 1px;"><span class="glyphicon glyphicon-thumbs-down pull-left" style="margin: 2px;"></span>
+					<span class="value pull-left"></span>
+					<span class="sr-only">&nbsp;</span>
 				</div>
 				<div class="progress-bar progress-bar-success" role="progressbar"
 					data-advice="thumb_up"
 					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
-					style="width: 0%">
-					<span class="sr-only"></span>
+					style="width: 0%; padding: 1px;"><span class="glyphicon glyphicon-thumbs-up pull-right" style="margin: 2px;"></span>
+					<span class="value pull-right" style=""></span>
+					<span class="sr-only">&nbsp;</span>
 				</div>
 			</div>
 

@@ -446,6 +446,14 @@ function setAgendaChat(id, chats) {
 				var percent = advices[$(this).data("advice")] * 100 / advices["total"];
 				$(this).css({width: percent + "%"});
 				$(this).attr("title", advices[$(this).data("advice")]);
+				$(this).find(".value").text(advices[$(this).data("advice")]);
+				
+				if (advices[$(this).data("advice")]) {
+					$(this).show();
+				}
+				else {
+					$(this).hide();
+				}
 			});
 		}
 		

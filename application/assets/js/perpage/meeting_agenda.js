@@ -273,21 +273,21 @@ function addMeetingHandlers() {
 	$("#meeting-status-panel .btn-delete-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "deleted"},
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "deleted"},
 				function(data) {}, "json");
 	});
 
 	$("#meeting-status-panel .btn-waiting-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "waiting"},
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "waiting"},
 				function(data) {}, "json");
 	});
 
 	$("#meeting-status-panel .btn-open-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "open"},
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "open"},
 				function(data) {}, "json");
 	});
 
@@ -295,7 +295,7 @@ function addMeetingHandlers() {
 		if (!hasWritingRight(getUserId())) return;
 
 		var meetingId = $(".meeting").data("id");
-		$.post("meeting_api.php?method=doChangeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
 				function(data) {}, "json");
 	});
 	

@@ -73,7 +73,7 @@ if (!$json) {
 
 	$pings = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 	usort($pings, "pingSpeakingRequestCompare");
-
+	
 	$order = 1;
 
 	//print_r($pings);

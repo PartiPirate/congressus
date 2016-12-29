@@ -103,6 +103,7 @@ if (!$userId) {
 			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> Président de séance :
 			<span class="mee_president_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="president">
+				<option value="0"></option>
 				<optgroup class="voting" label="Votants"></optgroup>
 				<optgroup class="noticed" label="Convoqués"></optgroup>
 				<optgroup class="connected" label="Connectés"></optgroup>
@@ -113,6 +114,7 @@ if (!$userId) {
 			<span class="fa fa-user" style="margin-top: 10px;"></span> Secrétaire de séance :
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="secretary">
+				<option value="0"></option>
 				<optgroup class="voting" label="Votants"></optgroup>
 				<optgroup class="noticed" label="Convoqués"></optgroup>
 				<optgroup class="connected" label="Connectés"></optgroup>

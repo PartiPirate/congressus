@@ -556,7 +556,7 @@ function updatePeople() {
 
 function ping() {
 	var meetingId = $(".meeting").data("id");
-	$.post("meeting_api.php?method=do_ping.php", {id: meetingId}, function(data) {
+	$.post("meeting_api.php?method=do_ping", {id: meetingId}, function(data) {
 	}, "json");
 }
 

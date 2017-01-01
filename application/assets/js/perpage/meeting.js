@@ -228,6 +228,13 @@ function setAgendaMotion(id, motions) {
 			motionContainer.data("anonymous", motion.mot_anonymous);
 			motionContainer.data("win-limit", motion.mot_win_limit);
 
+			if (!hasRight(getUserId(), "handle_motion")) {
+				motionActions.find(".btn-motion-limits.btn-motion-limits").prop("disabled", true);
+			}
+			else {
+				motionActions.find(".btn-motion-limits.btn-motion-limits").prop("disabled", false);
+			}
+
 			switch(motion.mot_status) {
 				case "construction":
 					motionActions.find(".btn-add-proposition").show();
@@ -253,15 +260,18 @@ function setAgendaMotion(id, motions) {
 				default:
 			}
 
+			if (!hasRight(getUserId(), "handle_motion")) {
+				motionActions.find(".btn-motion-limits.btn-motion-limits").hide();
+			}
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
-			
+
 			if (motion.mot_anonymous) {
 				motionActions.find(".btn-motion-anonymous").addClass("active");
 			}
 			else {
 				motionActions.find(".btn-motion-anonymous").removeClass("active");
 			}
-			
+
 			motionActions.find(".btn-motion-anonymous").prop("disabled", !hasRight(getUserId(), "handle_motion"));
 		}
 

@@ -253,7 +253,6 @@ function setAgendaMotion(id, motions) {
 				default:
 			}
 
-			
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
 			
 			if (motion.mot_anonymous) {
@@ -674,6 +673,8 @@ function addVotes(votes, proposition, motion) {
 		voteLi.find(".nickname").text(vote.mem_nickname);
 		voteLi.data("memberId", vote.mem_id);
 		voteLi.find(".power").text(vote.vot_power);
+		voteLi.attr("data-power", vote.vot_power);
+		voteLi.data("power", vote.vot_power);
 		
 		if (vote.mem_id != getUserId() && areVotesAnonymous(motion)) {
 			voteLi.hide();
@@ -689,32 +690,74 @@ function addVotes(votes, proposition, motion) {
 	computeMotion(proposition.parents(".motion"));
 }
 
+function retrievePreviousVotes(motion, propositionsHolder) {
+	var userId = $(".meeting").data("user-id");
+	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
+	
+	if (!votes.length) return;
+	
+	votes.each(function() {
+		var proposition = propositionsHolder.find(".proposition[data-proposition-id="+$(this).data("proposition-id")+"]");
+		proposition.detach();
+		propositionsHolder.append(proposition);
+	});
+}
+
+function setSchulzeOrderStyle(propositionsHolder) {
+	var propositionHolders = propositionsHolder.children();
+	
+	var index = 0;
+	propositionHolders.each(function() {
+		index++;
+		
+		$(this).removeClass("btn-success").removeClass("btn-warning").removeClass("btn-danger").removeClass("btn-default");
+		
+		if (index == 1) {
+			$(this).addClass("btn-success");
+		}
+		else if (index == propositionHolders.length) {
+			$(this).addClass("btn-danger");
+		}
+		else if (index == Math.floor((propositionHolders.length + 1) / 2)) {
+			$(this).addClass("btn-warning");
+		}
+		else {
+			$(this).addClass("btn-default");
+		}
+	});
+}
+
 function vote(event) {
 	event.stopPropagation();
 
 	var userId = $(".meeting").data("user-id");
 	var motion = $(this).parents(".motion");
+	var motionWinLimit = motion.find(".btn-motion-limits.active").attr("value") - 0;
 	var proposition = $(this).parents(".proposition");
 	var maxPower = getVotingPower(userId);
 
-	motion.find(".proposition .vote[data-member-id="+userId+"]").each(function() {
-		if ($(this).data("proposition-id") != proposition.data("id")) {
-			maxPower -= $(this).find(".power").text();
-		}
-	});
+	var dialog; 
+	
+	if (motionWinLimit >= 0) {
+		motion.find(".proposition .vote[data-member-id="+userId+"]").each(function() {
+			if ($(this).data("proposition-id") != proposition.data("id")) {
+				maxPower -= $(this).find(".power").text();
+			}
+		});
 
-	var dialog = $("form[data-template-id=vote-form]").template("use", {data: {mpr_label: proposition.find(".proposition-label").text(),
+		dialog = $("form[data-template-id=vote-form]").template("use", {data: {mpr_label: proposition.find(".proposition-label").text(),
 																		vot_power: maxPower}});
-	dialog.find("*").tooltip({placement: "left"});
 
-	bootbox.dialog({
-        title: "Voter la motion \"" + motion.find(".motion-title").text() + "\"",
-        message: dialog,
-        buttons: {
-            success: {
-                label: "Voter",
-                className: "btn-primary",
-                callback: function () {
+		dialog.find("*").tooltip({placement: "left"});
+
+		bootbox.dialog({
+	        title: "Voter la motion \"" + motion.find(".motion-title").text() + "\"",
+	        message: dialog,
+	        buttons: {
+	            success: {
+	                label: "Voter",
+	                className: "btn-primary",
+	                callback: function () {
                 		var dialog = $(this);
 
                 		var power = dialog.find(".power").val();
@@ -728,17 +771,89 @@ function vote(event) {
                 			}
                 		}, "json");
                     }
-                },
-            close: {
-                label: "Fermer",
-                className: "btn-default",
-                callback: function () {
-
+	            },
+	            close: {
+	                label: "Fermer",
+	                className: "btn-default",
+	                callback: function () {
                     }
                 }
-        },
-        className: "not-large-dialog"
-	});
+	        },
+	        className: "not-large-dialog"
+		});
+	}
+	else {
+		dialog = $("form[data-template-id=schulze-form]").template("use", {data: {}});
+		var propositions = motion.find(".proposition");
+		var propositionsHolder = dialog.find(".propositions");
+		
+		propositions.each(function() {
+			var propositionHolder = $("<div class=\"btn btn-default col-md-12 proposition\" style=\"margin-bottom: 2px; \" />");
+			propositionHolder.text($(this).find(".proposition-label").text());
+			propositionHolder.attr("data-proposition-id", $(this).data("id"));
+			
+			propositionsHolder.append(propositionHolder);
+		});
+		
+		propositionsHolder.sortable({
+			"axis": "y",
+			"helper": "clone",
+			"sort": function() {
+				setSchulzeOrderStyle(propositionsHolder);
+			},
+			"stop": function() {
+				setSchulzeOrderStyle(propositionsHolder);
+			}
+		});
+
+		retrievePreviousVotes(motion, propositionsHolder);
+		setSchulzeOrderStyle(propositionsHolder);
+
+		dialog.find("*").tooltip({placement: "left"});
+
+		bootbox.dialog({
+	        title: "Voter la motion \"" + motion.find(".motion-title").text() + "\"",
+	        message: dialog,
+	        buttons: {
+	            success: {
+	                label: "Voter",
+	                className: "btn-primary",
+	                callback: function () {
+                		var dialog = $(this);
+						var propositionsHolder = dialog.find(".propositions");
+						var propositionHolders = propositionsHolder.find(".proposition");
+
+						var index = 0;
+
+						propositionHolders.each(function() {
+
+	                		var power = (propositionHolders.length - index) * maxPower;
+	                		var proposition = motion.find(".proposition[data-id="+$(this).data("proposition-id")+"]");
+
+	                		$.post("meeting_api.php?method=do_vote", {"motionId": motion.data("id"),
+	                										"propositionId": proposition.data("id"),
+	                										"power": power}, function(data) {
+	                			if (data.ok) {
+	                				addVotes([data.vote], proposition, motion);
+	                			}
+	                		}, "json");
+
+							++index;
+
+						});
+                    }
+	            },
+	            close: {
+	                label: "Fermer",
+	                className: "btn-default",
+	                callback: function () {
+                    }
+                }
+	        },
+	        className: "not-large-dialog"
+		});
+	}
+
 }
 
 function addMotionProposition(event) {

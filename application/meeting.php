@@ -319,6 +319,17 @@ if (!$userId) {
 		</fieldset>
 	</form>
 
+	<form data-template-id="schulze-form" action="" class="template form-horizontal">
+		<fieldset>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="mpr_label">Propositions :</label>
+				<div class="col-md-4 propositions">
+					
+				</div>
+			</div>
+		</fieldset>
+	</form>
+
 	<ul>
 		<li data-template-id="old-task" id="task-${tas_id}" 
 			class="template list-group-item task" 
@@ -455,7 +466,10 @@ if (!$userId) {
 				</button>
 
 				<div id="motionLimitsButtons" class="btn-group" role="group">
-<?php foreach($config["congressus"]["ballot_majorities"] as $majority) {?>
+<?php foreach($config["congressus"]["ballot_majorities"] as $majority) {
+	// Development condition
+	if (($userId != 12 && $userId != 1) && $majority < -1) continue;
+?>
 					<button value="<?php echo $majority; ?>" type="button" style="display: none;" 
 						class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-<?php echo $majority; ?>"><?php echo lang("motion_ballot_majority_$majority"); ?></button>
 <?php }?>

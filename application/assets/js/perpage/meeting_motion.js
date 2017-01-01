@@ -17,6 +17,10 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function voteRound(value) {
+	return (Math.round(value * 100, 2) / 100);	
+}
+
 function areVotesAnonymous(motion) {
 	if (motion.data("status") == "resolved") return false;
 
@@ -53,7 +57,13 @@ function computeMotion(motion) {
 
 		var memberId = vote.data("memberId");
 		var propositionId = vote.data("propositionId");
-		var parentNotice = $("#member-" + memberId).parents(".notice").eq(0);
+		var parentNotices = $(".member[data-id=" + memberId + "]").parent().parent();
+		var parentNotice = null;
+		parentNotices.each(function() {
+			if ($(this).children("h5").find(".power").text()) {
+				parentNotice = $(this);
+			}
+		})
 		var themePower = parentNotice.children("h5").find(".power").text();
 		
 		var proposition = $("#proposition-" + propositionId);
@@ -80,13 +90,18 @@ function computeMotion(motion) {
 				}
 			});
 
-			votePower += themePower * vote.find(".power").text() / membersPower * (1 - neutral);
+			votePower += themePower * vote.data("power") / membersPower * (1 - neutral);
 		}
 		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
-			votePower += vote.find(".power").text() * (1 - neutral);
+			votePower += vote.data("power") * (1 - neutral);
 		}
 
-		if (vote.find(".power").text() != 0) {
+		vote.attr("data-effective-power", votePower);
+		vote.data("effective-power", votePower);
+		
+		vote.find(".power").attr("title", "Pouvoir de vote " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
+
+		if (vote.data("power") != 0) {
 			voters[memberId] = memberId;
 		}
 		
@@ -114,7 +129,7 @@ function computeMotion(motion) {
 				percent = Math.round(propositionPower / totalPowers * 1000, 1) / 10;
 			}
 	
-			if ((winLimit && percent >= winLimit) || (!winLimit && propositionPower == max)) {
+			if ((winLimit > 0 && percent >= winLimit) || ((winLimit == 0 || winLimit == -1) && propositionPower == max)) {
 				$("#proposition-" + id).addClass("text-success");
 				$("#proposition-" + id).removeClass("text-danger");
 			}
@@ -122,6 +137,8 @@ function computeMotion(motion) {
 				$("#proposition-" + id).removeClass("text-success");
 				$("#proposition-" + id).addClass("text-danger");
 			}
+	
+			propositionPower = voteRound(propositionPower);
 	
 			$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
 		}
@@ -150,14 +167,20 @@ function dumpMotion(motion) {
 		var memberId = vote.data("memberId");
 		var member = $("#member-" + memberId);
 		var propositionId = vote.data("propositionId");
-		var parentNotice = member.parents(".notice").eq(0);
+		var parentNotices = $(".member[data-id=" + memberId + "]").parent().parent();
+		var parentNotice = null;
+		parentNotices.each(function() {
+			if ($(this).children("h5").find(".power").text()) {
+				parentNotice = $(this);
+			}
+		})
 		var themePower = parentNotice.children("h5").find(".power").text();
 
 		var proposition = $("#proposition-" + propositionId);
 		var neutral = proposition.data("neutral");
 
 		propositionVote["neutral"] = neutral;
-		propositionVote["power"] = 1 * vote.find(".power").text();
+		propositionVote["power"] = 1 * vote.data("power");
 		propositionVote["memberLabel"] = member.find(".member-nickname").text();
 		propositionVote["memberId"] = memberId;
 
@@ -180,10 +203,10 @@ function dumpMotion(motion) {
 			propositionVote["themeLabel"] = parentNotice.find("h5 .notice-name").text();
 			propositionVote["membersPower"] = membersPower;
 
-			propositionVote["votePower"] = themePower * vote.find(".power").text() / membersPower * (1 - neutral);
+			propositionVote["votePower"] = themePower * vote.data("power") / membersPower * (1 - neutral);
 		}
 		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
-			propositionVote["votePower"] = vote.find(".power").text() * (1 - neutral);
+			propositionVote["votePower"] = vote.data("power") * (1 - neutral);
 		}
 		else {
 			propositionVote["votePower"] = 0;
@@ -206,7 +229,7 @@ function dumpMotion(motion) {
 			percent = Math.round(explanations[id]["power"] / totalPowers * 1000, 1) / 10;
 		}
 
-		if ((winLimit && percent >= winLimit) || (!winLimit && explanations[id]["power"] == max)) {
+		if ((winLimit > 0 && percent >= winLimit) || ((winLimit == 0 || winLimit == -1) && explanations[id]["power"] == max)) {
 			explanations[id]["winning"] = 1;
 		}
 
@@ -221,5 +244,5 @@ function dumpMotion(motion) {
 $(function() {
 	$(".btn-local-anonymous").click(function() {
 		$(this).toggleClass("active");
-	})
+	});
 })

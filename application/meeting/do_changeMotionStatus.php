@@ -70,6 +70,7 @@ if (!$motion || $motion["mot_agenda_id"] != $agenda[$agendaBo->ID_FIELD]) {
 	exit();
 }
 
+$motionWinLimit = $motion["mot_win_limit"];
 $motionTitle = $motion["mot_title"];
 
 $motion = array($motionBo->ID_FIELD => $motion[$motionBo->ID_FIELD]);
@@ -79,12 +80,13 @@ $motionBo->save($motion);
 
 if ($motion["mot_status"] == "voting") {
 	// add, if necessary the NSPP vote
-
-	$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD]);
-	$proposition["mpr_label"] = "NSPP";
-	$proposition["mpr_neutral"] = 1;
-
-	$motionBo->saveProposition($proposition);
+	if ($motionWinLimit >= 0) {
+		$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD]);
+		$proposition["mpr_label"] = "NSPP";
+		$proposition["mpr_neutral"] = 1;
+	
+		$motionBo->saveProposition($proposition);
+	}
 
 	addEvent($meetingId, EVENT_MOTION_TO_VOTE, "La motion \"".$motionTitle."\" dans le point \"".$agenda["age_label"]."\" est mise au vote");
 }

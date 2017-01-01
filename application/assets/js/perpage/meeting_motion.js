@@ -58,7 +58,7 @@ function computeMotion(motion) {
 		var memberId = vote.data("memberId");
 		var propositionId = vote.data("propositionId");
 		var parentNotices = $(".member[data-id=" + memberId + "]").parent().parent();
-		var parentNotice = null;
+		var parentNotice = parentNotices.eq(0);
 		parentNotices.each(function() {
 			if ($(this).children("h5").find(".power").text()) {
 				parentNotice = $(this);
@@ -168,7 +168,7 @@ function dumpMotion(motion) {
 		var member = $("#member-" + memberId);
 		var propositionId = vote.data("propositionId");
 		var parentNotices = $(".member[data-id=" + memberId + "]").parent().parent();
-		var parentNotice = null;
+		var parentNotice = parentNotices.eq(0);
 		parentNotices.each(function() {
 			if ($(this).children("h5").find(".power").text()) {
 				parentNotice = $(this);

@@ -575,18 +575,21 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 		points.each(function(index) {
 
 			if ($(this).data("id") == agendaId) {
+				$(".btn-previous-point").show();
+				$(".btn-next-point").show();
+
 				if (index == 0) {
-					$(".btn-previous-point").hide();
+					$(".btn-previous-point").addClass("disabled");
 				}
 				else {
-					$(".btn-previous-point").show();
+					$(".btn-previous-point").removeClass("disabled");
 				}
 
 				if (index == points.length -1) {
-					$(".btn-next-point").hide();
+					$(".btn-next-point").addClass("disabled");
 				}
 				else {
-					$(".btn-next-point").show();
+					$(".btn-next-point").removeClass("disabled");
 				}
 			}
 		});

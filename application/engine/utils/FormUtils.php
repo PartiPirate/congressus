@@ -23,7 +23,14 @@ function xssClean($data)
 	$data = str_replace(array('&amp;','&lt;','&gt;'), array('&amp;amp;','&amp;lt;','&amp;gt;'), $data);
 	$data = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $data);
 	$data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
-	$data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
+	if (is_array($data)) {
+		foreach($data as $index => $datum) {
+			$data[$index] = html_entity_decode($datum, ENT_COMPAT, 'UTF-8');
+		}
+	}
+	else {
+		$data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
+	}
 
 	// Remove any attribute starting with "on" or xmlns
 	$data = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $data);

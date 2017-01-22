@@ -74,13 +74,6 @@ ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
 $lang["index_downloadCalendar"] = "Télécharger le calendrier iCal";
 
-$lang["connect_guide"] = "Bienvenue sur l'écran de connexion de Congressus";
-$lang["connect_form_legend"] = "Connexion";
-$lang["connect_form_loginInput"] = "Identifiant";
-$lang["connect_form_loginHelp"] = "Votre identifiant Galette ou votre email";
-$lang["connect_form_passwordInput"] = "Mot de passe";
-$lang["connect_form_passwordHelp"] = "Votre mot de passe Galette";
-
 $lang["meeting_noticed_people"] = "Personnes convoqués";
 $lang["meeting_visitors"] = "Visiteurs";
 $lang["meeting_agenda"] = "Ordre du jour";

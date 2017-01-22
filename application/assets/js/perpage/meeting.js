@@ -754,7 +754,7 @@ function vote(event) {
 	if (motionWinLimit >= 0) {
 		motion.find(".proposition .vote[data-member-id="+userId+"]").each(function() {
 			if ($(this).data("proposition-id") != proposition.data("id")) {
-				maxPower -= $(this).find(".power").text();
+				maxPower -= $(this).data("power");
 			}
 		});
 

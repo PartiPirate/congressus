@@ -47,12 +47,13 @@ $conclusionId = $_REQUEST["conclusionId"];
 $conclusion = $conclusionBo->getById($conclusionId);
 
 if ($conclusion) {
+	$pointId = $conclusion["con_agenda_id"];
+
 	$conclusion = array($conclusionBo->ID_FIELD => $conclusionId);
 	$conclusion["con_text"] = $_REQUEST["text"];
 
 	$conclusionBo->save($conclusion);
 
-	$pointId = $conclusion["con_agenda_id"];
 	$memcacheKey = "do_getAgendaPoint_$pointId";
 	$memcache->delete($memcacheKey);
 }

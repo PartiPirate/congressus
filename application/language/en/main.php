@@ -25,6 +25,7 @@ $lang["common_validate"] = "Validate";
 $lang["common_delete"] = "Delete";
 $lang["common_fork"] = "Fork";
 $lang["common_reject"] = "Reject";
+$lang["common_connect"] = "Connect";
 $lang["common_ask_for_modification"] = "Ask modification";
 
 $lang["language_fr"] = "French";

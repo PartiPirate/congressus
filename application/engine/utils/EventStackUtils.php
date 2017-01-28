@@ -28,7 +28,7 @@ function addEvent($meetingId, $type, $text, $options = null) {
 				// If same text, don't add it
 				if ($event["text"] != "" && $event["text"] == $previousEvent["text"]) return;
 				// If same options, don't add it
-				if ($event["text"] == "" && json_encode($event["options"]) == json_encode($previousEvent["text"])) return;
+				if ($event["text"] == "" && json_encode($event["options"]) == json_encode($previousEvent["options"])) return;
 			}
 		}
 	}

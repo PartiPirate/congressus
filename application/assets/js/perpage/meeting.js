@@ -46,9 +46,6 @@ function getVotingPower(id) {
 	});
 	
 	return power;
-	
-//	return $("#noticed-people .members li#member-"+id+" .power:visible").text();
-//	return $("#noticed-people .members li#member-"+id+" .power").text();
 }
 
 function hasRight(userId, right) {

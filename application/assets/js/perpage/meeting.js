@@ -37,8 +37,18 @@ function hasVotingRight(id) {
 }
 
 function getVotingPower(id) {
+	var power = 0;
+	
+	$("#noticed-people .members li#member-"+id+" .voting").each(function() { 
+		if($(this).css("display") != "none") {
+			power -= - $(this).parent().find(".power").text();
+		}
+	});
+	
+	return power;
+	
 //	return $("#noticed-people .members li#member-"+id+" .power:visible").text();
-	return $("#noticed-people .members li#member-"+id+" .power").text();
+//	return $("#noticed-people .members li#member-"+id+" .power").text();
 }
 
 function hasRight(userId, right) {

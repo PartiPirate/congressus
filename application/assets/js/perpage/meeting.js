@@ -37,7 +37,8 @@ function hasVotingRight(id) {
 }
 
 function getVotingPower(id) {
-	return $("#noticed-people .members li#member-"+id+" .power:visible").text();
+//	return $("#noticed-people .members li#member-"+id+" .power:visible").text();
+	return $("#noticed-people .members li#member-"+id+" .power").text();
 }
 
 function hasRight(userId, right) {
@@ -184,7 +185,6 @@ function setAgendaMotion(id, motions) {
 	var userId = $(".meeting").data("user-id");
 	var list = $("#agenda_point ul.objects");
 	var motionContainer = list.find("li#motion-" + id);
-	var motionActions = motionContainer.find(".motion-actions");
 
 	if (!motionContainer.length) {
 		motionContainer = $("li[data-template-id=motion]").template("use", {data: {mot_id: id}});
@@ -194,6 +194,8 @@ function setAgendaMotion(id, motions) {
 
 		motionContainer.hide().fadeIn(400);
 	}
+
+	var motionActions = motionContainer.find(".motion-actions");
 
 	motionContainer.removeClass("to-delete");
 
@@ -312,6 +314,8 @@ function setAgendaMotion(id, motions) {
 		motionActions.find(".btn-do-close").hide();
 //		motionActions.hide();
 	}
+	
+//	motionContainer.find(".btn-vote").removeAttr("disabled");
 }
 
 function setAdvice() {

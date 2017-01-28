@@ -92,6 +92,7 @@ if (!$json) {
 	
 	$data["motions"] = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	$data["chats"] = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+//	$data["chats"] = array();
 
 	$chatAdvices = $chatAdviceBo->getByFilters(array("cad_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 

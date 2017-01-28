@@ -29,6 +29,7 @@ $data = array();
 $data["ok"] = "ok";
 $data["timestamp"] = time();
 $data["events"] = getEvents($meetingId);
+//$data["events"] = array();
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

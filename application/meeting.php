@@ -624,6 +624,7 @@ $("#start-meeting-modal").modal("show");
 <script src="assets/js/perpage/meeting_people.js"></script>
 <script src="assets/js/perpage/meeting_motion.js"></script>
 <script src="assets/js/perpage/meeting_events.js"></script>
+<script src="assets/js/perpage/meeting_timer.js"></script>
 
 <script type="text/javascript">
 

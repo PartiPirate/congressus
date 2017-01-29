@@ -79,6 +79,8 @@ if (!$json) {
 	//print_r($pings);
 	$now = getNow();
 
+	$numberOfConnected = 0;
+
 	foreach($pings as $index => $ping) {
 		$lastPing = new DateTime($ping["pin_datetime"]);
 
@@ -94,6 +96,9 @@ if (!$json) {
 				continue;
 			}
 		}
+		else {
+			$numberOfConnected++;
+		}
 
 		if (!$ping["pin_speaking_request"]) continue;
 		
@@ -106,6 +111,7 @@ if (!$json) {
 	$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 
 	$data = array();
+	$data["numberOfConnected"] = $numberOfConnected;
 	$data["notices"] = array();
 
 	$usedPings = array();

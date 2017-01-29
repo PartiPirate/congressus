@@ -1,5 +1,5 @@
 /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+/* global $ */
 
 function voteRound(value) {
 	return (Math.round(value * 100, 2) / 100);	

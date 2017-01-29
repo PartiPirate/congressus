@@ -1,3 +1,24 @@
+/*
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+
+	This file is part of Congressus.
+
+    Congressus is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Congressus is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* global $ */
+
+
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
 		if (hasRight(getUserId(), "handle_agenda")) {
@@ -363,12 +384,6 @@ function showPreviousPoint() {
 }
 
 $(function() {
-	var getAgendaTimer = $.timer(updateAgenda);
-	getAgendaTimer.set({ time : 5000, autostart : true });
-
-	var getAgendaPointTimer = $.timer(updateAgendaPoint);
-	getAgendaPointTimer.set({ time : 1500, autostart : true });
-	
 	$(".meeting .row").on("click", "a.agenda-link", showAgendaPoint);
 	$("body").on("click", ".btn-next-point", showNextPoint);
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);

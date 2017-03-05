@@ -34,6 +34,16 @@ function getUserId() {
 	return userId;
 }
 
+function isGuest() {
+	var userId = getUserId();
+	
+	if (("" + userId).indexOf("G") != -1) {
+		return true;
+	}
+	
+	return false;
+}
+
 function hasVotingRight(id) {
 	return $("#noticed-people .members li#member-"+id+" .voting.can-vote").length > 0;
 }
@@ -57,6 +67,8 @@ function hasRight(userId, right) {
 
 	has |= $(".mee_president_member_id").data("id") == userId;
 	has |= $(".mee_secretary_member_id").data("id") == userId;
+	
+	if (isGuest) return has;
 	
 	if (meeting && meeting["mee_rights"]) {
 		for(var index = 0; index < meeting["mee_rights"].length; ++index) {
@@ -1545,10 +1557,12 @@ $(function() {
 	
 	updateTasks();
 	updateAgendaPoint();
+
 	
 	$(".resizable").resizable({
 		animate: true
 	});
+	
 });
 
 // Framatalk

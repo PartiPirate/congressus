@@ -31,6 +31,12 @@ require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
+$userId = SessionUtils::getUserId($_SESSION);
+if (!$userId) {
+	echo json_encode(array("ko" => "ko", "message" => "logged_method"));
+	exit();
+}
+
 $memcache = openMemcacheConnection();
 
 $connection = openConnection();

@@ -237,7 +237,7 @@ foreach($lines as $line) {
 ?>
 
 <script>
-var query = "<?php echo str_replace("\"", "\\\"", $_REQUEST["query"]); ?>";
+var query = <?php echo json_encode($_REQUEST["query"]); ?>;
 var data = <?php echo json_encode($root); ?>;
 
 $('#tree-results').treeview({

@@ -164,9 +164,9 @@ if (!$userId) {
 					<br />
 					<span class="closed-meeting simply-hidden">Séance fermée</span>
 					<br class="export-br simply-hidden">
-					<a href="meeting/do_export.php?template=html&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
-					<a href="meeting/do_export.php?template=pdf&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
-					<a href="meeting/do_export.php?template=markdown&id=<?php echo $_REQUEST["id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a>
+					<a href="meeting/do_export.php?template=html&id=<?php echo $mEETING["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
+					<a href="meeting/do_export.php?template=pdf&id=<?php echo $mEETING["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
+					<a href="meeting/do_export.php?template=markdown&id=<?php echo $mEETING["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a>
 				</div>
 			</div>
 		</div>

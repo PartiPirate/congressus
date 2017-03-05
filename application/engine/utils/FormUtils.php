@@ -17,7 +17,7 @@
     along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function xssClean($data)
+function xssClean($data, $withStripTags = false)
 {
 	// Fix &entity\n;
 	$data = str_replace(array('&amp;','&lt;','&gt;'), array('&amp;amp;','&amp;lt;','&amp;gt;'), $data);
@@ -52,17 +52,21 @@ function xssClean($data)
 	{
 		// Remove really unwanted tags
 		$old_data = $data;
-		$data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
+		$data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml|svg)[^>]*+>#i', '', $data);
 	}
 	while ($old_data !== $data);
+	
+	if ($withStripTags) {
+		$data = strip_tags($data);
+	}
 
 	// we are done...
 	return $data;
 }
 
-function xssCleanArray(&$array) {
+function xssCleanArray(&$array, $withStripTags = false) {
 	foreach($array as $key => $value) {
-		$array[$key] = xssClean($array[$key]);
+		$array[$key] = xssClean($array[$key], $withStripTags);
 	}
 }
 

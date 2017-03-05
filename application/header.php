@@ -25,7 +25,12 @@ include_once("config/database.php");
 include_once("language/language.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
+require_once("engine/utils/FormUtils.php");
 include_once("engine/utils/LogUtils.php");
+
+xssCleanArray($_REQUEST, true);
+xssCleanArray($_GET, true);
+xssCleanArray($_POST, true);
 
 addLog($_SERVER, $_SESSION);
 

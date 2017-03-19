@@ -29,6 +29,14 @@ if (!$_SESSION["administrator"]) {
 $data["ok"] = "ok";
 
 // config.php
+
+$ballot_majorities = explode(",", $_REQUEST["congressus_ballot_majorities_input"]);
+foreach($ballot_majorities as $id => $majority) {
+	$ballot_majorities[$id] = trim($majority);
+}
+
+$ballot_majorities = "array(" . implode(", ", $ballot_majorities) . ")";
+
 $configDotPhp = "<?php
 if(!isset(\$config)) {
 	\$config = array();
@@ -57,6 +65,7 @@ if(!isset(\$config)) {
 // The server line, ex : dev, beta - Leave it empty for production
 \$config[\"server\"][\"line\"] = \"" . $_REQUEST["server_line_input"] . "\";
 \$config[\"server\"][\"timezone\"] = \"" . $_REQUEST["server_timezone_input"] . "\";
+\$config[\"congressus\"][\"ballot_majorities\"] = \"" . $ballot_majorities . "\";
 
 ?>";
 

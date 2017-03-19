@@ -59,5 +59,6 @@ $lang["administration_alert_ping_ok"] = "La configuration base de données est b
 $lang["administration_alert_ping_no_host"] = "Hôte inconnu";
 $lang["administration_alert_ping_bad_credentials"] = "Mauvais compte";
 $lang["administration_alert_ping_no_database"] = "Base de données inexistante";
+$lang["administration_congressus_ballot_majorities"] = "Modalité de vote";
 
 ?>

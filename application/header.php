@@ -30,7 +30,10 @@ include_once("engine/utils/LogUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
 
-$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+$gamifierClient = null;
+if (isset($config["gamifier"]["url"])) {
+	$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+}
 
 xssCleanArray($_REQUEST, true);
 xssCleanArray($_GET, true);
@@ -51,13 +54,15 @@ if (SessionUtils::getUserId($_SESSION)) {
 	$sessionUser = SessionUtils::getUser($_SESSION);
 	$sessionUserId = SessionUtils::getUserId($_SESSION);
 
-	$gamifiedUser = $gamifierClient->getUserInformation(sha1($config["gamifier"]["user_secret"] . $sessionUserId), $config["gamifier"]["service_uuid"], $config["gamifier"]["service_secret"]);
-
-	foreach($gamifiedUser["data"]["badges"] as $userBadge) {
-//		print_r($userBadge);
-		if (!$userBadge["noticed"]) {
-			$hasUnnoticed = true;
-			break;
+	if ($gamifierClient) {
+		$gamifiedUser = $gamifierClient->getUserInformation(sha1($config["gamifier"]["user_secret"] . $sessionUserId), $config["gamifier"]["service_uuid"], $config["gamifier"]["service_secret"]);
+	
+		foreach($gamifiedUser["data"]["badges"] as $userBadge) {
+	//		print_r($userBadge);
+			if (!$userBadge["noticed"]) {
+				$hasUnnoticed = true;
+				break;
+			}
 		}
 	}
 
@@ -171,7 +176,9 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
+<?php 	if ($gamifierClient) { ?>
 							<li id="mybadgesLi"class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
+<?php	} ?>
 							<li class="divider"></li>
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>
 						</ul>

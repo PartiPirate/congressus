@@ -69,7 +69,10 @@ if (strpos($method, "do_get") === false) {
 
 //error_log(print_r($_POST, true));
 
-$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+$gamifierClient = null;
+if (isset($config["gamifier"]["url"])) {
+    $gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+}
 
 include("meeting/$method.php");
 

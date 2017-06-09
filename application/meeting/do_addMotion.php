@@ -91,17 +91,19 @@ $agendaBo->save($agenda);
 $data["ok"] = "ok";
 $data["motion"] = $motion;
 
-$events = array();
-$events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a732471-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
-
-$addEventsResult = $gamifierClient->addEvents($events);
+if ($gamifierClient) {
+    $events = array();
+    $events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a732471-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
+    
+    $addEventsResult = $gamifierClient->addEvents($events);
+    
+    $data["gamifiedUser"] = $addEventsResult;
+}
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
 
 addEvent($meetingId, EVENT_MOTION_ADD, "Une nouvelle motion dans le point \"".$agenda["age_label"]."\"");
-
-$data["gamifiedUser"] = $addEventsResult;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

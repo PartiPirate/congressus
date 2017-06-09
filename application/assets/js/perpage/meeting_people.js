@@ -17,6 +17,9 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global getUserId */
+/* global hasWritingRight */
+/* global hasRight */
 
 var peoples = {};
 var numberOfConnected = 0;
@@ -333,7 +336,7 @@ function addNotice(notice, parent) {
 		title.append($("<span />", {"class": "notice-name"}).append(notice.not_label));
 
 		if (notice.not_power && notice.not_voting == 1) {
-			power = $("<span />", {style: "margin-left: 5px;"});
+			var power = $("<span />", {style: "margin-left: 5px;"});
 
 			var powerSpan = $("<span />", {"class": "power"});
 			powerSpan.append(notice.not_power);
@@ -539,9 +542,25 @@ function updatePeople() {
 
 		if (hasWritingRight(userId)) {
 			$(".btn-add-motion, .btn-add-task").show();
+			if ($(".speaker").text()) {
+				$(".btn-remove-speaker").show().removeAttr("disabled");
+
+			}
+			else {
+				$(".btn-remove-speaker").hide().attr("disabled", "disabled");
+			}
+			
 		}
 		else {
 			$(".btn-add-motion, .btn-add-task").hide();
+			$(".btn-remove-speaker").hide().attr("disabled", "disabled");
+		}
+		
+		if ($(".speaker").text()) {
+			$(".speaking-time").show();
+		}
+		else {
+			$(".speaking-time").hide();
 		}
 
 		var isPeopleNoticed = true;
@@ -592,7 +611,8 @@ function setSpeaking(event) {
 	var meetingId = $(".meeting").data("id");
 	var userId = $(this).data("id");
 
-	$.get("meeting_api.php?method=do_setSpeaking", {meetingId: meetingId, userId: userId}, function(data) {
+	$.get("meeting_api.php?method=do_setSpeaking", {meetingId: meetingId, userId: userId, speakingTime: speakingTime}, function(data) {
+		speakingTime = 0;
 	}, "json");
 }
 
@@ -987,11 +1007,48 @@ function addNoticeHandlers() {
 	});
 }
 
+var speakingTime = 0;
+
+function updateTime() {
+	if ($(".speaker").text()) {
+		speakingTime++;
+	}
+
+	var seconds = speakingTime % 60;
+	var minutes = (speakingTime - seconds) / 60
+
+	seconds = (seconds < 10 ? "0" : "") + seconds;
+	minutes = (minutes < 10 ? "0" : "") + minutes;
+
+	$(".speaking-time").text(minutes + ":" + seconds);
+}
+
+function addSpeakerHandlers() {
+	$(".btn-remove-speaker").click(function(event) {
+		$(".btn-remove-speaker").attr("disabled", "disabled");
+
+		var meetingId = $(".meeting").data("id");
+
+		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId, speakingTime: speakingTime}, function(data) {
+			$(".speaker").text("");
+			$(".btn-remove-speaker").hide();
+			$(".speaking-time").hide();
+
+			speakingTime = 0;
+		}, "json");
+	});
+	
+	var timeTimer = $.timer(updateTime);
+	timeTimer.set({ time : 1000, autostart : true });
+
+}
+
 $(function() {
 	$(".speaking-requesters").on("click", "button", setSpeaking);
 
 	addPresidentHandlers();
 	addNoticeHandlers();
+	addSpeakerHandlers();
 
 	ping();
 	updatePeople();

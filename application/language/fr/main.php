@@ -42,7 +42,9 @@ $lang["menu_index"] = "Accueil";
 $lang["menu_createMeeting"] = "Créer une réunion";
 $lang["menu_myMeetings"] = "Mes réunions";
 $lang["menu_groupMeetings"] = "Réunions d'instance";
+$lang["menu_decisions"] = "Décisions";
 $lang["menu_mypreferences"] = "Mes préférences";
+$lang["menu_mybadges"] = "Mes badges";
 $lang["menu_logout"] = "Se déconnecter";
 $lang["menu_login"] = "Se connecter";
 $lang["menu_administration"] = "Administration";
@@ -65,6 +67,8 @@ $lang["breadcrumb_about"] = "À Propos";
 $lang["breadcrumb_search"] = "Rechercher";
 $lang["breadcrumb_connect"] = "Se connecter";
 $lang["breadcrumb_administration"] = "Administration";
+$lang["breadcrumb_decisions"] = "Décisions";
+$lang["breadcrumb_mybadges"] = "Mes badges";
 
 $lang["index_guide"] = "Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
 fournir l'infrastructure Galette + Personae.<br>
@@ -73,6 +77,8 @@ Un outil de recherche permet de rechercher tout ou parti d'un propos, d'une moti
 ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
 $lang["index_downloadCalendar"] = "Télécharger le calendrier iCal";
+
+$lang["mybadges_guide"] = "Les badges que vous avez obtenus ou que vous pouvez obtenir";
 
 $lang["meeting_noticed_people"] = "Personnes convoqués";
 $lang["meeting_visitors"] = "Visiteurs";

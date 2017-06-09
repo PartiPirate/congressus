@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -97,7 +97,12 @@ class VoteBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
+		$query = "	SELECT
+						$this->TABLE.*,
+						motion_propositions.*,
+						motions.*,
+						".$this->galetteDatabase."galette_adherents.id_adh,
+						".$this->galetteDatabase."galette_adherents.pseudo_adh
 					FROM $this->TABLE
 					JOIN motion_propositions ON mpr_id = vot_motion_proposition_id
 					JOIN motions ON mot_id = mpr_motion_id

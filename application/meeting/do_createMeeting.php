@@ -27,6 +27,8 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/MeetingBo.php");
 
+require_once("engine/utils/GamifierClient.php");
+
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
@@ -60,6 +62,13 @@ $location["loc_extra"] = $_REQUEST["loc_extra"];
 $location["loc_principal"] = 1;
 
 $locationBo->save($location);
+
+$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+
+$events = array();
+$events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a730dcc-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
+
+$addEventsResult = $gamifierClient->addEvents($events);
 
 if (isset($_REQUEST["ajax"])) {
 	echo json_encode($data, JSON_NUMERIC_CHECK);

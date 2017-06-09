@@ -114,10 +114,12 @@ class SearchBo {
 						con_text AS text,
 						meetings.*,
 						agendas.*,
-						conclusions.*
+						conclusions.*,
+						notices.*
 					FROM  meetings
 					JOIN agendas ON age_meeting_id = mee_id
 					JOIN conclusions ON con_agenda_id = age_id
+					LEFT JOIN notices ON not_meeting_id = mee_id AND not_voting = 1
 					WHERE con_text LIKE :likeQuery";
 
 		//		echo showQuery($query, $args);
@@ -126,6 +128,14 @@ class SearchBo {
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 		$queryResults = $statement->fetchAll();
+
+		foreach($queryResults as $index => $line) {
+			foreach($line as $field => $value) {
+				if (is_numeric($field)) {
+					unset($queryResults[$index][$field]);
+				}
+			}
+		}
 
 		return $queryResults;
 	}
@@ -197,7 +207,7 @@ class SearchBo {
 						motions.*
 					FROM  meetings
 					JOIN agendas ON age_meeting_id = mee_id
-					JOIN motions ON mot_agenda_id = age_id
+					JOIN motions ON mot_agenda_id = age_id AND mot_deleted = 0
 					WHERE mot_title LIKE :likeQuery OR mot_description LIKE :likeQuery";
 
 		//		echo showQuery($query, $args);
@@ -222,11 +232,13 @@ class SearchBo {
 						meetings.*,
 						agendas.*,
 						motions.*,
-						motion_propositions.*
+						motion_propositions.*,
+						notices.*
 					FROM  meetings
 					JOIN agendas ON age_meeting_id = mee_id
-					JOIN motions ON mot_agenda_id = age_id
+					JOIN motions ON mot_agenda_id = age_id AND mot_deleted = 0
 					JOIN motion_propositions ON mpr_motion_id = mot_id
+					LEFT JOIN notices ON not_meeting_id = mee_id AND not_voting = 1
 					WHERE mpr_label LIKE :likeQuery";
 
 		$args = array("likeQuery" => $likeQuery);
@@ -234,6 +246,14 @@ class SearchBo {
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 		$queryResults = $statement->fetchAll();
+
+		foreach($queryResults as $index => $line) {
+			foreach($line as $field => $value) {
+				if (is_numeric($field)) {
+					unset($queryResults[$index][$field]);
+				}
+			}
+		}
 
 		return $queryResults;
 	}

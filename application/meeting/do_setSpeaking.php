@@ -59,6 +59,8 @@ $pings = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID
 foreach ($pings as $ping) {
 	$myping = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
 	$myping["pin_speaking"] = 0;
+	$myping["pin_speaking_time"] = $ping["pin_speaking_time"] + intval($_REQUEST["speakingTime"]);
+
 	$pingBo->save($myping);
 }
 

@@ -26,6 +26,7 @@ include_once("config/mail.php");
 include_once("language/language.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
+require_once("engine/utils/GamifierClient.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/NoticeBo.php");
@@ -67,6 +68,8 @@ if (strpos($method, "do_get") === false) {
 }
 
 //error_log(print_r($_POST, true));
+
+$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
 
 include("meeting/$method.php");
 

@@ -17,6 +17,8 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global testBadges */
+/* global bootbox */
 
 
 keyupTimeoutId = null;
@@ -364,6 +366,7 @@ function addOwnChat() {
 	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
 		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
+		testBadges(data.gamifiedUser.data);
 	}, "json");
 }
 
@@ -394,6 +397,8 @@ function addMotion(event) {
 	var meetingId = $(".meeting").data("id");
 
 	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId}, function(data) {
+		testBadges(data.gamifiedUser.data);
+
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
 	}, "json");
@@ -806,6 +811,7 @@ function vote(event) {
                 										"power": power}, function(data) {
                 			if (data.ok) {
                 				addVotes([data.vote], proposition, motion);
+								testBadges(data.gamifiedUser.data);
                 			}
                 		}, "json");
                     }
@@ -873,6 +879,7 @@ function vote(event) {
 	                										"power": power}, function(data) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
+									testBadges(data.gamifiedUser.data);
 	                			}
 	                		}, "json");
 

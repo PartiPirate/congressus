@@ -97,6 +97,11 @@ foreach($chat as $key => $value) {
 $data["ok"] = "ok";
 $data["chat"] = $chat;
 
+$events = array();
+$events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a732593-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
+
+$addEventsResult = $gamifierClient->addEvents($events);
+
 $agenda["age_objects"][] = array("chatId" => $chat[$chatBo->ID_FIELD]);
 $agenda["age_objects"] = json_encode($agenda["age_objects"]);
 
@@ -104,6 +109,8 @@ $agendaBo->save($agenda);
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
+
+//$data["gamifiedUser"] = $addEventsResult;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

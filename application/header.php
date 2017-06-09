@@ -28,6 +28,10 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
 include_once("engine/utils/LogUtils.php");
 
+require_once("engine/utils/GamifierClient.php");
+
+$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+
 xssCleanArray($_REQUEST, true);
 xssCleanArray($_GET, true);
 xssCleanArray($_POST, true);
@@ -40,10 +44,22 @@ addLog($_SERVER, $_SESSION);
 $isConnected = false;
 $isAdministrator = false;
 $sessionUserId = 0;
+$hasUnnoticed = false;
+$gamifiedUser = null;
 
 if (SessionUtils::getUserId($_SESSION)) {
 	$sessionUser = SessionUtils::getUser($_SESSION);
 	$sessionUserId = SessionUtils::getUserId($_SESSION);
+
+	$gamifiedUser = $gamifierClient->getUserInformation(sha1($config["gamifier"]["user_secret"] . $sessionUserId), $config["gamifier"]["service_uuid"], $config["gamifier"]["service_secret"]);
+
+	foreach($gamifiedUser["data"]["badges"] as $userBadge) {
+//		print_r($userBadge);
+		if (!$userBadge["noticed"]) {
+			$hasUnnoticed = true;
+			break;
+		}
+	}
 
 	$isConnected = true;
 }
@@ -102,7 +118,9 @@ $connection = openConnection();
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
-
+<script>
+var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]) : "{badges:[]}"); ?>;
+</script>
 <link rel="shortcut icon" type="image/png" href="favicon.png" />
 </head>
 <body>
@@ -124,6 +142,7 @@ $connection = openConnection();
 			<div class="collapse navbar-collapse" id="otb-navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	if ($isConnected) {?>
 					<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
@@ -148,10 +167,11 @@ $connection = openConnection();
 
 					<?php 	if ($isConnected || $isAdministrator) {?>
 					<?php 	if ($isConnected) {?>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $sessionUser["pseudo_adh"]; ?> <span
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $sessionUser["pseudo_adh"]; ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
+							<li id="mybadgesLi"class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
 							<li class="divider"></li>
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>
 						</ul>

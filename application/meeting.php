@@ -132,7 +132,13 @@ if (!$userId) {
 				<div class="panel-body">
 					<div class="row form-horizontal">
 						<label class="control-label col-md-3">A la parole : </label>
-						<label class="control-label col-md-9 speaker" style="text-align: left;"></label>
+						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
+						<label class="control-label col-md-2 speaking-time"></label>
+						<label class="control-label col-md-5">
+							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
+								title="Retirer la parole"
+								style="display: none;">Fin de parole <span class="glyphicon glyphicon-remove"></span>
+						</label>
 					</div>
 					<div class="row form-horizontal">
 						<label class="control-label col-md-3">Demande la parole : </label>

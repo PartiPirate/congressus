@@ -57,14 +57,21 @@ $voteBo->save($vote);
 $vote = $voteBo->getById($vote[$voteBo->ID_FIELD]);
 
 $vote["mem_id"] = $vote["id_adh"] ? $vote["id_adh"] : "G" . $vote["chat_guest_id"];
-$vote["mem_nickname"] = $vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["pin_nickname"];
+$vote["mem_nickname"] = htmlspecialchars(utf8_encode($vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["pin_nickname"]));
 
 $data["ok"] = "ok";
 $data["vote"] = $vote;
 
+$events = array();
+$events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a73250f-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
+
+$addEventsResult = $gamifierClient->addEvents($events);
+
 $pointId = $motion["mot_agenda_id"];
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
+
+$data["gamifiedUser"] = $addEventsResult;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

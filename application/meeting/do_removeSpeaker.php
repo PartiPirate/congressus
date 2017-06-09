@@ -22,23 +22,23 @@ if (!isset($api)) exit();
 include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/PingBo.php");
+require_once("engine/utils/EventStackUtils.php");
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
 $meetingId = $_REQUEST["meetingId"];
-$memcacheKey = "do_getAgenda_$meetingId";
 
 $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection);
-$agendaBo = AgendaBo::newInstance($connection);
+$pingBo = PingBo::newInstance($connection, $config);
 
-$meeting = $meetingBo->getById($meetingId);
+$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -52,35 +52,29 @@ if (false) {
 	exit();
 }
 
-$userId = SessionUtils::getUserId($_SESSION);
+//print_r($meeting);
 
-$data = array();
+$meetingId = $meeting[$meetingBo->ID_FIELD];
+$memcacheKey = "do_getPeople_$meetingId";
 
-$agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
-$agenda["age_order"] = time();
-$agenda["age_active"] = 0;
-$agenda["age_expected_duration"] = 0;
-$agenda["age_label"] = "Nouveau point";
-$agenda["age_objects"] = "[]";
-$agenda["age_description"] = "Pas de description";
-if (isset($_REQUEST["parentId"]) && $_REQUEST["parentId"]) {
-	// TODO verify if the parent is in the same meeting
-	$agenda["age_parent_id"] = $_REQUEST["parentId"];
+$pings = $pingBo->getByFilters(array("pin_meeting_id" => $meetingId, "pin_speaking" => 1));
+
+//print_r($pings);
+
+foreach ($pings as $ping) {
+	
+//	print_r($ping);
+	
+	$myping = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
+	$myping["pin_speaking_time"] = $ping["pin_speaking_time"] + intval($_REQUEST["speakingTime"]);
+	$myping["pin_speaking"] = 0;
+
+	$pingBo->save($myping);
 }
 
 $memcache->delete($memcacheKey);
 
-$agendaBo->save($agenda);
-
-$data["agenda"] = $agenda;
 $data["ok"] = "ok";
-
-$events = array();
-$events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a732379-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
-
-$addEventsResult = $gamifierClient->addEvents($events);
-
-$data["gamifiedUser"] = $addEventsResult;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

@@ -17,6 +17,10 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global hasRight */
+/* global getUserId */
+/* global testBadges */
+/* global bootbox */
 
 
 function addAgendaHandlers() {
@@ -75,6 +79,8 @@ function addAgendaHandlers() {
 				adder.append(agendaLi);
 
 				agendaLi.click();
+
+				testBadges(data.gamifiedUser.data);
 			}, "json");
 		}
 	});

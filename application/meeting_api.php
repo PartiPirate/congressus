@@ -30,6 +30,7 @@ require_once("engine/utils/GamifierClient.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/NoticeBo.php");
+require_once("engine/bo/GameEvents.php");
 
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
@@ -72,6 +73,20 @@ if (strpos($method, "do_get") === false) {
 $gamifierClient = null;
 if (isset($config["gamifier"]["url"])) {
     $gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
+}
+
+function createGameEvent($userId, $eventId) {
+    global $config;
+
+    $event = array("user_uuid" => computeGameUserId($userId), "event_uuid" => $eventId, "service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
+    
+    return $event;
+}
+
+function computeGameUserId($userId) {
+    global $config;
+
+    return sha1($config["gamifier"]["user_secret"] . $userId);
 }
 
 include("meeting/$method.php");

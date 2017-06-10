@@ -77,8 +77,8 @@ $data["ok"] = "ok";
 
 if ($gamifierClient) {
     $events = array();
-    $events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a732379-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
-    
+    $events[] = createGameEvent($userId, GameEvents::CREATE_AGENDA);
+
     $addEventsResult = $gamifierClient->addEvents($events);
     
     $data["gamifiedUser"] = $addEventsResult;

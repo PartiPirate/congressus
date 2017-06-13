@@ -25,7 +25,7 @@ class GameEvents {
     const HAS_VOTED         = "0a73250f-3a64-11e7-bc38-0242ac110005";
     const HAS_CHATED        = "0a732593-3a64-11e7-bc38-0242ac110005";
     const HAS_APPROVED      = "3ba26455-4dc1-11e7-bc38-0242ac110005";
-    const HAS_REPPROVED     = "3ba2669c-4dc1-11e7-bc38-0242ac110005";
+    const HAS_REPROVED      = "3ba2669c-4dc1-11e7-bc38-0242ac110005";
     const IS_APPROVED       = "3ba267d1-4dc1-11e7-bc38-0242ac110005";
-    const IS_REPPROVED      = "3ba26901-4dc1-11e7-bc38-0242ac110005";
+    const IS_REPROVED       = "3ba26901-4dc1-11e7-bc38-0242ac110005";
 }

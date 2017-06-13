@@ -353,6 +353,7 @@ function setAdvice() {
 
 	$.post("meeting_api.php?method=do_setAdvice", {meetingId : meetingId, agendaId: agendaId, chatId: chatId, advice: advice}, function(data) {
 		if (data.ok) {
+			testBadges(data.gamifiedUser.data);
 		}
 	}, "json");
 

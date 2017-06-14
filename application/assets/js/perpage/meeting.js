@@ -295,6 +295,9 @@ function setAgendaMotion(id, motions) {
 			}
 			else {
 				motionActions.find(".btn-motion-anonymous").removeClass("active");
+				if (!hasRight(getUserId(), "handle_motion")) {
+					motionActions.find(".btn-motion-anonymous").hide();
+				}
 			}
 
 			motionActions.find(".btn-motion-anonymous").prop("disabled", !hasRight(getUserId(), "handle_motion"));

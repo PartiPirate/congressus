@@ -22,6 +22,7 @@ $lang["time_format"] = "H:iA";
 $lang["datetime_format"] = "the {date} at {time}";
 
 $lang["common_validate"] = "Validate";
+$lang["common_create"] = "Create";
 $lang["common_delete"] = "Delete";
 $lang["common_fork"] = "Fork";
 $lang["common_reject"] = "Reject";
@@ -142,6 +143,46 @@ $lang["timelines_search_placeholder"] = "tweet id or its url";
 $lang["timelines_waiting_tweets"] = "See \${numberOfTweets} new Tweets";
 $lang["timelines_waiting_tweet"] = "See 1 new Tweet";
 $lang["property_retweet_by"] = "RT by \${tweet_user_name} @\${tweet_user_screen_name}";
+
+$lang["calendar_prev"] = "Previous";
+$lang["calendar_today"] = "Today";
+$lang["calendar_next"] = "Next";
+$lang["calendar_year"] = "Year";
+$lang["calendar_month"] = "Month";
+$lang["calendar_week"] = "Week";
+$lang["calendar_day"] = "Day";
+
+$lang["createMeeting_name"] = "Meeting's name :";
+$lang["createMeeting_datetime"] = "Date and time of the meeting :";
+$lang["createMeeting_datetimeError"] = "Please, use a date with the format YYYY-MM-DD and a time with the format HH:MM";
+$lang["createMeeting_lenght"] = "Planned lenght :";
+$lang["createMeeting_lenght_hour"] = "hour";
+$lang["createMeeting_lenght_hours"] = "hours";
+$lang["createMeeting_lenght_day"] = "day";
+$lang["createMeeting_lenght_days"] = "days";
+$lang["createMeeting_type"] = "Event's type :";
+$lang["createMeeting_type_meeting"] = "Meeting";
+$lang["createMeeting_type_aperitif"] = "Aperitif";
+$lang["createMeeting_type_generalMeeting"] = "General Meeting";
+$lang["createMeeting_type_extraordinaryGeneralMeeting"] = "Extraordinary General Meeting";
+$lang["createMeeting_visualIndication"] = "Visual indication :";
+$lang["createMeeting_visualIndication_info"] = "Info";
+$lang["createMeeting_visualIndication_important"] = "Important";
+$lang["createMeeting_visualIndication_warning"] = "Warning";
+$lang["createMeeting_visualIndication_reversed"] = "Reversed";
+$lang["createMeeting_visualIndication_success"] = "Success";
+$lang["createMeeting_visualIndication_special"] = "Special";
+$lang["createMeeting_place"] = "Place's type :";
+$lang["createMeeting_placeAddress"] = "Place address :";
+
+$lang["groupMeeting_name"] = "Meeting's name";
+$lang["groupMeeting_status"] = "Meeting's status";
+$lang["groupMeeting_empty"] = "There is no meeting";
+
+$lang["loc_type_mumble"] = "On mumble";
+$lang["loc_type_afk"] = "In a physical place";
+$lang["loc_type_irc"] = "On irc";
+$lang["loc_type_framatalk"] = "On framatalk";
 
 $lang["mypreferences_guide"] = "Change my preferences.";
 $lang["mypreferences_form_legend"] = "Configuration of your access";

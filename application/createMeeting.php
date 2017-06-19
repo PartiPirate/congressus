@@ -28,13 +28,13 @@ include_once("header.php");
 	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal" id="create-meeting-form">
 
 		<div class="form-group">
-			<label for="mee_label" class="col-md-4 control-label">Nom de la réunion :</label>
+			<label for="mee_label" class="col-md-4 control-label"><?php echo lang("createMeeting_name"); ?></label>
 			<div class="col-md-8">
 				<input type="text" class="form-control input-md" id="mee_label" name="mee_label" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="mee_date" class="col-md-4 control-label">Date et heure de la réunion :</label>
+			<label for="mee_date" class="col-md-4 control-label"><?php echo lang("createMeeting_datetime"); ?></label>
 			<div class="col-md-2">
 				<input type="date" class="form-control input-md"
 					placeholder="aaaa-mm-jj" id="mee_date" name="mee_date" />
@@ -45,57 +45,57 @@ include_once("header.php");
 			</div>
 		</div>
 		<div class="alert alert-danger simply-hidden" id="date-time-error-alert">
-			Veuillez entre une date au format AAAA-MM-JJ et un horaire au format HH:MM
+			<?php echo lang("createMeeting_datetimeError"); ?>
 		</div>
 		<div class="form-group">
-			<label for="mee_expected_duration" class="col-md-4 control-label">Durée prévue :</label>
+			<label for="mee_expected_duration" class="col-md-4 control-label"><?php echo lang("createMeeting_lenght"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_expected_duration" name="mee_expected_duration">
-					<option value="60">1 heure</option>
-					<option value="120">2 heures</option>
-					<option value="180">3 heures</option>
-					<option value="240">4 heures</option>
-					<option value="480">8 heures</option>
-					<option value="1440">1 jour</option>
-					<option value="2880">2 jours</option>
-					<option value="4320">3 jours</option>
+					<option value="60">1 <?php echo lang("createMeeting_lenght_hour"); ?></option>
+					<option value="120">2 <?php echo lang("createMeeting_lenght_hours"); ?></option>
+					<option value="180">3 <?php echo lang("createMeeting_lenght_hours"); ?></option>
+					<option value="240">4 <?php echo lang("createMeeting_lenght_hours"); ?></option>
+					<option value="480">8 <?php echo lang("createMeeting_lenght_hours"); ?></option>
+					<option value="1440">1 <?php echo lang("createMeeting_lenght_day"); ?></option>
+					<option value="2880">2 <?php echo lang("createMeeting_lenght_days"); ?></option>
+					<option value="4320">3 <?php echo lang("createMeeting_lenght_days"); ?></option>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="mee_meeting_type_id" class="col-md-4 control-label">Type événement :</label>
+			<label for="mee_meeting_type_id" class="col-md-4 control-label"><?php echo lang("createMeeting_type"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_meeting_type_id" name="mee_meeting_type_id">
-					<option value="1">Réunion</option>
-					<option value="2">Apéro</option>
-					<option value="3">Assemblée Générale Ordinaire</option>
-					<option value="4">Assemblée Générale Extra-ordinaire</option>
+					<option value="1"><?php echo lang("createMeeting_type_meeting"); ?></option>
+					<option value="2"><?php echo lang("createMeeting_type_aperitif"); ?></option>
+					<option value="3"><?php echo lang("createMeeting_type_generalMeeting"); ?></option>
+					<option value="4"><?php echo lang("createMeeting_type_extraordinaryGeneralMeeting"); ?></option>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="mee_class" class="col-md-4 control-label">Indication visuelle :</label>
+			<label for="mee_class" class="col-md-4 control-label"><?php echo lang("createMeeting_visualIndication"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_class" name="mee_class">
-					<option class="event-info" style="color: black;" value="event-info">Info</option>
-					<option class="event-important" style="color: white;" value="event-important">Important</option>
-					<option class="event-warning" style="color: white;" value="event-warning">Avertissement</option>
-					<option class="event-inverse" style="color: white;" value="event-inverse">Inversé</option>
-					<option class="event-success" style="color: white;" value="event-success">Succès</option>
-					<option class="event-special" style="color: white;" value="event-special">Spécial</option>
+					<option class="event-info" style="color: black;" value="event-info"><?php echo lang("createMeeting_visualIndication_info"); ?></option>
+					<option class="event-important" style="color: white;" value="event-important"><?php echo lang("createMeeting_visualIndication_important"); ?></option>
+					<option class="event-warning" style="color: white;" value="event-warning"><?php echo lang("createMeeting_visualIndication_warning"); ?></option>
+					<option class="event-inverse" style="color: white;" value="event-inverse"><?php echo lang("createMeeting_visualIndication_reversed"); ?></option>
+					<option class="event-success" style="color: white;" value="event-success"><?php echo lang("createMeeting_visualIndication_success"); ?></option>
+					<option class="event-special" style="color: white;" value="event-special"><?php echo lang("createMeeting_visualIndication_special"); ?></option>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="loc_type" class="col-md-4 control-label">Type de lieu :</label>
+			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="loc_type" name="loc_type">
-					<option value="afk">En espace réel</option>
-					<option value="mumble">Sur mumble</option>
-					<option value="framatalk">Sur framatalk</option>
+					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
+					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
+					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
 					<!--
 					<option value="irc">IRC</option>
 					 -->
@@ -104,7 +104,7 @@ include_once("header.php");
 		</div>
 
 		<div class="form-group">
-			<label class="col-md-4 control-label" for="loc_extra">Adresse du lieu :</label>
+			<label class="col-md-4 control-label" for="loc_extra"><?php echo lang("createMeeting_placeAddress"); ?></label>
 			<div class="col-md-4">
 		    	<textarea class="form-control" rows="4"
 		    		id="loc_extra" name="loc_extra"></textarea>

@@ -70,9 +70,9 @@ foreach($meetings as $meeting) {
 			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 60%">Nom de la réunion</th>
-						<th style="width: 15%">Statut de la réunion</th>
-						<th style="width: 170px;">Date</th>
+						<th style="width: 60%"><?php echo lang("groupMeeting_name"); ?></th>
+						<th style="width: 15%"><?php echo lang("groupMeeting_status"); ?></th>
+						<th style="width: 170px;"><?php echo lang("groupMeeting_name"); ?>Date</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -95,7 +95,7 @@ foreach($meetings as $meeting) {
 			</table>
 <?php 		} else {?>
 <br>
-			<div class="well">Il n'y a pas de réunion</div>
+			<div class="well"><?php echo lang("groupMeeting_empty"); ?></div>
 <?php 		}?>
 
 

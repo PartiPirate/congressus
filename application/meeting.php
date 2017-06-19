@@ -34,7 +34,7 @@ else {
 	$end = new DateTime($meeting["mee_datetime"]);
 	$duration = new DateInterval("PT" . ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60) . "M");
 	$end = $end->add($duration);
-	
+
 	if ($meeting["loc_type"] == "framatalk") {
 		$framachan = sha1($meeting["mee_id"] . "framatalk" . $meeting["mee_id"]);
 	}
@@ -70,14 +70,14 @@ if (!$userId) {
 
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> Date de début :
+			<span class="glyphicon glyphicon-time"></span> <?php echo $lang("meeting_dateStart"); ?>
 			<span class="mee_start datetime-control">
-				le
+				<?php echo $lang("meeting_the"); ?>
 				<span class="date-control">
 					<span class="span-date"><?php echo @$start->format(lang("date_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
 				</span>
-				à
+				<?php echo $lang("meeting_at"); ?>
 				<span class="time-control">
 					<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
@@ -85,14 +85,14 @@ if (!$userId) {
 			</span>
 		</div>
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> Date de fin :
+			<span class="glyphicon glyphicon-time"></span> <?php echo $lang("meeting_dateEnd"); ?>
 			<span class="mee_finish datetime-control">
-				le
+				<?php echo $lang("meeting_the"); ?>e
 				<span class="date-control">
 					<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
 				</span>
-				à
+				<?php echo $lang("meeting_at"); ?>
 				<span class="time-control">
 					<span class="span-time"><?php echo @$end->format(lang("time_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
@@ -100,25 +100,25 @@ if (!$userId) {
 			</span>
 		</div>
 		<div class="col-md-6 president">
-			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> Président de séance :
+			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> <?php echo $lang("meeting_president"); ?>
 			<span class="mee_president_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="president">
 				<option value="0"></option>
-				<optgroup class="voting" label="Votants"></optgroup>
-				<optgroup class="noticed" label="Convoqués"></optgroup>
-				<optgroup class="connected" label="Connectés"></optgroup>
-				<optgroup class="unknown" label="Inconnus"></optgroup>
+				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
 		<div class="col-md-6 secretary">
-			<span class="fa fa-user" style="margin-top: 10px;"></span> Secrétaire de séance :
+			<span class="fa fa-user" style="margin-top: 10px;"></span> <?php echo $lang("meeting_secretary"); ?>
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="secretary">
 				<option value="0"></option>
-				<optgroup class="voting" label="Votants"></optgroup>
-				<optgroup class="noticed" label="Convoqués"></optgroup>
-				<optgroup class="connected" label="Connectés"></optgroup>
-				<optgroup class="unknown" label="Inconnus"></optgroup>
+				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
 	</div>
@@ -127,21 +127,21 @@ if (!$userId) {
 		<div class="col-md-8">
 			<div id="speaking-panel" class="panel panel-default">
 				<div class="panel-heading">
-					Gestion de la parole
+					<?php echo $lang("meeting_talkManagement"); ?>
 				</div>
 				<div class="panel-body">
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3">A la parole : </label>
+						<label class="control-label col-md-3"><?php echo $lang("meeting_speaking"); ?></label>
 						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
 						<label class="control-label col-md-2 speaking-time"></label>
 						<label class="control-label col-md-5">
 							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
-								title="Retirer la parole"
-								style="display: none;">Fin de parole <span class="glyphicon glyphicon-remove"></span>
+								title="<?php echo $lang("meeting_removeSpeaking"); ?>"
+								style="display: none;"><?php echo $lang("meeting_endSpeaking"); ?> <span class="glyphicon glyphicon-remove"></span>
 						</label>
 					</div>
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3">Demande la parole : </label>
+						<label class="control-label col-md-3"><?php echo $lang("meeting_askSpeaking"); ?> : </label>
 						<div class="col-md-9 speaking-requesters">
 						</div>
 					</div>
@@ -151,24 +151,24 @@ if (!$userId) {
 		<div class="col-md-4">
 			<div id="meeting-status-panel" class="panel panel-default">
 				<div class="panel-heading">
-					Action sur la réunion
+					<?php echo $lang("meeting_action"); ?>
 				</div>
 				<div class="panel-body text-center">
 
-					<button class="btn btn-primary btn-waiting-meeting simply-hidden">Prête</button>
-					<button class="btn btn-danger btn-delete-meeting simply-hidden">Supprimer</button>
-					<button class="btn btn-success btn-open-meeting simply-hidden">Ouvrir la séance</button>
-					<button class="btn btn-danger btn-close-meeting simply-hidden">Clore la séance</button>
-					<button class="btn btn-default request-speaking">Demander la parole
+					<button class="btn btn-primary btn-waiting-meeting simply-hidden"><?php echo $lang("meeting_waiting"); ?></button>
+					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo $lang("meeting_delete"); ?></button>
+					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo $lang("meeting_open"); ?></button>
+					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo $lang("meeting_close"); ?></button>
+					<button class="btn btn-default request-speaking"><?php echo $lang("meeting_askSpeaking"); ?>
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>
 					</button>
 					<br />
 					<button class="btn btn-default btn-local-anonymous" data-toggle="tooltip" data-placement="bottom"
-						title="Se cacher les votes jusqu'à la résolution">J'ai peur d'être influencé <span class="fa fa-archive"></span>
+						title="<?php echo $lang("meeting_hideVotes"); ?>"><?php echo $lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
 					</button>
 					<br />
-					<span class="closed-meeting simply-hidden">Séance fermée</span>
+					<span class="closed-meeting simply-hidden"><?php echo $lang("meeting_closed"); ?></span>
 					<br class="export-br simply-hidden">
 					<a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
@@ -182,13 +182,13 @@ if (!$userId) {
 		<div class="col-md-8" id="main-panel">
 			<div id="tasks" class="panel panel-default">
 				<div class="panel-heading">
-					<a data-toggle="collapse" class="collapsed" data-target="#tasks-list" href="#"><?php echo lang("meeting_tasks"); ?> <span 
+					<a data-toggle="collapse" class="collapsed" data-target="#tasks-list" href="#"><?php echo lang("meeting_tasks"); ?> <span
 						class="badge tasks-counter" style="display: none;">0</span></a>
 				</div>
 				<ul class="list-group panel-collapse collapse" id="tasks-list">
 				</ul>
 			</div>
-		
+
 			<div id="agenda_point" class="panel panel-default" data-id="0" style="display: none;">
 				<div class="panel-heading">
 					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
@@ -202,29 +202,29 @@ if (!$userId) {
 				<ul class="list-group objects">
 				</ul>
 				<div class="panel-footer">
-					<button class="btn btn-default btn-xs btn-add-motion disabled">Motion <span class="fa fa-archive"></span></button>
-					<button class="btn btn-default btn-xs btn-add-task disabled">Tâche <span class="fa fa-tasks"></span></button>
-					<button class="btn btn-default btn-xs btn-add-chat disabled">Parole <span class="fa fa-comment"></span></button>
-					<button class="btn btn-default btn-xs btn-add-conclusion disabled">Conclusion <span class="fa fa-lightbulb-o"></span></button>
+					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("Motion"); ?> <span class="fa fa-archive"></span></button>
+					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("Tâche"); ?> <span class="fa fa-tasks"></span></button>
+					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("Parole"); ?> <span class="fa fa-comment"></span></button>
+					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("Conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4" id="right-panel">
 			<div id="meeting_rights" class="panel panel-default" style="display: none;">
 				<div class="panel-heading">
-<!--  				
+<!--
 					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"
 						title="Montrer / cacher les absents" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-eye-open"></span></button>
 					<button class="btn btn-primary btn-xs pull-right btn-add-notice" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
--->					
+-->
 					<a data-toggle="collapse" data-target="#meeting_rights_list" href="#"><?php echo lang("meeting_rights"); ?></a>
 				</div>
 				<ul class="list-group panel-collapse collapse in" id="meeting_rights_list">
-					<li class="list-group-item"><label for="handle_notice_checkbox" class="right-label"><input type="checkbox" id="handle_notice_checkbox" value="handle_notice" class="right" /> Ajout/Suppression/Gestion des convoqués</label></li>
-					<li class="list-group-item"><label for="handle_agenda_checkbox" class="right-label"><input type="checkbox" id="handle_agenda_checkbox" value="handle_agenda" class="right" /> Ajout/Suppression/Gestion des points de la réunion</label></li>
-					<li class="list-group-item"><label for="handle_motion_checkbox" class="right-label"><input type="checkbox" id="handle_motion_checkbox" value="handle_motion" class="right" /> Ajout/Suppression/Gestion des motions</label></li>
-					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> Ajout/Suppression des conclusion</label></li>
+					<li class="list-group-item"><label for="handle_notice_checkbox" class="right-label"><input type="checkbox" id="handle_notice_checkbox" value="handle_notice" class="right" /> <?php echo lang("meeting_rights_noticed"); ?></label></li>
+					<li class="list-group-item"><label for="handle_agenda_checkbox" class="right-label"><input type="checkbox" id="handle_agenda_checkbox" value="handle_agenda" class="right" /> <?php echo lang("meeting_rights_topics"); ?></label></li>
+					<li class="list-group-item"><label for="handle_motion_checkbox" class="right-label"><input type="checkbox" id="handle_motion_checkbox" value="handle_motion" class="right" /> <?php echo lang("meeting_rights_motion"); ?></label></li>
+					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> <?php echo lang("meeting_rights_conclusion"); ?></label></li>
 				</ul>
 			</div>
 
@@ -239,7 +239,7 @@ if (!$userId) {
 				<ul class="list-group panel-collapse collapse in" id="noticed-people-list">
 				</ul>
 				<div class="panel-footer" style="display: none;">
-					<button class="btn btn-primary btn-xs btn-notice-people">Convoquer <span class="glyphicon glyphicon-envelope"></span></button>
+					<button class="btn btn-primary btn-xs btn-notice-people"><?php echo lang("meeting_notice"); ?> <span class="glyphicon glyphicon-envelope"></span></button>
 				</div>
 			</div>
 
@@ -281,20 +281,20 @@ if (!$userId) {
 			class="template row proposition text-success" data-id="${mpr_id}"
 			style="margin: 2px; min-height:22px; display: block;">
 		<button class="btn btn-primary btn-xs pull-right btn-vote"
-			title="Voter"
+			title="<?php echo lang("meeting_vote"); ?>"
 			style="display: none;">
 			Vote <span class="glyphicon glyphicon-envelope"></span>
 		</button>
 		<span class="pull-left fa fa-cube"></span>
 		<span class="pull-left proposition-label"></span>
 		<button class="btn btn-danger btn-xs pull-right btn-remove-proposition"
-			title="Supprimer la proposition"
+			title="<?php echo lang("meeting_proposalDelete"); ?>"
 			style="margin-right: 5px; display: none;">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
 		<span
 			class="pull-right glyphicon glyphicon-pencil"
-			title="Cliquer pour éditer"
+			title="<?php echo lang("meeting_clicEdit"); ?>"
 			style="margin-right: 5px; display: none;"></span>
 		<span class="pull-left powers"></span>
 		<span class="pull-left"> : </span>
@@ -305,7 +305,7 @@ if (!$userId) {
 	<form data-template-id="vote-form" action="" class="template form-horizontal">
 		<fieldset>
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="mpr_label">Proposition :</label>
+				<label class="col-md-4 control-label" for="mpr_label"><?php echo lang("meeting_proposal"); ?> :</label>
 				<div class="col-md-4">
 					<input id="mpr_label" name="mpr_label"
 						value="${mpr_label}"
@@ -315,7 +315,7 @@ if (!$userId) {
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="vot_power">Pouvoir :</label>
+				<label class="col-md-4 control-label" for="vot_power"><?php echo lang("meeting_powerl"); ?> :</label>
 				<div class="col-md-4">
 					<input id="vot_power" name="vot_power" type="number"
 						class="form-control input-md power" required=""
@@ -328,87 +328,87 @@ if (!$userId) {
 	<form data-template-id="schulze-form" action="" class="template form-horizontal">
 		<fieldset>
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="mpr_label">Propositions :</label>
+				<label class="col-md-4 control-label" for="mpr_label"><?php echo lang("meeting_proposals"); ?> :</label>
 				<div class="col-md-4 propositions">
-					
+
 				</div>
 			</div>
 		</fieldset>
 	</form>
 
 	<ul>
-		<li data-template-id="old-task" id="task-${tas_id}" 
-			class="template list-group-item task" 
-			data-id="${tas_id}" 
+		<li data-template-id="old-task" id="task-${tas_id}"
+			class="template list-group-item task"
+			data-id="${tas_id}"
 			data-agenda-id="${tas_agenda_id}"
 			data-meeting-id="${tas_meeting_id}"
 			style="display: block;">
 
 			<button class="btn btn-success btn-xs btn-finish-task pull-right"
-				title="Indiquer que la tâche est finie"
+				title="<?php echo lang("meeting_taskEnded"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-ok"></span>
 			</button>
 
-			<a class="btn btn-info btn-xs btn-link-task pull-right" 
-				title="Voir la tâche dans son contexte"
+			<a class="btn btn-info btn-xs btn-link-task pull-right"
+				title="<?php echo lang("meeting_taskContext"); ?>"
 				style="margin-right: 5px; display: none;"
-				target="_blank" 
+				target="_blank"
 				href="meeting.php?id=${tas_meeting_id}#agenda-${tas_agenda_id}|task-${tas_id}"><span class="glyphicon glyphicon-eye-open"></span></a>
 
 			<span class="fa fa-tasks"></span>
 			<span class="task-label"></span>
 		</li>
-	
-	
+
+
 		<li data-template-id="task" id="task-${tas_id}"
 				class="template list-group-item task" data-id="${tas_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-task pull-right"
-				title="Supprimer la tâche"
+				title="<?php echo lang("meeting_taskDelete"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
 
 			<span class="glyphicon glyphicon-pencil pull-right"
-				title="Cliquer pour éditer"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-tasks"></span>
 			<span class="task-label"></span>
 		</li>
-	
-	
+
+
 		<li data-template-id="chat" id="chat-${cha_id}"
 				class="template list-group-item chat" data-id="${cha_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-chat pull-right"
-				title="Supprimer le chat"
+				title="<?php echo lang("meeting_chatDelete"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
-			
+
 			<button class="btn btn-default btn-xs btn-advice btn-thumb-down pull-right"
 				data-advice="thumb_down" data-chat-id="${cha_id}"
-				title="Je désapprouve ce message"
+				title="<?php echo lang("meeting_chatDisapprove"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-thumbs-down"></span>
 			</button>
-			
+
 			<button class="btn btn-default btn-xs btn-advice btn-thumb-up pull-right"
 				data-advice="thumb_up" data-chat-id="${cha_id}"
-				title="J'apprécie ce message"
+				title="<?php echo lang("meeting_chatLike"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-thumbs-up"></span>
 			</button>
-			
+
 			<span class="glyphicon glyphicon-pencil pull-right"
-				title="Cliquer pour éditer"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-comment"></span>
 			<span class="chat-member"><span class="chat-nickname"></span><select class="chat-select-member" style="display: none; width: 100%;">
-				<optgroup class="voting" label="Votants"></optgroup>
-				<optgroup class="noticed" label="Convoqués"></optgroup>
-				<optgroup class="connected" label="Connectés"></optgroup>
-				<optgroup class="unknown" label="Inconnus"></optgroup>
-			</select> </span> 
+				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
+			</select> </span>
 			<span> : </span>
 			<span class="chat-text"></span>
 
@@ -434,12 +434,12 @@ if (!$userId) {
 		<li data-template-id="conclusion" id="conclusion-${con_id}"
 				class="template list-group-item conclusion" data-id="${con_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-conclusion pull-right"
-				title="Supprimer la conclusion"
+				title="<?php echo $lang("meeting_conclusionDelete"); ?>"
 				style="margin-right: 5px; display:none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
 			<span class="glyphicon glyphicon-pencil pull-right"
-				title="Cliquer pour éditer"
+				title="<?php echo $lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-lightbulb-o"></span>
 			<span class="conclusion-text"></span>
@@ -450,7 +450,7 @@ if (!$userId) {
 				<span class="fa fa-archive"></span>
 				<span class="motion-title"></span>
 				<span class="glyphicon glyphicon-pencil"
-					title="Cliquer pour éditer"
+					title="<?php echo $lang("meeting_clicEdit"); ?>"
 					style="font-size: smaller; display: none;"></span>
 			</h4>
 
@@ -458,7 +458,7 @@ if (!$userId) {
 
 				<div class="motion-description-text"></div>
 				<span class="glyphicon glyphicon-pencil"
-					title="Cliquer pour éditer"
+					title="<?php echo $lang("meeting_clicEdit"); ?>"
 					style="font-size: smaller; display: none;"></span>
 			</div>
 
@@ -466,9 +466,9 @@ if (!$userId) {
 			</div>
 			<div class="motion-actions">
 				<button class="btn btn-primary btn-xs btn-add-proposition"
-					title="Ajouter une proposition"
+					title="<?php echo $lang("meeting_proposalAdd"); ?>"
 					style="display: none;">
-					Proposition&nbsp;<span class="glyphicon glyphicon-plus"></span>
+					<?php echo lang("meeting_proposal"); ?>&nbsp;<span class="glyphicon glyphicon-plus"></span>
 				</button>
 
 				<div id="motionLimitsButtons" class="btn-group" role="group">
@@ -476,12 +476,12 @@ if (!$userId) {
 	// Development condition
 	if (($userId != 12 && $userId != 1) && $majority < -1) continue;
 ?>
-					<button value="<?php echo $majority; ?>" type="button" style="display: none;" 
+					<button value="<?php echo $majority; ?>" type="button" style="display: none;"
 						class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-<?php echo $majority; ?>"><?php echo lang("motion_ballot_majority_$majority"); ?></button>
 <?php }?>
 				</div>
 
-				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous">Vote anonyme</button>
+				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous"><?php echo lang("meeting_anonVote"); ?></button>
 
 				<button class="btn btn-success btn-xs btn-do-vote"
 					title="Passer la motion au vote"
@@ -498,7 +498,7 @@ if (!$userId) {
 					style="display: none;">
 					Fermer le vote&nbsp;<span class="fa fa-archive"></span>
 				</button>
-				
+
 				<span class="simply-hidden voters badge pull-right">
 					<span class="number-of-voters">XX</span> votants
 				</span>
@@ -693,7 +693,7 @@ var initObject = function() {
 
 </script>
 
-<?php 
+<?php
 if (isset($framachan)) {?>
 
 	<style>
@@ -703,11 +703,11 @@ if (isset($framachan)) {?>
 	<div id="framatalk" class="resizable" >
 		<iframe src="https://framatalk.org/<?php echo $framachan; ?>" />
 	</div>
-<!-- 	
+<!--
 	<iframe id="framatalk" src="framatalk.php?channel=<?php echo $framachan; ?>" style=""/>
  -->
- 	
-<?php 
+
+<?php
 } ?>
 
 </body>

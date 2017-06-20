@@ -70,14 +70,14 @@ if (!$userId) {
 
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> <?php echo $lang("meeting_dateStart"); ?>
+			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
 			<span class="mee_start datetime-control">
-				<?php echo $lang("meeting_the"); ?>
+				<?php echo lang("meeting_the"); ?>
 				<span class="date-control">
 					<span class="span-date"><?php echo @$start->format(lang("date_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
 				</span>
-				<?php echo $lang("meeting_at"); ?>
+				<?php echo lang("meeting_at"); ?>
 				<span class="time-control">
 					<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
@@ -85,14 +85,14 @@ if (!$userId) {
 			</span>
 		</div>
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> <?php echo $lang("meeting_dateEnd"); ?>
+			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
 			<span class="mee_finish datetime-control">
-				<?php echo $lang("meeting_the"); ?>e
+				<?php echo lang("meeting_the"); ?>e
 				<span class="date-control">
 					<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
 				</span>
-				<?php echo $lang("meeting_at"); ?>
+				<?php echo lang("meeting_at"); ?>
 				<span class="time-control">
 					<span class="span-time"><?php echo @$end->format(lang("time_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
@@ -100,25 +100,25 @@ if (!$userId) {
 			</span>
 		</div>
 		<div class="col-md-6 president">
-			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> <?php echo $lang("meeting_president"); ?>
+			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> <?php echo lang("meeting_president"); ?>
 			<span class="mee_president_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="president">
 				<option value="0"></option>
-				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
+				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
 		<div class="col-md-6 secretary">
-			<span class="fa fa-user" style="margin-top: 10px;"></span> <?php echo $lang("meeting_secretary"); ?>
+			<span class="fa fa-user" style="margin-top: 10px;"></span> <?php echo lang("meeting_secretary"); ?>
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="secretary">
 				<option value="0"></option>
-				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
+				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
 	</div>
@@ -127,21 +127,21 @@ if (!$userId) {
 		<div class="col-md-8">
 			<div id="speaking-panel" class="panel panel-default">
 				<div class="panel-heading">
-					<?php echo $lang("meeting_talkManagement"); ?>
+					<?php echo lang("meeting_talkManagement"); ?>
 				</div>
 				<div class="panel-body">
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3"><?php echo $lang("meeting_speaking"); ?> : </label>
+						<label class="control-label col-md-3"><?php echo lang("meeting_speaking"); ?> : </label>
 						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
 						<label class="control-label col-md-2 speaking-time"></label>
 						<label class="control-label col-md-5">
 							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
-								title="<?php echo $lang("meeting_removeSpeaking"); ?>"
-								style="display: none;"><?php echo $lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
+								title="<?php echo lang("meeting_removeSpeaking"); ?>"
+								style="display: none;"><?php echo lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
 						</label>
 					</div>
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3"><?php echo $lang("meeting_speakingAsk"); ?> : </label>
+						<label class="control-label col-md-3"><?php echo lang("meeting_speakingAsk"); ?> : </label>
 						<div class="col-md-9 speaking-requesters">
 						</div>
 					</div>
@@ -151,24 +151,24 @@ if (!$userId) {
 		<div class="col-md-4">
 			<div id="meeting-status-panel" class="panel panel-default">
 				<div class="panel-heading">
-					<?php echo $lang("meeting_action"); ?>
+					<?php echo lang("meeting_action"); ?>
 				</div>
 				<div class="panel-body text-center">
 
-					<button class="btn btn-primary btn-waiting-meeting simply-hidden"><?php echo $lang("meeting_waiting"); ?></button>
-					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo $lang("meeting_delete"); ?></button>
-					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo $lang("meeting_open"); ?></button>
-					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo $lang("meeting_close"); ?></button>
-					<button class="btn btn-default request-speaking"><?php echo $lang("meeting_speakingAsk"); ?>
+					<button class="btn btn-primary btn-waiting-meeting simply-hidden"><?php echo lang("meeting_waiting"); ?></button>
+					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
+					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
+					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
+					<button class="btn btn-default request-speaking"><?php echo lang("meeting_speakingAsk"); ?>
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>
 					</button>
 					<br />
 					<button class="btn btn-default btn-local-anonymous" data-toggle="tooltip" data-placement="bottom"
-						title="<?php echo $lang("meeting_hideVotes"); ?>"><?php echo $lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
+						title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
 					</button>
 					<br />
-					<span class="closed-meeting simply-hidden"><?php echo $lang("meeting_closed"); ?></span>
+					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
 					<br class="export-br simply-hidden">
 					<a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
@@ -404,10 +404,10 @@ if (!$userId) {
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-comment"></span>
 			<span class="chat-member"><span class="chat-nickname"></span><select class="chat-select-member" style="display: none; width: 100%;">
-				<optgroup class="voting" label="<?php echo $lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo $lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo $lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo $lang("meeting_unknown"); ?>"></optgroup>
+				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select> </span>
 			<span> : </span>
 			<span class="chat-text"></span>
@@ -434,12 +434,12 @@ if (!$userId) {
 		<li data-template-id="conclusion" id="conclusion-${con_id}"
 				class="template list-group-item conclusion" data-id="${con_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-conclusion pull-right"
-				title="<?php echo $lang("meeting_conclusionDelete"); ?>"
+				title="<?php echo lang("meeting_conclusionDelete"); ?>"
 				style="margin-right: 5px; display:none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
 			<span class="glyphicon glyphicon-pencil pull-right"
-				title="<?php echo $lang("meeting_clicEdit"); ?>"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-lightbulb-o"></span>
 			<span class="conclusion-text"></span>
@@ -450,7 +450,7 @@ if (!$userId) {
 				<span class="fa fa-archive"></span>
 				<span class="motion-title"></span>
 				<span class="glyphicon glyphicon-pencil"
-					title="<?php echo $lang("meeting_clicEdit"); ?>"
+					title="<?php echo lang("meeting_clicEdit"); ?>"
 					style="font-size: smaller; display: none;"></span>
 			</h4>
 
@@ -458,7 +458,7 @@ if (!$userId) {
 
 				<div class="motion-description-text"></div>
 				<span class="glyphicon glyphicon-pencil"
-					title="<?php echo $lang("meeting_clicEdit"); ?>"
+					title="<?php echo lang("meeting_clicEdit"); ?>"
 					style="font-size: smaller; display: none;"></span>
 			</div>
 
@@ -466,7 +466,7 @@ if (!$userId) {
 			</div>
 			<div class="motion-actions">
 				<button class="btn btn-primary btn-xs btn-add-proposition"
-					title="<?php echo $lang("meeting_proposalAdd"); ?>"
+					title="<?php echo lang("meeting_proposalAdd"); ?>"
 					style="display: none;">
 					<?php echo lang("meeting_proposal"); ?>&nbsp;<span class="glyphicon glyphicon-plus"></span>
 				</button>

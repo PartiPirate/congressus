@@ -28,7 +28,7 @@ include_once("header.php");
 	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal" id="create-meeting-form">
 
 		<div class="form-group">
-			<label for="mee_label" class="col-md-4 control-label"><?php echo lang("createMeeting_name"); ?></label>
+			<label for="mee_label" class="col-md-4 control-label"><?php echo lang("meeting_name"); ?> :</label>
 			<div class="col-md-8">
 				<input type="text" class="form-control input-md" id="mee_label" name="mee_label" />
 			</div>
@@ -48,17 +48,17 @@ include_once("header.php");
 			<?php echo lang("createMeeting_datetimeError"); ?>
 		</div>
 		<div class="form-group">
-			<label for="mee_expected_duration" class="col-md-4 control-label"><?php echo lang("createMeeting_lenght"); ?></label>
+			<label for="mee_expected_duration" class="col-md-4 control-label"><?php echo lang("createMeeting_length"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_expected_duration" name="mee_expected_duration">
-					<option value="60">1 <?php echo lang("createMeeting_lenght_hour"); ?></option>
-					<option value="120">2 <?php echo lang("createMeeting_lenght_hours"); ?></option>
-					<option value="180">3 <?php echo lang("createMeeting_lenght_hours"); ?></option>
-					<option value="240">4 <?php echo lang("createMeeting_lenght_hours"); ?></option>
-					<option value="480">8 <?php echo lang("createMeeting_lenght_hours"); ?></option>
-					<option value="1440">1 <?php echo lang("createMeeting_lenght_day"); ?></option>
-					<option value="2880">2 <?php echo lang("createMeeting_lenght_days"); ?></option>
-					<option value="4320">3 <?php echo lang("createMeeting_lenght_days"); ?></option>
+					<option value="60">1 <?php echo lang("createMeeting_length_hour"); ?></option>
+					<option value="120">2 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option value="180">3 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option value="240">4 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option value="480">8 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option value="1440">1 <?php echo lang("createMeeting_length_day"); ?></option>
+					<option value="2880">2 <?php echo lang("createMeeting_length_days"); ?></option>
+					<option value="4320">3 <?php echo lang("createMeeting_length_days"); ?></option>
 				</select>
 			</div>
 		</div>

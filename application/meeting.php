@@ -131,17 +131,17 @@ if (!$userId) {
 				</div>
 				<div class="panel-body">
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3"><?php echo $lang("meeting_speaking"); ?></label>
+						<label class="control-label col-md-3"><?php echo $lang("meeting_speaking"); ?> : </label>
 						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
 						<label class="control-label col-md-2 speaking-time"></label>
 						<label class="control-label col-md-5">
 							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
 								title="<?php echo $lang("meeting_removeSpeaking"); ?>"
-								style="display: none;"><?php echo $lang("meeting_endSpeaking"); ?> <span class="glyphicon glyphicon-remove"></span>
+								style="display: none;"><?php echo $lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
 						</label>
 					</div>
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3"><?php echo $lang("meeting_askSpeaking"); ?> : </label>
+						<label class="control-label col-md-3"><?php echo $lang("meeting_speakingAsk"); ?> : </label>
 						<div class="col-md-9 speaking-requesters">
 						</div>
 					</div>
@@ -159,7 +159,7 @@ if (!$userId) {
 					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo $lang("meeting_delete"); ?></button>
 					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo $lang("meeting_open"); ?></button>
 					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo $lang("meeting_close"); ?></button>
-					<button class="btn btn-default request-speaking"><?php echo $lang("meeting_askSpeaking"); ?>
+					<button class="btn btn-default request-speaking"><?php echo $lang("meeting_speakingAsk"); ?>
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>
 					</button>
@@ -481,26 +481,26 @@ if (!$userId) {
 <?php }?>
 				</div>
 
-				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous"><?php echo lang("meeting_anonVote"); ?></button>
+				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-anonymous"><?php echo lang("meeting_voteAnon"); ?></button>
 
 				<button class="btn btn-success btn-xs btn-do-vote"
-					title="Passer la motion au vote"
+					title="<?php echo lang("meeting_motionVote"); ?>"
 					style="display: none;">
-					Passer au vote&nbsp;<span class="fa fa-archive"></span>
+					<?php echo lang("meeting_voteNow"); ?>&nbsp;<span class="fa fa-archive"></span>
 				</button>
 				<button class="btn btn-danger btn-xs btn-remove-motion"
-					title="Supprimer la motion"
+					title="<?php echo lang("meeting_motionDelete"); ?>"
 					style="display: none;">
-					Supprimer la motion&nbsp;<span class="glyphicon glyphicon-remove"></span>
+					<?php echo lang("meeting_motionDelete"); ?>&nbsp;<span class="glyphicon glyphicon-remove"></span>
 				</button>
 				<button class="btn btn-danger btn-xs btn-do-close"
-					title="Fermer la motion au vote"
+					title="<?php echo lang("meeting_motionCloseVote"); ?>"
 					style="display: none;">
-					Fermer le vote&nbsp;<span class="fa fa-archive"></span>
+					<?php echo lang("meeting_voteClose"); ?>&nbsp;<span class="fa fa-archive"></span>
 				</button>
 
 				<span class="simply-hidden voters badge pull-right">
-					<span class="number-of-voters">XX</span> votants
+					<span class="number-of-voters">XX</span> <?php echo lang("meeting_voters"); ?>
 				</span>
 			</div>
 		</li>
@@ -511,7 +511,7 @@ if (!$userId) {
 			data-member-id="${vot_member_id}">
 			<span class="nickname"></span>
 			<span
-				title="Pouvoir du vote"
+				title="<?php echo lang("meeting_votePower"); ?>"
 				class="badge power"></span>
 		</li>
 
@@ -519,18 +519,18 @@ if (!$userId) {
 				style="padding-top: 2px; padding-bottom: 2px;" data-id="${age_id}">
 			<a class="agenda-link" style="margin: 0;" href="#" id="agenda-link-${age_id}" data-id="${age_id}"></a>
 			<span class="fa fa-archive to-vote"
-				title="Contient au moins une motion à voter"
+				title="<?php echo lang("meeting_motionHas"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="glyphicon glyphicon-pencil"
-				title="Cliquer pour éditer"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<button class="btn btn-primary btn-xs btn-add-point" data-parent-id="${age_id}"
-				title="Ajouter un point sous ce point"
+				title="<?php echo lang("meeting_topicAdd"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-plus"></span>
 			</button>
 			<button class="btn btn-danger btn-xs btn-remove-point" data-id="${age_id}"
-				title="Enlever ce point (ainsi que ces enfants)"
+				title="<?php echo lang("meeting_topicDelete"); ?>"
 				style="display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
@@ -543,19 +543,19 @@ if (!$userId) {
 			id="member-${mem_id}" data-id="${mem_id}">
 			<span class="member-nickname" style="margin-right: 5px;"></span>
 			<span class="glyphicon glyphicon-pencil"
-				title="Cliquer pour éditer"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-commenting-o"
-				title="A la parole"
+				title="<?php echo lang("meeting_speaking"); ?>"
 				style="display: none;"></span>
 			<button
-				title="Demander la parole"
+				title="<?php echo lang("meeting_speakingAsk"); ?>"
 				class="btn btn-default btn-xs request-speaking">
 				<span class="fa fa-hand-paper-o"></span><span class="badge"
 					style="display: none;">0</span>
 			</button>
 			<span class="fa fa-archive voting"
-				title="Droit de vote"
+				title="<?php echo lang("meeting_rightsVote"); ?>"
 				style="display: none;">
 				<span style="margin-left: 5px;">
 					<span class="power">1</span><span class="fa fa-ils"></span>
@@ -569,18 +569,18 @@ if (!$userId) {
 			id="member-${mem_id}" data-id="${mem_id}">
 			<span class="member-nickname" style="margin-right: 5px;"></span>
 			<span class="glyphicon glyphicon-pencil"
-				title="Cliquer pour éditer"
+				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-commenting-o"
-				title="A la parole"
+				title="<?php echo lang("meeting_speaking"); ?>"
 				style="display: none;"></span>
 			<span class="fa fa-hand-paper-o btn-xs"
-				title="Demande la parole"
+				title="<?php echo lang("meeting_speakingAsk"); ?>"
 				style="display: none;">
 				<span class="badge">0</span>
 			</span>
 			<span class="fa fa-archive voting"
-				title="Droit de vote"
+				title="<?php echo lang("meeting_rightsVote"); ?>"
 				style="display: none;">
 				<span style="margin-left: 5px;">
 					<span class="power">10</span><span class="fa fa-ils"></span>
@@ -599,10 +599,10 @@ if (!$userId) {
 <!--
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
  -->
-        <h4 class="modal-title">Démarrage...</h4>
+        <h4 class="modal-title"><?php echo lang("meeting_start"); ?>...</h4>
       </div>
       <div class="modal-body">
-        <p>La page est en cours de préparation</p>
+        <p><?php echo lang("meeting_preparation"); ?></p>
       </div>
       <div class="modal-footer">
 <!--

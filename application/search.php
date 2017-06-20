@@ -40,10 +40,10 @@ $lines = $searchBo-> search(array("query" => $_REQUEST["query"]));
 	<table class="table">
 		<thead>
 			<tr>
-				<th style="width: 30%;">Nom de la réunion</th>
-				<th style="width: 170px;">Date</th>
-				<th style="width: 15%;">Type</th>
-				<th>Texte</th>
+				<th style="width: 30%;"><?php echo lang("meeting_name"); ?></th>
+				<th style="width: 170px;"><?php echo lang("common_date"); ?></th>
+				<th style="width: 15%;"><?php echo lang("common_type"); ?></th>
+				<th><?php echo lang("common_text"); ?></th>
 			</tr>
 		</thead>
 		<tbody>

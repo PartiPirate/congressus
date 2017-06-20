@@ -43,16 +43,16 @@ $galetteGroups = $galetteBo->getGroups();
 	<?php }?>
 
 		<div class="form-group">
-			<label for="not_target_type" class="col-md-4 control-label">Source primaire :</label>
+			<label for="not_target_type" class="col-md-4 control-label"><?php echo $lang("notice_source"); ?></label>
 			<div class="col-md-8">
 				<select class="form-control input-md" id="not_target_type" name="not_target_type">
-					<option value="dlp_groups">Groupe</option>
-					<option value="dlp_themes">Theme</option>
-					<option value="galette_groups">Groupe Galette</option>
-<!-- 					
+					<option value="dlp_groups"><?php echo $lang("notice_group"); ?></option>
+					<option value="dlp_themes"><?php echo $lang("notice_groupGalete"); ?></option>
+					<option value="galette_groups"><?php echo $lang("notice_themes"); ?></option>
+<!--
 					<option value="galette_adherents">Adh&eacute;rents Galette</option>
 					<option value="con_external">Par mail</option>
- -->					
+ -->
 				</select>
 			</div>
 		</div>
@@ -72,14 +72,14 @@ $galetteGroups = $galetteBo->getGroups();
 
 					<!-- Themes -->
 					<option class="dlp_themes" value="0" >Veuillez choisir un theme</option>
-			<?php 	$groupLabel = null; 
+			<?php 	$groupLabel = null;
 					foreach($themes as $listTheme) {
 						if ($listTheme["gro_label"] != $groupLabel) {
 							if ($groupLabel) {
-								?></optgroup><?php 
+								?></optgroup><?php
 							}
 							$groupLabel = $listTheme["gro_label"];
-							?><optgroup class="dlp_themes" label="<?php echo $groupLabel; ?>"><?php 
+							?><optgroup class="dlp_themes" label="<?php echo $groupLabel; ?>"><?php
 						}
 			?>
 					<option class="dlp_themes"

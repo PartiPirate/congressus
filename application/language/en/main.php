@@ -19,18 +19,20 @@
 
 $lang["date_format"] = "m/d/Y";
 $lang["time_format"] = "H:iA";
+$lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "the {date} at {time}";
 
-$lang["common_validate"] = "Validate";
+$lang["common_ask_for_modification"] = "Ask modification";
+$lang["common_connect"] = "Connect";
 $lang["common_create"] = "Create";
+$lang["common_date"] = "Date";
 $lang["common_delete"] = "Delete";
 $lang["common_fork"] = "Fork";
 $lang["common_reject"] = "Reject";
-$lang["common_connect"] = "Connect";
-$lang["common_ask_for_modification"] = "Ask modification";
-$lang["common_date"] = "Date";
-$lang["common_type"] = "Type";
+$lang["common_save"] = "Save";
 $lang["common_text"] = "Text";
+$lang["common_type"] = "Type";
+$lang["common_validate"] = "Validate";
 
 $lang["language_fr"] = "French";
 $lang["language_en"] = "English";
@@ -38,18 +40,17 @@ $lang["language_de"] = "German";
 
 $lang["congressus_title"] = "Congressus";
 
-$lang["menu_language"] = "Language : {language}";
+$lang["menu_administration"] = "Administration";
+$lang["menu_createMeeting"] = "Create a meeting";
+$lang["menu_decisions"] = "Decision";
+$lang["menu_groupMeetings"] = "Group meetings";
 $lang["menu_index"] = "Home";
-$lang["menu_tweet"] = "Tweet";
-$lang["menu_history"] = "History";
-$lang["menu_validation"] = "Validation";
-$lang["menu_timelines"] = "Timelines";
-$lang["menu_mytweets"] = "My tweets";
-$lang["menu_myrights"] = "My rights";
-$lang["menu_mypreferences"] = "My preferences";
-$lang["menu_myaccounts"] = "My accounts";
-$lang["menu_logout"] = "Log out";
+$lang["menu_language"] = "Language : {language}";
 $lang["menu_login"] = "Log in";
+$lang["menu_logout"] = "Log out";
+$lang["menu_mybadges"] = "My badges";
+$lang["menu_myMeetings"] = "My meetings";
+$lang["menu_mypreferences"] = "My preferences";
 
 $lang["login_title"] = "Log in";
 $lang["login_loginInput"] = "Identifier";
@@ -59,95 +60,27 @@ $lang["login_rememberMe"] = "Remember me";
 $lang["register_link"] = "or sign in";
 $lang["forgotten_link"] = "I forgot my password";
 
-$lang["breadcrumb_index"] = "Home";
-$lang["breadcrumb_validation"] = "Validation";
-$lang["breadcrumb_seeTweetValidation"] = "Current validation";
-$lang["breadcrumb_history"] = "History";
-$lang["breadcrumb_timelines"] = "Timelines";
-$lang["breadcrumb_mypreferences"] = "My preferences";
-$lang["breadcrumb_myaccounts"] = "My accounts";
-$lang["breadcrumb_myrights"] = "My rights";
-$lang["breadcrumb_mypage"] = "My page";
-$lang["breadcrumb_register"] = "Sign in";
-$lang["breadcrumb_activation"] = "Activation";
-$lang["breadcrumb_forgotten"] = "I forgot my password";
 $lang["breadcrumb_about"] = "About";
+$lang["breadcrumb_administration"] = "Administration";
+$lang["breadcrumb_connect"] = $lang["common_connect"];
+$lang["breadcrumb_createMeeting"] = "Create a meeting";
+$lang["breadcrumb_decisions"] = "Decisions";
+$lang["breadcrumb_forgotten"] = "I forgot my password";
+$lang["breadcrumb_groupMeetings"] = "Group meetings";
+$lang["breadcrumb_index"] = "Home";
+$lang["breadcrumb_mybadges"] = "My badges";
+$lang["breadcrumb_myMeetings"] = "My meetings";
+$lang["breadcrumb_mypreferences"] = "My preferences";
+$lang["breadcrumb_search"] = "Search";
 
-$lang["index_guide"] = "Congressus is an application letting you share a tweeter account with a group of users.
-The tweets can or must be validated by other users before being published.";
-$lang["index_accounts"] = "Accounts";
-$lang["index_tweetPlaceholder"] = "tweet...";
-$lang["index_tweetButton"] = "Tweet it";
-$lang["index_supports_tweet"] = "Tweet";
-$lang["index_supports_facebook"] = "Facebook";
-$lang["index_cutTweets_legend"] = "Automatic cutting";
-$lang["index_options_mediaInput"] = "Media";
-$lang["index_options_cronDateInput"] = "Delayed departure";
-$lang["index_options_cronDatePlaceholder"] = "yyyy-mm-dd hh:mm";
-$lang["index_options_cronDateGuide"] = "Keep it blank if departure just after validation";
-$lang["index_options_validationDurationInput"] = "Maximal validation duration";
-$lang["index_options_secondaryAccounts"] = "Also send to";
-// $lang["index_options_validationDurationPlaceholder"] = "yyyy-mm-dd hh:mm";
-// $lang["index_options_validationDurationGuide"] = "Laisser vide si départ juste après validation";
-$lang["anonymous_form_nicknameInput"] = "Nickname";
-$lang["anonymous_form_mailInput"] = "Mail address (following purpose)";
-$lang["anonymous_form_passwordInput"] = "Password";
-$lang["anonymous_form_iamabot"] = "I'm a bot and i don't know how to uncheck a checkbox";
-$lang["anonymous_form_legend"] = "Informations";
+$lang["index_guide"] = "Congressus allow you to manage meetings by groups supplied by Galette + Personae.<br>
+You can define who is attended, who has right to vote, define motions...<br>
+Use the search tool to find a motion, a proposition...<br>";
+$lang["index_connect_button"] = "Connect";
+$lang["index_downloadCalendar"] = "Download the iCal calendar";
 
-$lang["add_tweet_mail_subject"] = "[OTB] Tweet requested validation";
-$lang["add_tweet_mail_content"] = "Hello {login},
+$lang["mybadges_guide"] = "The badge you have earn or the ones you can get";
 
-You're in a list of validators of the account {account}, and, a tweet is waiting for you on Congressus here is the content :
-
-{tweet}
-
-You can directly validate this tweet by clicking on this link below :
-{validationLink}
-
-The @Congressus Team";
-$lang["add_tweet_mail_only_a_retweet"] = "Retweet proposition of :";
-
-$lang["ask_for_modification_mail_subject"] = "[OTB] Tweet modification request";
-$lang["ask_for_modification_mail_content"] = "Hello {login},
-
-You're the author of a tweet on the account {account}, and, a validator request you to modify it.
-
-You can modify this tweet by clicking on this link below :
-{validationUrl}
-
-The @Congressus Team";
-
-$lang["history_guide"] = "List of tweets that have been validated.";
-$lang["history_button_validators"] = "Validators";
-$lang["history_account_title"] = "Tweets History for <strong><em>{account}</em></strong>";
-$lang["history_cron_datetime_format"] = "Won't be emitted before the {date} at {time}";
-$lang["history_retweet_proposition"] = "This a retweet proposition of :";
-
-$lang["validation_guide"] = "List of tweets waiting for validation.";
-$lang["validation_account_title"] = "Tweets for <strong><em>{account}</em></strong> in validation";
-$lang["validation_anonymous"] = "(anonymous)";
-$lang["validation_tooltip_author_validation"] = "Author validation";
-$lang["validation_tooltip_mine_validation"] = "My validation";
-$lang["validation_tooltip_other_validation"] = "Validation from other users";
-$lang["validation_cron_datetime_format"] = "Won't be emitted before the {date} at {time}";
-$lang["validation_duration_remaining"] = "Remaining time before expiration : {duration}";
-$lang["validation_ask_modification"] = "Modification requested";
-$lang["validation_retweet_proposition"] = "This a retweet proposition of :";
-
-$lang["do_validation_error"] = "Your validation failed (already done, tweet already sent or erased)";
-$lang["do_validation_ok"] = "Your tweet validation has been taken into account";
-
-$lang["timelines_guide"] = "Your different timelines";
-$lang["timelines_account_title"] = "Tweets for <strong><em>{account}</em></strong>";
-$lang["timelines_search_header"] = "Tweet search";
-$lang["timelines_search_label"] = "Tweet";
-$lang["timelines_search_placeholder"] = "tweet id or its url";
-$lang["timelines_waiting_tweets"] = "See \${numberOfTweets} new Tweets";
-$lang["timelines_waiting_tweet"] = "See 1 new Tweet";
-$lang["property_retweet_by"] = "RT by \${tweet_user_name} @\${tweet_user_screen_name}";
-
-// $lang["meeting_taskContext"] = "Voir la tâche dans son contexte";
 $lang["meeting_action"] = "Action on the meeting";
 $lang["meeting_agenda_point"] = "Ongoing topics : ";
 $lang["meeting_agenda"] = "Ordrer of the day";
@@ -163,15 +96,18 @@ $lang["meeting_closed"] = "Closed session";
 $lang["meeting_conclusion"] = "Conclusion";
 $lang["meeting_conclusionDelete"] = "Delete the conclusion";
 $lang["meeting_connected"] = "Connected";
+$lang["meeting_create"] = "Create a meeting";
 $lang["meeting_dateEnd"] = "Ending date :";
 $lang["meeting_dateStart"] = "Starting date :";
 $lang["meeting_delete"] = "Delete";
+$lang["meeting_empty"] = "There is no meeting";
 $lang["meeting_hideVotes"] = "Hide votes until the answer";
 $lang["meeting_motion"] = "Motion";
 $lang["meeting_motionCloseVote"] = "End the vote on this motion";
 $lang["meeting_motionDelete"] = "Delete motion";
 $lang["meeting_motionHas"] = "Has at least one motion for vote";
 $lang["meeting_motionVote"] = "Vote motion";
+$lang["meeting_name"] = "Meeting's name";
 $lang["meeting_noInfluence"] = "I'm afraid of been influenced";
 $lang["meeting_notice"] = "Attend";
 $lang["meeting_noticed_people"] = "Attended persons";
@@ -195,8 +131,10 @@ $lang["meeting_speaking"] = "Speaking";
 $lang["meeting_speakingAsk"] = "Ask fot speaking";
 $lang["meeting_speakingEnd"] = "Speaking End";
 $lang["meeting_start"] = "Start";
+$lang["meeting_status"] = "Meeting's status";
 $lang["meeting_talkManagement"] = "Talk management";
 $lang["meeting_task"] = "Task";
+$lang["meeting_taskContext"] = "Voir la tâche dans son contexte";
 $lang["meeting_taskDelete"] = "Delete the task";
 $lang["meeting_taskEnded"] = "Indicate an ended task";
 $lang["meeting_tasks"] = "Ongoing tasks";
@@ -213,6 +151,17 @@ $lang["meeting_votePower"] = "Vote power";
 $lang["meeting_voters"] = "Voters";
 $lang["meeting_waiting"] = "Ready";
 
+$lang["myMeetings_closed"] = "Ended meetings";
+$lang["myMeetings_construction"] = "In construction meetings";
+$lang["myMeetings_deleted"] = "Deleted meetings";
+$lang["myMeetings_open"] = "Ongoing meetings";
+$lang["myMeetings_waiting"] = "Next meetings";
+
+$lang["motion_ballot_majority_-1"] = "Borda";
+$lang["motion_ballot_majority_0"] = "The best";
+$lang["motion_ballot_majority_50"] = "Simple majority";
+$lang["motion_ballot_majority_66"] = "66% majority";
+$lang["motion_ballot_majority_80"] = "80% majority";
 
 $lang["calendar_prev"] = "Previous";
 $lang["calendar_today"] = "Today";
@@ -244,126 +193,46 @@ $lang["createMeeting_visualIndication_special"] = "Special";
 $lang["createMeeting_place"] = "Place's type :";
 $lang["createMeeting_placeAddress"] = "Place address :";
 
-$lang["meeting_name"] = "Meeting's name";
-$lang["meeting_status"] = "Meeting's status";
-$lang["meeting_empty"] = "There is no meeting";
 
 $lang["loc_type_mumble"] = "On mumble";
 $lang["loc_type_afk"] = "In a physical place";
 $lang["loc_type_irc"] = "On irc";
 $lang["loc_type_framatalk"] = "On framatalk";
+$lang["loc_type_unknown"] = "at an unknown place";
 
-$lang["mypreferences_guide"] = "Change my preferences.";
+$lang["notice_mail_subject"] = "[CONGRESSUS] Convening at the meeting \"{meeting_label}\"";
+// $lang["notice_mail_content"] = "Bonjour,
+//
+// Vous êtes convoqué-e à la réunion \"{meeting_label}\".
+//
+// Vous pouvez consulter l'ordre du jour et participer à la réunion en cliquant sur le lien ci-dessous :
+// {meeting_link}
+//
+// L'espace de rencontre {location_type} se fera à cette adresse :
+// {location_extra}
+// L'horaire de début : {meeting_date}
+//
+// Congressus";
+
+$lang["mypreferences_form_confirmationInput"] = "Confirmation";
+$lang["mypreferences_form_confirmationPlaceholder"] = "confirmation of your new password";
+$lang["mypreferences_form_languageInput"] = "Language";
 $lang["mypreferences_form_legend"] = "Configuration of your access";
+$lang["mypreferences_form_mailInput"] = "Mail address";
+$lang["mypreferences_form_notification_dm"] = "By multiple DM";
+$lang["mypreferences_form_notification_mail"] = "By mail";
+$lang["mypreferences_form_notification_none"] = "None";
+$lang["mypreferences_form_notification_simpledm"] = "By simple DM";
+$lang["mypreferences_form_notificationInput"] = "Validation notification";
+$lang["mypreferences_form_oldInput"] = "Your current password";
+$lang["mypreferences_form_oldPlaceholder"] = "Your current connexion’s passwordl";
 $lang["mypreferences_form_passwordInput"] = "Password";
 $lang["mypreferences_form_passwordPlaceholder"] = "the password of your connection";
-$lang["mypreferences_form_languageInput"] = "Language";
-$lang["mypreferences_form_mailInput"] = "Mail address";
-$lang["mypreferences_form_notificationInput"] = "Validation notification";
-$lang["mypreferences_form_notification_none"] = "None";
-$lang["mypreferences_form_notification_mail"] = "By mail";
-$lang["mypreferences_form_notification_simpledm"] = "By simple DM";
-$lang["mypreferences_form_notification_dm"] = "By multiple DM";
+$lang["mypreferences_guide"] = "Change my preferences.";
+$lang["mypreferences_save"] = "Save my preferences";
+$lang["mypreferences_validation_mail_already_taken"] = "This mail is already taken";
 $lang["mypreferences_validation_mail_empty"] = "The mail field can't be empty";
 $lang["mypreferences_validation_mail_not_valid"] = "This mail is not a valid mail";
-$lang["mypreferences_validation_mail_already_taken"] = "This mail is already taken";
-$lang["mypreferences_save"] = "Save my preferences";
-
-$lang["myaccounts_guide"] = "Set my accounts.";
-$lang["myaccounts_newaccount_form_legend"] = "New account configuration";
-$lang["myaccounts_existingaccount_form_legend"] = "Account configuration for <em>{account}</em>";
-$lang["myaccounts_account_form_nameInput"] = "Account name";
-$lang["myaccounts_account_form_anonymousPermitted"] = "Anonymous tweet proposition permitted";
-$lang["myaccounts_account_form_anonymousPasswordInput"] = "Anonymous password";
-$lang["myaccounts_account_form_validationScoreInput"] = "Tweet score validation";
-$lang["myaccounts_twitter_form_legend"] = "Twitter Configuration";
-$lang["myaccounts_twitter_form_apiKeyInput"] = "API Key";
-$lang["myaccounts_twitter_form_apiSecretInput"] = "API Secret";
-$lang["myaccounts_twitter_form_accessTokenInput"] = "Access Token";
-$lang["myaccounts_twitter_form_accessTokenSecretInput"] = "Access Token Secret";
-$lang["myaccounts_facebook_page_form_legend"] = "Facebook Page Configuration";
-$lang["myaccounts_facebook_page_form_pageIdInput"] = "Page id";
-$lang["myaccounts_facebook_page_form_fpAccessTokenInput"] = "Page Access Token";
-$lang["myaccounts_facebook_page_form_applicationIdInput"] = "Application Id";
-$lang["myaccounts_facebook_page_form_applicationSecretKeyInput"] = "Application Secret Key";
-$lang["myaccounts_facebook_page_form_shortLiveUserAccessTokenInput"] = "Short live User Access Token";
-$lang["myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"] = "Create a Page Access Token";
-$lang["myaccounts_administrators_form_legend"] = "Administrators management";
-$lang["myaccounts_administrators_form_addUserInput"] = "User";
-$lang["myaccounts_validators_form_legend"] = "Validators management";
-$lang["myaccounts_validators_form_groupNameInput"] = "Group name";
-$lang["myaccounts_validators_form_groupScoreInput"] = "Score";
-$lang["myaccounts_validators_form_addUserInput"] = "Utilisateur";
-$lang["myaccounts_validators_form_deleteGroupInput"] = "Delete group";
-$lang["myaccounts_validators_form_addGroupInput"] = "Add groupe";
-$lang["myaccount_button_testTwitter"] = "Test";
-$lang["myaccount_add"] = "Add this account";
-$lang["myaccount_save"] = "Save the parameters";
-
-$lang["myrights_guide"] = "A rights review.";
-$lang["myrights_scores_legend"] = "My possible validations";
-$lang["myrights_scores_no_score"] = "You have no power of validation";
-$lang["myrights_scores_my_score"] = "Your validation power";
-$lang["myrights_scores_validation_score"] = "The needed validation points";
-$lang["myrights_administration_legend"] = "My administrated accounts";
-$lang["myrights_scores_no_adminstation"] = "You have no power of administration";
-
-$lang["mypage_guide"] = "This a page compiling your statistics";
-$lang["mypage_tweets_legend"] = "My tweets";
-$lang["mypage_validations_legend"] = "My validations";
-$lang["mypage_scores_legend"] = "My scores";
-$lang["mypage_tweet_and_validations_chart_legend"] = "My tweets and validations in time";
-$lang["mypage_tweet_and_validations_chart_axisY"] = "Quantity";
-$lang["mypage_score_chart_axisY"] = "Score";
-$lang["mypage_tweet_and_validations_chart_axisX"] = "Date";
-$lang["mypage_tweet_and_validations_chart_formatDate"] = "MM/DD/YYYY";
-$lang["mypage_tweet_and_validations_chart_jsFormatDate"] = "(date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1) + '/' + (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + date.getFullYear()";
-
-$lang["property_tweet"] = "Tweet";
-$lang["property_author"] = "Author";
-$lang["property_date"] = "Date";
-$lang["property_validators"] = "Validators";
-$lang["property_validation"] = "Validation";
-$lang["property_actions"] = "Actions";
-$lang["property_supports"] = "Supports";
-
-$lang["register_guide"] = "Welcome to the register page of Congressus";
-$lang["register_form_legend"] = "Configuration of your access";
-$lang["register_form_loginInput"] = "Login";
-$lang["register_form_loginHelp"] = "Preferably use your Twitter ID if you want to receive notifications on Twitter";
-$lang["register_form_mailInput"] = "Mail address";
-$lang["register_form_passwordInput"] = "Password";
-$lang["register_form_passwordHelp"] = "Your password doesn't have to inevitably contain strange characters, but it should preferably be long and memorizable";
-$lang["register_form_confirmationInput"] = "Password confirmation";
-$lang["register_form_languageInput"] = "Language";
-$lang["register_form_iamabot"] = "I'm a bot and i don't know how to uncheck a checkbox";
-$lang["register_form_notificationInput"] = "Validation notification";
-$lang["register_form_notification_none"] = "None";
-$lang["register_form_notification_mail"] = "By mail";
-$lang["register_form_notification_simpledm"] = "By simple DM";
-$lang["register_form_notification_dm"] = "By multiple DM";
-$lang["register_success_title"] = "Successful sign in";
-$lang["register_success_information"] = "Your registration is done.
-<br>You will soon receive a mail with a link to click letting you activate your account.";
-$lang["register_mail_subject"] = "[OTB] Registration mail";
-$lang["register_mail_content"] = "Hello {login},
-
-It seems that you registered yourself on Congressus. To confirm your registration, please click the link below :
-{activationUrl}
-
-The @Congressus Team";
-$lang["register_save"] = "Sign in";
-$lang["register_validation_user_empty"] = "The user field can't be empty";
-$lang["register_validation_user_already_taken"] = "This username is already taken";
-$lang["register_validation_mail_empty"] = "The mail field can't be empty";
-$lang["register_validation_mail_not_valid"] = "This mail is not a valid mail";
-$lang["register_validation_mail_already_taken"] = "This mail is already taken";
-$lang["register_validation_password_empty"] = "The password field can't be empty";
-
-$lang["activation_guide"] = "Welcome on the activation screen of your user account";
-$lang["activation_title"] = "Activation status";
-$lang["activation_information_success"] = "The activation of your user account succeeded. You can now <a id=\"connectButton\" href=\"#\">sign-in</a> yourself.";
-$lang["activation_information_danger"] = "The activation of your user account failed.";
 
 $lang["forgotten_guide"] = "You forgot your password, welcome on the page that will let you recover your access";
 $lang["forgotten_form_legend"] = "Access retrieving";
@@ -379,13 +248,6 @@ Please change it as soon as you are connected.
 
 The @Congressus Team";
 
-$lang["okTweet"] = "Your tweet is gone in validation";
-$lang["koTweet"] = "Problem in the handling of your tweet";
-$lang["okDeleteTweet"] = "Your tweet has been deleted";
-$lang["okAskForModificationTweet"] = "A modification has been asked for this tweet";
-$lang["okValidateTweet"] = "Your tweet validation has been taken into account";
-$lang["okRejectTweet"] = "Your tweet rejection has been taken into account";
-$lang["okFinalValidateTweet"] = "Your tweet validation has been taken into account, and the tweet has been completly validated";
 $lang["error_cant_change_password"] = "The password change failed";
 $lang["ok_operation_success"] = "Succeeded operation";
 $lang["error_passwords_not_equal"] = "Your password and its confirmation are different";
@@ -397,11 +259,7 @@ $lang["error_database_already_exists"] = "The database already exists";
 $lang["error_database_dont_exist"] = "The database does not exist";
 $lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
-$lang["ok_twitter_success"] = "The Twitter configuration works";
-$lang["error_twitter_cant_authenticate"] = "The Twitter configuration doesn't work, verify the differents connection parameters";
-$lang["error_media_typeError"] = "The uploaded file must be an image";
-$lang["error_media_sizeError"] = "The uploaded file is too large (maximum size : <span id='maxSize'></span>)";
-$lang["error_media_defaultError"] = "An error occurred in the processing of a file upload, please try again later";
+
 
 $lang["install_guide"] = "Welcome on the installation page of Congressus.";
 $lang["install_tabs_database"] = "Database";

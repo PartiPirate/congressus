@@ -22,17 +22,17 @@ $lang["time_format"] = "H:i";
 $lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "le {date} à {time}";
 
-$lang["common_validate"] = "Valider";
+$lang["common_ask_for_modification"] = "Demander modification";
+$lang["common_connect"] = "Connecter";
 $lang["common_create"] = "Créer";
+$lang["common_date"] = "Date";
 $lang["common_delete"] = "Supprimer";
 $lang["common_fork"] = "Copier";
 $lang["common_reject"] = "Rejeter";
-$lang["common_connect"] = "Connecter";
-$lang["common_ask_for_modification"] = "Demander modification";
 $lang["common_save"] = "Sauvegarder";
-$lang["common_date"] = "Date";
-$lang["common_type"] = "Type";
 $lang["common_text"] = "Texte";
+$lang["common_type"] = "Type";
+$lang["common_validate"] = "Valider";
 
 $lang["language_fr"] = "Français";
 $lang["language_en"] = "Anglais";
@@ -40,17 +40,17 @@ $lang["language_de"] = "Allemand";
 
 $lang["congressus_title"] = "Congressus";
 
-$lang["menu_language"] = "Langue : {language}";
-$lang["menu_index"] = "Accueil";
-$lang["menu_createMeeting"] = "Créer une réunion";
-$lang["menu_myMeetings"] = "Mes réunions";
-$lang["menu_groupMeetings"] = "Réunions d'instance";
-$lang["menu_decisions"] = "Décisions";
-$lang["menu_mypreferences"] = "Mes préférences";
-$lang["menu_mybadges"] = "Mes badges";
-$lang["menu_logout"] = "Se déconnecter";
-$lang["menu_login"] = "Se connecter";
 $lang["menu_administration"] = "Administration";
+$lang["menu_createMeeting"] = "Créer une réunion";
+$lang["menu_decisions"] = "Décisions";
+$lang["menu_groupMeetings"] = "Réunions d'instance";
+$lang["menu_index"] = "Accueil";
+$lang["menu_language"] = "Langue : {language}";
+$lang["menu_login"] = "Se connecter";
+$lang["menu_logout"] = "Se déconnecter";
+$lang["menu_mybadges"] = "Mes badges";
+$lang["menu_myMeetings"] = "Mes réunions";
+$lang["menu_mypreferences"] = "Mes préférences";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
@@ -60,18 +60,18 @@ $lang["login_rememberMe"] = "Se souvenir de moi";
 $lang["register_link"] = "ou m'enregistrer";
 $lang["forgotten_link"] = "j'ai oublié mon mot de passe";
 
-$lang["breadcrumb_index"] = "Accueil";
-$lang["breadcrumb_createMeeting"] = "Créer une réunion";
-$lang["breadcrumb_myMeetings"] = "Mes réunions";
-$lang["breadcrumb_groupMeetings"] = "Réunions d'instance";
-$lang["breadcrumb_mypreferences"] = "Mes préférences";
-$lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
 $lang["breadcrumb_about"] = "À Propos";
-$lang["breadcrumb_search"] = "Rechercher";
-$lang["breadcrumb_connect"] = "Se connecter";
 $lang["breadcrumb_administration"] = "Administration";
+$lang["breadcrumb_connect"] = "Se connecter";
+$lang["breadcrumb_createMeeting"] = "Créer une réunion";
 $lang["breadcrumb_decisions"] = "Décisions";
+$lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
+$lang["breadcrumb_groupMeetings"] = "Réunions d'instance";
+$lang["breadcrumb_index"] = "Accueil";
 $lang["breadcrumb_mybadges"] = "Mes badges";
+$lang["breadcrumb_myMeetings"] = "Mes réunions";
+$lang["breadcrumb_mypreferences"] = "Mes préférences";
+$lang["breadcrumb_search"] = "Rechercher";
 
 $lang["index_guide"] = "Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
 fournir l'infrastructure Galette + Personae.<br>
@@ -98,15 +98,18 @@ $lang["meeting_closed"] = "Séance fermée";
 $lang["meeting_conclusion"] = "Conclusion";
 $lang["meeting_conclusionDelete"] = "Supprimer la conclusion";
 $lang["meeting_connected"] = "Connectés";
+$lang["meeting_create"] = "Créer une réunion";
 $lang["meeting_dateEnd"] = "Date de fin :";
 $lang["meeting_dateStart"] = "Date de début :";
 $lang["meeting_delete"] = "Supprimer";
+$lang["meeting_empty"] = "Il n'y a pas de réunion";
 $lang["meeting_hideVotes"] = "Se cacher les votes jusqu'à la résolution";
 $lang["meeting_motion"] = "Motion";
 $lang["meeting_motionCloseVote"] = "Fermer la motion au vote";
 $lang["meeting_motionDelete"] = "Supprimer la motion";
 $lang["meeting_motionHas"] = "Contient au moins une motion à voter";
 $lang["meeting_motionVote"] = "Passer la motion au vote";
+$lang["meeting_name"] = "Nom de la réunion";
 $lang["meeting_noInfluence"] = "J'ai peur d'être influencé";
 $lang["meeting_notice"] = "Convoquer";
 $lang["meeting_noticed_people"] = "Personnes convoqués";
@@ -130,6 +133,7 @@ $lang["meeting_speaking"] = "A la parole";
 $lang["meeting_speakingAsk"] = "Demande la parole";
 $lang["meeting_speakingEnd"] = "Fin de parole";
 $lang["meeting_start"] = "Démarrage";
+$lang["meeting_status"] = "Statut de la réunion";
 $lang["meeting_talkManagement"] = "Gestion de la parole";
 $lang["meeting_task"] = "Tâche";
 $lang["meeting_taskContext"] = "Voir la tâche dans son contexte";
@@ -149,18 +153,17 @@ $lang["meeting_votePower"] = "Pouvoir du vote";
 $lang["meeting_voters"] = "Votants";
 $lang["meeting_waiting"] = "Prête";
 
-
-$lang["myMeetings_waiting"] = "Prochaines réunions";
-$lang["myMeetings_construction"] = "Réunions en construction";
-$lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_closed"] = "Réunions terminés";
+$lang["myMeetings_construction"] = "Réunions en construction";
 $lang["myMeetings_deleted"] = "Réunions supprimées";
+$lang["myMeetings_open"] = "Réunions en cours";
+$lang["myMeetings_waiting"] = "Prochaines réunions";
 
+$lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "La meilleure";
 $lang["motion_ballot_majority_50"] = "Majorité simple";
 $lang["motion_ballot_majority_66"] = "Majorité 66%";
 $lang["motion_ballot_majority_80"] = "Majorité 80%";
-$lang["motion_ballot_majority_-1"] = "Borda";
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
@@ -192,9 +195,6 @@ $lang["createMeeting_visualIndication_special"] = "Spécial";
 $lang["createMeeting_place"] = "Type de lieu :";
 $lang["createMeeting_placeAddress"] = "Adresse du lieu :";
 
-$lang["meeting_name"] = "Nom de la réunion";
-$lang["meeting_status"] = "Statut de la réunion";
-$lang["meeting_empty"] = "Il n'y a pas de réunion";
 
 $lang["notice_source"] = "Source primaire";
 $lang["notice_group"] = "Groupe";
@@ -221,25 +221,25 @@ L'horaire de début : {meeting_date}
 
 Congressus";
 
-$lang["mypreferences_guide"] = "Changer mes préférences.";
-$lang["mypreferences_form_legend"] = "Configuration de vos accès";
-$lang["mypreferences_form_passwordInput"] = "Nouveau mot de passe";
-$lang["mypreferences_form_passwordPlaceholder"] = "votre nouveau mot de passe de connexion";
-$lang["mypreferences_form_oldInput"] = "Mot de passe actuel";
-$lang["mypreferences_form_oldPlaceholder"] = "votre mot de passe de connexion actuel";
 $lang["mypreferences_form_confirmationInput"] = "Confirmation";
 $lang["mypreferences_form_confirmationPlaceholder"] = "confirmation de votre nouveau mot de passe";
 $lang["mypreferences_form_languageInput"] = "Langage";
-$lang["mypreferences_form_notificationInput"] = "Notification pour validation";
-$lang["mypreferences_form_notification_none"] = "Aucune";
-$lang["mypreferences_form_notification_mail"] = "Par mail";
-$lang["mypreferences_form_notification_simpledm"] = "Par simple DM";
+$lang["mypreferences_form_legend"] = "Configuration de vos accès";
+$lang["mypreferences_form_mailInput"] = "Adresse mail";
 $lang["mypreferences_form_notification_dm"] = "DM multiple";
+$lang["mypreferences_form_notification_mail"] = "Par mail";
+$lang["mypreferences_form_notification_none"] = "Aucune";
+$lang["mypreferences_form_notification_simpledm"] = "Par simple DM";
+$lang["mypreferences_form_notificationInput"] = "Notification pour validation";
+$lang["mypreferences_form_oldInput"] = "Mot de passe actuel";
+$lang["mypreferences_form_oldPlaceholder"] = "votre mot de passe de connexion actuel";
+$lang["mypreferences_form_passwordInput"] = "Nouveau mot de passe";
+$lang["mypreferences_form_passwordPlaceholder"] = "votre nouveau mot de passe de connexion";
+$lang["mypreferences_guide"] = "Changer mes préférences.";
+$lang["mypreferences_save"] = "Sauver mes préférences";
+$lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
 $lang["mypreferences_validation_mail_empty"] = "Le champ mail ne peut être vide";
 $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas une adresse valide";
-$lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
-$lang["mypreferences_form_mailInput"] = "Adresse mail";
-$lang["mypreferences_save"] = "Sauver mes préférences";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

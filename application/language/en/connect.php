@@ -17,13 +17,13 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$lang["breadcrumb_connect"] = "Se connecter";
+$lang["breadcrumb_connect"] = "Connect";
 
-$lang["connect_guide"] = "Bienvenue sur l'écran de connexion de Congressus";
+$lang["connect_guide"] = "Welcome on the connexion screen of Congressus";
 $lang["connect_form_legend"] = "Connexion";
-$lang["connect_form_loginInput"] = "Identifiant";
-$lang["connect_form_loginHelp"] = "Votre identifiant Galette ou votre email";
-$lang["connect_form_passwordInput"] = "Mot de passe";
-$lang["connect_form_passwordHelp"] = "Votre mot de passe Galette";
+$lang["connect_form_loginInput"] = "Login";
+$lang["connect_form_loginHelp"] = "Your Galette's login or your email";
+$lang["connect_form_passwordInput"] = "Password";
+$lang["connect_form_passwordHelp"] = "Your Galette's password";
 
 ?>

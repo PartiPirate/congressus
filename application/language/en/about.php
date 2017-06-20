@@ -16,19 +16,13 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-$lang["about_what_s_opentweetbar_legend"] = "What is Congressus ?";
-$lang["about_what_s_opentweetbar_content"] = "Congressus is a web application allowing the proposal of a tweet for a
-twitter account community type, its validation by its community and therefore taking a comprehensive
-and thoughtful responsibility for communication.<br />
+$lang["about_what_s_congressus_legend"] = "What is Congressus ?";
+$lang["about_what_s_congressus_content"] = "Congressus is an application allowing the liquid gestion of an instance
+or of power groups.<br >
 <br />
-It allows to handle lists of users, each with a score during validation to give more or less weight to a person for
-the validation of a tweet (a spokesperson can have more weight than a member of an association, and it may
-take, for example, 3 members for a validation or 1 member and 1 spokesperson).<br />
-<br />
-The tool also allows to avoid giving everyone access to the managed Twitter account and termination of the rights
-of a person no longer involves changing the password of the Twitter account, and finally know who proposed what
-and who validated, allowing facilitating your role as a communicator and an editor.";
+From a user list (currently managed by Galette), you can define multiples instances,
+groups, wich have eligibles people or electors (or both). The differents
+electors and candidats are allocating theire powers.";
 
 $lang["about_help_us_legend"] = "Help us";
 $lang["about_help_us_content"] = "Congressus is published by the 1901 law association <a href=\"https://www.armagnet.fr/\">ArmagNet</a>. You can help us by donations so that we can:

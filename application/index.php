@@ -34,15 +34,15 @@ include_once("header.php");
 	<div class="calendar-nav clearfix">
 		<div class="pull-right form-inline" style="margin-top: 15px;">
 			<div class="btn-group">
-				<button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; Précédent</button>
-				<button class="btn btn-default" data-calendar-nav="today">Aujourd'hui</button>
-				<button class="btn btn-primary" data-calendar-nav="next">Suivant &gt;&gt;</button>
+				<button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; <?php echo lang("calendar_prev"); ?></button>
+				<button class="btn btn-default" data-calendar-nav="today"><?php echo lang("calendar_today"); ?></button>
+				<button class="btn btn-primary" data-calendar-nav="next"><?php echo lang("calendar_next"); ?> &gt;&gt;</button>
 			</div>
 			<div class="btn-group">
-				<button class="btn btn-warning" data-calendar-view="year">Année</button>
-				<button class="btn btn-warning active" data-calendar-view="month">Mois</button>
-				<button class="btn btn-warning" data-calendar-view="week">Semaine</button>
-				<button class="btn btn-warning" data-calendar-view="day">Jour</button>
+				<button class="btn btn-warning" data-calendar-view="year"><?php echo lang("calendar_year"); ?></button>
+				<button class="btn btn-warning active" data-calendar-view="month"><?php echo lang("calendar_month"); ?></button>
+				<button class="btn btn-warning" data-calendar-view="week"><?php echo lang("calendar_week"); ?></button>
+				<button class="btn btn-warning" data-calendar-view="day"><?php echo lang("calendar_day"); ?></button>
 			</div>
 		</div>
 		<h3>&nbsp;</h3>
@@ -51,7 +51,7 @@ include_once("header.php");
 	<br />
 
 	<div id="calendar"></div>
-	
+
 	<div class="text-center"><a href="do_downloadCalendar.php"><?php echo lang("index_downloadCalendar"); ?></a></div>
 
 

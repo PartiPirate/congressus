@@ -96,7 +96,7 @@ foreach($meetings as $meeting) {
 			</table>
 <?php 		} else {?>
 <br>
-			<div class="well">Il n'y a pas de réunion</div>
+			<div class="well"><?php echo lang("meeting_empty"); ?></div>
 <?php 		}?>
 
 

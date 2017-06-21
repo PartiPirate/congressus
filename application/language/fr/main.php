@@ -175,11 +175,11 @@ $lang["calendar_day"] = "Jour";
 
 $lang["createMeeting_datetime"] = "Date et heure de la réunion :";
 $lang["createMeeting_datetimeError"] = "Veuillez entre une date au format AAAA-MM-JJ et un horaire au format HH:MM";
-$lang["createMeeting_lenght"] = "Durée prévue :";
-$lang["createMeeting_lenght_hour"] = "heure";
-$lang["createMeeting_lenght_hours"] = "heures";
-$lang["createMeeting_lenght_day"] = "jour";
-$lang["createMeeting_lenght_days"] = "jours";
+$lang["createMeeting_length"] = "Durée prévue :";
+$lang["createMeeting_length_hour"] = "heure";
+$lang["createMeeting_length_hours"] = "heures";
+$lang["createMeeting_length_day"] = "jour";
+$lang["createMeeting_length_days"] = "jours";
 $lang["createMeeting_type"] = "Type événement :";
 $lang["createMeeting_type_meeting"] = "Réunion";
 $lang["createMeeting_type_aperitif"] = "Apéro";

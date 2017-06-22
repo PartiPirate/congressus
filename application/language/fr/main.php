@@ -198,7 +198,7 @@ $lang["createMeeting_placeAddress"] = "Adresse du lieu :";
 
 $lang["notice_source"] = "Source primaire";
 $lang["notice_group"] = "Groupe";
-$lang["notice_groupGalete"] = "Groupe Galette";
+$lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
 
 $lang["loc_type_mumble"] = "Sur mumble";

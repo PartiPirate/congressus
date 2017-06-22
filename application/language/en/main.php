@@ -104,6 +104,7 @@ $lang["meeting_dateEnd"] = "Ending date :";
 $lang["meeting_dateStart"] = "Starting date :";
 $lang["meeting_delete"] = "Delete";
 $lang["meeting_empty"] = "There is no meeting";
+$lang["meeting_eventNew"] = "New event";
 $lang["meeting_hideVotes"] = "Hide votes until the answer";
 $lang["meeting_left"] = "just left the meeting";
 $lang["meeting_motion"] = "Motion";

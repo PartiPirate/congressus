@@ -27,7 +27,7 @@ $meeting = $meetingBo->getById($_REQUEST["id"], true);
 
 if (!$meeting) {
 	// Ask for creation
-	$meeting = array("mee_label" => "Nouvel événement");
+	$meeting = array("mee_label" => lang("meeting_eventNew"));
 }
 else {
 	$start = new DateTime($meeting["mee_datetime"]);

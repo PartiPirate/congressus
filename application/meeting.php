@@ -87,7 +87,7 @@ if (!$userId) {
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
 			<span class="mee_finish datetime-control">
-				<?php echo lang("meeting_the"); ?>e
+				<?php echo lang("meeting_the"); ?>
 				<span class="date-control">
 					<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
 					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />

@@ -18,9 +18,11 @@
 */
 
 require_once("config/database.php");
+require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
+include_once("language/language.php");
 
 $connection = openConnection();
 

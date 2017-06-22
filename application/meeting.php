@@ -315,7 +315,7 @@ if (!$userId) {
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="vot_power"><?php echo lang("meeting_powerl"); ?> :</label>
+				<label class="col-md-4 control-label" for="vot_power"><?php echo lang("meeting_power"); ?> :</label>
 				<div class="col-md-4">
 					<input id="vot_power" name="vot_power" type="number"
 						class="form-control input-md power" required=""

@@ -170,7 +170,14 @@ function updateMemberLi(member, people) {
 	member.children(".member-nickname").text(people.mem_nickname);
 
 	if (people.mem_speaking && people.mem_speaking != "0") {
+		
+		var previous = $("#speaking-panel .speaker").text();
 		$("#speaking-panel .speaker").text(people.mem_nickname);
+
+		if (people.mem_nickname != previous) {
+			speakingTime = 0;
+		}
+
 		member.children("span.fa-commenting-o").show();
 	}
 	else {

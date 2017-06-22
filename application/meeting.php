@@ -202,10 +202,10 @@ if (!$userId) {
 				<ul class="list-group objects">
 				</ul>
 				<div class="panel-footer">
-					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("Motion"); ?> <span class="fa fa-archive"></span></button>
-					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("Tâche"); ?> <span class="fa fa-tasks"></span></button>
-					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("Parole"); ?> <span class="fa fa-comment"></span></button>
-					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("Conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
+					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
+					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
+					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
+					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
 				</div>
 			</div>
 		</div>

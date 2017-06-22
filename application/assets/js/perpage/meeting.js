@@ -38,11 +38,11 @@ function getUserId() {
 
 function isGuest() {
 	var userId = getUserId();
-	
+
 	if (("" + userId).indexOf("G") != -1) {
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -52,13 +52,13 @@ function hasVotingRight(id) {
 
 function getVotingPower(id) {
 	var power = 0;
-	
-	$("#noticed-people .members li#member-"+id+" .voting").each(function() { 
+
+	$("#noticed-people .members li#member-"+id+" .voting").each(function() {
 		if($(this).css("display") != "none") {
 			power -= - $(this).parent().find(".power").text();
 		}
 	});
-	
+
 	return power;
 }
 
@@ -69,15 +69,15 @@ function hasRight(userId, right) {
 
 	has |= $(".mee_president_member_id").data("id") == userId;
 	has |= $(".mee_secretary_member_id").data("id") == userId;
-	
+
 	if (isGuest) return has;
-	
+
 	if (meeting && meeting["mee_rights"]) {
 		for(var index = 0; index < meeting["mee_rights"].length; ++index) {
 			has |= meeting["mee_rights"][index] == right;
 		}
 	}
-	
+
 	return has;
 }
 
@@ -98,11 +98,11 @@ function addAgendaPointHandlers() {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
-	
+
 	$("#agenda_point .objects").on("mouseleave", "li#description", function(event) {
 		$(this).find(".glyphicon-pencil").hide();
 	});
-	
+
 	$("#agenda_point .objects").on("click", "li#description", function(event) {
 		if (!hasRight(getUserId(), "handle_agenda")) {
 			return;
@@ -126,15 +126,15 @@ function addAgendaPointHandlers() {
 function editorBlurHandler(event) {
 	var description = $("li#description");
 	var editor = description.find(".description-editor+div");
-	
+
 	if (editor.length == 0) return;
 	if (!editor.is(":visible")) return;
 
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
-	
+
 	var descriptionEditor = description.find("div.description-editor");
-	
+
 	clearKeyup();
 	// update the text into the server
 	var newText = descriptionEditor.Editor("getText");
@@ -161,7 +161,7 @@ function getDescriptionLi(list) {
 		descriptionEditor.Editor();
 
 		list.append(description);
-		
+
 		var editor = description.find(".description-editor+div");
 		editor.hide();
 		editor.children(".Editor-editor").css({"max-height": "300px", "overflow-y": "scroll"});
@@ -195,8 +195,8 @@ function updateDescription(description, agenda) {
 
 function setAgendaPoint(point) {
 	var list = $("#agenda_point ul");
-	
-	if ($("#agenda_point .agenda-label").text() != point.agenda.age_label) { 
+
+	if ($("#agenda_point .agenda-label").text() != point.agenda.age_label) {
 		$("#agenda_point .agenda-label").text(point.agenda.age_label);
 	}
 
@@ -340,7 +340,7 @@ function setAgendaMotion(id, motions) {
 		motionActions.find(".btn-do-close").hide();
 //		motionActions.hide();
 	}
-	
+
 //	motionContainer.find(".btn-vote").removeAttr("disabled");
 }
 
@@ -348,9 +348,9 @@ function setAdvice() {
 	var userId = $(".meeting").data("user-id");
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
-	
+
 	var button = $(this);
-	
+
 	var chatId = button.data("chat-id");
 	var advice = button.data("advice");
 
@@ -420,7 +420,7 @@ function setAgendaChat(id, chats) {
 		list.append(chatContainer);
 
 		chatContainer.hide().fadeIn(400);
-		
+
 		var memberSelect = chatContainer.find("select.chat-select-member");
 		memberSelect.find(".voting").append($(".president select .voting option").clone());
 		memberSelect.find(".unknown").append($(".president select .unknown option").clone());
@@ -456,14 +456,14 @@ function setAgendaChat(id, chats) {
 		advices["thumb_up"] = 0;
 		advices["thumb_down"] = 0;
 		advices["total"] = 0;
-		
+
 		if (typeof chat.advices != "undefined") {
 			for(var jndex = 0; jndex < chat.advices.length; ++jndex) {
 				var advice = chat.advices[jndex];
-				
+
 				advices[advice.cad_advice]++;
 				advices["total"]++;
-	
+
 				if (advice.cad_user_id == getUserId()) {
 					chatContainer.find(".btn-advice").each(function() {
 						if ($(this).data("advice") == advice.cad_advice) {
@@ -476,21 +476,21 @@ function setAgendaChat(id, chats) {
 				}
 			}
 		}
-		
+
 		var progress = chatContainer.find(".progress");
-		
+
 		if (advices["total"] == 0) {
 			progress.hide();
 		}
 		else {
 			progress.show();
-			
+
 			progress.find(".progress-bar").each(function() {
 				var percent = advices[$(this).data("advice")] * 100 / advices["total"];
 				$(this).css({width: percent + "%"});
 //				$(this).attr("title", advices[$(this).data("advice")]);
 				$(this).find(".value").text(advices[$(this).data("advice")]);
-				
+
 				if (advices[$(this).data("advice")]) {
 					$(this).show();
 				}
@@ -499,9 +499,9 @@ function setAgendaChat(id, chats) {
 				}
 			});
 		}
-		
+
 		chatContainer.data("json", chat);
-		
+
 		break;
 	}
 }
@@ -567,7 +567,7 @@ function setAgendaConclusion(id, conclusions) {
 		if (text.text() != conclusion.con_text) {
 			text.text(conclusion.con_text);
 		}
-		
+
 		break;
 	}
 }
@@ -722,7 +722,7 @@ function addVotes(votes, proposition, motion) {
 		voteLi.find(".power").text(vote.vot_power);
 		voteLi.attr("data-power", vote.vot_power);
 		voteLi.data("power", vote.vot_power);
-		
+
 		if (vote.mem_id != getUserId() && areVotesAnonymous(motion)) {
 			voteLi.hide();
 		}
@@ -740,9 +740,9 @@ function addVotes(votes, proposition, motion) {
 function retrievePreviousVotes(motion, propositionsHolder) {
 	var userId = $(".meeting").data("user-id");
 	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
-	
+
 	if (!votes.length) return;
-	
+
 	votes.each(function() {
 		var proposition = propositionsHolder.find(".proposition[data-proposition-id="+$(this).data("proposition-id")+"]");
 		proposition.detach();
@@ -752,13 +752,13 @@ function retrievePreviousVotes(motion, propositionsHolder) {
 
 function setSchulzeOrderStyle(propositionsHolder) {
 	var propositionHolders = propositionsHolder.children();
-	
+
 	var index = 0;
 	propositionHolders.each(function() {
 		index++;
-		
+
 		$(this).removeClass("btn-success").removeClass("btn-warning").removeClass("btn-danger").removeClass("btn-default");
-		
+
 		if (index == 1) {
 			$(this).addClass("btn-success");
 		}
@@ -783,8 +783,8 @@ function vote(event) {
 	var proposition = $(this).parents(".proposition");
 	var maxPower = getVotingPower(userId);
 
-	var dialog; 
-	
+	var dialog;
+
 	if (motionWinLimit >= 0) {
 		motion.find(".proposition .vote[data-member-id="+userId+"]").each(function() {
 			if ($(this).data("proposition-id") != proposition.data("id")) {
@@ -798,11 +798,11 @@ function vote(event) {
 		dialog.find("*").tooltip({placement: "left"});
 
 		bootbox.dialog({
-	        title: "Voter la motion \"" + motion.find(".motion-title").text() + "\"",
+	        title: meeting_motionVote2 + " \"" + motion.find(".motion-title").text() + "\"",
 	        message: dialog,
 	        buttons: {
 	            success: {
-	                label: "Voter",
+	                label: meeting_vote,
 	                className: "btn-primary",
 	                callback: function () {
                 		var dialog = $(this);
@@ -821,7 +821,7 @@ function vote(event) {
                     }
 	            },
 	            close: {
-	                label: "Fermer",
+	                label: common_close,
 	                className: "btn-default",
 	                callback: function () {
                     }
@@ -834,15 +834,15 @@ function vote(event) {
 		dialog = $("form[data-template-id=schulze-form]").template("use", {data: {}});
 		var propositions = motion.find(".proposition");
 		var propositionsHolder = dialog.find(".propositions");
-		
+
 		propositions.each(function() {
 			var propositionHolder = $("<div class=\"btn btn-default col-md-12 proposition\" style=\"margin-bottom: 2px; \" />");
 			propositionHolder.text($(this).find(".proposition-label").text());
 			propositionHolder.attr("data-proposition-id", $(this).data("id"));
-			
+
 			propositionsHolder.append(propositionHolder);
 		});
-		
+
 		propositionsHolder.sortable({
 			"axis": "y",
 			"helper": "clone",
@@ -860,11 +860,11 @@ function vote(event) {
 		dialog.find("*").tooltip({placement: "left"});
 
 		bootbox.dialog({
-	        title: "Voter la motion \"" + motion.find(".motion-title").text() + "\"",
+	        title: meeting_motionVote2 + " \"" + motion.find(".motion-title").text() + "\"",
 	        message: dialog,
 	        buttons: {
 	            success: {
-	                label: "Voter",
+	                label: meeting_vote,
 	                className: "btn-primary",
 	                callback: function () {
                 		var dialog = $(this);
@@ -893,7 +893,7 @@ function vote(event) {
                     }
 	            },
 	            close: {
-	                label: "Fermer",
+	                label: common_close,
 	                className: "btn-default",
 	                callback: function () {
                     }
@@ -939,7 +939,7 @@ function removeMotion(event) {
 	if (!hasRight(getUserId(), "handle_motion")) return;
 
 	bootbox.setLocale("fr");
-	bootbox.confirm("Supprimer la motion \"" + motionTitle + "\" ?", function(result) {
+	bootbox.confirm(meeting_motionDelete + " \"" + motionTitle + "\" ?", function(result) {
 		if (result) {
 			$.post("meeting_api.php?method=do_removeMotion", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
 			}, "json");
@@ -969,19 +969,19 @@ function changeMotionStatus(event) {
 }
 
 function addTaskHandlers() {
-	
+
 	$("#tasks-list").on("mouseenter", "li.task", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
 		$(this).find(".btn-finish-task").show();
 		$(this).find(".btn-link-task").show();
 	});
-	
+
 	$("#tasks-list").on("mouseleave", "li.task", function(event) {
 		$(this).find(".btn-finish-task").hide();
 		$(this).find(".btn-link-task").hide();
 	});
-	
+
 	$("#agenda_point ul.objects").on("mouseenter", "li.task", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
@@ -1003,7 +1003,7 @@ function addTaskHandlers() {
 		var taskId = task.data("id");
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Supprimer la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
+		bootbox.confirm(meeting_taskDelete + " \"" + task.children(".task-label").text() + "\" ?", function(result) {
 			if (result) {
 				$.post("meeting_api.php?method=do_removeTask", {
 					meetingId: meetingId,
@@ -1069,7 +1069,7 @@ function addTaskHandlers() {
 		var meetingId = task.data("meeting-id");
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Finir la tâche \"" + task.children(".task-label").text() + "\" ?", function(result) {
+		bootbox.confirm(meeting_taskEnd + " \"" + task.children(".task-label").text() + "\" ?", function(result) {
 			if (result) {
 				button.attr("disabled", "disabled");
 				$(".ui-tooltip").remove();
@@ -1088,7 +1088,7 @@ function addTaskHandlers() {
 
 function addChatHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", "li.chat", function(event) {
-		
+
 		if (Number.isInteger(getUserId())) {
 			$(this).find(".btn-thumb-up").show();
 			$(this).find(".btn-thumb-down").show();
@@ -1146,7 +1146,7 @@ function addChatHandlers() {
 		var chatId = chat.data("id");
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Supprimer le chat \"" + chat.children(".chat-text").text() + "\" ?", function(result) {
+		bootbox.confirm(meeting_chatDelete + " \"" + chat.children(".chat-text").text() + "\" ?", function(result) {
 			if (result) {
 				$.post("meeting_api.php?method=do_removeChat", {
 					meetingId: meetingId,
@@ -1223,7 +1223,7 @@ function addConclusionHandlers() {
 		var conclusionId = conclusion.data("id");
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Supprimer la conclusion \"" + conclusion.children(".conclusion-text").text() + "\" ?", function(result) {
+		bootbox.confirm(meeting_conclusionDelete + " \"" + conclusion.children(".conclusion-text").text() + "\" ?", function(result) {
 			if (result) {
 				$.post("meeting_api.php?method=do_removeConclusion", {
 					meetingId: meetingId,
@@ -1303,7 +1303,7 @@ function addMotionHandlers() {
 		var propositionId = proposition.data("id");
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Supprimer la proposition \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
+		bootbox.confirm(meeting_proposalDelete + " \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
 			if (result) {
 				$.post("meeting_api.php?method=do_removeMotion", {
 					meetingId: meetingId,
@@ -1383,7 +1383,7 @@ function addMotionHandlers() {
 
 		button.toggleClass("active");
 		var checked = button.hasClass("active");
-		
+
 		var motionId = $(this).parents(".motion").data("id");
 		var property = "mot_anonymous";
 		var propositionId = 0;
@@ -1464,14 +1464,14 @@ function updateTasks() {
 				$("#tasks .tasks-counter").show();
 			}
 			else {
-				$("#tasks .tasks-counter").hide();				
+				$("#tasks .tasks-counter").hide();
 			}
 
 			$("#tasks-list li").addClass("to-remove");
-			
+
 			for(var index = 0; index < data.tasks.length; ++index) {
 				var task = data.tasks[index];
-				
+
 				var taskLi = $("#tasks-list li[data-id=" + task.tas_id + "]");
 				if (taskLi.length == 0) {
 					taskLi = $("li[data-template-id=old-task]").template("use", {data: {tas_id: task.tas_id, tas_agenda_id: task.tas_agenda_id, tas_meeting_id: task.tas_meeting_id}});
@@ -1525,11 +1525,11 @@ $(function() {
 ////		  show: true
 //		});
 //	$("#start-meeting-modal").modal("show");
-	
+
 //	$("ul.objects").click(function(event) {
 //		event.stopPropagation();
 //	});
-//	
+//
 //	$("html").on("click", "*", function(event) {
 //		var description = $("ul.objects");
 //
@@ -1540,7 +1540,7 @@ $(function() {
 //
 //		editorBlurHandler(event);
 //	});
-	
+
 //	var getAgendaPointTimer = $.timer(updateAgendaPoint);
 //	getAgendaPointTimer.set({ time : 1500, autostart : true });
 
@@ -1549,7 +1549,7 @@ $(function() {
 	$("#agenda_point").on("click", "button.btn-add-task", addOwnTask);
 	$("#agenda_point").on("click", "button.btn-add-conclusion", addConclusion);
 	$("#agenda_point").on("click", "button.btn-add-motion", addMotion);
-	$("#agenda_point").on("click", "button.btn-advice", setAdvice); 
+	$("#agenda_point").on("click", "button.btn-advice", setAdvice);
 
 	$("#agenda_point ul.objects").on("click", ".btn-do-vote, .btn-do-close", changeMotionStatus);
 	$("#agenda_point ul.objects").on("click", ".btn-remove-motion", removeMotion);
@@ -1565,33 +1565,33 @@ $(function() {
 
 	var getTasksTimer = $.timer(updateTasks);
 	getTasksTimer.set({ time : 60000, autostart : true });
-	
+
 	updateTasks();
 	updateAgendaPoint();
 
-	
+
 	$(".resizable").resizable({
 		animate: true
 	});
-	
+
 });
 
 // Framatalk
 
 function setFramatalkPosition(position) {
-	
+
 	var leftSpace = $(".breadcrumb").offset();
 	var videoWidth = leftSpace.left - 20;
 	var videoTop = leftSpace.top;
-	
+
 	var css = {"top": videoTop + "px", "width": videoWidth + "px"};
-	
+
 	if (position == "left") {
 		css["height"] = videoWidth + "px";
 	}
-	
+
 	$("#framatalk").css(css);
-	
+
 }
 
 function autogrowEvent() {

@@ -183,11 +183,11 @@ $lang["calendar_day"] = "Day";
 
 $lang["createMeeting_datetime"] = "Date and time of the meeting :";
 $lang["createMeeting_datetimeError"] = "Please, use a date with the format YYYY-MM-DD and a time with the format HH:MM";
-$lang["createMeeting_lenght"] = "Planned lenght :";
-$lang["createMeeting_lenght_hour"] = "hour";
-$lang["createMeeting_lenght_hours"] = "hours";
-$lang["createMeeting_lenght_day"] = "day";
-$lang["createMeeting_lenght_days"] = "days";
+$lang["createMeeting_length"] = "Planned length :";
+$lang["createMeeting_length_hour"] = "hour";
+$lang["createMeeting_length_hours"] = "hours";
+$lang["createMeeting_length_day"] = "day";
+$lang["createMeeting_length_days"] = "days";
 $lang["createMeeting_type"] = "Event's type :";
 $lang["createMeeting_type_meeting"] = "Meeting";
 $lang["createMeeting_type_aperitif"] = "Aperitif";

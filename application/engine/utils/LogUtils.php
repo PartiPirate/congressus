@@ -25,7 +25,7 @@ function addLog($server, $session, $action = null, $data = null) {
 	$log = array();
 	$log["log_action"] = $action; 
 	$log["log_data"] = json_encode($data);
-	$log["log_ip"] = $server["HTTP_X_REAL_IP"];
+	$log["log_ip"] = isset($server["HTTP_X_REAL_IP"]) ? $server["HTTP_X_REAL_IP"] : $server["REMOTE_ADDR"];
 	
 	if (isset($session["memberId"])) {
 		$log["log_user_id"] = $session["memberId"];

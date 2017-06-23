@@ -319,7 +319,7 @@ function handlePages(notice) {
 		memberPages.find(".page-next").removeAttr("disabled");
 		memberPages.find(".page-last").removeAttr("disabled");
 	}
-	
+
 	if (numberOfPages < 2) {
 		memberPages.hide();
 	}
@@ -556,13 +556,13 @@ function updatePeople() {
 			else {
 				$(".btn-remove-speaker").hide().attr("disabled", "disabled");
 			}
-			
+
 		}
 		else {
 			$(".btn-add-motion, .btn-add-task").hide();
 			$(".btn-remove-speaker").hide().attr("disabled", "disabled");
 		}
-		
+
 		if ($(".speaker").text()) {
 			$(".speaking-time").show();
 		}
@@ -699,7 +699,7 @@ function addNoticeHandlers() {
 
 		var page = $(this).parent().data("current-page") - 1;
 		if (page < 1) page = 1;
-		
+
 		$(this).parent().data("current-page", page);
 		toggleMissingPeople();
 	});
@@ -720,7 +720,7 @@ function addNoticeHandlers() {
 		var numberOfPages = Math.ceil(numberOfMembers / 10);
 
 		if (page > numberOfPages) page = numberOfPages;
-		
+
 		$(this).parent().data("current-page", page);
 		toggleMissingPeople();
 	});
@@ -803,16 +803,16 @@ function addNoticeHandlers() {
 		var noticeId = $(this).data("id");
 
 		var notice = $(this).data("json");
-		
+
 		$.get("notice.php", {meetingId: meetingId, noticeId: noticeId}, function(data) {
 			var dialog = $(data);
 
 			bootbox.dialog({
-		        title: "Convocation",
+		        title: meeting_notification,
 		        message: dialog,
 		        buttons: {
 		            success: {
-		                label: "Modifier",
+		                label: common_edit,
 		                className: "btn-primary",
 		                callback: function () {
 		                		var dialog = $(this);
@@ -824,7 +824,7 @@ function addNoticeHandlers() {
 		                    }
 		                },
 		            close: {
-		                label: "Fermer",
+		                label: common_close,
 		                className: "btn-default",
 		                callback: function () {
 
@@ -880,7 +880,7 @@ function addNoticeHandlers() {
 		                    }
 		                },
 		            close: {
-		                label: "Fermer",
+		                label: common_close,
 		                className: "btn-default",
 		                callback: function () {
 
@@ -902,7 +902,7 @@ function addNoticeHandlers() {
 		var text = $(this).parent().text();
 
 		bootbox.setLocale("fr");
-		bootbox.confirm("Supprimer la convocation de \"" + text + "\" ?", function(result) {
+		bootbox.confirm(meeting_notificationDelete + " \"" + text + "\" ?", function(result) {
 			if (result) {
 				$.post("meeting_api.php?method=do_removeNotice", {meetingId: meetingId, noticeId: noticeId}, function(data) {
 					$("#notice-" + noticeId).remove();
@@ -984,7 +984,7 @@ function addNoticeHandlers() {
 			if (newText == "") {
 				newText == "Guest";
 			}
-			
+
 			$.post("meeting_api.php?method=do_changeGuest", {meetingId: meetingId, text: newText}, function(data) {
 				propertyText.text(newText);
 				propertyText.show();
@@ -1001,7 +1001,7 @@ function addNoticeHandlers() {
 				if (newText == "") {
 					newText == "Guest";
 				}
-				
+
 				$.post("meeting_api.php?method=do_changeGuest", {meetingId: meetingId, text: newText}, function(data) {
 				}, "json");
 			}, 1500);
@@ -1044,7 +1044,7 @@ function addSpeakerHandlers() {
 			speakingTime = 0;
 		}, "json");
 	});
-	
+
 	var timeTimer = $.timer(updateTime);
 	timeTimer.set({ time : 1000, autostart : true });
 

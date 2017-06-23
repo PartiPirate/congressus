@@ -27,7 +27,7 @@ $meeting = $meetingBo->getById($_REQUEST["id"], true);
 
 if (!$meeting) {
 	// Ask for creation
-	$meeting = array("mee_label" => "Nouvel événement");
+	$meeting = array("mee_label" => lang("meeting_eventNew"));
 }
 else {
 	$start = new DateTime($meeting["mee_datetime"]);
@@ -633,6 +633,24 @@ $("#start-meeting-modal").modal("show");
 <script src="assets/js/perpage/meeting_timer.js"></script>
 
 <script type="text/javascript">
+var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
+var meeting_speakingAsk = "<?php echo lang("meeting_speakingAsk"); ?>";
+var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
+var meeting_arrival = "<?php echo lang("meeting_arrival"); ?>";
+var meeting_left = "<?php echo lang("meeting_left"); ?>";
+var meeting_votePower = "<?php echo lang("meeting_votePower"); ?>";
+var meeting_notification = "<?php echo lang("meeting_notification"); ?>";
+var common_edit = "<?php echo lang("common_edit"); ?>";
+var common_close = "<?php echo lang("common_close"); ?>";
+var meeting_notificationDelete = "<?php echo lang("meeting_notificationDelete"); ?>";
+var meeting_motionVote2 = "<?php echo lang("meeting_motionVote2"); ?>";
+var meeting_vote = "<?php echo lang("meeting_vote"); ?>";
+var meeting_motionDelete = "<?php echo lang("meeting_motionDelete"); ?>";
+var meeting_taskDelete = "<?php echo lang("meeting_taskDelete"); ?>";
+var meeting_taskEnd = "<?php echo lang("meeting_taskEnd"); ?>";
+var meeting_chatDelete = "<?php echo lang("meeting_chatDelete"); ?>";
+var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>";
+var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 
 var isPeopleReady = false;
 var isAgendaReady = false;

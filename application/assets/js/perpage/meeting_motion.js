@@ -19,14 +19,14 @@
 /* global $ */
 
 function voteRound(value) {
-	return (Math.round(value * 100, 2) / 100);	
+	return (Math.round(value * 100, 2) / 100);
 }
 
 function areVotesAnonymous(motion) {
 	if (motion.data("status") == "resolved") return false;
 
 	if (motion.data("anonymous")) return true;
-	
+
 	if ($(".btn-local-anonymous").hasClass("active")) return true;
 
 	return false;
@@ -42,7 +42,7 @@ function computeMotion(motion) {
 
 	motion.find(".proposition").each(function() {
 		propositionPowers[$(this).data("id")] = 0;
-		
+
 		if (areVotesAnonymous(motion)) {
 			$("#proposition-" + $(this).data("id") + " .powers").hide();
 		}
@@ -66,7 +66,7 @@ function computeMotion(motion) {
 			}
 		})
 		var themePower = parentNotice.children("h5").find(".power").text();
-		
+
 		var proposition = $("#proposition-" + propositionId);
 		var neutral = proposition.data("neutral");
 
@@ -99,13 +99,13 @@ function computeMotion(motion) {
 
 		vote.attr("data-effective-power", votePower);
 		vote.data("effective-power", votePower);
-		
-		vote.find(".power").attr("title", "Pouvoir de vote " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
+
+		vote.find(".power").attr("title", meeting_votePower + " " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
 
 		if (vote.data("power") != 0) {
 			voters[memberId] = memberId;
 		}
-		
+
 		propositionPowers[propositionId] += votePower;
 		totalPowers += votePower;
 
@@ -118,18 +118,18 @@ function computeMotion(motion) {
 	for(var id in voters) {
 		numberOfVoters++;
 	}
-	
+
 	motion.find(".number-of-voters").text(numberOfVoters);
-	
+
 	if (!areVotesAnonymous(motion)) {
 		for(var id in propositionPowers) {
 			var propositionPower = propositionPowers[id];
-	
+
 			var percent = 0;
 			if (totalPowers) {
 				percent = Math.round(propositionPower / totalPowers * 1000, 1) / 10;
 			}
-	
+
 			if ((winLimit > 0 && percent >= winLimit) || ((winLimit == 0 || winLimit == -1) && propositionPower == max)) {
 				$("#proposition-" + id).addClass("text-success");
 				$("#proposition-" + id).removeClass("text-danger");
@@ -138,9 +138,9 @@ function computeMotion(motion) {
 				$("#proposition-" + id).removeClass("text-success");
 				$("#proposition-" + id).addClass("text-danger");
 			}
-	
+
 			propositionPower = voteRound(propositionPower);
-	
+
 			$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
 		}
 	}

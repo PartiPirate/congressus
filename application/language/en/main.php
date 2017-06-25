@@ -167,6 +167,7 @@ $lang["myMeetings_deleted"] = "Deleted meetings";
 $lang["myMeetings_open"] = "Ongoing meetings";
 $lang["myMeetings_waiting"] = "Next meetings";
 
+$lang["motion_ballot_majority_-2"] = "Majority judgment";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "The best";
 $lang["motion_ballot_majority_50"] = "Simple majority";

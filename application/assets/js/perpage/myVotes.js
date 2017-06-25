@@ -38,7 +38,7 @@ function setMotionDirty(motion, state) {
 }
 
 function doPointVote(motion) {
-	addLog("borda vote on : " + motion.data("id"));
+	addLog("point vote on : " + motion.data("id"));
 	
 	var propositionHolders = motion.find(".proposition");
 
@@ -160,7 +160,7 @@ function setSchulzeOrderStyle(propositionsHolder) {
 	var propositions = propositionsHolder.find(".proposition");
 	propositions.each(function(index) {
 		var hue = 120 - (propositions.length == 1 ? 0 : 120 * index / (propositions.length - 1));
-		$(this).css({"background" : "hsl(" + hue + ", 50%, 50%)"});
+		$(this).css({"background" : "hsl(" + hue + ", 70%, 70%)"});
 	});
 }
 
@@ -168,10 +168,7 @@ function addBordaHandlers(motion) {
 	addLog("Add borda on " + motion.data("id"));
 
 	var propositionsHolder = motion.find(".propositions");
-/*	propositionsHolder.find(".proposition").each(function() {
-		$(this).width($(this).width());
-	});
-*/
+
 	propositionsHolder.sortable({
 		"axis": "y",
 		"helper": "clone",
@@ -192,12 +189,44 @@ function addBordaHandlers(motion) {
 	});
 }
 
+function addMajorityJudgmentHandlers(motion) {
+	addLog("Add MajorityJudgment on " + motion.data("id"));
+
+	var propositionsHolder = motion.find(".propositions");
+	propositionsHolder.find(".proposition").each(function() {
+		var proposition = $(this);
+		
+		proposition.find(".judgement").click(function() {
+			proposition.find(".judgement").removeClass("active");
+			$(this).addClass("active");
+
+			proposition.data("power", $(this).data("power"));
+			proposition.css({background: $(this).css("background-color")});
+		});
+
+		proposition.find(".judgement").each(function() {
+			if ($(this).data("power") == proposition.data("power")) {
+				$(this).addClass("active");
+				proposition.css({background: $(this).css("background-color")});
+			}	
+		});
+
+	});
+
+	motion.find(".btn-vote").click(function() {
+	 	doPointVote(motion);
+	});
+}
+
 function addVoteHandlers(motion) {
 //	addLog(motion.data("id") + " " + motion.data("method"));
 
 	var method = motion.data("method");
 
-	if (method == "-1") {
+	if (method == "-2") {
+		addMajorityJudgmentHandlers(motion);
+	}
+	else if (method == "-1") {
 		addBordaHandlers(motion);
 	}
 	else if (method >= 0) {

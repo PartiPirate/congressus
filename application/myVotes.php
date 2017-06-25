@@ -54,7 +54,7 @@ foreach($motions as $motion) {
 		$sortedMotions[$motion["mot_id"]] = $motion;
 		$sortedMotions[$motion["mot_id"]]["propositions"] = array();
 	}
-	
+
 	$sortedMotions[$motion["mot_id"]]["propositions"][] = $motion;
 }
 
@@ -110,15 +110,29 @@ function sortPropositions($a, $b) {
 		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?></h4>
 
 		<div class="propositions">
-	<?php	foreach($propositions as $proposition) { ?>
+	<?php	foreach($propositions as $index => $proposition) {
 	
-			<div class="btn btn-default proposition" style="width: 100%" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
-
-	<?php 	} ?>
+				if ($motion["mot_win_limit"] == -2) {
+					if ($index != 0) echo "<br>";
+				?>
+			<div class="proposition" style="width: 100%; border-radius: 4px;" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
+				<?php echo $proposition["mpr_label"]; ?>
+				<div class="btn-group" style="width: 100%; margin: 2px;">
+					<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
+							foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
+						<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
+					<?php	} ?>
+				</div>
+			</div>
+	<?php 		} 
+				else {?>
+			<div class="btn btn-default proposition" style="width: 100%;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
+	<?php 		}
+			}?>
 		</div>
 	
 		<br>
-		<button class="btn btn-default btn-primary btn-vote" style="width: 100%" type="button">Voter</button>
+		<button class="btn btn-default btn-primary btn-vote" style="width: 100%;" type="button">Voter</button>
 
 	</div>
 	<div class="panel-footer text-right">

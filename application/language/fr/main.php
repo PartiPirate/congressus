@@ -171,11 +171,19 @@ $lang["myMeetings_deleted"] = "Réunions supprimées";
 $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_waiting"] = "Prochaines réunions";
 
+$lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "La meilleure";
 $lang["motion_ballot_majority_50"] = "Majorité simple";
 $lang["motion_ballot_majority_66"] = "Majorité 66%";
 $lang["motion_ballot_majority_80"] = "Majorité 80%";
+
+$lang["motion_majorityJudgment_1"] = "À rejeter";
+$lang["motion_majorityJudgment_2"] = "Insuffisant";
+$lang["motion_majorityJudgment_3"] = "Passable";
+$lang["motion_majorityJudgment_4"] = "Assez bien";
+$lang["motion_majorityJudgment_5"] = "Bien";
+$lang["motion_majorityJudgment_6"] = "Très bien";
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";

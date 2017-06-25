@@ -70,6 +70,7 @@ $lang["breadcrumb_decisions"] = "Décisions";
 $lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
 $lang["breadcrumb_groupMeetings"] = "Réunions d'instance";
 $lang["breadcrumb_index"] = "Accueil";
+$lang["breadcrumb_myVotes"] = "Mes votes";
 $lang["breadcrumb_mybadges"] = "Mes badges";
 $lang["breadcrumb_myMeetings"] = "Mes réunions";
 $lang["breadcrumb_mypreferences"] = "Mes préférences";
@@ -250,6 +251,11 @@ $lang["mypreferences_save"] = "Sauver mes préférences";
 $lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
 $lang["mypreferences_validation_mail_empty"] = "Le champ mail ne peut être vide";
 $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas une adresse valide";
+
+$lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
+$lang["myVotes_maxPower"] = "Points à distribuer : {value}";
+$lang["myVotes_voteMethod"] = "Méthode : {value}";
+
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

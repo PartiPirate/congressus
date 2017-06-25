@@ -23,7 +23,7 @@ require_once("engine/bo/MotionBo.php");
 $motionBo = MotionBo::newInstance($connection, $config);
 
 $userId = SessionUtils::getUserId($_SESSION);
-
+if (!$userId) $userId = -1;
 
 $filters = array();
 $filters["mot_status"] = MotionBo::VOTING;

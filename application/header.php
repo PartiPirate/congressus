@@ -149,6 +149,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	if ($isConnected) {?>
+					<li <?php if ($page == "myVotes") echo 'class="active"'; ?>><a href="myVotes.php"><?php echo lang("menu_myVotes"); ?><?php if ($page == "myVotes") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	} else {?>

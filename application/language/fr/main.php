@@ -53,6 +53,7 @@ $lang["menu_logout"] = "Se déconnecter";
 $lang["menu_mybadges"] = "Mes badges";
 $lang["menu_myMeetings"] = "Mes réunions";
 $lang["menu_mypreferences"] = "Mes préférences";
+$lang["menu_myVotes"] = "Mes votes";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";

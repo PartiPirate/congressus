@@ -19,7 +19,8 @@
 /* global $ */
 /* global testBadges */
 /* global bootbox */
-
+/* global majority_judgement_values */
+/* global majority_judgement_translations */
 
 keyupTimeoutId = null;
 
@@ -719,9 +720,21 @@ function addVotes(votes, proposition, motion) {
 
 		voteLi.find(".nickname").text(vote.mem_nickname);
 		voteLi.data("memberId", vote.mem_id);
-		voteLi.find(".power").text(vote.vot_power);
 		voteLi.attr("data-power", vote.vot_power);
 		voteLi.data("power", vote.vot_power);
+		voteLi.find(".power").text(vote.vot_power);
+
+		var motionWinLimit = motion.find(".btn-motion-limits.active").attr("value") - 0;
+		
+		if (motionWinLimit == -2) {
+			for(var jmIndex = 0; jmIndex < majority_judgement_values.length; ++jmIndex) {
+				var jmValue = majority_judgement_values[jmIndex];
+				if (jmValue == vote.vot_power && vote.vot_power != 0) {
+					voteLi.find(".power").text(majority_judgement_translations[jmIndex]);
+					break;
+				}
+			}
+		}
 
 		if (vote.mem_id != getUserId() && areVotesAnonymous(motion)) {
 			voteLi.hide();
@@ -771,6 +784,25 @@ function setSchulzeOrderStyle(propositionsHolder) {
 		else {
 			$(this).addClass("btn-default");
 		}
+	});
+}
+
+function retrieveJMPreviousVotes(motion, propositionsHolder) {
+	var userId = $(".meeting").data("user-id");
+	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
+
+	if (!votes.length) return;
+
+	votes.each(function() {
+		var proposition = propositionsHolder.find(".proposition[data-id="+$(this).data("proposition-id")+"]");
+		
+		var votePower = $(this).data("power");
+		
+		var jmProposition = proposition.find("*[data-power="+votePower+"]");
+		jmProposition.addClass("active");
+
+		proposition.data("power", jmProposition.data("power"));
+		proposition.css({background: $(jmProposition).css("background-color")});
 	});
 }
 
@@ -829,6 +861,77 @@ function vote(event) {
 	        },
 	        className: "not-large-dialog"
 		});
+	}
+	if (motionWinLimit == -2) {
+
+		dialog = $("form[data-template-id=majority-judgment-form]").template("use", {data: {}});
+		var propositions = motion.find(".proposition");
+		var propositionsHolder = dialog.find(".propositions");
+
+		propositions.each(function() {
+			var propositionHolder = $("div[data-template-id=judgementProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
+
+			propositionHolder.find(".judgement").click(function() {
+				proposition.find(".judgement").removeClass("active");
+				$(this).addClass("active");
+	
+				propositionHolder.data("power", $(this).data("power"));
+				propositionHolder.css({background: $(this).css("background-color")});
+			});
+
+			propositionsHolder.append(propositionHolder);
+		});
+
+		retrieveJMPreviousVotes(motion, propositionsHolder);
+
+		dialog.find("*").tooltip({placement: "left"});
+
+		bootbox.dialog({
+	        title: meeting_motionVote2 + " \"" + motion.find(".motion-title").text() + "\"",
+	        message: dialog,
+	        buttons: {
+	            success: {
+	                label: meeting_vote,
+	                className: "btn-primary",
+	                callback: function () {
+                		var dialog = $(this);
+						var propositionsHolder = dialog.find(".propositions");
+						var propositionHolders = propositionsHolder.find(".proposition");
+
+						var index = 0;
+
+						propositionHolders.each(function() {
+
+	                		var proposition = motion.find(".proposition[data-id="+$(this).data("id")+"]");
+							var propositionJM = $(this);
+
+							var form = {"motionId": motion.data("id"),
+										"propositionId": proposition.data("id"),
+										"power": propositionJM.data("power")};
+
+	                		$.post("meeting_api.php?method=do_vote", form, function(data) {
+	                			if (data.ok) {
+	                				addVotes([data.vote], proposition, motion);
+									testBadges(data.gamifiedUser.data);
+	                			}
+	                		}, "json");
+
+							++index;
+
+						});
+                    }
+	            },
+	            close: {
+	                label: common_close,
+	                className: "btn-default",
+	                callback: function () {
+                    }
+                }
+	        },
+	        className: "not-large-dialog"
+		});
+
+
 	}
 	else {
 		dialog = $("form[data-template-id=schulze-form]").template("use", {data: {}});

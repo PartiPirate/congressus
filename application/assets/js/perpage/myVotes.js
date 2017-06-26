@@ -210,7 +210,6 @@ function addMajorityJudgmentHandlers(motion) {
 				proposition.css({background: $(this).css("background-color")});
 			}	
 		});
-
 	});
 
 	motion.find(".btn-vote").click(function() {

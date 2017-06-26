@@ -336,6 +336,16 @@ if (!$userId) {
 		</fieldset>
 	</form>
 
+	<form data-template-id="majority-judgment-form" action="" class="template form-horizontal">
+		<fieldset>
+			<div class="form-group">
+				<div class="col-md-12 propositions">
+
+				</div>
+			</div>
+		</fieldset>
+	</form>
+
 	<ul>
 		<li data-template-id="old-task" id="task-${tas_id}"
 			class="template list-group-item task"
@@ -590,6 +600,17 @@ if (!$userId) {
 
 	</ul>
 
+	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
+		${mpr_label}
+		<div class="btn-group" style="width: 100%; margin: 2px;">
+			<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
+					foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
+				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
+			<?php	} ?>
+		</div>
+	</div>
+
+
 </templates>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
@@ -634,14 +655,16 @@ $("#start-meeting-modal").modal("show");
 
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
+
+var common_edit = "<?php echo lang("common_edit"); ?>";
+var common_close = "<?php echo lang("common_close"); ?>";
+
 var meeting_speakingAsk = "<?php echo lang("meeting_speakingAsk"); ?>";
 var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
 var meeting_arrival = "<?php echo lang("meeting_arrival"); ?>";
 var meeting_left = "<?php echo lang("meeting_left"); ?>";
 var meeting_votePower = "<?php echo lang("meeting_votePower"); ?>";
 var meeting_notification = "<?php echo lang("meeting_notification"); ?>";
-var common_edit = "<?php echo lang("common_edit"); ?>";
-var common_close = "<?php echo lang("common_close"); ?>";
 var meeting_notificationDelete = "<?php echo lang("meeting_notificationDelete"); ?>";
 var meeting_motionVote2 = "<?php echo lang("meeting_motionVote2"); ?>";
 var meeting_vote = "<?php echo lang("meeting_vote"); ?>";
@@ -651,6 +674,19 @@ var meeting_taskEnd = "<?php echo lang("meeting_taskEnd"); ?>";
 var meeting_chatDelete = "<?php echo lang("meeting_chatDelete"); ?>";
 var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>";
 var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
+
+var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
+
+<?php 
+
+$translatons = array();
+foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
+	$translatons[] = lang("motion_majorityJudgment_" . $value, false);
+}
+
+?>
+
+var majority_judgement_translations = <?php echo json_encode($translatons); ?>
 
 var isPeopleReady = false;
 var isAgendaReady = false;

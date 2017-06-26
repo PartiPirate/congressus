@@ -17,6 +17,11 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global majority_judgement_values */
+/* global majority_judgement_translations */
+
+/* I18N */
+/* global meeting_votePower */
 
 function voteRound(value) {
 	return (Math.round(value * 100, 2) / 100);
@@ -37,11 +42,26 @@ function computeMotion(motion) {
 	var voters = {};
 
 	var propositionPowers = {};
+	var judgedPropositions = {};
+	var scaledJudgedPropositions = {};
+	var totalJudgedPropositions = {};
+	var winningJudgedPropositions = {};
 	var totalPowers = 0;
 	var max = 0;
 
+	var winLimit = motion.data("win-limit");
+
 	motion.find(".proposition").each(function() {
 		propositionPowers[$(this).data("id")] = 0;
+		judgedPropositions[$(this).data("id")] = [];
+		scaledJudgedPropositions[$(this).data("id")] = [];
+		totalJudgedPropositions[$(this).data("id")] = 0;
+		winningJudgedPropositions[$(this).data("id")] = 0;
+
+		for(var index = 0; index < majority_judgement_values.length; ++index) {
+			judgedPropositions[$(this).data("id")][majority_judgement_values[index]] = 0;
+			scaledJudgedPropositions[$(this).data("id")][majority_judgement_values[index]] = 0;
+		}
 
 		if (areVotesAnonymous(motion)) {
 			$("#proposition-" + $(this).data("id") + " .powers").hide();
@@ -50,8 +70,6 @@ function computeMotion(motion) {
 			$("#proposition-" + $(this).data("id") + " .powers").show();
 		}
 	});
-
-	var winLimit = motion.data("win-limit");
 
 	for(var index = 0; index < votes.length; ++index) {
 		var vote = votes.eq(index);
@@ -75,6 +93,7 @@ function computeMotion(motion) {
 		}
 
 		var votePower = 0;
+		var jmPower = 0;
 
 		if (themePower) {
 			var membersPower = 0;
@@ -92,15 +111,42 @@ function computeMotion(motion) {
 			});
 
 			votePower += themePower * vote.data("power") / membersPower * (1 - neutral);
+			jmPower += themePower / membersPower * (1 - neutral);
 		}
 		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
 			votePower += vote.data("power") * (1 - neutral);
+			jmPower += $(this).find(".power").eq(0).text() * (1 - neutral);
 		}
 
 		vote.attr("data-effective-power", votePower);
 		vote.data("effective-power", votePower);
 
-		vote.find(".power").attr("title", meeting_votePower + " " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
+		if (winLimit != -2) {
+			vote.find(".power").attr("title", meeting_votePower + " " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
+		}
+		else {
+//			console.log(propositionId + " , " + vote.data("power") + " , " + jmPower)
+
+			totalJudgedPropositions[propositionId] += jmPower;
+			winningJudgedPropositions[propositionId] = -1;
+
+			scaledJudgedPropositions[vote.data("power")] += jmPower
+
+			for(var vindex = 0; vindex < majority_judgement_values.length; ++vindex) {
+				var jmValue = majority_judgement_values[vindex];
+				if (vote.data("power") >= jmValue) {
+					judgedPropositions[propositionId][jmValue] += jmPower;
+				}
+
+				if (judgedPropositions[propositionId][jmValue] * 2 >= totalJudgedPropositions[propositionId]) {
+					winningJudgedPropositions[propositionId] = jmValue;
+				}
+			}
+
+//			judgedPropositions[propositionId][vote.data("power")] += jmPower;
+
+			vote.find(".power").attr("title", meeting_votePower + " " + vote.data("power") + " => " + voteRound(jmPower));
+		}
 
 		if (vote.data("power") != 0) {
 			voters[memberId] = memberId;
@@ -114,6 +160,8 @@ function computeMotion(motion) {
 		}
 	}
 
+//	console.log(judgedPropositions);
+
 	var numberOfVoters = 0;
 	for(var id in voters) {
 		numberOfVoters++;
@@ -122,6 +170,36 @@ function computeMotion(motion) {
 	motion.find(".number-of-voters").text(numberOfVoters);
 
 	if (!areVotesAnonymous(motion)) {
+		
+		var maxJMValue = -1;
+		var maxJMPercent = 0;
+
+		if (winLimit == -2) {
+			for(var id in propositionPowers) {
+				if (maxJMValue < winningJudgedPropositions[id]) {
+					maxJMValue = winningJudgedPropositions[id];
+				}
+			}
+
+			for(var id in propositionPowers) {
+				if (maxJMValue == winningJudgedPropositions[id]) {
+					
+					var percent = 0;
+					var total = totalJudgedPropositions[id];
+					var winning = winningJudgedPropositions[id];
+					var winningTotal = judgedPropositions[id][winning];
+					
+					if (total) {
+						percent = Math.round(winningTotal / total * 1000, 1) / 10;
+					}
+					
+					if (maxJMPercent < percent) {
+						maxJMPercent = percent;
+					}
+				}
+			}
+		}
+		
 		for(var id in propositionPowers) {
 			var propositionPower = propositionPowers[id];
 
@@ -134,14 +212,42 @@ function computeMotion(motion) {
 				$("#proposition-" + id).addClass("text-success");
 				$("#proposition-" + id).removeClass("text-danger");
 			}
+			else if (winLimit == 2) {
+			}
 			else {
 				$("#proposition-" + id).removeClass("text-success");
 				$("#proposition-" + id).addClass("text-danger");
 			}
 
-			propositionPower = voteRound(propositionPower);
+			if (winLimit != -2) {
+				propositionPower = voteRound(propositionPower);
+	
+				$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
+			}
+			else {
+				var percent = 0;
+				var total = totalJudgedPropositions[id];
+				var winning = winningJudgedPropositions[id];
+				var winningTotal = judgedPropositions[id][winning];
+				
+				if (total) {
+					percent = Math.round(winningTotal / total * 1000, 1) / 10;
+				}
 
-			$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
+				if (percent == maxJMPercent && winning == maxJMValue) {
+					$("#proposition-" + id).addClass("text-success");
+					$("#proposition-" + id).removeClass("text-danger");
+				}
+				
+				var winningTranslate = winning;
+				for(jmValue = 0; jmValue < majority_judgement_values.length; ++jmValue) {
+					if (majority_judgement_values[jmValue] == winning) {
+						winningTranslate = majority_judgement_translations[jmValue];
+					}
+				}
+
+				$("#proposition-" + id + " .powers").html("&nbsp;(" + winningTranslate + " / " + percent + "%)");
+			}
 		}
 	}
 //	console.log(propositionPowers);
@@ -154,9 +260,26 @@ function dumpMotion(motion) {
 	var totalPowers = 0;
 	var max = 0;
 
+	var judgedPropositions = {};
+	var scaledJudgedPropositions = {};
+	var totalJudgedPropositions = {};
+	var winningJudgedPropositions = {};
+	var totalPowers = 0;
+	var max = 0;
+
 	var winLimit = motion.data("win-limit");
 
 	motion.find(".proposition").each(function() {
+		judgedPropositions[$(this).data("id")] = [];
+		scaledJudgedPropositions[$(this).data("id")] = [];
+		totalJudgedPropositions[$(this).data("id")] = 0;
+		winningJudgedPropositions[$(this).data("id")] = 0;
+
+		for(var index = 0; index < majority_judgement_values.length; ++index) {
+			judgedPropositions[$(this).data("id")][majority_judgement_values[index]] = 0;
+			scaledJudgedPropositions[$(this).data("id")][majority_judgement_values[index]] = 0;
+		}
+
 		explanations["proposition_" + $(this).data("id")] = {winning: 0, votes: [], power: 0};
 	});
 
@@ -204,16 +327,48 @@ function dumpMotion(motion) {
 			propositionVote["themeLabel"] = parentNotice.find("h5 .notice-name").text();
 			propositionVote["membersPower"] = membersPower;
 
-			propositionVote["votePower"] = themePower * vote.data("power") / membersPower * (1 - neutral);
+
+			if (winLimit == -2) {
+				propositionVote["votePower"] = themePower / membersPower * (1 - neutral);
+			}
+			else {
+				propositionVote["votePower"] = themePower * vote.data("power") / membersPower * (1 - neutral);
+			}
 		}
 		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
-			propositionVote["votePower"] = vote.data("power") * (1 - neutral);
+			if (winLimit == -2) {
+				propositionVote["votePower"] = vote.data("power") * (1 - neutral);
+			}
+			else {
+				propositionVote["votePower"] = $(this).find(".power").eq(0).text() * (1 - neutral);
+			}
 		}
 		else {
 			propositionVote["votePower"] = 0;
 		}
 
+
 		totalPowers += propositionVote["votePower"];
+
+		if (winLimit == -2) {
+			propositionVote["jm_power"] = vote.data("power");
+			totalJudgedPropositions[propositionId] += propositionVote["votePower"];
+	
+			winningJudgedPropositions[propositionId] = -1;
+			
+			scaledJudgedPropositions[propositionId][vote.data("power")] += propositionVote["votePower"];
+			
+			for(var vindex = 0; vindex < majority_judgement_values.length; ++vindex) {
+				var jmValue = majority_judgement_values[vindex];
+				if (vote.data("power") >= jmValue) {
+					judgedPropositions[propositionId][jmValue] += propositionVote["votePower"];
+				}
+				
+				if (judgedPropositions[propositionId][jmValue] * 2 >= totalJudgedPropositions[propositionId]) {
+					winningJudgedPropositions[propositionId] = jmValue;
+				}
+			}
+		}
 
 		explanations["proposition_" + propositionId]["votes"][explanations["proposition_" + propositionId]["votes"].length] = propositionVote;
 		explanations["proposition_" + propositionId]["power"] -= -propositionVote["votePower"];
@@ -223,8 +378,41 @@ function dumpMotion(motion) {
 		}
 	}
 
-	for(var id in explanations) {
 
+	var maxJMValue = -1;
+	var maxJMPercent = 0;
+
+	if (winLimit == -2) {
+		for(var id in explanations) {
+			var propositionId = id.replace("proposition_", "");
+			if (maxJMValue < winningJudgedPropositions[propositionId]) {
+				maxJMValue = winningJudgedPropositions[propositionId];
+			}
+		}
+
+		for(var id in explanations) {
+			var propositionId = id.replace("proposition_", "");
+			if (maxJMValue == winningJudgedPropositions[propositionId]) {
+				
+				var percent = 0;
+				var total = totalJudgedPropositions[propositionId];
+				var winning = winningJudgedPropositions[propositionId];
+				var winningTotal = judgedPropositions[propositionId][winning];
+				
+				if (total) {
+					percent = Math.round(winningTotal / total * 1000, 1) / 10;
+				}
+				
+				if (maxJMPercent < percent) {
+					maxJMPercent = percent;
+				}
+			}
+		}
+	}
+
+	for(var id in explanations) {
+		var propositionId = id.replace("proposition_", "");
+		
 		var percent = 0;
 		if (totalPowers) {
 			percent = Math.round(explanations[id]["power"] / totalPowers * 1000, 1) / 10;
@@ -233,7 +421,24 @@ function dumpMotion(motion) {
 		if ((winLimit > 0 && percent >= winLimit) || ((winLimit == 0 || winLimit == -1) && explanations[id]["power"] == max)) {
 			explanations[id]["winning"] = 1;
 		}
+		else if (winLimit == -2) {
+			var percent = 0;
+			var total = totalJudgedPropositions[propositionId];
+			var winning = winningJudgedPropositions[propositionId];
+			var winningTotal = judgedPropositions[propositionId][winning];
+			
+			if (total) {
+				percent = Math.round(winningTotal / total * 1000, 1) / 10;
+			}
 
+			if (percent == maxJMPercent && winning == maxJMValue) {
+				explanations[id]["winning"] = 1;
+			}
+			
+			explanations[id]["jm_winjning"] = winning;
+			explanations[id]["jm_percent"] = percent;
+			explanations[id]["scale"] = scaledJudgedPropositions[propositionId];
+		}
 	}
 
 	var motionId = motion.data("id");

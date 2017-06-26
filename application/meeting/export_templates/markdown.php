@@ -115,7 +115,16 @@ function showMotion($motions, $id, &$voters) {
 
 				echo "$voteSeparator";
 				echo $vote["memberLabel"];
-				echo " (" . $vote["power"] . ")";
+				echo " (";
+
+				if ($motion["mot_win_limit"] == -2) {
+					echo $vote["votePower"] . " x " .  lang("motion_majorityJudgment_" . $vote["jm_power"], false, null, "../");
+				}
+				else {
+					echo  $vote["power"];
+				}
+
+				echo ")";
 
 				$voteSeparator = ", ";
 				$voters[$vote["memberId"]] = $vote["memberLabel"];
@@ -130,10 +139,31 @@ function showMotion($motions, $id, &$voters) {
 		echo "|close=Motion adoptée\n";
 		echo "|result=pour\n";
 	}
-	else {
+	else if ($motion["mot_win_limit"] == -2) {
+		echo "|close=Motion adoptée\n";
+		
+		foreach($motions as $motion) {
+			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
+				echo "|result=" . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $explanation["jm_percent"] . "%" .")\n";
+				
+				break;
+			}
+		}
+	}
+	else if (strtolower($winning) == "contre" || strtolower($winning) == "non") {
 		echo "|close=Motion rejetée\n";
-		//		echo "|result=$winning\n";
 		echo "|result=contre\n";
+	}
+	else {
+		echo "|close=Motion adoptée\n";
+		
+		foreach($motions as $motion) {
+			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
+				echo "|result=" . $motion["mpr_label"] . "\n";
+				
+				break;
+			}
+		}
 	}
 
 	echo "|}}\n\n";

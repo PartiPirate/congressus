@@ -474,6 +474,8 @@ if (!$userId) {
 
 			<div class="motion-propositions">
 			</div>
+			<div class="motion-charts-disabled">
+			</div>
 			<div class="motion-actions">
 				<button class="btn btn-primary btn-xs btn-add-proposition"
 					title="<?php echo lang("meeting_proposalAdd"); ?>"
@@ -484,7 +486,7 @@ if (!$userId) {
 				<div id="motionLimitsButtons" class="btn-group" role="group">
 <?php foreach($config["congressus"]["ballot_majorities"] as $majority) {
 	// Development condition
-	if (($userId != 12 && $userId != 1) && $majority < -1) continue;
+	if (($userId != 12 && $userId != 1) && $majority < -2) continue;
 ?>
 					<button value="<?php echo $majority; ?>" type="button" style="display: none;"
 						class="btn btn-default btn-xs btn-motion-limits btn-motion-limit-<?php echo $majority; ?>"><?php echo lang("motion_ballot_majority_$majority"); ?></button>

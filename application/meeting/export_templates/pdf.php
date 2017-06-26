@@ -49,7 +49,14 @@ function showMotion($motions, $id, &$voters) {
 
 			$explanation = json_decode($motion["mpr_explanation"], true);
 
-			echo "<div class=\"proposition " . ($motion["mpr_winning"] == 1 ? "winning" : "") . "\">" . $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
+			echo "<div class=\"proposition " . ($motion["mpr_winning"] == 1 ? "winning" : "") . "\">" . $motion["mpr_label"] . "&nbsp;(";
+			if ($motion["mot_win_limit"] == -2) {
+				echo lang("motion_majorityJudgment_" . $explanation["jm_winning"], true, null, "../") . ", " . $explanation["jm_percent"] . "%";
+			}
+			else {
+				echo $explanation["power"];
+			}
+			echo ") : ";
 
 			$voteSeparator = " ";
 			foreach($explanation["votes"] as $vote) {
@@ -57,7 +64,18 @@ function showMotion($motions, $id, &$voters) {
 
 				echo "$voteSeparator<span class=\"vote\">";
 				echo $vote["memberLabel"];
-				echo "&nbsp;(" . $vote["power"] . ")";
+
+				echo "&nbsp;(";
+
+				if ($motion["mot_win_limit"] == -2) {
+					echo $vote["votePower"] . " x " .  lang("motion_majorityJudgment_" . $vote["jm_power"], true, null, "../");
+				}
+				else {
+					echo  $vote["power"];
+				}
+
+				echo ")";
+
 				echo "</span>";
 				$voteSeparator = ", ";
 

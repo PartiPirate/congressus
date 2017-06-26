@@ -130,7 +130,7 @@ function computeMotion(motion) {
 			totalJudgedPropositions[propositionId] += jmPower;
 			winningJudgedPropositions[propositionId] = -1;
 
-			scaledJudgedPropositions[vote.data("power")] += jmPower
+			scaledJudgedPropositions[propositionId][vote.data("power")] += jmPower
 
 			for(var vindex = 0; vindex < majority_judgement_values.length; ++vindex) {
 				var jmValue = majority_judgement_values[vindex];
@@ -170,7 +170,7 @@ function computeMotion(motion) {
 	motion.find(".number-of-voters").text(numberOfVoters);
 
 	if (!areVotesAnonymous(motion)) {
-		
+
 		var maxJMValue = -1;
 		var maxJMPercent = 0;
 
@@ -199,7 +199,7 @@ function computeMotion(motion) {
 				}
 			}
 		}
-		
+
 		for(var id in propositionPowers) {
 			var propositionPower = propositionPowers[id];
 
@@ -247,6 +247,35 @@ function computeMotion(motion) {
 				}
 
 				$("#proposition-" + id + " .powers").html("&nbsp;(" + winningTranslate + " / " + percent + "%)");
+			}
+		}
+
+		if (winLimit == -2) {
+			var charts = motion.find(".motion-charts");
+			charts.children().remove();
+	
+			for(var id in scaledJudgedPropositions) {
+				var scaledJudgedProposition = scaledJudgedPropositions[id];
+
+				var propositionLabel = $("#proposition-" + id + " .proposition-label").text();
+
+				var bar = "<div style='width:100%;'><div class='label' style='width: 25%; box-sizing: border-box; display: inline-block; color: #000; '>"+propositionLabel+"</div><div style='width: 75%; box-sizing: border-box; display: inline-block;'>";
+				
+				for(var index = 0; index < majority_judgement_values.length; ++index) {
+					var number = scaledJudgedProposition[majority_judgement_values[index]];
+					if (number == 0) continue;
+	
+					var color = 120 * index / majority_judgement_values.length;
+					var percent = number / totalJudgedPropositions[id];
+					var width = (Math.round(percent * 1000, 1) / 10) + "%";
+					percent = (Math.round(percent * 1000, 1) / 10) + "%";
+					
+					bar += "<div class='text-center' style='height: 22px; width: " + width + "; background: hsl(" + color + ", 100%, 90%); border: 2px solid hsl(" + color + ", 100%, 50%); box-sizing: border-box; display: inline-block;'>"+percent+"</div>";
+				}
+				
+				bar += "</div></div>";
+				
+				charts.append(bar);
 			}
 		}
 	}
@@ -435,7 +464,7 @@ function dumpMotion(motion) {
 				explanations[id]["winning"] = 1;
 			}
 			
-			explanations[id]["jm_winjning"] = winning;
+			explanations[id]["jm_winning"] = winning;
 			explanations[id]["jm_percent"] = percent;
 			explanations[id]["scale"] = scaledJudgedPropositions[propositionId];
 		}

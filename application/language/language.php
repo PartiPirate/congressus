@@ -43,7 +43,7 @@ function getLanguage() {
     return "fr";
 }
 
-function isLanguageKey($key, $language = null) {
+function isLanguageKey($key, $language = null, $path = "") {
 	global $lang;
 
 	if (!$language) {
@@ -51,7 +51,7 @@ function isLanguageKey($key, $language = null) {
 	}
 
 	if (!count($lang)) {
-		$directoryHandler = dir("language/" . $language);
+		$directoryHandler = dir($path. "language/" . $language);
 		while(($fileEntry = $directoryHandler->read()) !== false) {
 			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
 				include_once("language/" . $language . "/" . $fileEntry);
@@ -70,7 +70,7 @@ function isLanguageKey($key, $language = null) {
 	return false;
 }
 
-function lang($key, $htmlencode = true, $language = null) {
+function lang($key, $htmlencode = true, $language = null, $path = "") {
     global $lang;
 
 //     if (!$language) {
@@ -91,7 +91,7 @@ function lang($key, $htmlencode = true, $language = null) {
 //     }
 
 //    if (array_key_exists($key, $lang)) {
-    if (isLanguageKey($key, $language)) {
+    if (isLanguageKey($key, $language, $path)) {
     	$text = $lang[$key];
 
     	if ($htmlencode) {

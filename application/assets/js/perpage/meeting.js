@@ -22,6 +22,11 @@
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
 
+/* I18N */
+
+/* global meeting_vote */
+/* global meeting_motionVote2 */
+
 keyupTimeoutId = null;
 
 function clearKeyup() {

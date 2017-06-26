@@ -39,6 +39,8 @@ require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
 
+require_once("language/language.php");
+
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
@@ -100,7 +102,7 @@ $meeting["mee_end_datetime"] = $meeting["mee_end_datetime"]->format("Y-m-d H:i:s
 // People
 
 $pings = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
-usort($pings, "pingSpeakingRequestCompare");
+//usort($pings, "pingSpeakingRequestCompare");
 
 $order = 1;
 

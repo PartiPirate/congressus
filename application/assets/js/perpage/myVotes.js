@@ -140,12 +140,28 @@ function addPointHandlers(motion) {
 	}
 	else {
 		motion.find(".proposition").each(function() {
-			var input = $("<input type='number' class='pull-right text-right' style='width: 40px;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
+			var proposition = $(this);
+			var input = $("<input type='number' class='pull-right text-right' style='width: 40px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
 			input.change(function() {
 				checkMaxValues(motion.find(".proposition"), maxPower);
 				setMotionDirty(motion, true);
+				
+				if ($(this).val() == 0) {
+					proposition.removeClass("active");
+				}
+				else {
+					proposition.addClass("active");
+				}
 			});
-			$(this).append(input);
+			
+			if (($(this).data("power") ? $(this).data("power") : 0) == 0) {
+				proposition.removeClass("active");
+			}
+			else {
+				proposition.addClass("active");
+			}
+
+			proposition.append(input);
 		})
 	}
 	

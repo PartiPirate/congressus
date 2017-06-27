@@ -56,7 +56,7 @@ if (SessionUtils::getUserId($_SESSION)) {
 
 	if ($gamifierClient) {
 		$gamifiedUser = $gamifierClient->getUserInformation(sha1($config["gamifier"]["user_secret"] . $sessionUserId), $config["gamifier"]["service_uuid"], $config["gamifier"]["service_secret"]);
-	
+
 		foreach($gamifiedUser["data"]["badges"] as $userBadge) {
 	//		print_r($userBadge);
 			if (!$userBadge["noticed"]) {
@@ -91,10 +91,36 @@ $connection = openConnection();
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
 <head>
+	<?php if (basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") {
+	require_once("engine/bo/MeetingBo.php");
+
+	$meetingBo = MeetingBo::newInstance($connection);
+	$meeting = $meetingBo->getById($_REQUEST["id"], true);
+	}
+	$page_title = lang("congressus_title");
+	if (isset($meeting)) {
+		$page_title .= " : " . $meeting['mee_label'];
+	}
+	?>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?php echo lang("congressus_title"); ?></title>
+<title><?php echo $page_title;?></title>
+
+<!-- Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://congressus.partipirate.org/" />
+<meta property="og:title" content="Parti Pirate  <?php echo $page_title;?>" />
+<meta property="og:description" content="<?php echo lang("index_description");?>" />
+<!-- Google +1 -->
+<meta itemprop="name" content="Parti Pirate  <?php echo $page_title;?>" />
+<meta itemprop="description" content="<?php echo lang("index_description");?>" />
+<!-- Twitter -->
+<meta name="twitter:site" content="@partipirate" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:url" content="https://congressus.partipirate.org/" />
+<meta name="twitter:title" content="Parti Pirate  <?php echo $page_title;?>" />
+<meta name="twitter:description" content="<?php echo lang("index_description");?>" />
 
 <!-- Bootstrap -->
 
@@ -111,7 +137,7 @@ $connection = openConnection();
 <!--
 <link href="assets/css/min.css.php" rel="stylesheet">
 -->
- 
+
 <link href="assets/css/jquery.template.css" rel="stylesheet" />
 <link href="assets/css/jquery-ui.min.css" rel="stylesheet" />
 <link href="assets/css/opentweetbar.css" rel="stylesheet" />
@@ -137,7 +163,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="index.php"><img src="assets/images/logo.svg"
-					alt="Logo Congressus" 
+					alt="Logo Congressus"
 					style="position: relative; top: -14px; width: 48px; height: 48px; background-color: #ffffff;"
 					data-toggle="tooltip" data-placement="bottom"
 					title="Congressus" /> </a>
@@ -154,7 +180,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	} else {?>
 					<?php 	}?>
-					
+
 					<?php 	if ($isAdministrator) {?>
 					<li <?php if ($page == "administration") echo 'class="active"'; ?>><a href="administration.php"><?php echo lang("menu_administration"); ?><?php if ($page == "administration") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	} else {?>

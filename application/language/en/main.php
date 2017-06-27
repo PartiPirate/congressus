@@ -80,6 +80,7 @@ You can define who is attended, who has right to vote, define motions...<br>
 Use the search tool to find a motion, a proposition...<br>";
 $lang["index_connect_button"] = "Connect";
 $lang["index_downloadCalendar"] = "Download the iCal calendar";
+$lang["index_description"] = "Congressus allow you to manage meetings by groups, choose who is attended, who has right to vote, and define motions.";
 
 $lang["mybadges_guide"] = "The badge you have earn or the ones you can get";
 

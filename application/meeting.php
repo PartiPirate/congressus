@@ -18,12 +18,7 @@
 */
 include_once("header.php");
 
-require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/GuestBo.php");
-
-$meetingBo = MeetingBo::newInstance($connection);
-
-$meeting = $meetingBo->getById($_REQUEST["id"], true);
 
 if (!$meeting) {
 	// Ask for creation
@@ -607,7 +602,7 @@ if (!$userId) {
 		<div class="btn-group" style="width: 100%; margin: 2px;">
 			<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 					foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
-				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
+				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>
 			<?php	} ?>
 		</div>
 	</div>
@@ -679,7 +674,7 @@ var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 
 var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
 
-<?php 
+<?php
 
 $translatons = array();
 foreach($config["congressus"]["ballot_majority_judgment"] as $value) {

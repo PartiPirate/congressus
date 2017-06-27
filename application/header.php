@@ -113,22 +113,22 @@ $connection = openConnection();
 <meta property="og:url" content="<?php echo $current_url; ?>" />
 <meta property="og:title" content="Parti Pirate  <?php echo $page_title;?>" />
 <meta property="og:description" content="<?php echo lang("index_description");?>" />
-<meta property="og:image" content="https://wiki.partipirate.org/pp.png" />
+<meta property="og:image" content="assets/images/logo.png" />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="fb:page_id" content="partipiratefr" />
 <!-- Google +1 -->
 <meta itemprop="name" content="Parti Pirate  <?php echo $page_title;?>" />
 <meta itemprop="description" content="<?php echo lang("index_description");?>" />
-<meta itemprop="image" content="https://wiki.partipirate.org/pp.png" />
+<meta itemprop="image" content="assets/images/logo.png" />
 <!-- Twitter -->
 <meta name="twitter:site" content="@partipirate" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:url" content="<?php echo $current_url; ?>" />
 <meta name="twitter:title" content="Parti Pirate  <?php echo $page_title;?>" />
 <meta name="twitter:description" content="<?php echo lang("index_description");?>" />
-<meta name="twitter:image" content="https://wiki.partipirate.org/pp.png" />
-<meta name="twitter:image:alt" content="Voile du Parti Pirate" />
+<meta name="twitter:image" content="assets/images/logo.png" />
+<meta name="twitter:image:alt" content="Logo de Congressus" />
 
 <!-- Bootstrap -->
 

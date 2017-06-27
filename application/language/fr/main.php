@@ -53,6 +53,7 @@ $lang["menu_logout"] = "Se déconnecter";
 $lang["menu_mybadges"] = "Mes badges";
 $lang["menu_myMeetings"] = "Mes réunions";
 $lang["menu_mypreferences"] = "Mes préférences";
+$lang["menu_myVotes"] = "Mes votes";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
@@ -70,6 +71,7 @@ $lang["breadcrumb_decisions"] = "Décisions";
 $lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
 $lang["breadcrumb_groupMeetings"] = "Réunions d'instance";
 $lang["breadcrumb_index"] = "Accueil";
+$lang["breadcrumb_myVotes"] = "Mes votes";
 $lang["breadcrumb_mybadges"] = "Mes badges";
 $lang["breadcrumb_myMeetings"] = "Mes réunions";
 $lang["breadcrumb_mypreferences"] = "Mes préférences";
@@ -82,7 +84,6 @@ Un outil de recherche permet de rechercher tout ou parti d'un propos, d'une moti
 ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
 $lang["index_downloadCalendar"] = "Télécharger le calendrier iCal";
-$lang["index_description"] = "Congressus permet de gérer des réunions en fonction de différents groupes et de définir qui est convoqué aux réunions, qui a le droit de vote, définir des motions.";
 
 $lang["mybadges_guide"] = "Les badges que vous avez obtenus ou que vous pouvez obtenir";
 
@@ -170,11 +171,19 @@ $lang["myMeetings_deleted"] = "Réunions supprimées";
 $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_waiting"] = "Prochaines réunions";
 
+$lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "La meilleure";
 $lang["motion_ballot_majority_50"] = "Majorité simple";
 $lang["motion_ballot_majority_66"] = "Majorité 66%";
 $lang["motion_ballot_majority_80"] = "Majorité 80%";
+
+$lang["motion_majorityJudgment_1"] = "À rejeter";
+$lang["motion_majorityJudgment_2"] = "Insuffisant";
+$lang["motion_majorityJudgment_3"] = "Passable";
+$lang["motion_majorityJudgment_4"] = "Assez bien";
+$lang["motion_majorityJudgment_5"] = "Bien";
+$lang["motion_majorityJudgment_6"] = "Très bien";
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
@@ -251,6 +260,11 @@ $lang["mypreferences_save"] = "Sauver mes préférences";
 $lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
 $lang["mypreferences_validation_mail_empty"] = "Le champ mail ne peut être vide";
 $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas une adresse valide";
+
+$lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
+$lang["myVotes_maxPower"] = "Points à distribuer : {value}";
+$lang["myVotes_voteMethod"] = "Méthode : {value}";
+
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

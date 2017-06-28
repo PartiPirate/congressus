@@ -58,6 +58,7 @@ $data["meeting"] = $meeting;
 $location = array();
 $location["loc_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
 $location["loc_type"] = $_REQUEST["loc_type"];
+$location["loc_channel"] = $_REQUEST["loc_channel"];
 $location["loc_extra"] = $_REQUEST["loc_extra"];
 $location["loc_principal"] = 1;
 
@@ -65,10 +66,10 @@ $locationBo->save($location);
 
 if (isset($config["gamifier"]["url"])) {
     $gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);
-    
+
     $events = array();
     $events[] = array("user_uuid" => sha1($config["gamifier"]["user_secret"] . $userId),"event_uuid" => "0a730dcc-3a64-11e7-bc38-0242ac110005","service_uuid" => $config["gamifier"]["service_uuid"], "service_secret" => $config["gamifier"]["service_secret"]);
-    
+
     $addEventsResult = $gamifierClient->addEvents($events);
 }
 

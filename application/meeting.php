@@ -116,6 +116,21 @@ if (!$userId) {
 				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
+		<div class="col-md-6">
+			<span class="fa fa-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
+			<?php echo $meeting["loc_type"];?>
+		</div>
+		<?php if ($meeting["loc_type"]=="mumble") {?>
+			<div class="col-md-6" >
+				<span class="fa fa-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
+				<?php
+				include("config/mumble.structure.php");
+				$mumble_channel = $meeting["loc_channel"];
+				$mumble_link = "mumble://" . $mumble_server . "/" . $mumble[$mumble_channel] . "?title=" . $mumble_title . "&version=" . $mumble_version;
+				echo "<a href='$mumble_link' target='_blank'>$mumble_channel</a>";
+				?>
+			</div>
+		<?php }?>
 	</div>
 
 	<div class="row president-panels" style="margin-bottom: 5px; ">

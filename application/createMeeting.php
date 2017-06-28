@@ -17,6 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
+include("config/mumble.structure.php")
 ?>
 
 <div class="container theme-showcase meeting" role="main">
@@ -92,13 +93,31 @@ include_once("header.php");
 		<div class="form-group">
 			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
-				<select class="form-control input-md" id="loc_type" name="loc_type">
-					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
+				<select class="form-control input-md" id="loc_type" name="loc_type" onchange="check();">
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
+					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
 					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
 					<!--
 					<option value="irc">IRC</option>
 					 -->
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group" id="loc_channel_form">
+			<label for="loc_channel" class="col-md-4 control-label"><?php echo lang("createMeeting_mumblePlace"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="loc_channel" name="loc_channel">
+					<?php
+					foreach ($mumble as $channel => $channelLink) {
+						if (in_array($channel, $mumble_disabled)){
+							$disabled = "disabled";
+						} else {
+							$disabled = "";
+						}
+						echo "<option $disabled value='$channel'>$channel</option>";
+					}
+					?>
 				</select>
 			</div>
 		</div>
@@ -128,6 +147,20 @@ include_once("header.php");
 <script>
 </script>
 <?php include("footer.php");?>
+<script type="text/javascript">
+function check() {
+    var dropdown = document.getElementById("loc_type");
+    var current_value = dropdown.options[dropdown.selectedIndex].value;
 
+    if (current_value == "mumble") {
+        document.getElementById("loc_channel_form").style.display = "block";
+				document.getElementById('loc_channel').selectedIndex=0;
+    }
+    else {
+        document.getElementById("loc_channel_form").style.display = "none";
+				document.getElementById('loc_channel').selectedIndex=<?php echo count($mumble)-1 ?>;
+    }
+}
+</script>
 </body>
 </html>

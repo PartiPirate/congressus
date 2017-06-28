@@ -201,6 +201,7 @@ $lang["createMeeting_length_hour"] = "heure";
 $lang["createMeeting_length_hours"] = "heures";
 $lang["createMeeting_length_day"] = "jour";
 $lang["createMeeting_length_days"] = "jours";
+$lang["createMeeting_mumblePlace"] = "Canal de Mumble :";
 $lang["createMeeting_type"] = "Type événement :";
 $lang["createMeeting_type_meeting"] = "Réunion";
 $lang["createMeeting_type_aperitif"] = "Apéro";

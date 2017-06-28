@@ -53,6 +53,7 @@ $lang["menu_logout"] = "Log out";
 $lang["menu_mybadges"] = "My badges";
 $lang["menu_myMeetings"] = "My meetings";
 $lang["menu_mypreferences"] = "My preferences";
+$lang["menu_myVotes"] = "My votes";
 
 $lang["login_title"] = "Log in";
 $lang["login_loginInput"] = "Identifier";
@@ -190,6 +191,7 @@ $lang["createMeeting_length_hour"] = "hour";
 $lang["createMeeting_length_hours"] = "hours";
 $lang["createMeeting_length_day"] = "day";
 $lang["createMeeting_length_days"] = "days";
+$lang["createMeeting_mumblePlace"] = "Mumble's channel :";
 $lang["createMeeting_type"] = "Event's type :";
 $lang["createMeeting_type_meeting"] = "Meeting";
 $lang["createMeeting_type_aperitif"] = "Aperitif";

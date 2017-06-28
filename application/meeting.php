@@ -120,7 +120,7 @@ if (!$userId) {
 			<span class="fa fa-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 			<?php echo $meeting["loc_type"];?>
 		</div>
-		<?php if ($meeting["loc_type"]=="mumble") {?>
+		<?php if (($meeting["loc_type"]=="mumble") AND ($meeting["loc_channel"]!=="")) {?>
 			<div class="col-md-6" >
 				<span class="fa fa-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
 				<?php

@@ -95,7 +95,7 @@ if (!$userId) {
 			</span>
 		</div>
 		<div class="col-md-6 president">
-			<span class="fa fa-graduation-cap" style="margin-top: 10px;"></span> <?php echo lang("meeting_president"); ?>
+			<span class="glyphicon glyphicon-education" style="margin-top: 10px;"></span> <?php echo lang("meeting_president"); ?>
 			<span class="mee_president_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="president">
 				<option value="0"></option>
@@ -106,7 +106,7 @@ if (!$userId) {
 			</select>
 		</div>
 		<div class="col-md-6 secretary">
-			<span class="fa fa-user" style="margin-top: 10px;"></span> <?php echo lang("meeting_secretary"); ?>
+			<span class="glyphicon glyphicon-user" style="margin-top: 10px;"></span> <?php echo lang("meeting_secretary"); ?>
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="secretary">
 				<option value="0"></option>
@@ -117,12 +117,12 @@ if (!$userId) {
 			</select>
 		</div>
 		<div class="col-md-6">
-			<span class="fa fa-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
+			<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 			<?php echo $meeting["loc_type"];?>
 		</div>
-		<?php if ($meeting["loc_type"]=="mumble") {?>
+		<?php if (($meeting["loc_type"]=="mumble") AND ($meeting["loc_channel"]!=="")) {?>
 			<div class="col-md-6" >
-				<span class="fa fa-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
+				<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
 				<?php
 				include("config/mumble.structure.php");
 				$mumble_channel = $meeting["loc_channel"];

@@ -32,6 +32,7 @@ $config["congressus"]["ballot_majorities"] = array(0, 50, 66, 80, -1);
 $config["discourse"]["url"] = ""; // ex : discourse.partipirate.org
 $config["discourse"]["api_key"] = "";
 $config["discourse"]["protocol"] = ""; // ex : https
+$config["discourse"]["user"] = ""
 
 /*
 $config["gamifier"]["url"] = "http://gamifier.url/gamifier_api.php";

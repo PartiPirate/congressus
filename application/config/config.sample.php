@@ -29,6 +29,10 @@ $config["server"]["timezone"] = "Europe/Paris";
 
 $config["congressus"]["ballot_majorities"] = array(0, 50, 66, 80, -1);
 
+$config["discourse"]["discourse_url"] = "";
+$config["discourse"]["api_key"] = "";
+$config["discourse"]["protocol_api"] = "";
+
 /*
 $config["gamifier"]["url"] = "http://gamifier.url/gamifier_api.php";
 $config["gamifier"]["user_secret"] = "asecret";

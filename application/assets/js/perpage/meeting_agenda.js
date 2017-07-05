@@ -323,6 +323,7 @@ function addMeetingHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
+				function(data) {}, "json");
 		$.post("meeting_api.php?method=do_discourseCr", {meetingId: meetingId, property: "category", text: meetingCategory},
 				function(data) {}, "json");
 	});

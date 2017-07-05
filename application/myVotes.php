@@ -81,8 +81,13 @@ function sortPropositions($a, $b) {
 
 <?php echo str_replace("{value}", count($sortedMotions), lang("myVotes_numberOfMotions")); ?><br><br>
 
-<button class="btn btn-default btn-previous pull-left" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-left"></span></button>
-<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+<div class="text-center">
+	<button class="btn btn-default btn-previous pull-left" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+	<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+	
+	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> Imprimer un bulletin papier</button>
+	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;">Télécharger le bulletin</a>
+</div>
 
 <div class="clearfix"></div><br>
 
@@ -147,7 +152,7 @@ function sortPropositions($a, $b) {
 
 	</div>
 
-<div id="nolog"></div>
+<div id="log"></div>
 
 <?php include("connect_button.php"); ?>
 </div>

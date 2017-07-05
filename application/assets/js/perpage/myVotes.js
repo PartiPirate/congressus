@@ -23,22 +23,48 @@ function addLog(log) {
 }
 
 function doVote(motion) {
-	addLog("vote on : " + motion.data("id"));
+//    addLog("vote on : " + motion.data("id"));
+}
+
+function computeVotes() {
+	
+	$(".ballot-link").hide();
+	var data = {};
+
+	$(".motion").each(function() {
+		var motion = $(this);
+		var datum = {};
+
+		motion.find(".proposition").each(function() {
+			if ($(this).data("power") != 0) {
+				datum[$(this).data("id")] = $(this).data("power") - 0;	
+			}
+		});
+		
+		data[motion.data("id")] = datum;
+	});
+
+//	addLog(JSON.stringify(data));
+
+	$.post("do_paperVote.php", {votes: JSON.stringify(data)}, function(data) {
+//		console.log(data);
+		$(".ballot-link").attr("href", "ballots/" + data.uuid + ".pdf").show();
+	}, "json");
 }
 
 function setMotionDirty(motion, state) {
 	var voteButton = motion.find(".btn-vote");
 	
 	if (state) {
-		voteButton.removeClass("btn-primary").addClass("btn-danger");
+		voteButton.removeClass("btn-primary").addClass("btn-special");
 	}
 	else {
-		voteButton.removeClass("btn-danger").addClass("btn-primary");
+		voteButton.removeClass("btn-special").addClass("btn-primary");
 	}
 }
 
 function doPointVote(motion) {
-	addLog("point vote on : " + motion.data("id"));
+//    addLog("point vote on : " + motion.data("id"));
 	
 	var propositionHolders = motion.find(".proposition");
 
@@ -49,13 +75,13 @@ function doPointVote(motion) {
 					"propositionId": proposition.data("id"),
 					"power": proposition.data("power")};
 
-		addLog(JSON.stringify(form));
+	//    addLog(JSON.stringify(form));
 
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
 //				addVotes([data.vote], proposition, motion);
 //				testBadges(data.gamifiedUser.data);
-				addLog("Done !");
+			//    addLog("Done !");
 			}
 		}, "json");
 
@@ -66,7 +92,7 @@ function doPointVote(motion) {
 }
 
 function doBordaVote(motion) {
-	addLog("borda vote on : " + motion.data("id"));
+//    addLog("borda vote on : " + motion.data("id"));
 	
 	var propositionHolders = motion.find(".proposition");
 	
@@ -81,13 +107,13 @@ function doBordaVote(motion) {
 					"propositionId": proposition.data("id"),
 					"power": power};
 
-		addLog(JSON.stringify(form));
+	//    addLog(JSON.stringify(form));
 
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
 //				addVotes([data.vote], proposition, motion);
 //				testBadges(data.gamifiedUser.data);
-				addLog("Done !");
+			//    addLog("Done !");
 			}
 		}, "json");
 
@@ -122,7 +148,7 @@ function checkMaxValues(propositions, maxPower) {
 }
 
 function addPointHandlers(motion) {
-	addLog("Add point on " + motion.data("id"));
+//    addLog("Add point on " + motion.data("id"));
 
 	var maxPower = motion.data("max-power");
 
@@ -174,14 +200,19 @@ function addPointHandlers(motion) {
 
 function setSchulzeOrderStyle(propositionsHolder) {
 	var propositions = propositionsHolder.find(".proposition");
+	
+	var maxPower = propositionsHolder.parents(".motion").data("max-power");
+
+	
 	propositions.each(function(index) {
+		$(this).data("power", (propositions.length - index) * maxPower);
 		var hue = 120 - (propositions.length == 1 ? 0 : 120 * index / (propositions.length - 1));
 		$(this).css({"background" : "hsl(" + hue + ", 70%, 70%)"});
 	});
 }
 
 function addBordaHandlers(motion) {
-	addLog("Add borda on " + motion.data("id"));
+//    addLog("Add borda on " + motion.data("id"));
 
 	var propositionsHolder = motion.find(".propositions");
 
@@ -206,7 +237,7 @@ function addBordaHandlers(motion) {
 }
 
 function addMajorityJudgmentHandlers(motion) {
-	addLog("Add MajorityJudgment on " + motion.data("id"));
+//    addLog("Add MajorityJudgment on " + motion.data("id"));
 
 	var propositionsHolder = motion.find(".propositions");
 	propositionsHolder.find(".proposition").each(function() {
@@ -302,4 +333,5 @@ $(function() {
 		addVoteHandlers($(this));
 	});
 
+	$(".btn-paper-vote").click(computeVotes);
 });

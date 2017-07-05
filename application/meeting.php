@@ -169,6 +169,7 @@ if (!$userId) {
 					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
 					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
 					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
+					<a class="btn btn-primary btn-vote-meeting" href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window"></span></a>
 					<button class="btn btn-default request-speaking"><?php echo lang("meeting_speakingAsk"); ?>
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>

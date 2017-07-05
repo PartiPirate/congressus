@@ -240,3 +240,29 @@ a[disabled] {
 .chat .progress:hover {
 	height: auto;
 }
+
+.btn-external {
+  color: #fff;
+  background-color: #5c97b8;
+  border-color: #3e8f3e;
+}
+
+.btn-external:hover,
+.btn-external:focus {
+  color: #fff;
+  background-color: #417796;
+  background-position: 0 -15px;
+}
+
+.btn-special {
+  color: #fff;
+  background-color: #933BA4;
+  border-color: #75332A;
+}
+
+.btn-special:hover,
+.btn-special:focus {
+  color: #fff;
+  background-color: #781B82;
+  background-position: 0 -15px;
+}

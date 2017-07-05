@@ -165,6 +165,7 @@ $lang["meeting_voteNow"] = "Passer au vote";
 $lang["meeting_votePower"] = "Pouvoir du vote";
 $lang["meeting_voters"] = "Votants";
 $lang["meeting_waiting"] = "Prête";
+$lang["meeting_voteExternal"] = "Interface de vote";
 
 $lang["myMeetings_closed"] = "Réunions terminés";
 $lang["myMeetings_construction"] = "Réunions en construction";

@@ -17,7 +17,9 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global moment */
 /* global hasRight */
+/* global hasWritingRight */
 /* global getUserId */
 /* global testBadges */
 /* global bootbox */
@@ -208,6 +210,9 @@ function updateMeeting(meeting) {
 			$("#meeting-status-panel br.export-br").show();
 			break;
 	}
+
+
+	$("#meeting-status-panel .btn-vote-meeting").show();
 
 	$("#meeting_rights_list input").prop("checked", false);
 	for(var index = 0; index < meeting["mee_rights"].length; ++index) {

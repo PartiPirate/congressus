@@ -175,7 +175,7 @@ function addAgenda(agendas, parent, parentId) {
 			toVote.hide();
 		}
 
-		if (title.text() != agenda.age_label) { 
+		if (title.text() != agenda.age_label) {
 			title.text(agenda.age_label);
 		}
 
@@ -208,7 +208,7 @@ function updateMeeting(meeting) {
 			$("#meeting-status-panel br.export-br").show();
 			break;
 	}
-	
+
 	$("#meeting_rights_list input").prop("checked", false);
 	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
 		$("input[value=" + meeting["mee_rights"][index] + "]").prop("checked", true);
@@ -256,7 +256,7 @@ function updateMeeting(meeting) {
 		$(".mee_finish .span-date").text(moment(date).format("DD/MM/YYYY"));
 		$(".mee_finish .span-time").text(moment(date).format("HH:mm"));
 	}
-	
+
 	$(".agenda-link").removeClass("secretary-reading");
 	if (meeting.mee_secretary_agenda_id) {
 		$(".agenda-link#agenda-link-" + meeting.mee_secretary_agenda_id).addClass("secretary-reading");
@@ -286,7 +286,7 @@ function updateAgenda() {
 		else {
 			$("#meeting_rights").hide();
 		}
-		
+
 		initAgenda();
 		initAgenda = function() {};
 
@@ -323,9 +323,10 @@ function addMeetingHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
+		$.post("meeting_api.php?method=do_discourseCr", {meetingId: meetingId, property: "category", text: meetingCategory},
 				function(data) {}, "json");
 	});
-	
+
 	$("#meeting_rights_list").on("click", "input", function() {
 		if (!hasWritingRight(getUserId())) return;
 
@@ -334,7 +335,7 @@ function addMeetingHandlers() {
 		$("#meeting_rights_list input:checked").each(function() {
 			rights[rights.length] = $(this).val();
 		});
-		
+
 		$.post("meeting_api.php?method=do_changeRights", {meetingId: meetingId, "rights[]": rights, "empty": rights.length ? null : "empty"},
 				function(data) {}, "json");
 	});

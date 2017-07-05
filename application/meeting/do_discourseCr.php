@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	TODO: INSERT HERE THE RIGHT Copyright
 
 	This file is part of Congressus.
 
@@ -19,10 +19,9 @@
 
 if (!isset($api)) exit();
 
-include_once("config/database.php");
-require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/MeetingBo.php");
-require_once("engine/utils/DateTimeUtils.php");
+include_once("config/config.php");
+require_once("engine/discourse/DiscourseAPI.php");
+$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
@@ -38,27 +37,14 @@ if (!$meeting) {
 	exit();
 }
 
-// TODO Compute the key // Verify the key
-
-if (false) {
-	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
-	exit();
-}
-
 $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
 
-$date = getNow();
 
-if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "open") {
-	$meeting["mee_start_time"] = $date->format("Y-m-d H:i:s");
-}
-else if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "closed") {
-	$meeting["mee_finish_time"] = $date->format("Y-m-d H:i:s");
-}
+$category = $discourseApi->getCategory("sandbox"); // TODO: Choose the right category/sub-category 
+$categoryId = $category->apiresult->topic_list->topics[0]->category_id;
 
-$meetingBo->save($meeting);
+$report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=markdown&id=" . $_REQUEST["meetingId"]);
 
-$data["ok"] = "ok";
+$new_topic = $discourseApi->createTopic($meeting["mee_label"] . " - " . $meeting["mee_start_time"], $report , $categoryId, $config["discourse"]["user"], $replyToId = 0);
 
-echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

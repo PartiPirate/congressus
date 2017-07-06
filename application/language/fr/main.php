@@ -173,6 +173,10 @@ $lang["myMeetings_deleted"] = "Réunions supprimées";
 $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_waiting"] = "Prochaines réunions";
 
+$lang["export_rendering"] = "Rendu";
+$lang["export_open"] = "Ouvrir dans une nouvelle page";
+$lang["export_iframes"] = "Merci d'activer les iframes";
+
 $lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "La meilleure";

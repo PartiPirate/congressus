@@ -181,9 +181,9 @@ if (!$userId) {
 					<br />
 					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
 					<br class="export-br simply-hidden">
-					<button class="export-link export-html simply-hidden btn btn-success" onclick="showExport('html')">Export HTML</button>
-					<button class="export-link export-html simply-hidden btn btn-success" onclick="showExport('pdf')">Export PDF</button>
-					<button class="export-link export-html simply-hidden btn btn-success" onclick="showExport('markdown')">Export Wiki</button>
+					<button id="btnShowExport_html" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export HTML</button>
+					<button id="btnShowExport_pdf" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export PDF</button>
+					<button id="btnShowExport_markdown" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export Wiki</button>
 					<!-- <a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
 					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a> -->

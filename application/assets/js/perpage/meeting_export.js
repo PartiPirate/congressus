@@ -1,32 +1,29 @@
-// default values :
-var modal = document.getElementById('exportHtml');
-var span = document.getElementById("export_close_html");
-
-function showExport(format){
-  switch(format) {
-    case 'html':
-        modal = document.getElementById('exportHtml');
-        span = document.getElementById("export_close_html");
-        break;
-    case 'pdf':
-        modal = document.getElementById('exportPdf');
-        span = document.getElementById("export_close_pdf");
-        break;
-    case 'markdown':
-        modal = document.getElementById('exportMarkdown');
-        span = document.getElementById("export_close_markdown");
-    }
-    modal.style.display = "block";
-}
-
+$('.btnShowExport').click(function(event){
+	switch (event.target.id) {
+    case 'btnShowExport_html':
+			exportModal = $('#exportHtml');
+			exportClose = $('#export_close_html');
+			exportModal.show();
+			break;
+    case 'btnShowExport_pdf':
+			exportModal = $('#exportPdf');
+			exportClose = $('#export_close_pdf');
+			exportModal.show();
+			break;
+    case 'btnShowExport_markdown':
+			exportModal = $('#exportMarkdown');
+			exportClose = $('#export_close_markdown');
+			exportModal.show();
+			break;
+		}
+});
 // closed by <span>X
-span.onclick = function() {
-    modal.style.display = "none";
-};
-
-// closed by click outside of modal
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
+$('.exportClose').click(function(){
+exportModal.hide();
+});
+// closed by esc
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) {
+    exportModal.hide();
+  }
+});

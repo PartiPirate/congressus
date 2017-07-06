@@ -867,7 +867,7 @@ function vote(event) {
 	        className: "not-large-dialog"
 		});
 	}
-	if (motionWinLimit == -2) {
+	else if (motionWinLimit == -2) {
 
 		dialog = $("form[data-template-id=majority-judgment-form]").template("use", {data: {}});
 		var propositions = motion.find(".proposition");

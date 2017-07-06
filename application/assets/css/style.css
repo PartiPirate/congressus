@@ -280,13 +280,27 @@ a[disabled] {
 	 background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+@-webkit-keyframes animatetop {
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
+}
+
 /* Modal Content/Box */
 .export_content {
-	 background-color: #fefefe;
-	 margin: 5% auto; /* 15% from the top and centered */
-	 padding: 0;
-	 width: 80%; /* Could be more or less, depending on screen size */
-	 height: 600px;
+	background-image: url(../images/background_lightgrey.png);
+	margin: 5% auto;
+	padding: 0;
+	width: 80%;
+	height: 600px;
+	-webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
 }
 .export_content .navbar {
 	border-radius: 0;
@@ -309,17 +323,4 @@ color: #fff;
 	height:550px;
 	position: relative;
 	top: -1px;
-}
-/* The Close Button */
-.export_close {
-	 color: #aaa;
-	 font-size: 28px;
-	 font-weight: bold;
-}
-
-.export_close:hover,
-.export_close:focus {
-	 color: black;
-	 text-decoration: none;
-	 cursor: pointer;
 }

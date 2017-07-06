@@ -33,3 +33,9 @@ $(document).keyup(function(e) {
     closeExport(exportModal);
   }
 });
+// closed by click outside of modal
+$(window).on('click', function(event){
+    if(event.target.id.slice(0,16) == "export_container"){
+        closeExport(exportModal);
+    }
+});

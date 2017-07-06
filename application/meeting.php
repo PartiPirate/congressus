@@ -663,6 +663,8 @@ $("#start-meeting-modal").modal({
 //	  show: true
 	});
 $("#start-meeting-modal").modal("show");
+
+var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 </script>
 <script src="assets/js/perpage/meeting_time.js"></script>
 <script src="assets/js/perpage/meeting_agenda.js"></script>

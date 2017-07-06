@@ -1,29 +1,35 @@
+function loadExport(format, meeting_id){
+  exportModal = $('#export_container_' + format);
+	exportClose = $('#export_close_' + format);
+  $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id);
+  exportModal.show();
+}
+function closeExport(exportModal){
+  $('#iframe').attr("src", "");
+  exportModal.hide();
+}
+
 $('.btnShowExport').click(function(event){
 	switch (event.target.id) {
     case 'btnShowExport_html':
-			exportModal = $('#exportHtml');
-			exportClose = $('#export_close_html');
-			exportModal.show();
+			loadExport("html", meeting_id);
 			break;
     case 'btnShowExport_pdf':
-			exportModal = $('#exportPdf');
-			exportClose = $('#export_close_pdf');
-			exportModal.show();
+			loadExport("pdf", meeting_id);
 			break;
     case 'btnShowExport_markdown':
-			exportModal = $('#exportMarkdown');
-			exportClose = $('#export_close_markdown');
-			exportModal.show();
+			loadExport("markdown", meeting_id);
 			break;
 		}
 });
+
 // closed by <span>X
 $('.exportClose').click(function(){
-exportModal.hide();
+closeExport(exportModal);
 });
 // closed by esc
 $(document).keyup(function(e) {
   if (e.keyCode == 27) {
-    exportModal.hide();
+    closeExport(exportModal);
   }
 });

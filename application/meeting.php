@@ -181,14 +181,16 @@ if (!$userId) {
 					<br />
 					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
 					<br class="export-br simply-hidden">
-					<a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
+					<button id="btnShowExport_html" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export HTML</button>
+					<button id="btnShowExport_pdf" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export PDF</button>
+					<button id="btnShowExport_markdown" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export Wiki</button>
+					<!-- <a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
-					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a>
+					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a> -->
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-md-8" id="main-panel">
 			<div id="tasks" class="panel panel-default">
@@ -625,6 +627,9 @@ if (!$userId) {
 
 
 </templates>
+<?php include("export_html.php");?>
+<?php include("export_pdf.php");?>
+<?php include("export_markdown.php");?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
   <div class="modal-dialog">
@@ -658,6 +663,8 @@ $("#start-meeting-modal").modal({
 //	  show: true
 	});
 $("#start-meeting-modal").modal("show");
+
+var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 </script>
 <script src="assets/js/perpage/meeting_time.js"></script>
 <script src="assets/js/perpage/meeting_agenda.js"></script>
@@ -665,6 +672,7 @@ $("#start-meeting-modal").modal("show");
 <script src="assets/js/perpage/meeting_motion.js"></script>
 <script src="assets/js/perpage/meeting_events.js"></script>
 <script src="assets/js/perpage/meeting_timer.js"></script>
+<script src="assets/js/perpage/meeting_export.js"></script>
 
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';

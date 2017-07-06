@@ -162,6 +162,7 @@ $lang["meeting_voteNow"] = "Vote now";
 $lang["meeting_votePower"] = "Vote power";
 $lang["meeting_voters"] = "Voters";
 $lang["meeting_waiting"] = "Ready";
+$lang["meeting_voteExternal"] = "Vote interface";
 
 $lang["myMeetings_closed"] = "Ended meetings";
 $lang["myMeetings_construction"] = "In construction meetings";
@@ -175,6 +176,10 @@ $lang["motion_ballot_majority_0"] = "The best";
 $lang["motion_ballot_majority_50"] = "Simple majority";
 $lang["motion_ballot_majority_66"] = "66% majority";
 $lang["motion_ballot_majority_80"] = "80% majority";
+
+$lang["export_rendering"] = "Rendering";
+$lang["export_open"] = "Open in a new page";
+$lang["export_iframe"] = "Please enable iframes";
 
 $lang["calendar_prev"] = "Previous";
 $lang["calendar_today"] = "Today";

@@ -147,7 +147,7 @@ a.agenda-link {
 	height: 34px;
     margin: 0;
     border-radius: 4px;
-    padding: 7px 10px;	
+    padding: 7px 10px;
 }
 
 .simply-hidden {
@@ -156,7 +156,7 @@ a.agenda-link {
 
 body {
     background-image: url(../images/background_lightgrey.png);
-    background-size: cover;	
+    background-size: cover;
 }
 
 .breadcrumb {
@@ -218,14 +218,14 @@ span.chat-text {
 	position: fixed;
 	width: 350px;
 	top: 70px;
-	left: 10px; 
-	height: 350px;	
+	left: 10px;
+	height: 350px;
 	border: 0;
 }
 
 #framatalk iframe {
 	width: calc(100% - 5px);
-	height: calc(100% - 5px);	
+	height: calc(100% - 5px);
 	border: 0;
 }
 
@@ -265,4 +265,62 @@ a[disabled] {
   color: #fff;
   background-color: #781B82;
   background-position: 0 -15px;
+}
+
+/* The Modal (background) */
+.export_container {
+	 position: fixed; /* Stay in place */
+	 z-index: 1; /* Sit on top */
+	 left: 0;
+	 top: 0;
+	 width: 100%; /* Full width */
+	 height: 100%; /* Full height */
+	 overflow: auto; /* Enable scroll if needed */
+	 background-color: rgb(0,0,0); /* Fallback color */
+	 background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+@-webkit-keyframes animatetop {
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
+}
+
+/* Modal Content/Box */
+.export_content {
+	background-image: url(../images/background_lightgrey.png);
+	margin: 5% auto;
+	padding: 0;
+	width: 80%;
+	height: 600px;
+	-webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+.export_content .navbar {
+	border-radius: 0;
+	height: 50px;
+	margin-bottom: 0;
+}
+.export_content .navbar-header .navbar-btn {
+background-color:transparent;
+color:#9d9d9d;
+border: none;
+}
+.export_content .navbar-header .btn-active {
+background-color: #000;
+color: #fff;
+}
+.export_content iframe {
+	width:100%;
+	padding:0;
+	border:0;
+	height:550px;
+	position: relative;
+	top: -1px;
 }

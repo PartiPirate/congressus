@@ -207,6 +207,7 @@ function updateMeeting(meeting) {
 		case "closed":
 			$("#meeting-status-panel span.closed-meeting").show();
 			$("#meeting-status-panel a.export-link").show();
+			$("#meeting-status-panel button.export-link").show();
 			$("#meeting-status-panel br.export-br").show();
 			break;
 	}

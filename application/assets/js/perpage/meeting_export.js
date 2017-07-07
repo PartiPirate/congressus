@@ -1,7 +1,7 @@
-function loadExport(format, meeting_id){
+function loadExport(format, meeting_id, textarea){
   exportModal = $('#export_container_' + format);
 	exportClose = $('#export_close_' + format);
-  $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id);
+  $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id + "&textarea=" + textarea);
   exportModal.show();
 }
 function closeExport(exportModal){
@@ -11,7 +11,22 @@ function closeExport(exportModal){
 
 $('.btnShowExport').click(function(){
   format = $(this).data("format");
-  loadExport(format, meeting_id);
+  if (format=='markdown'){
+    textarea = 'true';
+  } else {
+    textarea = 'false';
+  }
+  if (format=='html'){
+    $('#rendering').addClass('btn-active');
+    $('#html-code').removeClass('btn-active');
+  }
+  if (format=='html-code'){
+    textarea = 'true';
+    format = 'html';
+    $('#html-code').addClass('btn-active');
+    $('#rendering').removeClass('btn-active');
+  }
+  loadExport(format, meeting_id, textarea);
 });
 
 // closed by <span>X

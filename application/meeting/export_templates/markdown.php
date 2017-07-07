@@ -141,11 +141,11 @@ function showMotion($motions, $id, &$voters) {
 	}
 	else if ($motion["mot_win_limit"] == -2) {
 		echo "|close=Motion adoptée\n";
-		
+
 		foreach($motions as $motion) {
 			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
 				echo "|result=" . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $explanation["jm_percent"] . "%" .")\n";
-				
+
 				break;
 			}
 		}
@@ -156,11 +156,11 @@ function showMotion($motions, $id, &$voters) {
 	}
 	else {
 		echo "|close=Motion adoptée\n";
-		
+
 		foreach($motions as $motion) {
 			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
 				echo "|result=" . $motion["mpr_label"] . "\n";
-				
+
 				break;
 			}
 		}
@@ -245,7 +245,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 		}
 	}
 }
-
+if ($textarea){
+	echo "<textarea style='width:100%;height:100%'>";
+}
 ?>
 =<?php echo $meeting["mee_label"]; ?>=
 
@@ -270,12 +272,12 @@ foreach ($notices as $notice) {
 			if ($people["mem_voting"] == 1) {
 				$powers += $people["mem_power"];
 			}
-			
+
 			if ($people["mem_present"] != 1) continue;
 
 			echo "** ";
 			echo $people["mem_nickname"];
-			
+
 			if ($people["mem_voting"] == 1) {
 				$presentPowers += $people["mem_power"];
 				echo " (";
@@ -287,24 +289,24 @@ foreach ($notices as $notice) {
 
 		foreach($notice["not_children"] as $child_notice) {
 			echo "** " . $child_notice["not_label"] . " : \n";
-				
+
 			$separator = " ";
-			
+
 			$child_presentPowers = 0;
 			$child_powers = 0;
-				
+
 			foreach($child_notice["not_people"] as $people) {
-	
+
 				if ($people["mem_voting"] == 1) {
 					$powers += $people["mem_power"];
 					$child_powers += $people["mem_power"];
 				}
-				
+
 				if ($people["mem_present"] != 1) continue;
-				
+
 				echo "*** ";
 				echo $people["mem_nickname"];
-	
+
 				if ($people["mem_voting"] == 1) {
 					$presentPowers += $people["mem_power"];
 					$child_presentPowers += $people["mem_power"];
@@ -322,7 +324,7 @@ foreach ($notices as $notice) {
 				echo "\n";
 			}
 		}
-		
+
 		if ($presentPowers) {
 			echo "*** ";
 			echo $presentPowers . "/" . $powers;
@@ -357,13 +359,13 @@ foreach ($notices as $notice) {
 
 		foreach($notice["not_children"] as $child_notice) {
 			echo "** " . $child_notice["not_label"] . " : \n";
-				
+
 			$separator = " ";
-			
+
 			foreach($child_notice["not_people"] as $people) {
-	
+
 				if ($people["mem_present"] != 0) continue;
-				
+
 				echo "*** ";
 				echo $people["mem_nickname"];
 				echo "\n";
@@ -383,12 +385,15 @@ if (count($voters)) {
 ?>
 ==Ayant participé à un vote==
 
-<?php 
+<?php
 	foreach($voters as $memberId => $memberLabel) {
 ?>
 * <?php echo $memberId . " - " . $memberLabel; ?>
 
-<?php 
+<?php
 	}
+}
+if ($textarea){
+	echo "</textarea>";
 }
 ?>

@@ -5,8 +5,8 @@
         <a class="navbar-brand" href="#">Export HTML</a>
       </div>
       <div class="navbar-header pull-left">
-        <a class="hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_rendering"); ?></a>
-        <!-- <a class="btn btn-default navbar-btn" href="#">Code HTML</a> -->
+        <a id="rendering" data-format="html" class="btnShowExport hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_rendering"); ?></a>
+        <a id="html-code" data-format="html-code" class="btnShowExport btn btn-default navbar-btn" href="#">Code HTML</a>
         <a class="btn btn-default navbar-btn" href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("export_open"); ?></a>
       </div>
       <div class="navbar-header pull-right">

@@ -1,5 +1,5 @@
 <?php /*
-	TODO: INSERT HERE THE RIGHT Copyright
+	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -14,7 +14,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 if (!isset($api)) exit();
@@ -40,7 +40,7 @@ if (!$meeting) {
 $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
 
 
-$category = $discourseApi->getCategory("sandbox"); // TODO: Choose the right category/sub-category 
+$category = $discourseApi->getCategory("sandbox"); // TODO: Choose the right category/sub-category
 $categoryId = $category->apiresult->topic_list->topics[0]->category_id;
 
 $report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=markdown&id=" . $_REQUEST["meetingId"]);

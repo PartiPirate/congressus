@@ -186,7 +186,7 @@ function showLevel($agendas, $level, $parent, &$voters) {
 </head>
 <body>
 <?php if ($textarea){
-	echo "<textarea style='width:100%;height:100%'>";
+	echo "<textarea style='width:100%;height:99%'>";
 }?>
 <h1><?php echo $meeting["mee_label"]; ?></h1>
 

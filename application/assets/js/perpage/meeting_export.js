@@ -9,18 +9,9 @@ function closeExport(exportModal){
   exportModal.hide();
 }
 
-$('.btnShowExport').click(function(event){
-	switch (event.target.id) {
-    case 'btnShowExport_html':
-			loadExport("html", meeting_id);
-			break;
-    case 'btnShowExport_pdf':
-			loadExport("pdf", meeting_id);
-			break;
-    case 'btnShowExport_markdown':
-			loadExport("markdown", meeting_id);
-			break;
-		}
+$('.btnShowExport').click(function(){
+  format = $(this).data("format");
+  loadExport(format, meeting_id);
 });
 
 // closed by <span>X

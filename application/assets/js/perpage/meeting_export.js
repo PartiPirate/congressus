@@ -2,6 +2,7 @@ function loadExport(format, meeting_id, textarea){
   exportModal = $('#export_container_' + format);
 	exportClose = $('#export_close_' + format);
   $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id + "&textarea=" + textarea);
+  if(format=='html'){$('#newpage').attr("href", $('#iframe_' + format).attr("src"));}
   exportModal.show();
 }
 function closeExport(exportModal){

@@ -185,7 +185,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 </style>
 </head>
 <body>
-
+<?php if ($textarea){
+	echo "<textarea style='width:100%;height:99%'>";
+}?>
 <h1><?php echo $meeting["mee_label"]; ?></h1>
 
 <h2>Convoqués</h2>
@@ -209,7 +211,7 @@ foreach ($notices as $notice) {
 			if ($people["mem_voting"] == 1) {
 				$powers += $people["mem_power"];
 			}
-			
+
 			if ($people["mem_present"] != 1) continue;
 
 
@@ -229,39 +231,39 @@ foreach ($notices as $notice) {
 
 		foreach($notice["not_children"] as $child_notice) {
 			echo "<div class=\"indent notice\">";
-		
+
 			echo "<p class=\"label\">" . $child_notice["not_label"] . "</p>";
-			
+
 			$separator = " ";
-				
+
 			$child_presentPowers = 0;
 			$child_powers = 0;
 
 			if (isset($child_notice["not_people"])) {
 				echo "<p class=\"indent presents\">";
-					
+
 				foreach($child_notice["not_people"] as $people) {
-					
+
 					if ($people["mem_voting"] == 1) {
 						$powers += $people["mem_power"];
 						$child_powers += $people["mem_power"];
 					}
-			
+
 					if ($people["mem_present"] != 1) continue;
-			
+
 					echo "$separator<span class=\"people\">";
 					echo $people["mem_nickname"];
-			
+
 					if ($people["mem_voting"] == 1) {
 						$presentPowers += $people["mem_power"];
 						$child_presentPowers += $people["mem_power"];
-			
+
 						echo " (";
 						echo $people["mem_power"];
 						echo ")";
 					}
 					echo "</span>";
-	
+
 					$separator = ", ";
 				}
 
@@ -273,7 +275,7 @@ foreach ($notices as $notice) {
 
 			echo "</div>";
 		}
-		
+
 		echo "</p>";
 		echo "<p class=\"powers\">";
 		echo $presentPowers . "/" . $powers;
@@ -317,24 +319,24 @@ foreach ($notices as $notice) {
 
 			if (isset($child_notice["not_people"])) {
 				echo "<p class=\"indent presents\">";
-	
+
 				foreach($child_notice["not_people"] as $people) {
-					
+
 					if ($people["mem_present"] != 0) continue;
-			
+
 					echo "$separator<span class=\"people\">";
 					echo $people["mem_nickname"];
 					echo "</span>";
-	
+
 					$separator = ", ";
 				}
-	
+
 				echo "</p>";
 			}
 
 			echo "</div>";
 		}
-		
+
 		echo "</p>";
 	}
 
@@ -351,17 +353,19 @@ if (count($voters)) {
 ?>
 <h2>Ayant participé à un vote</h2>
 <div class="indent">
-<?php 
+<?php
 	foreach($voters as $memberId => $memberLabel) {
 ?>
 <p><span class="people"><?php echo $memberId . " - " . $memberLabel; ?></p>
-<?php 
+<?php
 	}
 ?>
 </div>
-<?php 
+<?php
 }
 ?>
-
+<?php if ($textarea){
+	echo "</textarea>";
+}?>
 </body>
 </html>

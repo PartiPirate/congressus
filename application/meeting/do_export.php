@@ -64,6 +64,7 @@ $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 $template = $_REQUEST["template"];
 $meeting = $meetingBo->getById($_REQUEST["id"]);
+if (isset($_REQUEST["textarea"]) AND ($_REQUEST["textarea"]=='true')) {$textarea = true;} else {$textarea = false;}
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));

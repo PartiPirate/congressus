@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,74 +16,16 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-/*
-function showMotion($motions, $id) {
-	$first = true;
-
-	echo "{{motion|title=";
-
-	$winning = "contre";
-
-	foreach($motions as $motion) {
-		if ($motion["mot_id"] == $id) {
-			if ($first) {
-				echo $motion["mot_title"] . "\n";
-				echo "|text=" . $motion["mot_description"] . "\n";
-				$first = false;
-			}
-
-			$explanation = json_decode($motion["mpr_explanation"], true);
-
-			if ($motion["mpr_winning"] == 1) {
-				$winning = $motion["mpr_label"];
-			}
-
-//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
-			echo "|";
-			echo $motion["mpr_label"] . "=";
-
-			$voteSeparator = " ";
-			foreach($explanation["votes"] as $vote) {
-				if ($vote["votePower"] == 0) continue;
-
-				echo "$voteSeparator";
-				echo $vote["memberLabel"];
-				echo " (" . $vote["votePower"] . ")";
-
-				$voteSeparator = ", ";
-			}
-
-			echo "\n";
-		}
-	}
-
-	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
-		echo "|close=Motion adoptée\n";
-		echo "|result=pour\n";
-	}
-	else {
-		echo "|close=Motion rejetée\n";
-//		echo "|result=$winning\n";
-		echo "|result=contre\n";
-	}
-
-	echo "|}}\n\n";
-}
-*/
-
 function showMotion($motions, $id, &$voters) {
 	$first = true;
 
-	echo "{{motion|title=";
-
 	$winning = "contre";
 
 	foreach($motions as $motion) {
 		if ($motion["mot_id"] == $id) {
 			if ($first) {
-				echo $motion["mot_title"] . "\n";
-				echo "|text=" . $motion["mot_description"] . "\n";
+				echo "> **" . $motion["mot_title"] . "**\n";
+				echo "> " . $motion["mot_description"] . "\n";
 				$first = false;
 			}
 
@@ -96,16 +38,16 @@ function showMotion($motions, $id, &$voters) {
 			//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
 
 			if (strtolower( $motion["mpr_label"] ) == "pour" || strtolower( $motion["mpr_label"] ) == "oui") {
-				echo "|pour=";
+				echo "> ";
 			}
 			else if (strtolower( $motion["mpr_label"] ) == "contre" || strtolower( $motion["mpr_label"] ) == "non") {
-				echo "|contre=";
+				echo "> ";
 			}
 			else if (strtolower( $motion["mpr_label"] ) == "nspp") {
-				echo "|nspp=";
+				echo "> ";
 			}
 			else {
-				echo "|vote=";
+				echo "> ";
 				echo $motion["mpr_label"] . " :";
 			}
 
@@ -136,37 +78,36 @@ function showMotion($motions, $id, &$voters) {
 	}
 
 	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
-		echo "|close=Motion adoptée\n";
-		echo "|result=pour\n";
+		echo "> Motion adoptée\n";
+		echo "> pour\n";
 	}
 	else if ($motion["mot_win_limit"] == -2) {
-		echo "|close=Motion adoptée\n";
+		echo "> Motion adoptée\n";
 
 		foreach($motions as $motion) {
 			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
-				echo "|result=" . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $explanation["jm_percent"] . "%" .")\n";
+				echo "> " . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $explanation["jm_percent"] . "%" .")\n";
 
 				break;
 			}
 		}
 	}
 	else if (strtolower($winning) == "contre" || strtolower($winning) == "non") {
-		echo "|close=Motion rejetée\n";
-		echo "|result=contre\n";
+		echo "> Motion rejetée\n";
+		echo "> contre\n";
 	}
 	else {
-		echo "|close=Motion adoptée\n";
+		echo "> Motion adoptée\n";
 
 		foreach($motions as $motion) {
 			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
-				echo "|result=" . $motion["mpr_label"] . "\n";
+				echo "> " . $motion["mpr_label"] . "\n";
 
 				break;
 			}
 		}
 	}
 
-	echo "|}}\n\n";
 }
 
 function showChat($chats, $id) {
@@ -203,7 +144,7 @@ function showConclusion($conclusions, $id) {
 	foreach($conclusions as $conclusion) {
 		if ($conclusion["con_id"] == $id) {
 //			print_r($conclusion);
-			echo "{{CC|" . $conclusion["con_text"] . "}}\n";
+			echo "> " . $conclusion["con_text"] . "\n";
 
 			return;
 		}
@@ -214,9 +155,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 	foreach($agendas as $agenda) {
 		if ($agenda["age_parent_id"] == $parent) {
 			echo "\n";
-			echo str_repeat("=", $level);
+			echo str_repeat("#", $level);
+      echo " ";
 			echo $agenda["age_label"];
-			echo str_repeat("=", $level);
 			echo "\n\n";
 
 			$descriptions = explode("\n", $agenda["age_description"]);
@@ -246,12 +187,12 @@ function showLevel($agendas, $level, $parent, &$voters) {
 	}
 }
 if ($textarea){
-	echo "<textarea style='width:100%;height:99%'>";
+	echo "<textarea style='width:100%;height:100%'>";
 }
 ?>
-=<?php echo $meeting["mee_label"]; ?>=
+# <?php echo $meeting["mee_label"]; ?>
 
-==Convoqués==
+## Convoqués
 
 <?php
 
@@ -275,7 +216,7 @@ foreach ($notices as $notice) {
 
 			if ($people["mem_present"] != 1) continue;
 
-			echo "** ";
+			echo "  * ";
 			echo $people["mem_nickname"];
 
 			if ($people["mem_voting"] == 1) {
@@ -288,7 +229,7 @@ foreach ($notices as $notice) {
 		}
 
 		foreach($notice["not_children"] as $child_notice) {
-			echo "** " . $child_notice["not_label"] . " : \n";
+			echo "  * " . $child_notice["not_label"] . " : \n";
 
 			$separator = " ";
 
@@ -304,7 +245,7 @@ foreach ($notices as $notice) {
 
 				if ($people["mem_present"] != 1) continue;
 
-				echo "*** ";
+				echo "    * ";
 				echo $people["mem_nickname"];
 
 				if ($people["mem_voting"] == 1) {
@@ -319,14 +260,14 @@ foreach ($notices as $notice) {
 			}
 
 			if ($child_presentPowers) {
-				echo "**** ";
+				echo "      * ";
 				echo $child_presentPowers . "/" . $child_powers;
 				echo "\n";
 			}
 		}
 
 		if ($presentPowers) {
-			echo "*** ";
+			echo "    * ";
 			echo $presentPowers . "/" . $powers;
 			echo "\n";
 		}
@@ -335,7 +276,7 @@ foreach ($notices as $notice) {
 }
 ?>
 
-==Absents==
+## Absents
 
 <?php
 
@@ -352,13 +293,13 @@ foreach ($notices as $notice) {
 
 			if ($people["mem_present"] != 0) continue;
 
-			echo "** ";
+			echo "  * ";
 			echo $people["mem_nickname"];
 			echo "\n";
 		}
 
 		foreach($notice["not_children"] as $child_notice) {
-			echo "** " . $child_notice["not_label"] . " : \n";
+			echo "  * " . $child_notice["not_label"] . " : \n";
 
 			$separator = " ";
 
@@ -366,7 +307,7 @@ foreach ($notices as $notice) {
 
 				if ($people["mem_present"] != 0) continue;
 
-				echo "*** ";
+				echo "    * ";
 				echo $people["mem_nickname"];
 				echo "\n";
 			}
@@ -383,7 +324,7 @@ $voters = array();
 <?php
 if (count($voters)) {
 ?>
-==Ayant participé à un vote==
+## Ayant participé à un vote
 
 <?php
 	foreach($voters as $memberId => $memberLabel) {

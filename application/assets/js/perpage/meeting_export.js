@@ -1,7 +1,26 @@
-function loadExport(format, meeting_id){
+/*
+	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+
+	This file is part of Congressus.
+
+    Congressus is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Congressus is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
+*/
+function loadExport(format, meeting_id, textarea){
   exportModal = $('#export_container_' + format);
 	exportClose = $('#export_close_' + format);
-  $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id);
+  $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id + "&textarea=" + textarea);
+  if(format=='html'){$('#newpage').attr("href", $('#iframe_' + format).attr("src"));}
   exportModal.show();
 }
 function closeExport(exportModal){
@@ -9,18 +28,24 @@ function closeExport(exportModal){
   exportModal.hide();
 }
 
-$('.btnShowExport').click(function(event){
-	switch (event.target.id) {
-    case 'btnShowExport_html':
-			loadExport("html", meeting_id);
-			break;
-    case 'btnShowExport_pdf':
-			loadExport("pdf", meeting_id);
-			break;
-    case 'btnShowExport_markdown':
-			loadExport("markdown", meeting_id);
-			break;
-		}
+$('.btnShowExport').click(function(){
+  format = $(this).data("format");
+  if (format=='markdown'){
+    textarea = 'true';
+  } else {
+    textarea = 'false';
+  }
+  if (format=='html'){
+    $('#rendering').addClass('btn-active');
+    $('#html-code').removeClass('btn-active');
+  }
+  if (format=='html-code'){
+    textarea = 'true';
+    format = 'html';
+    $('#html-code').addClass('btn-active');
+    $('#rendering').removeClass('btn-active');
+  }
+  loadExport(format, meeting_id, textarea);
 });
 
 // closed by <span>X

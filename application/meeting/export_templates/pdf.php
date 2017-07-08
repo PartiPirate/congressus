@@ -38,7 +38,6 @@ function showMotion($motions, $id, &$voters) {
 
 	echo "<div class=\"motion $motionClass\">\n";
 
-
 	foreach($motions as $motion) {
 		if ($motion["mot_id"] == $id) {
 			if ($first) {
@@ -254,6 +253,8 @@ foreach ($notices as $notice) {
 			$separator = ", ";
 		}
 
+		if (!isset($notice["not_children"])) $notice["not_children"] = array();
+
 		foreach($notice["not_children"] as $child_notice) {
 			echo "<div class=\"indent notice\">";
 		
@@ -334,6 +335,8 @@ foreach ($notices as $notice) {
 
 			$separator = ", ";
 		}
+
+		if (!isset($notice["not_children"])) $notice["not_children"] = array();
 
 		foreach($notice["not_children"] as $child_notice) {
 			echo "<div class=\"indent notice\">";

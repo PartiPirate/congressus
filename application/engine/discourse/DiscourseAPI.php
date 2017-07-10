@@ -10,7 +10,7 @@
   * @author    Original author DiscourseHosting <richard@discoursehosting.com>
   * Additional work, timolaine, richp10 and others..
   * @copyright 2013, DiscourseHosting.com
-  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2 
+  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
   * @link      https://github.com/richp10/discourse-api-php
   */
 
@@ -45,9 +45,9 @@ class DiscourseAPI
         $ch = curl_init();
         $url = sprintf(
             '%s://%s%s?%s',
-            $this->_protocol, 
-            $this->_dcHostname, 
-            $reqString, 
+            $this->_protocol,
+            $this->_dcHostname,
+            $reqString,
             http_build_query($paramArray)
         );
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -84,10 +84,10 @@ class DiscourseAPI
         $ch = curl_init();
         $url = sprintf(
             '%s://%s%s?api_key=%s&api_username=%s',
-            $this->_protocol, 
-            $this->_dcHostname, 
-            $reqString, 
-            $this->_apiKey, 
+            $this->_protocol,
+            $this->_dcHostname,
+            $reqString,
+            $this->_apiKey,
             $apiUser
         );
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -127,8 +127,8 @@ class DiscourseAPI
      *
      * @return mixed HTTP return code and API return object
      */
-    function addGroup($groupname, $usernames = array(), $aliaslevel = 3, $visible = 'true', 
-			$automemdomain = '', $automemretro = 'false', $title = '', 
+    function addGroup($groupname, $usernames = array(), $aliaslevel = 3, $visible = 'true',
+			$automemdomain = '', $automemretro = 'false', $title = '',
 			$primegroup = 'false', $trustlevel = '0' )
     {
 
@@ -164,29 +164,29 @@ class DiscourseAPI
 
      /**
      * Edit Category
-     * 
+     *
      * @param integer $catid
      * @param string  $allow_badges
      * @param string  $auto_close_based_on_last_post
-     * @param string  $auto_close_hours	
-     * @param string  $background_url	
+     * @param string  $auto_close_hours
+     * @param string  $background_url
      * @param string  $color
      * @param string  $contains_messages
-     * @param string  $email_in	
+     * @param string  $email_in
      * @param string  $email_in_allow_strangers
-     * @param string  $logo_url	
-     * @param string  $name	
-     * @param integer $parent_category_id	
-     * @param integer $position	
-     * @param string  $slug	
+     * @param string  $logo_url
+     * @param string  $name
+     * @param integer $parent_category_id
+     * @param integer $position
+     * @param string  $slug
      * @param string  $suppress_from_homepage
      * @param string  $text_color
-     * @param string  $topic_template	
-     * @param array   $permissions 
+     * @param string  $topic_template
+     * @param array   $permissions
      * @return mixed HTTP return code and API return object
      */
      function updatecat($catid, $allow_badges='true',$auto_close_based_on_last_post='false', $auto_close_hours='',$background_url,$color='0E76BD',
-		$contains_messages='false', $email_in='', $email_in_allow_strangers='false', $logo_url='', $name='', $parent_category_id='', 
+		$contains_messages='false', $email_in='', $email_in_allow_strangers='false', $logo_url='', $name='', $parent_category_id='',
 		$groupname, $position='', $slug='', $suppress_from_homepage='false', $text_color='FFFFFF', $topic_template='', $permissions )
      {
         $params = array(
@@ -208,10 +208,10 @@ class DiscourseAPI
 		'topic_template'		=> $topic_template
         );
 
-	# Add the permissions - this is an array of group names and integer permission values. 
+	# Add the permissions - this is an array of group names and integer permission values.
 	if (sizeof($permissions > 0)) {
 		foreach ($permissions as $key => $value)	{
-		 	$params['permissions['.$key.']'] = $permissions[$key] ; 
+		 	$params['permissions['.$key.']'] = $permissions[$key] ;
 		}
 	}
 
@@ -224,19 +224,19 @@ class DiscourseAPI
      *
      * @return mixed HTTP return code and API return object
      */
-    
+
     function getSite()
     {
         return $this->_getRequest("/site.json");
     }
-    
-    
+
+
      /**
      * getCategories
      *
      * @return mixed HTTP return code and API return object
      */
-    
+
     function getCategories()
     {
         return $this->_getRequest("/categories.json");
@@ -305,7 +305,7 @@ class DiscourseAPI
      *
      * @param integer $userId      id of user to activate
      *
-     * @return mixed HTTP return code 
+     * @return mixed HTTP return code
      */
 
     function activateUser($userId)
@@ -329,7 +329,7 @@ class DiscourseAPI
                 return $user->username;
             }
         }
-	
+
         return false;
     }
 
@@ -379,7 +379,7 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
-    function createTopic($topicTitle, $bodyText, $categoryId, $userName, $replyToId = 0) 
+    function createTopic($topicTitle, $bodyText, $categoryId, $userName, $replyToId = 0)
     {
         $params = array(
             'title' => $topicTitle,
@@ -392,7 +392,19 @@ class DiscourseAPI
     }
 
      function getCategory($categoryName) {
-	return $this->_getRequest("/c/{$categoryName}.json");	
+	return $this->_getRequest("/c/{$categoryName}.json");
+     }
+
+     function getCategoryById($categoryId) {
+       $datas = $this->_getRequest("/site.json");
+       $categories = $datas->apiresult->categories;
+       foreach($categories as $categorie) {
+         if(($categorie->id) == $categoryId) {
+           return $categorie;
+         }
+       }
+
+       return false;
      }
 
     /**
@@ -467,7 +479,7 @@ class DiscourseAPI
                 return $user;
             }
         }
-	
+
         return false;
     }
 
@@ -498,7 +510,7 @@ class DiscourseAPI
     }
 
      /**
-     * joinGroup 
+     * joinGroup
      * @param string $groupname    name of group
      * @param string $username     user to add to the group
      *
@@ -560,4 +572,3 @@ class DiscourseAPI
 
 
 }
-

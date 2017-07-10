@@ -220,6 +220,18 @@ class DiscourseAPI
      }
 
      /**
+     * getSite
+     *
+     * @return mixed HTTP return code and API return object
+     */
+    
+    function getSite()
+    {
+        return $this->_getRequest("/site.json");
+    }
+    
+    
+     /**
      * getCategories
      *
      * @return mixed HTTP return code and API return object

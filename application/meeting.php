@@ -181,12 +181,15 @@ if (!$userId) {
 					<br />
 					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
 					<br class="export-br simply-hidden">
-					<button data-format="html" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export HTML</button>
-					<button data-format="pdf" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export PDF</button>
-					<button data-format="markdown" class="btnShowExport export-link export-html simply-hidden btn btn-success">Export Wiki</button>
+					<button data-format="html" class="btnShowExport export-link simply-hidden btn btn-success">Export HTML</button>
+					<button data-format="pdf" class="btnShowExport export-link simply-hidden btn btn-success">Export PDF</button>
+					<button data-format="markdown" class="btnShowExport export-link simply-hidden btn btn-success">Export Wiki</button>
 					<!-- <a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
 					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a> -->
+					<div class="row" style="margin-top:5px;">
+						<a class="export-link simply-hidden btn btn-primary" href="export_discourse.php?id=<?php echo $meeting["mee_id"]; ?>" target="_blank" style="display:inline-block;">Export on Discourse <span class="glyphicon glyphicon-share"></span></a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -627,9 +630,9 @@ if (!$userId) {
 
 
 </templates>
-<?php include("export_html.php");?>
 <?php include("export_pdf.php");?>
 <?php include("export_markdown.php");?>
+<?php include("export_html.php");?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
   <div class="modal-dialog">

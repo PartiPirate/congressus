@@ -18,9 +18,8 @@
 */
 function loadExport(format, meeting_id, textarea){
   exportModal = $('#export_container_' + format);
-	exportClose = $('#export_close_' + format);
   $('#iframe_' + format).attr("src", "meeting/do_export.php?template=" + format + "&id=" + meeting_id + "&textarea=" + textarea);
-  if(format=='html'){$('#newpage').attr("href", $('#iframe_' + format).attr("src"));}
+  if(format=='html'){$('#newpage_html').attr("href", $('#iframe_' + format).attr("src"));}
   exportModal.show();
 }
 function closeExport(exportModal){
@@ -30,7 +29,7 @@ function closeExport(exportModal){
 
 $('.btnShowExport').click(function(){
   format = $(this).data("format");
-  if (format=='markdown'){
+  if (format=='markdown' || format=='discourse' || format=='html-code'){
     textarea = 'true';
   } else {
     textarea = 'false';
@@ -40,7 +39,6 @@ $('.btnShowExport').click(function(){
     $('#html-code').removeClass('btn-active');
   }
   if (format=='html-code'){
-    textarea = 'true';
     format = 'html';
     $('#html-code').addClass('btn-active');
     $('#rendering').removeClass('btn-active');
@@ -64,3 +62,19 @@ $(window).on('click', function(event){
         closeExport(exportModal);
     }
 });
+
+// $('#discourseSendBtn').click(function(){
+//   $('#discourseSendBtn').hide();
+//   $('#discourseCancel').css('display', 'inline-block');
+//   $('#iframe_discourse').hide();
+//   $('#discourseForm').show();
+//   $('#newpage_discourse').hide();
+// });
+//
+// $('#discourseCancel').click(function(){
+//   $('#discourseSendBtn').show();
+//   $('#discourseCancel').hide();
+//   $('#iframe_discourse').show();
+//   $('#discourseForm').hide();
+//   $('#newpage_discourse').show();
+// });

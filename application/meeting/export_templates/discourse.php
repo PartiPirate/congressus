@@ -187,7 +187,7 @@ function showLevel($agendas, $level, $parent, &$voters) {
 	}
 }
 if ($textarea){
-	echo "<textarea style='width:100%;height:100%'>";
+	echo "<textarea style='width:100%;height:99%' disabled>";
 }
 ?>
 # <?php echo $meeting["mee_label"]; ?>

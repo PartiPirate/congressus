@@ -37,14 +37,11 @@ if (!$meeting) {
 	exit();
 }
 
-$meeting[$_REQUEST["property"]] = $_REQUEST["text"];
+$discourse_category = $_REQUEST["discourse_category"];
+$discourse_title = $_REQUEST["discourse_title"];
 
+$report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=discourse&id=" . $_REQUEST["meetingId"]);
 
-$category = $discourseApi->getCategory("sandbox"); // TODO: Choose the right category/sub-category
-$categoryId = $category->apiresult->topic_list->topics[0]->category_id;
-
-$report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=markdown&id=" . $_REQUEST["meetingId"]);
-
-$new_topic = $discourseApi->createTopic($meeting["mee_label"] . " - " . $meeting["mee_start_time"], $report , $categoryId, $config["discourse"]["user"], $replyToId = 0);
+$new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], $replyToId = 0);
 
 ?>

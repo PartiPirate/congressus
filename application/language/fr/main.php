@@ -23,6 +23,7 @@ $lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "le {date} à {time}";
 
 $lang["common_ask_for_modification"] = "Demander modification";
+$lang["common_back"] = "Retour";
 $lang["common_connect"] = "Connecter";
 $lang["common_close"] = "Fermer";
 $lang["common_create"] = "Créer";
@@ -173,6 +174,18 @@ $lang["myMeetings_deleted"] = "Réunions supprimées";
 $lang["myMeetings_open"] = "Réunions en cours";
 $lang["myMeetings_waiting"] = "Prochaines réunions";
 
+$lang["export_description"] = "Le compte rendu sera publié par Congressus dans la catégorie choisie ci-dessous.";
+$lang["export_login_ask"] = "Merci de vous connecter";
+$lang["export_category"] = "Categorie";
+$lang["export_category_forbidden"] = "Erreur : Catégorie non autorisée";
+$lang["export_discourse"] = "Exporter sur Discourse";
+$lang["export_discourse_success"] = "Le compte rendu a été publié à l'adresse suivante :";
+$lang["export_discourse_fail"] = "Erreur : Le compte rendu n'a pas été publié.";
+$lang["export_preview"] = "Aperçu";
+$lang["export_send_discourse"] = "Envoyer sur Discourse";
+$lang["export_permission"] = "Vous n'avez pas assez d'autorisations";
+$lang["export_permission_description"] = "Pour éviter le spam, seul le président et le secretaire de séance ont le droit d'exporter sur Discourse.";
+$lang["export_permission_guests"] = "Les invités ne sont pas autorisés à utiliser cette fonction";
 $lang["export_rendering"] = "Rendu";
 $lang["export_open"] = "Ouvrir dans une nouvelle page";
 $lang["export_iframes"] = "Merci d'activer les iframes";

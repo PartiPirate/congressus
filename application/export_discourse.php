@@ -37,89 +37,81 @@ else {
 $userId = SessionUtils::getUserId($_SESSION);
 ?>
 <div class="container theme-showcase meeting" role="main">
-<ol class="breadcrumb">
-  <li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-  <li><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
-  <li class="active">Export Discourse</li>
-</ol>
+	<ol class="breadcrumb">
+	  <li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
+	  <li><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
+	  <li class="active"><?php echo lang("export_discourse"); ?></li>
+	</ol>
 
-<?php
-if (!isset($userId)) {?>
-	<div class="container">
-		<div class="jumbotron alert-danger">
-			<h2>Please Login</h2>
-			<p>Guests are not allowed to use this function</p>
-			<p><a class='btn btn-danger btn-lg' href='connect.php' role='button'>Login</a></p>
+	<?php
+	if (!isset($userId)) {?>
+		<div class="container">
+			<div class="jumbotron alert-danger">
+				<h2><?php echo lang("export_login_ask"); ?></h2>
+				<p><?php echo lang("export_permission_guests"); ?></p>
+				<p><a class='btn btn-danger btn-lg' href='connect.php' role='button'><?php echo lang("login_title"); ?></a></p>
+			</div>
 		</div>
-	</div>
-  <?php die("error : not_enough_right");
-} elseif (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
-	<div class="container">
-		<div class="jumbotron alert-danger">
-			<h2>You have not enough rights</h2>
-			<p>To avoid spam, only the president and the secretary of the session can export to Discourse.</p>
-			<p><a class='btn btn-danger btn-lg' href='meeting.php?id=<?php echo $meeting["mee_id"]; ?>' role='button'>Back</a></p>
+	  <?php die("error : not_enough_right");
+	} elseif (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
+		<div class="container">
+			<div class="jumbotron alert-danger">
+				<h2><?php echo lang("export_permission"); ?></h2>
+				<p><?php echo lang("export_permission_description"); ?></p>
+				<p><a class='btn btn-danger btn-lg' href='meeting.php?id=<?php echo $meeting["mee_id"]; ?>' role='button'><?php echo lang("common_back"); ?></a></p>
+			</div>
 		</div>
+		<?php die("error : not_enough_right");
+	} ?>
+
+	<p class="col-md-12"><?php echo lang("export_description"); ?></p>
+
+	<div class="col-xs-12 col-md-6">
+	  <h2><?php echo lang("export_preview"); ?> :</h2>
+	  <iframe width="100%" id="iframe_discourse" src="meeting/do_export.php?template=discourse&id=<?php echo $meeting["mee_id"]; ?>&textarea=true"><?php echo lang("export_iframes"); ?></iframe>
 	</div>
-	<?php die("error : not_enough_right");
-} ?>
 
-<p class="col-md-12">Le compte rendu sera publié par Congressus dans la catégorie choisie ci-dessous.</p>
+	<div class="col-xs-12 col-md-6">
+	  <h2><?php echo lang("export_send_discourse"); ?> :</h2>
 
-<div class="col-xs-12 col-md-6">
-  <h2>Preview :</h2>
-  <iframe width="100%" id="iframe_discourse" src="meeting/do_export.php?template=discourse&id=<?php echo $meeting["mee_id"]; ?>&textarea=true"><?php echo lang("export_iframes"); ?></iframe>
-</div>
-<div class="col-xs-12 col-md-6">
-  <h2>Send to Discourse :</h2>
-    <form action="meeting_api.php?method=do_discourseCr" method="post" class="form-horizontal" id="export-to-discourse">
-      <div class="form-group">
-        <label for="discourse_title" class="col-md-4 control-label"><?php echo lang("meeting_name"); ?> :</label>
-        <div class="col-md-6">
-          <input type="text" class="form-control input-md" id="discourse_title" name="discourse_title" value="[CR] <?php echo $meeting["mee_label"];?> du <?php echo @$start->format(lang("date_format"))?>"/>
-        </div>
-      </div>
-      <div class="form-group" id="loc_channel_form">
-        <label for="discourse_category" class="col-md-4 control-label">Category : </label>
-        <div class="col-md-6">
-          <select class="form-control input-md" id="discourse_category" name="discourse_category">
-            <?php
-            foreach ($categories as $categoy) {
-                echo "<option value='$categoy[id]'>$categoy[name]</option>";
-            }
-            ?>
-          </select>
-        </div>
-      </div>
-      <div class="row text-center">
-        <button id="discourseSubmit" type="submit" class="btn btn-primary"><?php echo lang("common_create"); ?></button>
-      </div>
+	    <form action="meeting_api.php?method=do_discoursePost" method="post" class="form-horizontal" id="export-to-discourse">
 
-    </form>
-  </div>
+	      <div class="form-group">
+	        <label for="discourse_title" class="col-md-4 control-label"><?php echo lang("meeting_name"); ?> :</label>
+	        <div class="col-md-6">
+	          <input type="text" class="form-control input-md" id="discourse_title" name="discourse_title" value="[CR] <?php echo $meeting["mee_label"];?> du <?php echo @$start->format(lang("date_format"))?>"/>
+	        </div>
+	      </div>
 
-<div id="result"></div>
+	      <div class="form-group" id="loc_channel_form">
+	        <label for="discourse_category" class="col-md-4 control-label"><?php echo lang("export_category"); ?> : </label>
+	        <div class="col-md-6">
+	          <select class="form-control input-md" id="discourse_category" name="discourse_category">
+	            <?php
+	            foreach ($categories as $categoy) {
+	                echo "<option value='$categoy[id]'>$categoy[name]</option>";
+	            }
+	            ?>
+	          </select>
+	        </div>
+	      </div>
+
+	      <div class="row text-center">
+	        <button id="discourseSubmit" type="submit" class="btn btn-primary"><?php echo lang("common_create"); ?></button>
+	      </div>
+
+	    </form>
+	  </div>
+
+	<div id="result"></div>
+
 </div>
 <div class="lastDiv"></div>
+
 <?php include("footer.php");?>
+
 <script>
-$( "#discourseSubmit" ).click(function( event ) {
-  event.preventDefault();
-
-  var $form = $( this ),
-    discourse_title = $('input[name="discourse_title"]').val(),
-    discourse_category = $('select[name="discourse_category"]').val(),
-    meetingId = <?php echo $meeting["mee_id"]; ?>,
-    url = "meeting_api.php?method=do_discourseCr";
-    alert(discourse_title);
-
-  var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId } );
-
-	posting.done(function( data ) {
-		var content = $(data);
-		$("#result").empty().append(content);
-	});
-});
-
-
+var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 </script>
+
+<script src="assets/js/perpage/meeting_export_discourse.js"></script>

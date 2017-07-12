@@ -188,7 +188,7 @@ if (!$userId) {
 					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
 					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a> -->
 					<div class="row" style="margin-top:5px;">
-						<a id="btn-export-discourse" class="export-link simply-hidden btn btn-primary" href="export_discourse.php?id=<?php echo $meeting["mee_id"]; ?>" target="_blank" style="display:inline-block;">Export on Discourse <span class="glyphicon glyphicon-share"></span></a>
+						<a id="btn-export-discourse" class="export-link simply-hidden btn btn-primary" href="export_discourse.php?id=<?php echo $meeting["mee_id"]; ?>" target="_blank" style="display:inline-block;"><?php echo lang("export_discourse"); ?> <span class="glyphicon glyphicon-share"></span></a>
 					</div>
 				</div>
 			</div>

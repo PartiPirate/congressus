@@ -23,6 +23,7 @@ $lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "the {date} at {time}";
 
 $lang["common_ask_for_modification"] = "Ask modification";
+$lang["common_back"] = "Back";
 $lang["common_connect"] = "Connect";
 $lang["common_close"] = "Close";
 $lang["common_create"] = "Create";
@@ -177,6 +178,18 @@ $lang["motion_ballot_majority_50"] = "Simple majority";
 $lang["motion_ballot_majority_66"] = "66% majority";
 $lang["motion_ballot_majority_80"] = "80% majority";
 
+$lang["export_login_ask"] = "Please Login";
+$lang["export_category"] = "Category";
+$lang["export_category_forbidden"] = "Error : Unauthorized category";
+$lang["export_description"] = "The report will be published on Discourse by Congressus in the choosen category.";
+$lang["export_discourse"] = "Export on Discourse";
+$lang["export_discourse_success"] = "The report has been published at the following adresse :";
+$lang["export_discourse_fail"] = "Error : The report hasn't been published.";
+$lang["export_preview"] = "Preview";
+$lang["export_send_discourse"] = "Send to Discourse";
+$lang["export_permission"] = "You have not enough rights";
+$lang["export_permission_description"] = "To avoid spam, only the president and the secretary of the session can export to Discourse.";
+$lang["export_permission_guests"] = "Guests are not allowed to use this function";
 $lang["export_rendering"] = "Rendering";
 $lang["export_open"] = "Open in a new page";
 $lang["export_iframe"] = "Please enable iframes";

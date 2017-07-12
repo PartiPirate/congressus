@@ -62,19 +62,3 @@ $(window).on('click', function(event){
         closeExport(exportModal);
     }
 });
-
-// $('#discourseSendBtn').click(function(){
-//   $('#discourseSendBtn').hide();
-//   $('#discourseCancel').css('display', 'inline-block');
-//   $('#iframe_discourse').hide();
-//   $('#discourseForm').show();
-//   $('#newpage_discourse').hide();
-// });
-//
-// $('#discourseCancel').click(function(){
-//   $('#discourseSendBtn').show();
-//   $('#discourseCancel').hide();
-//   $('#iframe_discourse').show();
-//   $('#discourseForm').hide();
-//   $('#newpage_discourse').show();
-// });

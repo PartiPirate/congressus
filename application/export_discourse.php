@@ -34,14 +34,35 @@ else {
 		$framachan = sha1($meeting["mee_id"] . "framatalk" . $meeting["mee_id"]);
 	}
 }
-
+$userId = SessionUtils::getUserId($_SESSION);
 ?>
-
+<div class="container theme-showcase meeting" role="main">
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-  <li><?php echo $meeting["mee_label"]; ?></li>
+  <li><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
   <li class="active">Export Discourse</li>
 </ol>
+
+<?php
+if (!isset($userId)) {?>
+	<div class="container">
+		<div class="jumbotron alert-danger">
+			<h2>Please Login</h2>
+			<p>Guests are not allowed to use this function</p>
+			<p><a class='btn btn-danger btn-lg' href='connect.php' role='button'>Login</a></p>
+		</div>
+	</div>
+  <?php die("error : not_enough_right");
+} elseif (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
+	<div class="container">
+		<div class="jumbotron alert-danger">
+			<h2>You have not enough rights</h2>
+			<p>To avoid spam, only the president and the secretary of the session can export to Discourse.</p>
+			<p><a class='btn btn-danger btn-lg' href='meeting.php?id=<?php echo $meeting["mee_id"]; ?>' role='button'>Back</a></p>
+		</div>
+	</div>
+	<?php die("error : not_enough_right");
+} ?>
 
 <p class="col-md-12">Le compte rendu sera publié par Congressus dans la catégorie choisie ci-dessous.</p>
 
@@ -77,8 +98,10 @@ else {
     </form>
   </div>
 
-<div id="null"></div>
-
+<div id="result"></div>
+</div>
+<div class="lastDiv"></div>
+<?php include("footer.php");?>
 <script>
 $( "#discourseSubmit" ).click(function( event ) {
   event.preventDefault();
@@ -90,8 +113,12 @@ $( "#discourseSubmit" ).click(function( event ) {
     url = "meeting_api.php?method=do_discourseCr";
     alert(discourse_title);
 
-  $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId } );
+  var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId } );
 
+	posting.done(function( data ) {
+		var content = $(data);
+		$("#result").empty().append(content);
+	});
 });
 
 

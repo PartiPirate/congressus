@@ -226,6 +226,7 @@ function updateMeeting(meeting) {
 		$("#meeting-status-panel button.btn-close-meeting").hide();
 		$("#meeting-status-panel button.btn-delete-meeting").hide();
 //		$("#meeting-status-panel span.closed-meeting").hide();
+		$("#btn-export-discourse").hide();
 	}
 
 	if (meeting.mee_datetime) {

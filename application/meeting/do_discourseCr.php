@@ -20,6 +20,7 @@
 if (!isset($api)) exit();
 
 include_once("config/config.php");
+include_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
 $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
@@ -37,11 +38,46 @@ if (!$meeting) {
 	exit();
 }
 
+$userId = SessionUtils::getUserId($_SESSION);
+if (!isset($userId)) {?>
+	<div class="container">
+		<div class="jumbotron alert-danger col-xs-12">
+			<h2>Please Login</h2>
+			<p>Guests are not allowed to use this function</p>
+			<p><a class='btn btn-danger btn-lg' href='login.php' role='button'>Login</a></p>
+		</div>
+	</div>
+  <?php die("error : not_enough_right");
+} elseif (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
+	<div class="container">
+		<div class="jumbotron alert-danger col-xs-12">
+			<h2>You have not enough rights</h2>
+			<p>To avoid spam, only the president and the secretary of the session can export to Discourse.</p>
+			<p><a class='btn btn-danger btn-lg' href='meeting.php?id=<?php echo $meeting["mee_id"]; ?>' role='button'>Back</a></p>
+		</div>
+	</div>
+	<?php die("error : not_enough_right");
+}
+
 $discourse_category = $_REQUEST["discourse_category"];
 $discourse_title = $_REQUEST["discourse_title"];
+
+if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_category]['id'] != $discourse_category)) {
+	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>Unauthorized discourse category ($discourse_category)</div>";
+	exit("Unauthorized discourse category ($discourse_category)");
+}
 
 $report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=discourse&id=" . $_REQUEST["meetingId"]);
 
 $new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], $replyToId = 0);
+$topicId = $new_topic->apiresult->topic_id;
+sleep(1);
+$http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 
+if ($http_code_topic=="200") {
+	$topic_url = $config["discourse"]["protocol"] . "://" . $config["discourse"]["url"] . "/t/" . $topicId;
+	echo "<div id='discourse-result' class='alert alert-success' role='alert'>The report has been published at the following adresse : <a href='$topic_url'>$topic_url</a></div>";
+} else {
+	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>Error code http $http_code_topic</div>";
+}
 ?>

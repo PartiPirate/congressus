@@ -16,6 +16,13 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+// TODO: Add a configuration pannel for the administrator to edit theses values.
+$allowed_categories = array( // Add here the categories allowed for export.
+  // "Ektek",
+  // "CR - CN",
+  "Sandbox"
+);
+
 require_once("engine/discourse/DiscourseAPI.php");
 
 $discourseApi = new richp10\discourseAPI\DiscourseAPI("discourse.partipirate.org", $config["discourse"]["api_key"], "https");
@@ -33,13 +40,6 @@ foreach ($categories as $category) {
     $categories_all[$category->id]['name'] = $category->name;
   }
 }
-// TODO: Add a configuration pannel for the administrator to edit theses values.
-$allowed_categories = array(
-  // "Ektek",
-  // "CR - CN",
-  "Sandbox"
-);
-
 
 unset($categories);
 foreach ($categories_all as $categoy) {

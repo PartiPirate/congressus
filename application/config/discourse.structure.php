@@ -25,7 +25,25 @@ $allowed_categories = array( // Add here the categories allowed for export.
 
 require_once("engine/discourse/DiscourseAPI.php");
 
-$discourseApi = new richp10\discourseAPI\DiscourseAPI("discourse.partipirate.org", $config["discourse"]["api_key"], "https");
+function discourseApi($url, $api_key, $protocol) {
+    if ($url=="") {
+        throw new Exception('Discourse url missing.');
+    }
+    if ($api_key=="") {
+        throw new Exception('Discourse API key missing.');
+    }
+    if ($protocol=="") {
+        throw new Exception('Discourse protocol missing.');
+    }
+    $discourseApi = new richp10\discourseAPI\DiscourseAPI($url, $api_key, $protocol);
+    return $discourseApi;
+}
+
+try {
+  $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+} catch (Exception $e) {
+    echo 'Exception : ',  $e->getMessage(), "\n";
+}
 
 $categories = $discourseApi->getSite()->apiresult->categories;
 

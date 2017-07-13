@@ -91,7 +91,7 @@ $connection = openConnection();
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
 <head>
-	<?php if (basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") {
+	<?php if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
 	require_once("engine/bo/MeetingBo.php");
 
 	$meetingBo = MeetingBo::newInstance($connection);

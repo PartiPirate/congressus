@@ -226,6 +226,7 @@ function updateMeeting(meeting) {
 		$("#meeting-status-panel button.btn-close-meeting").hide();
 		$("#meeting-status-panel button.btn-delete-meeting").hide();
 //		$("#meeting-status-panel span.closed-meeting").hide();
+		$("#btn-export-discourse").hide();
 	}
 
 	if (meeting.mee_datetime) {
@@ -329,8 +330,6 @@ function addMeetingHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
-				function(data) {}, "json");
-		$.post("meeting_api.php?method=do_discourseCr", {meetingId: meetingId, property: "category", text: meetingCategory},
 				function(data) {}, "json");
 	});
 

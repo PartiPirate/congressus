@@ -40,7 +40,7 @@ function discourseApi($url, $api_key, $protocol) {
 }
 
 try {
-  $discourseApi = discourseApi("", $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+  $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
   $categories = $discourseApi->getSite()->apiresult->categories;
 

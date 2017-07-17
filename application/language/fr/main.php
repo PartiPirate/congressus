@@ -62,7 +62,7 @@ $lang["login_passwordInput"] = "Mot de passe";
 $lang["login_button"] = "Me connecter";
 $lang["login_rememberMe"] = "Se souvenir de moi";
 $lang["register_link"] = "ou m'enregistrer";
-$lang["forgotten_link"] = "j'ai oublié mon mot de passe";
+$lang["forgotten_link"] = "J'ai oublié mon mot de passe";
 
 $lang["breadcrumb_about"] = "À Propos";
 $lang["breadcrumb_administration"] = "Administration";

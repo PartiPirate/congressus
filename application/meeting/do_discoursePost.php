@@ -76,8 +76,8 @@ sleep(1);
 $http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 
 if ($http_code_topic=="200") {
-	$topic_url = $config["discourse"]["protocol"] . "://" . $config["discourse"]["url"] . "/t/" . $topicId;
-	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a href='$topic_url'>$topic_url</a></div>";
+	$topic_url = $config["discourse"]["protocol"] . "://" . $config["discourse"]["url"] . "/t/" . $topicId . "?u=congressus";
+	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a target='_blank' href='$topic_url'>$topic_url</a></div>";
 } else {
 	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_discourse_fail") . " (code http $http_code_topic)</div>";
 }

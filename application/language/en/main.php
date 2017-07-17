@@ -180,11 +180,13 @@ $lang["motion_ballot_majority_80"] = "80% majority";
 
 $lang["export_login_ask"] = "Please Login";
 $lang["export_category"] = "Category";
+$lang["export_category_choose"] = "Choose a category";
 $lang["export_category_forbidden"] = "Error : Unauthorized category";
 $lang["export_description"] = "The report will be published on Discourse by Congressus in the choosen category.";
 $lang["export_discourse"] = "Export on Discourse";
 $lang["export_discourse_success"] = "The report has been published at the following adresse :";
 $lang["export_discourse_fail"] = "Error : The report hasn't been published.";
+$lang["export_discourse_shortTitle"] = "Error : The title should have more than 15 characters.";
 $lang["export_preview"] = "Preview";
 $lang["export_send_discourse"] = "Send to Discourse";
 $lang["export_permission"] = "You have not enough rights";

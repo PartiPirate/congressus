@@ -302,6 +302,14 @@ a[disabled] {
   animation-name: animatetop;
   animation-duration: 0.4s;
 }
+
+@media (max-width: 768px) {
+	.export_content {
+		margin: 0;
+		width: 100%;
+	}
+}
+
 .export_content .navbar {
 	border-radius: 0;
 	height: 50px;

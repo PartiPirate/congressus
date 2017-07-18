@@ -388,24 +388,27 @@ class DiscourseAPI
             'archetype' => 'regular',
             'reply_to_post_number' => $replyToId,
         );
+        
+        print_r($params);
+        
         return $this->_postRequest('/posts', $params, $userName);
     }
 
-     function getCategory($categoryName) {
-	return $this->_getRequest("/c/{$categoryName}.json");
-     }
+    function getCategory($categoryName) {
+        return $this->_getRequest("/c/{$categoryName}.json");
+    }
 
-     function getCategoryById($categoryId) {
-       $datas = $this->_getRequest("/site.json");
-       $categories = $datas->apiresult->categories;
-       foreach($categories as $categorie) {
-         if(($categorie->id) == $categoryId) {
-           return $categorie;
-         }
+    function getCategoryById($categoryId) {
+        $datas = $this->_getRequest("/site.json");
+        $categories = $datas->apiresult->categories;
+        foreach($categories as $category) {
+            if(($category->id) == $categoryId) {
+                return $category;
+            }
        }
 
        return false;
-     }
+    }
 
     /**
      * getTopic
@@ -413,7 +416,7 @@ class DiscourseAPI
      */
 
     function getTopic($topicId) {
-	return $this->_getRequest("/t/{$topicId}.json");
+	    return $this->_getRequest("/t/{$topicId}.json");
     }
 
     /**
@@ -506,7 +509,7 @@ class DiscourseAPI
             $groupId = false;
         }
 
-	return $groupId;
+	    return $groupId;
     }
 
      /**
@@ -519,15 +522,16 @@ class DiscourseAPI
 
     function joinGroup($groupname, $username)
     {
-	$groupId = $this->getGroupIdByGroupName($groupname);
+    	$groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
-	    return false;
-         } else {
+	        return false;
+        } 
+        else {
             $params = array(
                 'usernames' => $username
             );
-         return $this->_putRequest('/groups/' . $groupId . '/members', $params);
-         }
+            return $this->_putRequest('/groups/' . $groupId . '/members', $params);
+        }
      }
 
     function leaveGroup($groupname, $username)
@@ -536,16 +540,16 @@ class DiscourseAPI
         $groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
             return false;
-         } else {
+         } 
+         else {
             $params = array(
                 'user_id' => $userid
             );
-         return $this->_deleteRequest('/groups/'.$groupId.'/members.json', $params);
-	}
-     }
+            return $this->_deleteRequest('/groups/'.$groupId.'/members.json', $params);
+	    }
+    }
 
-
-     /**
+    /**
      * topTopics
      * @param string $category    slug of category
      * @param string $period      daily, weekly, monthly, yearly
@@ -556,7 +560,7 @@ class DiscourseAPI
     function topTopics($category, $period = 'daily')
     {
          return $this->_getRequest('/c/'.$category.'/l/top/'.$period.'.json');
-     }
+    }
 
      /**
      * latestTopics
@@ -568,7 +572,7 @@ class DiscourseAPI
     function latestTopics($category )
     {
          return $this->_getRequest('/c/'.$category.'/l/latest.json');
-     }
+    }
 
 
 }

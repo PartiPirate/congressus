@@ -60,7 +60,7 @@ $('.btnTab').click(function(){
   }
   $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
     $("#export_area").empty().append(data);
-    report = data;
+    report = $(data).text();
   });
   $('#newpage').attr("href", url);
 });

@@ -70,9 +70,18 @@ if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_ca
 
 $report = $_REQUEST["report"];
 
-$new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], $replyToId = 0);
+print_r($discourseApi);
+
+print_r($discourseApi->getCategories());
+
+print_r($config["discourse"]);
+
+$new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], 0);
+
+print_r($new_topic);
+
 $topicId = $new_topic->apiresult->topic_id;
-sleep(1);
+
 $http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 
 if ($http_code_topic=="200") {

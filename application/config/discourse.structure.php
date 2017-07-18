@@ -16,13 +16,7 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-// TODO: Add a configuration pannel for the administrator to edit theses values.
-$allowed_categories = array( // Add here the categories allowed for export.
-  // "Ektek",
-  // "CR - CN",
-  "Sandbox"
-);
-
+require_once("discourse.config.php");
 require_once("engine/discourse/DiscourseAPI.php");
 
 function discourseApi($url, $api_key, $protocol) {
@@ -58,14 +52,14 @@ try {
 
   unset($categories);
   foreach ($categories_all as $categoy) {
-    if (in_array($categoy['name'], $allowed_categories)){
+    if (in_array($categoy['id'], $config["discourse"]["allowed_categories"])){
       $categories[$categoy['id']]['id'] = $categoy['id'];
       $categories[$categoy['id']]['slug'] = $categoy['slug'];
       $categories[$categoy['id']]['name'] = $categoy['name'];
     }
     if (isset($categoy['subcategory'])) {
       foreach ($categoy['subcategory'] as $subcategoy) {
-        if (in_array($subcategoy['name'], $allowed_categories)){
+        if (in_array($subcategoy['id'], $config["discourse"]["allowed_categories"])){
           $categories[$subcategoy['id']]['id'] = $subcategoy['id'];
           $categories[$subcategoy['id']]['slug'] = $subcategoy['slug'];
           $categories[$subcategoy['id']]['name'] = $categoy['name'] . " : " . $subcategoy['name'];

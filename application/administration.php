@@ -17,8 +17,10 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 @include_once("config/mail.config.php");
+include_once("config/discourse.config.php");
 
 include_once("header.php");
+include_once("config/discourse.structure.php");
 
 ?>
 
@@ -44,7 +46,7 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="server_base_input"><?php echo lang("administration_server_base"); ?></label>
 					<div class="col-md-10">
-						<input id="server_base_input" name="server_base_input" type="text" value="<?php echo $config["server"]["base"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="server_base_input" name="server_base_input" type="text" value="<?php echo $config["server"]["base"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -73,29 +75,29 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="congressus_ballot_majorities_input"><?php echo lang("administration_congressus_ballot_majorities"); ?></label>
 					<div class="col-md-10">
-						<input id="congressus_ballot_majorities_input" name="congressus_ballot_majorities_input" type="text" value="<?php echo implode(", ", $config["congressus"]["ballot_majorities"]); ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="congressus_ballot_majorities_input" name="congressus_ballot_majorities_input" type="text" value="<?php echo implode(", ", $config["congressus"]["ballot_majorities"]); ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
 
 			</div>
 		</div>
-	
+
 		<div id="database-panel" class="panel panel-default">
 			<div class="panel-heading">
 				<a data-toggle="collapse" data-target="#database-panel-body" class="collapsed" href="#"><?php echo lang("administration_database"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="database-panel-body">
-			
+
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="database_host_input"><?php echo lang("administration_database_host"); ?></label>
 					<div class="col-md-4">
-						<input id="database_host_input" name="database_host_input" type="text" value="<?php echo $config["database"]["host"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="database_host_input" name="database_host_input" type="text" value="<?php echo $config["database"]["host"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="database_port_input"><?php echo lang("administration_database_port"); ?></label>
 					<div class="col-md-4">
-						<input id="database_port_input" name="database_port_input" type="text" value="<?php echo $config["database"]["port"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="database_port_input" name="database_port_input" type="text" value="<?php echo $config["database"]["port"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -103,7 +105,7 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="database_database_input"><?php echo lang("administration_database_database"); ?></label>
 					<div class="col-md-10">
-						<input id="database_database_input" name="database_database_input" type="text" value="<?php echo $config["database"]["database"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="database_database_input" name="database_database_input" type="text" value="<?php echo $config["database"]["database"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -111,12 +113,12 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="database_login_input"><?php echo lang("administration_database_login"); ?></label>
 					<div class="col-md-4">
-						<input id="database_login_input" name="database_login_input" type="text" value="<?php echo $config["database"]["login"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="database_login_input" name="database_login_input" type="text" value="<?php echo $config["database"]["login"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="database_password_input"><?php echo lang("administration_database_password"); ?></label>
 					<div class="col-md-4">
-						<input id="database_password_input" name="database_password_input" type="text" value="<?php echo $config["database"]["password"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="database_password_input" name="database_password_input" type="text" value="<?php echo $config["database"]["password"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -124,7 +126,7 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="galette_db_input"><?php echo lang("administration_database_galette"); ?></label>
 					<div class="col-md-10">
-						<input id="galette_db_input" name="galette_db_input" type="text" value="<?php echo $config["galette"]["db"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="galette_db_input" name="galette_db_input" type="text" value="<?php echo $config["galette"]["db"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -132,7 +134,7 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="personae_db_input"><?php echo lang("administration_database_personae"); ?></label>
 					<div class="col-md-10">
-						<input id="personae_db_input" name="personae_db_input" type="text" value="<?php echo $config["personae"]["db"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="personae_db_input" name="personae_db_input" type="text" value="<?php echo $config["personae"]["db"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -143,29 +145,29 @@ include_once("header.php");
 
 			</div>
 		</div>
-	
+
 		<div id="memcached-panel" class="panel panel-default">
 			<div class="panel-heading">
 				<a data-toggle="collapse" data-target="#memcached-panel-body" class="collapsed" href="#"><?php echo lang("administration_memcached"); ?></a>
 			</div>
 			<div class="panel-body panel-collapse collapse " id="memcached-panel-body">
-			
+
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="memcached_host_input"><?php echo lang("administration_memcached_host"); ?></label>
 					<div class="col-md-4">
-						<input id="memcached_host_input" name="memcached_host_input" type="text" value="<?php echo $config["memcached"]["host"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="memcached_host_input" name="memcached_host_input" type="text" value="<?php echo $config["memcached"]["host"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="memcached_port_input"><?php echo lang("administration_memcached_port"); ?></label>
 					<div class="col-md-4">
-						<input id="memcached_port_input" name="memcached_port_input" type="text" value="<?php echo $config["memcached"]["port"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="memcached_port_input" name="memcached_port_input" type="text" value="<?php echo $config["memcached"]["port"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
-			
+
 			</div>
 		</div>
-	
+
 		<div id="mail-panel" class="panel panel-default">
 			<div class="panel-heading">
 				<a data-toggle="collapse" data-target="#mail-panel-body" class="collapsed" href="#"><?php echo lang("administration_mail"); ?></a>
@@ -175,12 +177,12 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="smtp_host_input"><?php echo lang("administration_mail_host"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_host_input" name="smtp_host_input" type="text" value="<?php echo $config["smtp"]["host"] ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_host_input" name="smtp_host_input" type="text" value="<?php echo $config["smtp"]["host"] ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="smtp_port_input"><?php echo lang("administration_mail_port"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_port_input" name="smtp_port_input" type="text" value="<?php echo $config["smtp"]["port"] ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_port_input" name="smtp_port_input" type="text" value="<?php echo $config["smtp"]["port"] ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -204,12 +206,12 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="smtp_username_input"><?php echo lang("administration_mail_username"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_username_input" name="smtp_username_input" type="text" value="<?php echo $config["smtp"]["username"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_username_input" name="smtp_username_input" type="text" value="<?php echo $config["smtp"]["username"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="smtp_password_input"><?php echo lang("administration_mail_password"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_password_input" name="smtp_password_input" type="text" value="<?php echo $config["smtp"]["password"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_password_input" name="smtp_password_input" type="text" value="<?php echo $config["smtp"]["password"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -217,19 +219,83 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="smtp_from_address_input"><?php echo lang("administration_mail_from_address"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_from_address_input" name="smtp_from_address_input" type="text" value="<?php echo $config["smtp"]["from.address"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_from_address_input" name="smtp_from_address_input" type="text" value="<?php echo $config["smtp"]["from.address"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="smtp_from_name_input"><?php echo lang("administration_mail_from_name"); ?></label>
 					<div class="col-md-4">
-						<input id="smtp_from_name_input" name="smtp_from_name_input" type="text" value="<?php echo $config["smtp"]["from.name"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="smtp_from_name_input" name="smtp_from_name_input" type="text" value="<?php echo $config["smtp"]["from.name"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
 
 			</div>
 		</div>
-	
+
+		<div id="discourse-panel" class="panel panel-default">
+			<div class="panel-heading">
+				<a data-toggle="collapse" data-target="#discourse-panel-body" class="collapsed" href="#">Discourse</a>
+			</div>
+			<div class="panel-body panel-collapse collapse " id="discourse-panel-body">
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="discourse_api_key_input">api_key</label>
+					<div class="col-md-10">
+						<input id="discourse_api_key_input" name="discourse_api_key_input" type="text" value="<?php echo $config["discourse"]["api_key"];?>" placeholder="placeholder" class="form-control input-md">
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="discourse_url__input">url</label>
+					<div class="col-md-10">
+						<input id="discourse_url__input" name="discourse_url__input" type="text" value="<?php echo $config["discourse"]["url"];?>" placeholder="placeholder" class="form-control input-md">
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="discourse_protocol_input">protocol</label>
+					<div class="col-md-10">
+						<input id="discourse_protocol_input" name="discourse_protocol_input" type="text" value="<?php echo $config["discourse"]["protocol"];?>" placeholder="placeholder" class="form-control input-md">
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="discourse_user_input">user</label>
+					<div class="col-md-10">
+						<input id="discourse_user_input" name="discourse_user_input" type="text" value="<?php echo $config["discourse"]["user"];?>" placeholder="placeholder" class="form-control input-md">
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="discourse_base_input">base</label>
+					<div class="col-md-10">
+						<input id="discourse_base_input" name="discourse_base_input" type="text" value="<?php echo $config["discourse"]["base"];?>" placeholder="placeholder" class="form-control input-md">
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="allowed_categories_input[]">allowed_categories :</label>
+					<div class="col-md-10">
+						<?php foreach ($categories_all as $category) {?>
+							<input type="checkbox" name="allowed_categories_input[]" value="<?php echo $category['id'];?>" <?php if (in_array($category['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> <?php echo $category['name'];?><br>
+							<?php if (isset($category['subcategory'])) {
+					      foreach ($category['subcategory'] as $subcategoy):?>
+								 <input type="checkbox" name="allowed_categories_input[]" value="<?php echo $subcategoy['id'];?>" <?php if (in_array($category['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> - &nbsp;&nbsp;<?php echo $subcategoy['name'];?><br>
+					      <?php endforeach;
+					    }
+						}?>
+						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+			</div>
+		</div>
+
 		<div id="account-panel" class="panel panel-default">
 			<div class="panel-heading">
 				<a data-toggle="collapse" data-target="#account-panel-body" class="collapsed" href="#"><?php echo lang("administration_account"); ?></a>
@@ -239,16 +305,16 @@ include_once("header.php");
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="administrator_login_input"><?php echo lang("administration_account_login"); ?></label>
 					<div class="col-md-4">
-						<input id="administrator_login_input" name="administrator_login_input" type="text" value="<?php echo $config["administrator"]["login"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="administrator_login_input" name="administrator_login_input" type="text" value="<?php echo $config["administrator"]["login"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 					<label class="col-md-2 control-label" for="administrator_password_input"><?php echo lang("administration_account_password"); ?></label>
 					<div class="col-md-4">
-						<input id="administrator_password_input" name="administrator_password_input" type="text" value="<?php echo $config["administrator"]["password"]; ?>" placeholder="placeholder" class="form-control input-md"> 
+						<input id="administrator_password_input" name="administrator_password_input" type="text" value="<?php echo $config["administrator"]["password"]; ?>" placeholder="placeholder" class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
-			
+
 			</div>
 		</div>
 

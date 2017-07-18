@@ -388,9 +388,7 @@ class DiscourseAPI
             'archetype' => 'regular',
             'reply_to_post_number' => $replyToId,
         );
-        
-        print_r($params);
-        
+                
         return $this->_postRequest('/posts', $params, $userName);
     }
 
@@ -525,7 +523,7 @@ class DiscourseAPI
     	$groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
 	        return false;
-        } 
+        }
         else {
             $params = array(
                 'usernames' => $username
@@ -540,7 +538,7 @@ class DiscourseAPI
         $groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
             return false;
-         } 
+         }
          else {
             $params = array(
                 'user_id' => $userid

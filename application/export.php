@@ -77,7 +77,8 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
         <a title="<?php echo lang("common_close"); ?>" class="btn btn-default navbar-btn exportClose" href="#"><span class="glyphicon glyphicon-remove"></span></a>
       </div>
     </div>
-    <iframe id="export_iframe" src="<?php echo $url; ?>"><?php echo lang("export_iframes"); ?></iframe>
+		<div id="export_area" class="simply-hidden"></div>
+    <iframe id="export_iframe" class="simply-hidden" src=""><?php echo lang("export_iframes"); ?></iframe>
 
     <div id="discourse_post" class="simply-hidden">
       <?php $userId = SessionUtils::getUserId($_SESSION);
@@ -135,6 +136,8 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
   </div>
 </div>
 <script>
+var template = "<?php echo $_GET["template"];?>"
+var export_area_url = "<?php echo $url ?>";
 var export_discourse_shortTitle = "<?php echo lang("export_discourse_shortTitle"); ?>";
 var export_category_choose = "<?php echo lang("export_category_choose"); ?>";
 </script>

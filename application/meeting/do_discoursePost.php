@@ -68,7 +68,7 @@ if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_ca
 	exit("Unauthorized discourse category ($discourse_category)");
 }
 
-$report = file_get_contents($config["server"]["base"]. "meeting/do_export.php?template=discourse&id=" . $_REQUEST["meetingId"]);
+$report = $_REQUEST["report"];
 
 $new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], $replyToId = 0);
 $topicId = $new_topic->apiresult->topic_id;

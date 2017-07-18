@@ -16,6 +16,18 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+if (template=="pdf"){
+  $('#export_iframe').attr("src", export_area_url);
+  $('#export_iframe').show();
+  $("#export_area").hide();
+} else {
+  $.get(export_area_url, function(data){
+    $("#export_area").empty().append(data);
+    $('#export_iframe').hide();
+    $("#export_area").show();
+  });
+}
+
 $('.btnTab').click(function(){
   tab = $(this).data("tab");
   template = $(this).data("template");
@@ -37,17 +49,19 @@ $('.btnTab').click(function(){
     $('#send_discourse').removeClass('btn-active');
     $('#send_discourse').removeClass('hidden-xs');
     $('#discourse_post').hide();
-    $('#export_iframe').show();
+    $("#export_area").show();
   } else if (tab=='send_discourse'){
     $('#preview').removeClass('btn-active');
     $('#preview').removeClass('hidden-xs');
     $('#send_discourse').addClass('btn-active');
     $('#send_discourse').addClass('hidden-xs');
     $('#discourse_post').show();
-    $('#export_iframe').hide();
+    $("#export_area").hide();
   }
-  url = "meeting/do_export.php?template=" + template + "&id=" + meeting_id + "&textarea=" + textarea;
-  $('#export_iframe').attr("src", url);
+  $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
+    $("#export_area").empty().append(data);
+    report = data;
+  });
   $('#newpage').attr("href", url);
 });
 
@@ -66,7 +80,7 @@ $( "#discourseSubmit" ).click(function( event ) {
     if (discourse_category !== "") {
       meetingId = meeting_id;
       url = "meeting_api.php?method=do_discoursePost";
-      var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId } );
+      var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId, report: report } );
 
     	posting.done(function( data ) {
     		var content = $(data);

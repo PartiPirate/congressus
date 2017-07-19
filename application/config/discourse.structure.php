@@ -53,14 +53,14 @@ try {
 
   unset($categories);
   foreach ($categories_all as $categoy) {
-    if (!isset($allowed_categories) || count($allowed_categories) == 0 || in_array($categoy['id'], $config["discourse"]["allowed_categories"])) {
+    if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($categoy['id'], $config["discourse"]["allowed_categories"])) {
       $categories[$categoy['id']]['id'] = $categoy['id'];
       $categories[$categoy['id']]['slug'] = $categoy['slug'];
       $categories[$categoy['id']]['name'] = $categoy['name'];
     }
     if (isset($categoy['subcategory'])) {
       foreach ($categoy['subcategory'] as $subcategoy) {
-        if (!isset($allowed_categories) || count($allowed_categories) == 0 || in_array($subcategoy['id'], $config["discourse"]["allowed_categories"])) {
+        if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($subcategoy['id'], $config["discourse"]["allowed_categories"])) {
           $categories[$subcategoy['id']]['id'] = $subcategoy['id'];
           $categories[$subcategoy['id']]['slug'] = $subcategoy['slug'];
           $categories[$subcategoy['id']]['name'] = $categoy['name'] . " : " . $subcategoy['name'];

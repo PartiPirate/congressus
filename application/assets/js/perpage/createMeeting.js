@@ -33,23 +33,48 @@ function isTimeValid(str) {
 	return true;
 }
 
+function mumbleLink(loc_channel) {
+	mumble_url ="mumble://" + mumble_server + "/" + loc_channel + "?title=" + mumble_title + "&version=" + mumble_version + " (" + loc_channel + ")";
+	$("#loc_extra").empty().append(mumble_url);
+}
 
 $(function() {
-	
+
 	$("#create-meeting-form").submit(function(event) {
-		
+
 		var errorCount = 0;
-		
+
 		errorCount += isDateValid($("#mee_date").val()) ? 0 : 1;
 		errorCount += isTimeValid($("#mee_time").val()) ? 0 : 1;
-		
+
 		if (errorCount) {
-			
+
 			$("#date-time-error-alert").show().delay(5000).fadeOut(1000, function() {
 			});
-			
+
 			event.preventDefault();
 		}
 	})
-	
+
+	mumbleLink($("#loc_channel").val());
+	$("#loc_extra_group").hide();
+});
+
+$(document).on('change', '#loc_type', function() {
+	if($("#loc_type").val()=="mumble"){
+		$("#loc_channel_form").show();
+		$("#loc_channel").val('Accueil Taverne');
+		mumbleLink($("#loc_channel").val());
+		$('#loc_extra_group').hide();
+	} else {
+		$("#loc_channel_form").hide();
+		$("#loc_channel").val('AFK');
+		$("#loc_extra").empty();
+		$('#loc_extra_group').show();
+	}
+
+});
+
+$(document).on('change', '#loc_channel', function() {
+	mumbleLink($("#loc_channel").val());
 });

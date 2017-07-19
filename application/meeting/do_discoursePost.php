@@ -19,7 +19,7 @@
 
 if (!isset($api)) exit();
 
-include_once("config/config.php");
+include_once("config/discourse.config.php");
 include_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
 $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
@@ -70,22 +70,20 @@ if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_ca
 
 $report = $_REQUEST["report"];
 
-print_r($discourseApi);
+// print_r($discourseApi);
 
-print_r($discourseApi->getCategories());
-
-print_r($config["discourse"]);
+// print_r($discourseApi->getCategories());
 
 $new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], 0);
 
-print_r($new_topic);
+// print_r($new_topic);
 
 $topicId = $new_topic->apiresult->topic_id;
 
 $http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 
 if ($http_code_topic=="200") {
-	$topic_url = $config["discourse"]["protocol"] . "://" . $config["discourse"]["url"] . "/t/" . $topicId . "?u=congressus";
+	$topic_url = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
 	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a target='_blank' href='$topic_url'>$topic_url</a></div>";
 } else {
 	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_discourse_fail") . " (code http $http_code_topic)</div>";

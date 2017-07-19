@@ -16,7 +16,7 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once("config/discourse.config.php");
+require_once("discourse.config.php");
 require_once("engine/discourse/DiscourseAPI.php");
 
 function discourseApi($url, $api_key, $protocol) {
@@ -43,7 +43,7 @@ try {
       $categories_all[$category->parent_category_id]['subcategory'][$category->id]['id'] = $category->id;
       $categories_all[$category->parent_category_id]['subcategory'][$category->id]['slug'] = $category->slug;
       $categories_all[$category->parent_category_id]['subcategory'][$category->id]['name'] = $category->name;
-    } 
+    }
     else {
       $categories_all[$category->id]['id'] = $category->id;
       $categories_all[$category->id]['slug'] = $category->slug;
@@ -53,14 +53,14 @@ try {
 
   unset($categories);
   foreach ($categories_all as $categoy) {
-    if (!isset($allowed_categories) || count($allowed_categories) == 0 || in_array($categoy['name'], $allowed_categories)) {
+    if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($categoy['id'], $config["discourse"]["allowed_categories"])) {
       $categories[$categoy['id']]['id'] = $categoy['id'];
       $categories[$categoy['id']]['slug'] = $categoy['slug'];
       $categories[$categoy['id']]['name'] = $categoy['name'];
     }
     if (isset($categoy['subcategory'])) {
       foreach ($categoy['subcategory'] as $subcategoy) {
-        if (!isset($allowed_categories) || count($allowed_categories) == 0 || in_array($subcategoy['name'], $allowed_categories)) {
+        if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($subcategoy['id'], $config["discourse"]["allowed_categories"])) {
           $categories[$subcategoy['id']]['id'] = $subcategoy['id'];
           $categories[$subcategoy['id']]['slug'] = $subcategoy['slug'];
           $categories[$subcategoy['id']]['name'] = $categoy['name'] . " : " . $subcategoy['name'];
@@ -69,7 +69,7 @@ try {
     }
   }
 
-} 
+}
 catch (Exception $e) {
     $error_message = ('Exception : ' .  $e->getMessage() . "\n");
     echo "<h1 class='alert alert-danger'>" . $error_message . "</h1>";

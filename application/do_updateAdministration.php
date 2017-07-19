@@ -55,7 +55,7 @@ if(!isset(\$config)) {
 \$config[\"database\"][\"prefix\"] = \"\";
 \$config[\"galette\"][\"db\"] = \"" . $_REQUEST["galette_db_input"] . "\";
 \$config[\"personae\"][\"db\"] = \"" . $_REQUEST["personae_db_input"] . "\";
-		
+
 \$config[\"memcached\"] = array();
 \$config[\"memcached\"][\"host\"] = \"" . $_REQUEST["memcached_host_input"] . "\";
 \$config[\"memcached\"][\"port\"] = " . $_REQUEST["memcached_port_input"] . ";
@@ -65,7 +65,7 @@ if(!isset(\$config)) {
 // The server line, ex : dev, beta - Leave it empty for production
 \$config[\"server\"][\"line\"] = \"" . $_REQUEST["server_line_input"] . "\";
 \$config[\"server\"][\"timezone\"] = \"" . $_REQUEST["server_timezone_input"] . "\";
-\$config[\"congressus\"][\"ballot_majorities\"] = \"" . $ballot_majorities . "\";
+\$config[\"congressus\"][\"ballot_majorities\"] = " . $ballot_majorities . ";
 
 ?>";
 
@@ -86,6 +86,29 @@ if(!isset(\$config)) {
 
 ?>";
 
+// discourse.config.php
+$discourseConfigDotPhp = "<?php
+if(!isset(\$config)) {
+	\$config = array();
+}
+
+\$config[\"discourse\"] = array();
+\$config[\"discourse\"][\"api_key\"] = \"" . $_REQUEST["discourse_api_key_input"] . "\";
+\$config[\"discourse\"][\"url\"] = \"" . $_REQUEST["discourse_url__input"] . "\";
+\$config[\"discourse\"][\"protocol\"] = \"" . $_REQUEST["discourse_protocol_input"] . "\";
+\$config[\"discourse\"][\"user\"] = \"" . $_REQUEST["discourse_user_input"] . "\";
+\$config[\"discourse\"][\"base\"] = \"" . $_REQUEST["discourse_base_input"] . "\";
+\$config[\"discourse\"][\"allowed_categories\"] = array(";
+$separator = "";
+foreach ($_REQUEST["allowed_categories_input"] as $allowed_category) {
+	 $discourseConfigDotPhp .=  $separator.$allowed_category;
+	 $separator = ",";
+}
+
+$discourseConfigDotPhp .= ");
+
+?>";
+
 if (file_exists("config/config.php")) {
 	if (file_exists("config/config.php~")) {
 		unlink("config/config.php~");
@@ -101,6 +124,14 @@ if (file_exists("config/mail.config.php")) {
 	rename("config/mail.config.php", "config/mail.config.php~");
 }
 file_put_contents("config/mail.config.php", $mailConfigDotPhp);
+
+if (file_exists("config/discourse.config.php")) {
+	if (file_exists("config/discourse.config.php~")) {
+		unlink("config/discourse.config.php~");
+	}
+	rename("config/discourse.config.php", "config/discourse.config.php~");
+}
+file_put_contents("config/discourse.config.php", $discourseConfigDotPhp);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

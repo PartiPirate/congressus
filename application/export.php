@@ -28,6 +28,7 @@ include_once("config/discourse.structure.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("config/config.php");
+require_once("config/discourse.config.php");
 
 $connection = openConnection();
 $meetingBo = MeetingBo::newInstance($connection);

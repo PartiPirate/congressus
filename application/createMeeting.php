@@ -93,7 +93,7 @@ include("config/mumble.structure.php")
 		<div class="form-group">
 			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
-				<select class="form-control input-md" id="loc_type" name="loc_type" onchange="check();">
+				<select class="form-control input-md" id="loc_type" name="loc_type">
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
 					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
 					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
@@ -122,7 +122,7 @@ include("config/mumble.structure.php")
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" id="loc_extra_group">
 			<label class="col-md-4 control-label" for="loc_extra"><?php echo lang("createMeeting_placeAddress"); ?></label>
 			<div class="col-md-4">
 		    	<textarea class="form-control" rows="4"
@@ -145,22 +145,11 @@ include("config/mumble.structure.php")
 <div class="lastDiv"></div>
 
 <script>
+var mumble_count = "<?php echo count($mumble);?>";
+var mumble_server = "<?php echo $mumble_server;?>";
+var mumble_title = "<?php echo $mumble_title;?>";
+var mumble_version = "<?php echo $mumble_version;?>";
 </script>
 <?php include("footer.php");?>
-<script type="text/javascript">
-function check() {
-    var dropdown = document.getElementById("loc_type");
-    var current_value = dropdown.options[dropdown.selectedIndex].value;
-
-    if (current_value == "mumble") {
-        document.getElementById("loc_channel_form").style.display = "block";
-				document.getElementById('loc_channel').selectedIndex=0;
-    }
-    else {
-        document.getElementById("loc_channel_form").style.display = "none";
-				document.getElementById('loc_channel').selectedIndex=<?php echo count($mumble)-1 ?>;
-    }
-}
-</script>
 </body>
 </html>

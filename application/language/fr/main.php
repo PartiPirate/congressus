@@ -259,6 +259,7 @@ Vous pouvez consulter l'ordre du jour et participer à la réunion en cliquant s
 
 L'espace de rencontre {location_type} se fera à cette adresse :
 {location_extra}
+
 L'horaire de début : {meeting_date}
 
 Congressus";

@@ -110,11 +110,6 @@ if (count($membersToNotice)) {
 
 	$meetingLink = $config["server"]["base"] . "meeting.php?id=" . $meeting[$meetingBo->ID_FIELD];
 
-	$body = utf8_decode(lang("notice_mail_content", false));
-	$body = str_replace("{meeting_label}", $meeting["mee_label"], $body);
-	$body = str_replace("{meeting_link}", $meetingLink, $body);
-	$body = str_replace("{meeting_date}", $meeting_date, $body);
-	
 	$locations = $locationBo->getByFilters(array("loc_meeting_id" => $meeting[$meetingBo->ID_FIELD], "loc_principal" => 1));
 	if (count($locations)) {
 		$location = $locations[0];
@@ -123,11 +118,30 @@ if (count($membersToNotice)) {
 		$location = array("loc_type" => "unknown", "loc_extra" => "");
 	}
 
+	$body = utf8_decode(lang("notice_mail_content", false));
+	$body = str_replace("{meeting_label}", $meeting["mee_label"], $body);
+	$body = str_replace("{meeting_date}", $meeting_date, $body);
 	$body = str_replace("{location_type}", strtolower(lang("loc_type_" . $location["loc_type"])), $body);
+
+	$altBody = $body;
+	$altBody = str_replace("{meeting_link}", $meetingLink, $altBody);
+	$altBody = str_replace("{location_extra}", $location["loc_extra"], $altBody);
+
+	if ($location["loc_type"] == "mumble") {
+		$location["loc_extra"] = "<a href='" . $location["loc_extra"] . "'>" . $location["loc_extra"] . "</a>";
+	}
+	$meetingLink = "<a href='$meetingLink'>$meetingLink</a>";
+	
+	$body = str_replace("{meeting_link}", $meetingLink, $body);
 	$body = str_replace("{location_extra}", $location["loc_extra"], $body);
+	$body = str_replace("\n", "<br>\n", $body);
 
 	$message->Subject = $subject;
+	
+	$message->isHTML(true); 
+	
 	$message->Body = $body;
+	$message->AltBody = $altBody;
 	$message->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
 
 	$message->send();

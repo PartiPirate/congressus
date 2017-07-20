@@ -333,3 +333,6 @@ color: #fff;
 	position: relative;
 	top: -1px;
 }
+.notice .label{
+	color: inherit;
+}

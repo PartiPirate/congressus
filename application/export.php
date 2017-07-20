@@ -49,9 +49,6 @@ else {
 }
 
 if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) {
-  if ($_GET["template"]=="discourse"){
-
-  }
   $url = "meeting/do_export.php?template=" . $_GET["template"] . "&id=" . $_GET["id"] . "&textarea=" . $_GET["textarea"];
 } else {
   die();
@@ -70,7 +67,7 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
           <a id="html-code" data-template="html" data-tab="html-code" class="btnTab btn btn-default navbar-btn" href="#">Code HTML</a>
         <?php } elseif ($_GET["template"]=="discourse") {?>
           <a id="preview" data-template="discourse" data-tab="preview" class="btnTab hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_preview"); ?></a>
-          <a id="send_discourse" data-template="discourse" data-tab="send_discourse" class="btnTab btn btn-default navbar-btn" href="#"><?php echo lang("export_send_discourse"); ?> <span class="glyphicon glyphicon-share"></span></a>
+          <a id="send_discourse" data-template="discourse" data-tab="send_discourse" class="btnTab btn btn-default navbar-btn simply-hidden" href="#"><?php echo lang("export_send_discourse"); ?> <span class="glyphicon glyphicon-share"></span></a>
           <?php } ?>
         <a id="newpage" class="btn btn-default navbar-btn" href="<?php echo $url ?>" target="_blank"><?php echo lang("export_open"); ?></a>
       </div>
@@ -138,7 +135,7 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
 </div>
 <script>
 var template = "<?php echo $_GET["template"];?>"
-var export_area_url = "<?php echo $url ?>";
+var textarea = "<?php echo $_GET["textarea"];?>"
 var export_discourse_shortTitle = "<?php echo lang("export_discourse_shortTitle"); ?>";
 var export_category_choose = "<?php echo lang("export_category_choose"); ?>";
 </script>

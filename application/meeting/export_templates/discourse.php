@@ -115,7 +115,6 @@ function showChat($chats, $id) {
 		if ($chat["cha_id"] == $id) {
 //					print_r($chat);
 
-			echo ":";
 
 			if ($chat["cha_member_id"]) {
 				if ($chat["pseudo_adh"]) {

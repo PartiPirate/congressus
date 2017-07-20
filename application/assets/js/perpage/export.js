@@ -16,16 +16,19 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+function update_content(template, meeting_id, textarea){
+  $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
+    $("#export_area").empty().append(data);
+  });
+}
 if (template=="pdf"){
-  $('#export_iframe').attr("src", export_area_url);
+  $('#export_iframe').attr("src", "meeting/do_export.php?template=pdf&id=" + meeting_id);
   $('#export_iframe').show();
   $("#export_area").hide();
 } else {
-  $.get(export_area_url, function(data){
-    $("#export_area").empty().append(data);
-    $('#export_iframe').hide();
-    $("#export_area").show();
-  });
+  update_content(template, meeting_id, textarea);
+  $('#export_iframe').hide();
+  $("#export_area").show();
 }
 
 $('.btnTab').click(function(){
@@ -33,12 +36,16 @@ $('.btnTab').click(function(){
   template = $(this).data("template");
   if (tab=='rendering'){
     textarea = 'false';
+    update_content(template, meeting_id, textarea);
+    $('#newpage').attr("href", "meeting/do_export.php?template=html&id=" + meeting_id + "&textarea=" + textarea);
     $('#html-code').removeClass('btn-active');
     $('#html-code').removeClass('hidden-xs');
     $('#rendering').addClass('btn-active');
     $('#rendering').addClass('hidden-xs');
   } else if (tab=='html-code'){
     textarea = 'true';
+    update_content(template, meeting_id, textarea);
+    $('#newpage').attr("href", "meeting/do_export.php?template=html&id=" + meeting_id + "&textarea=" + textarea);
     $('#html-code').addClass('btn-active');
     $('#html-code').addClass('hidden-xs');
     $('#rendering').removeClass('btn-active');
@@ -50,6 +57,7 @@ $('.btnTab').click(function(){
     $('#send_discourse').removeClass('hidden-xs');
     $('#discourse_post').hide();
     $("#export_area").show();
+    $('#newpage').show();
   } else if (tab=='send_discourse'){
     $('#preview').removeClass('btn-active');
     $('#preview').removeClass('hidden-xs');
@@ -57,12 +65,8 @@ $('.btnTab').click(function(){
     $('#send_discourse').addClass('hidden-xs');
     $('#discourse_post').show();
     $("#export_area").hide();
+    $('#newpage').hide();
   }
-  $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
-    $("#export_area").empty().append(data);
-    report = $(data).text();
-  });
-  $('#newpage').attr("href", url);
 });
 
 // closed by <span>X
@@ -79,6 +83,7 @@ $( "#discourseSubmit" ).click(function( event ) {
     discourse_category = $('select[name="discourse_category"]').val();
     if (discourse_category !== "") {
       meetingId = meeting_id;
+      report = $("#export_area textarea").val();
       url = "meeting_api.php?method=do_discoursePost";
       var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId, report: report } );
 

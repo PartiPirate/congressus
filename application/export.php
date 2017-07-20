@@ -49,9 +49,6 @@ else {
 }
 
 if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) {
-  if ($_GET["template"]=="discourse"){
-
-  }
   $url = "meeting/do_export.php?template=" . $_GET["template"] . "&id=" . $_GET["id"] . "&textarea=" . $_GET["textarea"];
 } else {
   die();
@@ -138,7 +135,7 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
 </div>
 <script>
 var template = "<?php echo $_GET["template"];?>"
-var export_area_url = "<?php echo $url ?>";
+var textarea = "<?php echo $_GET["textarea"];?>"
 var export_discourse_shortTitle = "<?php echo lang("export_discourse_shortTitle"); ?>";
 var export_category_choose = "<?php echo lang("export_category_choose"); ?>";
 </script>

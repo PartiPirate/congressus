@@ -392,6 +392,21 @@ class DiscourseAPI
         return $this->_postRequest('/posts', $params, $userName);
     }
 
+    function createPM($topicTitle, $bodyText, $targets, $userName, $replyToId = 0)
+    {
+        $params = array(
+            'title' => $topicTitle,
+            'raw' => $bodyText,
+//            'category' => $categoryId,
+            'archetype' => 'private_message',
+            'target_usernames' => implode(",", $targets),
+//            'target_usernames' => $targets,
+            'reply_to_post_number' => $replyToId,
+        );
+                
+        return $this->_postRequest('/posts', $params, $userName);
+    }
+
     function getCategory($categoryName) {
         return $this->_getRequest("/c/{$categoryName}.json");
     }

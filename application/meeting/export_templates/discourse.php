@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+	Copyright 2017 Cédric Levieux, Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -39,16 +39,19 @@ function showMotion($motions, $id, &$voters) {
 
 			if (strtolower( $motion["mpr_label"] ) == "pour" || strtolower( $motion["mpr_label"] ) == "oui") {
 				echo "> ";
+				echo $motion["mpr_label"] . " : ";
 			}
 			else if (strtolower( $motion["mpr_label"] ) == "contre" || strtolower( $motion["mpr_label"] ) == "non") {
 				echo "> ";
+				echo $motion["mpr_label"] . " : ";
 			}
 			else if (strtolower( $motion["mpr_label"] ) == "nspp") {
 				echo "> ";
+				echo $motion["mpr_label"] . " : ";
 			}
 			else {
 				echo "> ";
-				echo $motion["mpr_label"] . " :";
+				echo $motion["mpr_label"] . " : ";
 			}
 
 			$voteSeparator = "";
@@ -79,7 +82,7 @@ function showMotion($motions, $id, &$voters) {
 
 	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
 		echo "> Motion adoptée\n";
-		echo "> pour\n";
+//		echo "> pour\n";
 	}
 	else if ($motion["mot_win_limit"] == -2) {
 		echo "> Motion adoptée\n";
@@ -94,7 +97,7 @@ function showMotion($motions, $id, &$voters) {
 	}
 	else if (strtolower($winning) == "contre" || strtolower($winning) == "non") {
 		echo "> Motion rejetée\n";
-		echo "> contre\n";
+//		echo "> contre\n";
 	}
 	else {
 		echo "> Motion adoptée\n";
@@ -108,6 +111,8 @@ function showMotion($motions, $id, &$voters) {
 		}
 	}
 
+	// Detach next
+	echo "\n";
 }
 
 function showChat($chats, $id) {
@@ -115,6 +120,7 @@ function showChat($chats, $id) {
 		if ($chat["cha_id"] == $id) {
 //					print_r($chat);
 
+			echo "[quote=\"";
 
 			if ($chat["cha_member_id"]) {
 				if ($chat["pseudo_adh"]) {
@@ -130,9 +136,13 @@ function showChat($chats, $id) {
 				echo "Guest";
 			}
 
-			echo ": ";
+//			echo ": ";
 
-			echo str_replace("\n", "\n\n", $chat["cha_text"]) . "\n";
+			echo ", post:0, topic:0\"]";
+
+			echo str_replace("\n", "\n\n", $chat["cha_text"]);
+
+			echo "[/quote]\n";
 
 			return;
 		}

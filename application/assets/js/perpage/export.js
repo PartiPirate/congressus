@@ -92,7 +92,7 @@ $( "#discourseSubmit" ).click(function( event ) {
     		$("#result").empty().append(content);
     	});
     } else {
-      $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_category_choose +"</div>");
+        $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_category_choose +"</div>");
     }
   } else {
     $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_discourse_shortTitle +"</div>");

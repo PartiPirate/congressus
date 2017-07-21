@@ -187,6 +187,7 @@ $lang["export_discourse"] = "Export on Discourse";
 $lang["export_discourse_success"] = "The report has been published at the following adresse :";
 $lang["export_discourse_fail"] = "Error : The report hasn't been published.";
 $lang["export_discourse_shortTitle"] = "Error : The title should have more than 15 characters.";
+$lang["export_discourse_title"] = "Topic's title on Discourse";
 $lang["export_preview"] = "Preview";
 $lang["export_send_discourse"] = "Send to Discourse";
 $lang["export_permission"] = "You have not enough rights";
@@ -195,6 +196,7 @@ $lang["export_permission_guests"] = "Guests are not allowed to use this function
 $lang["export_rendering"] = "Rendering";
 $lang["export_open"] = "Open in a new page";
 $lang["export_iframe"] = "Please enable iframes";
+$lang["export_send"] = "Send";
 
 $lang["calendar_prev"] = "Previous";
 $lang["calendar_today"] = "Today";

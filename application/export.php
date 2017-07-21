@@ -37,7 +37,6 @@ if (!$meeting) {
 else {
 	$start = new DateTime($meeting["mee_datetime"]);
 }
-
 $userId = SessionUtils::getUserId($_SESSION);
 
 if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) {
@@ -112,8 +111,8 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
 		          <select required class="form-control input-md" id="discourse_category" name="discourse_category">
 	              <option value=""><?php echo lang("export_category_choose"); ?></option>
 	              <?php
-		            foreach ($categories as $categoy) {
-		                echo "<option value='$categoy[id]'>$categoy[name]</option>";
+		            foreach ($categories as $category) {
+		                echo "<option value='$category[id]'>$category[name]</option>";
 		            }
 		            ?>
 		          </select>

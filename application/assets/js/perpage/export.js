@@ -17,19 +17,22 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 function update_content(template, meeting_id, textarea){
-  $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
-    $("#export_area").empty().append(data);
-  });
+    $.get("meeting/do_export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
+        $("#export_area").empty().append(data);
+    });
 }
-if (template=="pdf"){
-  $('#export_iframe').attr("src", "meeting/do_export.php?template=pdf&id=" + meeting_id);
-  $('#export_iframe').show();
-  $("#export_area").hide();
-} else {
-  update_content(template, meeting_id, textarea);
-  $('#export_iframe').hide();
-  $("#export_area").show();
-}
+
+$(function() {
+    if (template=="pdf"){
+        $('#export_iframe').attr("src", "meeting/do_export.php?template=pdf&id=" + meeting_id);
+        $('#export_iframe').show();
+        $("#export_area").hide();
+    } else {
+    update_content(template, meeting_id, textarea);
+        $('#export_iframe').hide();
+        $("#export_area").show();
+    }
+});
 
 $('.btnTab').click(function(){
   tab = $(this).data("tab");
@@ -71,29 +74,29 @@ $('.btnTab').click(function(){
 
 // closed by <span>X
 $('.exportClose').click(function(){
-  $("#exportModal").empty();
+    $("#exportModal").empty();
 });
 
 // Post
 $( "#discourseSubmit" ).click(function( event ) {
-  event.preventDefault();
+    event.preventDefault();
 
-  discourse_title = $('input[name="discourse_title"]').val();
-  if (discourse_title.length > 15) {
-    discourse_category = $('select[name="discourse_category"]').val();
-    if (discourse_category !== "") {
-      meetingId = meeting_id;
-      report = $("#export_area textarea").val();
-      url = "meeting_api.php?method=do_discoursePost";
-      var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId, report: report } );
+    discourse_title = $('input[name="discourse_title"]').val();
+    if (discourse_title.length > 15) {
+        discourse_category = $('select[name="discourse_category"]').val();
+        if (discourse_category !== "") {
+            meetingId = meeting_id;
+            report = $("#export_area textarea").val();
+            url = "meeting_api.php?method=do_discoursePost";
+            var posting = $.post( url, { discourse_title: discourse_title, discourse_category: discourse_category, meetingId: meetingId, report: report } );
 
-    	posting.done(function( data ) {
-    		var content = $(data);
-    		$("#result").empty().append(content);
-    	});
-    } else {
-      $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_category_choose +"</div>");
-    }
+        	posting.done(function( data ) {
+        		var content = $(data);
+        		$("#result").empty().append(content);
+        	});
+        } else {
+            $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_category_choose +"</div>");
+        }
   } else {
     $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_discourse_shortTitle +"</div>");
   }

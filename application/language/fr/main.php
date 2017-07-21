@@ -182,6 +182,7 @@ $lang["export_category_forbidden"] = "Erreur : Catégorie non autorisée";
 $lang["export_discourse"] = "Exporter sur Discourse";
 $lang["export_discourse_success"] = "Le compte rendu a été publié à l'adresse suivante :";
 $lang["export_discourse_fail"] = "Erreur : Le compte rendu n'a pas été publié.";
+$lang["export_discourse_title"] = "Titre du sujet sur Discourse";
 $lang["export_discourse_shortTitle"] = "Erreur : Le titre doit faire plus de 15 caractères.";
 $lang["export_preview"] = "Aperçu";
 $lang["export_send_discourse"] = "Envoyer sur Discourse";
@@ -191,6 +192,7 @@ $lang["export_permission_guests"] = "Les invités ne sont pas autorisés à util
 $lang["export_rendering"] = "Rendu";
 $lang["export_open"] = "Ouvrir dans une nouvelle page";
 $lang["export_iframes"] = "Merci d'activer les iframes";
+$lang["export_send"] = "Envoyer";
 
 $lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";

@@ -69,6 +69,8 @@ $('.btnTab').click(function() {
         $('#preview').addClass('hidden-xs');
         $('#send_discourse').removeClass('btn-active');
         $('#send_discourse').removeClass('hidden-xs');
+        $('#send_wiki').removeClass('btn-active');
+        $('#send_wiki').removeClass('hidden-xs');
         $('#discourse_post').hide();
         $("#export_area").show();
         $('#newpage').show();
@@ -79,6 +81,15 @@ $('.btnTab').click(function() {
         $('#send_discourse').addClass('btn-active');
         $('#send_discourse').addClass('hidden-xs');
         $('#discourse_post').show();
+        $("#export_area").hide();
+        $('#newpage').hide();
+    }
+    else if (tab=='send_wiki'){
+        $('#preview').removeClass('btn-active');
+        $('#preview').removeClass('hidden-xs');
+        $('#send_wiki').addClass('btn-active');
+        $('#send_wiki').addClass('hidden-xs');
+        $('#wiki_post').show();
         $("#export_area").hide();
         $('#newpage').hide();
     }
@@ -114,5 +125,32 @@ $( "#discourseSubmit" ).click(function(event) {
     } 
     else {
         $("#result").empty().append("<div id='discourse-result' class='alert alert-danger' role='alert'>" + export_discourse_shortTitle +"</div>");
+    }
+});
+
+// Post
+$( "#wikiSubmit" ).click(function(event) {
+    event.preventDefault();
+
+    wiki_title = $('input[name="wiki_title"]').val();
+    if (wiki_title.length > 15) {
+        meetingId = meeting_id;
+        report = $("#export_area textarea").val();
+        url = "meeting_api.php?method=do_wikiPost";
+        
+        var categories = [];
+        $("input[name='wiki_categories[]']:checked").each(function() {
+            categories[categories.length] = $(this).val();
+        });
+        
+        var posting = $.post( url, { wiki_title: wiki_title, meetingId: meetingId, report: report, "wiki_categories[]": categories} );
+
+        posting.done(function(data) {
+            var content = $(data);
+            $("#result").empty().append(content);
+        });
+    } 
+    else {
+        $("#result").empty().append("<div id='wiki-result' class='alert alert-danger' role='alert'>" + export_wiki_shortTitle +"</div>");
     }
 });

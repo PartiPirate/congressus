@@ -1,0 +1,43 @@
+{
+	"name": "addwiki/mediawiki-api",
+	"type": "library",
+	"description": "A MediaWiki API library",
+	"keywords": ["Mediawiki"],
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "Addshore"
+		}
+	],
+	"require": {
+		"addwiki/mediawiki-api-base": "~2.0",
+		"addwiki/mediawiki-datamodel": "~0.7.0"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "^0.9.2",
+		"mediawiki/mediawiki-codesniffer": "^0.7.2",
+		"phpunit/phpunit": "~4.8"
+	},
+	"autoload": {
+		"psr-4": {
+			"Mediawiki\\Api\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Mediawiki\\Api\\Test\\": ["tests/integration", "tests/unit"]
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "0.7.x-dev"
+		}
+	},
+	"scripts": {
+		"fix": "phpcbf",
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"phpcs -ps"
+		]
+	}
+}

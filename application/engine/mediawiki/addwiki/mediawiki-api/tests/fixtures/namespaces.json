@@ -1,0 +1,241 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "namespaces": {
+      "-2": {
+        "id": -2,
+        "case": "first-letter",
+        "canonical": "Media",
+        "*": "Medium"
+      },
+      "-1": {
+        "id": -1,
+        "case": "first-letter",
+        "canonical": "Special",
+        "*": "Spezial"
+      },
+      "0": {
+        "id": 0,
+        "case": "first-letter",
+        "content": "",
+        "*": ""
+      },
+      "1": {
+        "id": 1,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Talk",
+        "*": "Diskussion"
+      },
+      "2": {
+        "id": 2,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "User",
+        "*": "Benutzer"
+      },
+      "3": {
+        "id": 3,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "User talk",
+        "*": "Benutzer Diskussion"
+      },
+      "4": {
+        "id": 4,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Project",
+        "*": "Wikipedia"
+      },
+      "5": {
+        "id": 5,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Project talk",
+        "*": "Wikipedia Diskussion"
+      },
+      "6": {
+        "id": 6,
+        "case": "first-letter",
+        "canonical": "File",
+        "*": "Datei"
+      },
+      "7": {
+        "id": 7,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "File talk",
+        "*": "Datei Diskussion"
+      },
+      "8": {
+        "id": 8,
+        "case": "first-letter",
+        "canonical": "MediaWiki",
+        "*": "MediaWiki"
+      },
+      "9": {
+        "id": 9,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "MediaWiki talk",
+        "*": "MediaWiki Diskussion"
+      },
+      "10": {
+        "id": 10,
+        "case": "first-letter",
+        "canonical": "Template",
+        "*": "Vorlage"
+      },
+      "11": {
+        "id": 11,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Template talk",
+        "*": "Vorlage Diskussion"
+      },
+      "12": {
+        "id": 12,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Help",
+        "*": "Hilfe"
+      },
+      "13": {
+        "id": 13,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Help talk",
+        "*": "Hilfe Diskussion"
+      },
+      "14": {
+        "id": 14,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Category",
+        "*": "Kategorie"
+      },
+      "15": {
+        "id": 15,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Category talk",
+        "*": "Kategorie Diskussion"
+      },
+      "100": {
+        "id": 100,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Portal",
+        "*": "Portal"
+      },
+      "101": {
+        "id": 101,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Portal Diskussion",
+        "*": "Portal Diskussion"
+      },
+      "828": {
+        "id": 828,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Module",
+        "*": "Modul"
+      },
+      "829": {
+        "id": 829,
+        "case": "first-letter",
+        "subpages": "",
+        "canonical": "Module talk",
+        "*": "Modul Diskussion"
+      },
+      "2300": {
+        "id": 2300,
+        "case": "first-letter",
+        "canonical": "Gadget",
+        "*": "Gadget"
+      },
+      "2301": {
+        "id": 2301,
+        "case": "first-letter",
+        "canonical": "Gadget talk",
+        "*": "Gadget Diskussion"
+      },
+      "2302": {
+        "id": 2302,
+        "case": "case-sensitive",
+        "canonical": "Gadget definition",
+        "defaultcontentmodel": "GadgetDefinition",
+        "*": "Gadget-Definition"
+      },
+      "2303": {
+        "id": 2303,
+        "case": "case-sensitive",
+        "canonical": "Gadget definition talk",
+        "*": "Gadget-Definition Diskussion"
+      },
+      "2600": {
+        "id": 2600,
+        "case": "first-letter",
+        "canonical": "Topic",
+        "defaultcontentmodel": "flow-board",
+        "*": "Thema"
+      }
+    },
+    "namespacealiases": [
+      {
+        "id": 2,
+        "*": "Benutzerin"
+      },
+      {
+        "id": 3,
+        "*": "BD"
+      },
+      {
+        "id": 3,
+        "*": "Benutzerin Diskussion"
+      },
+      {
+        "id": 4,
+        "*": "WP"
+      },
+      {
+        "id": 5,
+        "*": "WD"
+      },
+      {
+        "id": 6,
+        "*": "Bild"
+      },
+      {
+        "id": 6,
+        "*": "Image"
+      },
+      {
+        "id": 7,
+        "*": "Bild Diskussion"
+      },
+      {
+        "id": 7,
+        "*": "Image talk"
+      },
+      {
+        "id": 12,
+        "*": "H"
+      },
+      {
+        "id": 13,
+        "*": "HD"
+      },
+      {
+        "id": 100,
+        "*": "P"
+      },
+      {
+        "id": 101,
+        "*": "PD"
+      }
+    ]
+  }
+}

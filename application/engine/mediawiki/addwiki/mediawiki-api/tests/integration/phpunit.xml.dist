@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- convertWarningsToExceptions is false as real API calls can return un expected warnings -->
+<phpunit
+        bootstrap="../../vendor/autoload.php"
+        colors="true"
+        convertWarningsToExceptions="false"
+        >
+	<testsuites>
+		<testsuite name="addwiki/mediawiki-api/integration">
+			<directory suffix="Test.php">.</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./../../src</directory>
+		</whitelist>
+	</filter>
+</phpunit>

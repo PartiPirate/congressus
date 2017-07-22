@@ -378,12 +378,15 @@ foreach ($notices as $notice) {
 $voters = array();
 ?>
 
+=Ordre du jour=
+
 <?php showLevel($agendas, 2, null , $voters); ?>
 
 <?php
 if (count($voters)) {
 ?>
-==Ayant participé à un vote==
+
+=Ayant participé à un vote=
 
 <?php
 	foreach($voters as $memberId => $memberLabel) {
@@ -393,7 +396,13 @@ if (count($voters)) {
 <?php
 	}
 }
-if ($textarea){
+
+?>
+
+
+<?php
+
+if ($textarea) {
 	echo "</textarea>";
 }
 ?>

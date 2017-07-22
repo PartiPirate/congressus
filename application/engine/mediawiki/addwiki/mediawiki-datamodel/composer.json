@@ -1,0 +1,22 @@
+{
+	"name": "addwiki/mediawiki-datamodel",
+	"type": "library",
+	"description": "A Mediawiki datamodel",
+	"keywords": ["Mediawiki"],
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "Addshore"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Mediawiki\\DataModel\\": "src/"
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "0.7.x-dev"
+		}
+	}
+}

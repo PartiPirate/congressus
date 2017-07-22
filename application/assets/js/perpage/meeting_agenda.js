@@ -227,8 +227,10 @@ function updateMeeting(meeting) {
 		$("#meeting-status-panel button.btn-delete-meeting").hide();
 //		$("#meeting-status-panel span.closed-meeting").hide();
 		$("#send_discourse").hide();
+		$("#send_wiki").hide();
 	} else {
-		 $("#send_discourse").show();
+		$("#send_discourse").show();
+		$("#send_wiki").show();
 	}
 
 	if (meeting.mee_datetime) {

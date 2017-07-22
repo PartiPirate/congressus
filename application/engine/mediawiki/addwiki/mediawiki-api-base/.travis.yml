@@ -1,0 +1,61 @@
+language: php
+
+php:
+  - hhvm
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+
+env:
+  - MW=master
+
+matrix:
+  include:
+  - php: 7.1
+    env: MW=REL1_28
+  - php: 7.1
+    env: MW=REL1_27
+  - php: 7.1
+    env: MW=REL1_26
+  - php: 7.1
+    env: MW=REL1_25
+  - php: 7.1
+    env: MW=REL1_24
+  allow_failures:
+  - env: MW=REL1_24
+
+addons:
+  mariadb: '10.0'
+
+before_install:
+  - bash ./build/travis/install-mediawiki.sh
+
+install:
+  - travis_retry composer install
+
+before_script:
+  - bash ./build/travis/run-webserver.sh
+  - export ADDWIKI_MW_API='http://localhost:8080/w/api.php'
+  - export ADDWIKI_MW_USER='CIUser'
+  - export ADDWIKI_MW_PASSWORD='CIPass'
+
+script:
+  - composer lint
+  - composer phpcs
+  - composer phpunit-coverage
+
+after_success:
+  - travis_retry wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net##add"
+    on_success: change
+    on_failure: always

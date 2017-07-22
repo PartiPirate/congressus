@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 $lang["about_what_s_congressus_legend"] = "What is Congressus ?";
 $lang["about_what_s_congressus_content"] = "Congressus is an application allowing the liquid gestion of an instance
 or of power groups.<br >

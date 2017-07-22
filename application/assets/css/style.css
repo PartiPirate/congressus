@@ -1,20 +1,20 @@
 /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
-    This file is part of PPMoney.
+	This file is part of Congressus.
 
-    PPMoney is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    PPMoney is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 nav.footer {
 	margin-top: 20px;
@@ -234,37 +234,37 @@ a[disabled] {
 }
 
 .chat .progress {
-	height: 3px;
+    height: 3px;
 }
 
 .chat .progress:hover {
-	height: auto;
+    height: auto;
 }
 
 .btn-external {
-  color: #fff;
-  background-color: #5c97b8;
-  border-color: #3e8f3e;
+    color: #fff;
+    background-color: #5c97b8;
+    border-color: #3e8f3e;
 }
 
 .btn-external:hover,
 .btn-external:focus {
-  color: #fff;
-  background-color: #417796;
-  background-position: 0 -15px;
+    color: #fff;
+    background-color: #417796;
+    background-position: 0 -15px;
 }
 
 .btn-special {
-  color: #fff;
-  background-color: #933BA4;
-  border-color: #75332A;
+    color: #fff;
+    background-color: #933BA4;
+    border-color: #75332A;
 }
 
 .btn-special:hover,
 .btn-special:focus {
-  color: #fff;
-  background-color: #781B82;
-  background-position: 0 -15px;
+    color: #fff;
+    background-color: #781B82;
+    background-position: 0 -15px;
 }
 
 /* The Modal (background) */
@@ -298,9 +298,9 @@ a[disabled] {
 	width: 80%;
 	height: 600px;
 	-webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
 }
 
 @media (max-width: 768px) {
@@ -315,24 +315,32 @@ a[disabled] {
 	height: 50px;
 	margin-bottom: 0;
 }
+
 .export_content .navbar-header .navbar-btn {
-background-color:transparent;
-color:#9d9d9d;
-border: none;
+    background-color: transparent;
+    color: #9d9d9d;
+    border: none;
 }
+
 .export_content .navbar-header .btn-active {
-background-color: #000;
-color: #fff;
+    background-color: #000;
+    color: #fff;
 }
+
 .export_content iframe, .export_content #export_area {
 	overflow: auto;
-	width:100%;
-	padding:0;
-	border:0;
-	height:550px;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	height: 550px;
 	position: relative;
 	top: -1px;
 }
+
 .notice .label{
 	color: inherit;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
 }

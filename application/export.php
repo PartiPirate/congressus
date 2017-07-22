@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+	Copyright 2017 Cédric Levieux, Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -17,9 +17,6 @@
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 include_once("config/database.php");
 include_once("language/language.php");
@@ -39,9 +36,12 @@ else {
 }
 $userId = SessionUtils::getUserId($_SESSION);
 
+//unset($_GET["id"]);
+
 if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) {
   $url = "meeting/do_export.php?template=" . $_GET["template"] . "&id=" . $_GET["id"] . "&textarea=" . $_GET["textarea"];
-} else {
+} 
+else {
   die();
 } ?>
 
@@ -131,8 +131,8 @@ if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) 
   </div>
 </div>
 <script>
-var template = "<?php echo $_GET["template"];?>"
-var textarea = "<?php echo $_GET["textarea"];?>"
+var template = "<?php echo $_GET["template"];?>";
+var textarea = "<?php echo $_GET["textarea"];?>";
 var export_discourse_shortTitle = "<?php echo lang("export_discourse_shortTitle"); ?>";
 var export_category_choose = "<?php echo lang("export_category_choose"); ?>";
 </script>

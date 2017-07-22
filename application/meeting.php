@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -165,34 +165,35 @@ if (!$userId) {
 				</div>
 				<div class="panel-body text-center">
 
-					<button class="btn btn-primary btn-waiting-meeting simply-hidden"><?php echo lang("meeting_waiting"); ?></button>
-					<button class="btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
-					<button class="btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
-					<button class="btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
-					<a class="btn btn-primary btn-vote-meeting" href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window"></span></a>
-					<button class="btn btn-default request-speaking"><?php echo lang("meeting_speakingAsk"); ?>
-						<span class="fa fa-hand-paper-o"></span>
-						<span class="badge" style="display: none;"></span>
-					</button>
-					<br />
-					<button class="btn btn-default btn-local-anonymous" data-toggle="tooltip" data-placement="bottom"
+					<div class="row">
+						<button class="margin-top-5 btn btn-primary btn-waiting-meeting simply-hidden"><?php echo lang("meeting_waiting"); ?></button>
+						<button class="margin-top-5 btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
+						<button class="margin-top-5 btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
+						<button class="margin-top-5 btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
+						
+						<a		class="margin-top-5 btn btn-primary btn-vote-meeting" href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window"></span></a>
+						<button class="margin-top-5 btn btn-default request-speaking"><?php echo lang("meeting_speakingAsk"); ?>
+							<span class="fa fa-hand-paper-o"></span>
+							<span class="badge" style="display: none;"></span>
+						</button>
+					</div>
+
+					<button class="btn btn-default btn-local-anonymous" style="margin-top:5px;" data-toggle="tooltip" data-placement="bottom"
 						title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
 					</button>
 					<br />
+
 					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
+
 					<br class="export-br simply-hidden">
-					<button data-template="html" class="btnShowExport export-link simply-hidden btn btn-success">Export HTML</button>
-					<button data-template="pdf" class="btnShowExport export-link simply-hidden btn btn-success">Export PDF</button>
-					<button data-template="markdown" class="btnShowExport export-link simply-hidden btn btn-success">Export Wiki</button>
-					<div class="row" style="margin-top:5px;">
-						<button data-template="discourse" class="btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_discourse"); ?></button>
+
+					<div class="row">
+						<button data-template="html"		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_html"); ?></button>
+						<button data-template="pdf" 		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_pdf"); ?></button>
+						<button data-template="markdown"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_wiki"); ?></button>
+						<button data-template="discourse"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_discourse"); ?></button>
 					</div>
-					<!-- <a href="meeting/do_export.php?template=html&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-html simply-hidden">Export HTML</a>
-					<a href="meeting/do_export.php?template=pdf&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-pdf simply-hidden">Export PDF</a>
-					<a href="meeting/do_export.php?template=markdown&id=<?php echo $meeting["mee_id"]; ?>" target="_blank" class="export-link export-markdown simply-hidden">Export Markdown</a> -->
-					<!-- <div class="row" style="margin-top:5px;">
-						<a id="btn-export-discourse" class="export-link simply-hidden btn btn-primary" href="export_discourse.php?id=<?php echo $meeting["mee_id"]; ?>" target="_blank" style="display:inline-block;"><?php echo lang("export_discourse"); ?> <span class="glyphicon glyphicon-share"></span></a>
-					</div> -->
+
 				</div>
 			</div>
 		</div>

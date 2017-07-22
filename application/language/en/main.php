@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -183,6 +183,9 @@ $lang["export_category"] = "Category";
 $lang["export_category_choose"] = "Choose a category";
 $lang["export_category_forbidden"] = "Error : Unauthorized category";
 $lang["export_description"] = "The report will be published on Discourse by Congressus in the choosen category.";
+$lang["export_wiki"] = "Export Wiki";
+$lang["export_html"] = "Export HTML";
+$lang["export_pdf"] = "Export PDF";
 $lang["export_discourse"] = "Export on Discourse";
 $lang["export_discourse_success"] = "The report has been published at the following adresse :";
 $lang["export_discourse_fail"] = "Error : The report hasn't been published.";

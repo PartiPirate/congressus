@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -354,10 +354,11 @@ foreach($dbNotices as $notice) {
 $nowString = $now->format("Y-m-d H:i:s");
 
 if (
-		$meeting["mee_start_time"] && // we have a start date
-		$meeting["mee_start_time"] != "0000-00-00 00:00:00" && // and it's not an empty date
-		$meeting["mee_start_time"] < $nowString && // and we are now behind it (obviously the case)
-		$meeting["mee_status"] != "closed") { // and the meeting is still not closed
+	$meeting["mee_start_time"] && // we have a start date
+	$meeting["mee_start_time"] != "0000-00-00 00:00:00" && // and it's not an empty date
+	$meeting["mee_start_time"] < $nowString && // and we are now behind it (obviously the case)
+	$meeting["mee_status"] != "closed") { // and the meeting is still not closed
+
 	foreach($usedPings as $ping) {
 		// If the noticed information is not set, set it, the used pings are noticed people
 		if (!$ping["pin_noticed"]) {

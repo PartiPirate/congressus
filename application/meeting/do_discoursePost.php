@@ -39,6 +39,7 @@ if (!$meeting) {
 }
 
 $userId = SessionUtils::getUserId($_SESSION);
+
 if (!isset($userId)) {?>
 	<div class="container">
 		<div class="jumbotron alert-danger col-xs-12">
@@ -48,7 +49,8 @@ if (!isset($userId)) {?>
 		</div>
 	</div>
   <?php die("error : not_enough_right");
-} elseif (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
+}
+else if (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $meeting["mee_secretary_member_id"])) {?>
 	<div class="container">
 		<div class="jumbotron alert-danger col-xs-12">
 			<h2><?php echo lang("export_permission"); ?></h2>
@@ -70,13 +72,7 @@ if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_ca
 
 $report = $_REQUEST["report"];
 
-// print_r($discourseApi);
-
-// print_r($discourseApi->getCategories());
-
 $new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], 0);
-
-// print_r($new_topic);
 
 $topicId = $new_topic->apiresult->topic_id;
 
@@ -85,7 +81,8 @@ $http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 if ($http_code_topic=="200") {
 	$topic_url = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
 	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a target='_blank' href='$topic_url'>$topic_url</a></div>";
-} else {
+}
+else {
 	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_discourse_fail") . " (code http $http_code_topic)</div>";
 }
 ?>

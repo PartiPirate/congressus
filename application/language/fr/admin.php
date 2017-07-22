@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 

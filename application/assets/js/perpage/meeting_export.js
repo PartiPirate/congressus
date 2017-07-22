@@ -1,5 +1,5 @@
 /*
-	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+	Copyright 2017 Cédric Levieux, Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -17,13 +17,18 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$('.btnShowExport').click(function(){
+/* global $ */
+/* global template */
+/* global textarea */
+
+$('.btnShowExport').click(function() {
   template = $(this).data("template");
-  if (template=='markdown' || template=='discourse'){
+  textarea = 'false';
+  
+  if (template=='markdown' || template=='discourse') {
     textarea = 'true';
-  } else {
-    textarea = 'false';
   }
+  
   $.get("export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
     $("#exportModal").empty().append(data);
   });
@@ -35,9 +40,10 @@ $(window).keyup(function(e) {
     $("#exportModal").empty();
   }
 });
+
 // closed by click outside of modal
 $(document).on('click', function(event){
-    if(event.target.id.slice(0,16) == "export_container"){
-        $("#exportModal").empty();
-    }
+  if(event.target.id.slice(0,16) == "export_container") {
+    $("#exportModal").empty();
+  }
 });

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017  Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -15,61 +15,6 @@
 
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-/*
-function showMotion($motions, $id) {
-	$first = true;
-
-	echo "{{motion|title=";
-
-	$winning = "contre";
-
-	foreach($motions as $motion) {
-		if ($motion["mot_id"] == $id) {
-			if ($first) {
-				echo $motion["mot_title"] . "\n";
-				echo "|text=" . $motion["mot_description"] . "\n";
-				$first = false;
-			}
-
-			$explanation = json_decode($motion["mpr_explanation"], true);
-
-			if ($motion["mpr_winning"] == 1) {
-				$winning = $motion["mpr_label"];
-			}
-
-//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
-			echo "|";
-			echo $motion["mpr_label"] . "=";
-
-			$voteSeparator = " ";
-			foreach($explanation["votes"] as $vote) {
-				if ($vote["votePower"] == 0) continue;
-
-				echo "$voteSeparator";
-				echo $vote["memberLabel"];
-				echo " (" . $vote["votePower"] . ")";
-
-				$voteSeparator = ", ";
-			}
-
-			echo "\n";
-		}
-	}
-
-	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
-		echo "|close=Motion adoptée\n";
-		echo "|result=pour\n";
-	}
-	else {
-		echo "|close=Motion rejetée\n";
-//		echo "|result=$winning\n";
-		echo "|result=contre\n";
-	}
-
-	echo "|}}\n\n";
-}
 */
 
 function showMotion($motions, $id, &$voters) {
@@ -210,6 +155,18 @@ function showConclusion($conclusions, $id) {
 	}
 }
 
+function showTask($tasks, $id) {
+	foreach($tasks as $task) {
+		if ($task["tas_id"] == $id) {
+//			print_r($task);
+
+			echo "{{task|" . $task["tas_label"] . "}}\n";
+
+			return;
+		}
+	}
+}
+
 function showLevel($agendas, $level, $parent, &$voters) {
 	foreach($agendas as $agenda) {
 		if ($agenda["age_parent_id"] == $parent) {
@@ -235,6 +192,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 				}
 				else if (isset($object["chatId"])) {
 					showChat($agenda["chats"], $object["chatId"]);
+				}
+				else if (isset($object["taskId"])) {
+					showTask($agenda["tasks"], $object["taskId"]);
 				}
 				else if (isset($object["motionId"])) {
 					showMotion($agenda["motions"], $object["motionId"], $voters);

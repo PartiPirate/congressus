@@ -28,6 +28,7 @@ require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/ConclusionBo.php");
+require_once("engine/bo/TaskBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
 
@@ -50,6 +51,7 @@ $meetingBo = MeetingBo::newInstance($connection);
 $agendaBo = AgendaBo::newInstance($connection);
 $chatBo = ChatBo::newInstance($connection, $config);
 $conclusionBo = ConclusionBo::newInstance($connection, $config);
+$taskBo = TaskBo::newInstance($connection, $config);
 $motionBo = MotionBo::newInstance($connection);
 $voteBo = VoteBo::newInstance($connection, $config);
 
@@ -87,10 +89,12 @@ foreach($agendas as $aIndex => $agenda) {
 	$chats = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 
 	$conclusions = $conclusionBo->getByFilters(array("con_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+	$tasks = $taskBo->getByFilters(array("tas_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 
 	$agenda["chats"] = $chats;
 	$agenda["conclusions"] = $conclusions;
 	$agenda["motions"] = $motions;
+	$agenda["tasks"] = $tasks;
 
 	$agendas[$aIndex] = $agenda;
 }

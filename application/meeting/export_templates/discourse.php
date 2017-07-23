@@ -16,6 +16,7 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 function showMotion($motions, $id, &$voters) {
 	$first = true;
 
@@ -138,11 +139,11 @@ function showChat($chats, $id) {
 
 //			echo ": ";
 
-			echo ", post:0, topic:0\"]";
+			echo ", post:0, topic:0\"]\n";
 
 			echo str_replace("\n", "\n\n", $chat["cha_text"]);
 
-			echo "[/quote]\n";
+			echo "\n[/quote]\n";
 
 			return;
 		}
@@ -154,6 +155,18 @@ function showConclusion($conclusions, $id) {
 		if ($conclusion["con_id"] == $id) {
 //			print_r($conclusion);
 			echo "> " . $conclusion["con_text"] . "\n";
+
+			return;
+		}
+	}
+}
+
+function showTask($tasks, $id) {
+	foreach($tasks as $task) {
+		if ($task["tas_id"] == $id) {
+//			print_r($task);
+
+			echo "\n    " . $task["tas_label"] . "\n\n";
 
 			return;
 		}
@@ -185,6 +198,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 				}
 				else if (isset($object["chatId"])) {
 					showChat($agenda["chats"], $object["chatId"]);
+				}
+				else if (isset($object["taskId"])) {
+					showTask($agenda["tasks"], $object["taskId"]);
 				}
 				else if (isset($object["motionId"])) {
 					showMotion($agenda["motions"], $object["motionId"], $voters);

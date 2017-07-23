@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -130,6 +130,18 @@ function showConclusion($conclusions, $id) {
 	}
 }
 
+function showTask($tasks, $id) {
+	foreach($tasks as $task) {
+		if ($task["tas_id"] == $id) {
+//			print_r($task);
+
+			echo "<p class=\"task\">" . $task["tas_label"] . "</p>\n";
+
+			return;
+		}
+	}
+}
+
 function showLevel($agendas, $level, $parent, &$voters) {
 	foreach($agendas as $agenda) {
 		if ($agenda["age_parent_id"] == $parent) {
@@ -151,6 +163,9 @@ function showLevel($agendas, $level, $parent, &$voters) {
 				}
 				else if (isset($object["chatId"])) {
 					showChat($agenda["chats"], $object["chatId"]);
+				}
+				else if (isset($object["taskId"])) {
+					showTask($agenda["tasks"], $object["taskId"]);
 				}
 				else if (isset($object["motionId"])) {
 					showMotion($agenda["motions"], $object["motionId"], $voters);
@@ -206,6 +221,16 @@ function showLevel($agendas, $level, $parent, &$voters) {
 
 .motion-losing {
 	border-color: red;
+}
+
+.conclusion {
+	font-style: italic;
+	text-shadow: rgb(128,128,128) 2px 2px;
+}
+
+.task {
+	font-weight: bold;
+	text-shadow: rgb(128,128,128) 2px 2px;
 }
 
 </style>

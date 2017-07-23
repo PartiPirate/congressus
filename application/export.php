@@ -19,6 +19,9 @@
 session_start();
 
 include_once("config/database.php");
+@include_once("config/mediawiki.config.php");
+@include_once("config/discourse.config.php");
+include_once("config/database.php");
 include_once("language/language.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/utils/SessionUtils.php");
@@ -40,8 +43,7 @@ $userId = SessionUtils::getUserId($_SESSION);
 
 if (isset($_GET["template"]) && isset($_GET["textarea"]) && isset($_GET["id"])) {
 	$template = $_GET["template"];
-  $url = "meeting/do_export.php?template=" . $template . "&id=" . $_GET["id"] . "&textarea=" . $_GET["textarea"];
-  
+	$url = "meeting/do_export.php?template=" . $template . "&id=" . $_GET["id"] . "&textarea=" . $_GET["textarea"];
 } 
 else {
   die();
@@ -58,15 +60,15 @@ else {
 		  <?php 	if ($template == "html"){?>
           <a id="rendering" data-template="html" data-tab="rendering" class="btnTab hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_rendering"); ?></a>
           <a id="html-code" data-template="html" data-tab="html-code" class="btnTab btn btn-default navbar-btn" href="#">Code HTML</a>
-      <?php		} 
-        			else if ($template == "discourse") {?>
+	     <?php		} 
+        			else if ($template == "discourse" && isset($config["discourse"]["exportable"]) && $config["discourse"]["exportable"]) {?>
           <a id="preview" data-template="discourse" data-tab="preview" class="btnTab hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_preview"); ?></a>
           <a id="send_discourse" data-template="discourse" data-tab="send_discourse" class="btnTab btn btn-default navbar-btn simply-hidden" href="#"><?php echo lang("export_send_discourse"); ?> <span class="glyphicon glyphicon-share"></span></a>
-      <?php 	}         			
-      				else if ($template == "markdown") {?>
+	      <?php 	}         			
+      				else if ($template == "markdown" && isset($config["mediawiki"]["exportable"]) && $config["mediawiki"]["exportable"]) {?>
           <a id="preview" data-template="markdown" data-tab="preview" class="btnTab hidden-xs btn btn-default navbar-btn btn-active" href="#"><?php echo lang("export_preview"); ?></a>
           <a id="send_wiki" data-template="markdown" data-tab="send_wiki" class="btnTab btn btn-default navbar-btn simply-hidden" href="#"><?php echo lang("export_send_wiki"); ?> <span class="glyphicon glyphicon-share"></span></a>
-      <?php 	} ?>
+ 	     <?php 		} ?>
 
         <a id="newpage" class="btn btn-default navbar-btn" href="<?php echo $url ?>" target="_blank"><?php echo lang("export_open"); ?></a>
       </div>
@@ -86,7 +88,7 @@ else {
 			include_once("config/discourse.config.php");
 	?>
 	    <div id="discourse_post" class="simply-hidden">
-	      <?php		if (!isset($userId)) {?>
+	      <?php				if (!isset($userId)) {?>
 	    		<div class="container">
 	    			<div class="jumbotron alert-danger">
 	    				<h2><?php echo lang("export_login_ask"); ?></h2>
@@ -123,8 +125,8 @@ else {
 	              <option value=""><?php echo lang("export_category_choose"); ?></option>
 					<?php
 								foreach ($categories as $category) {
-		            	echo "<option value='$category[id]'>$category[name]</option>";
-		            }
+		            				echo "<option value='$category[id]'>$category[name]</option>";
+		        			    }
 					?>
 		          </select>
 		        </div>
@@ -142,7 +144,7 @@ else {
 			include_once("config/mediawiki.config.php");
 	?>
 	    <div id="wiki_post" class="simply-hidden">
-	      <?php		if (!isset($userId)) {?>
+	      <?php				if (!isset($userId)) {?>
 	    		<div class="container">
 	    			<div class="jumbotron alert-danger">
 	    				<h2><?php echo lang("export_login_ask"); ?></h2>
@@ -182,7 +184,7 @@ else {
 										<?php echo $category; ?>
 								</label>
 							</div>
-					<?php 	}?>					
+					<?php 		}?>					
 		        	
 		        </div>
 		      </div>

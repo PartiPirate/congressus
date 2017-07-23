@@ -3,6 +3,7 @@ if(!isset($config)) {
 	$config = array();
 }
 
+$config["discourse"]["exportable"] = false; // set to true to enable export with a discourse
 $config["discourse"]["api_key"] = "";
 $config["discourse"]["url"] = "";
 $config["discourse"]["protocol"] = "";

@@ -66,6 +66,7 @@ if(!isset(\$config)) {
 \$config[\"server\"][\"line\"] = \"" . $_REQUEST["server_line_input"] . "\";
 \$config[\"server\"][\"timezone\"] = \"" . $_REQUEST["server_timezone_input"] . "\";
 \$config[\"congressus\"][\"ballot_majorities\"] = " . $ballot_majorities . ";
+\$config[\"congressus\"][\"ballot_majority_judgment\"] = array(1, 2, 3, 4, 5, 6);
 
 ?>";
 

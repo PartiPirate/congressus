@@ -17,7 +17,8 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 @include_once("config/mail.config.php");
-include_once("config/discourse.config.php");
+@include_once("config/discourse.config.php");
+@include_once("config/mediawiki.config.php");
 
 include_once("header.php");
 include_once("config/discourse.structure.php");
@@ -234,62 +235,109 @@ include_once("config/discourse.structure.php");
 
 		<div id="discourse-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<a data-toggle="collapse" data-target="#discourse-panel-body" class="collapsed" href="#">Discourse</a>
+				<a data-toggle="collapse" data-target="#discourse-panel-body" class="collapsed" href="#"><?php echo lang("administration_discourse"); ?></a>
+				<input id="discourse_exportable_button" type="checkbox" <?php echo ($config["discourse"]["exportable"] ? "checked='checked'" : ""); ?>  data-toggle="toggle" data-size="mini" data-height="10">
 			</div>
 			<div class="panel-body panel-collapse collapse " id="discourse-panel-body">
 
+				<input id="discourse_exportable_input" name="discourse_exportable_input" type="hidden" value="<?php echo ($config["discourse"]["exportable"] ? "true" : "false"); ?>">
+
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="discourse_api_key_input">api_key</label>
+					<label class="col-md-2 control-label" for="discourse_api_key_input"><?php echo lang("administration_discourse_api_key"); ?></label>
 					<div class="col-md-10">
-						<input id="discourse_api_key_input" name="discourse_api_key_input" type="text" value="<?php echo $config["discourse"]["api_key"];?>" placeholder="placeholder" class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<input id="discourse_api_key_input" name="discourse_api_key_input" type="text" value="<?php echo $config["discourse"]["api_key"]; ?>" placeholder="placeholder" class="form-control input-md">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="discourse_url__input">url</label>
+					<label class="col-md-2 control-label" for="discourse_url_input"><?php echo lang("administration_discourse_url"); ?></label>
 					<div class="col-md-10">
-						<input id="discourse_url__input" name="discourse_url__input" type="text" value="<?php echo $config["discourse"]["url"];?>" placeholder="placeholder" class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<input id="discourse_url_input" name="discourse_url_input" type="text" value="<?php echo $config["discourse"]["url"]; ?>" placeholder="placeholder" class="form-control input-md">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="discourse_protocol_input">protocol</label>
+					<label class="col-md-2 control-label" for="discourse_protocol_input"><?php echo lang("administration_discourse_protocol"); ?></label>
 					<div class="col-md-10">
-						<input id="discourse_protocol_input" name="discourse_protocol_input" type="text" value="<?php echo $config["discourse"]["protocol"];?>" placeholder="placeholder" class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<input id="discourse_protocol_input" name="discourse_protocol_input" type="text" value="<?php echo $config["discourse"]["protocol"]; ?>" placeholder="placeholder" class="form-control input-md">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="discourse_user_input">user</label>
+					<label class="col-md-2 control-label" for="discourse_user_input"><?php echo lang("administration_discourse_user"); ?></label>
 					<div class="col-md-10">
-						<input id="discourse_user_input" name="discourse_user_input" type="text" value="<?php echo $config["discourse"]["user"];?>" placeholder="placeholder" class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<input id="discourse_user_input" name="discourse_user_input" type="text" value="<?php echo $config["discourse"]["user"]; ?>" placeholder="placeholder" class="form-control input-md">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="discourse_base_input">base</label>
+					<label class="col-md-2 control-label" for="discourse_base_input"><?php echo lang("administration_discourse_base"); ?></label>
 					<div class="col-md-10">
-						<input id="discourse_base_input" name="discourse_base_input" type="text" value="<?php echo $config["discourse"]["base"];?>" placeholder="placeholder" class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<input id="discourse_base_input" name="discourse_base_input" type="text" value="<?php echo $config["discourse"]["base"]; ?>" placeholder="placeholder" class="form-control input-md">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="allowed_categories_input[]">allowed_categories :</label>
+					<label class="col-md-2 control-label" for="allowed_categories_input[]"><?php echo lang("administration_discourse_allowed_categories"); ?></label>
 					<div class="col-md-10">
 						<?php foreach ($categories_all as $category) {?>
-							<input type="checkbox" name="allowed_categories_input[]" value="<?php echo $category['id'];?>" <?php if (in_array($category['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> <?php echo $category['name'];?><br>
+							<input type="checkbox" name="allowed_categories_input[]" value="<?php echo $category['id']; ?>" <?php if (in_array($category['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> <?php echo $category['name']; ?><br>
 							<?php if (isset($category['subcategory'])) {
 					      foreach ($category['subcategory'] as $subcategoy):?>
-								 <input type="checkbox" name="allowed_categories_input[]" value="<?php echo $subcategoy['id'];?>" <?php if (in_array($category['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> - &nbsp;&nbsp;<?php echo $subcategoy['name'];?><br>
+								 <input type="checkbox" name="allowed_categories_input[]" value="<?php echo $subcategoy['id']; ?>" <?php if (in_array($subcategoy['id'], $config["discourse"]["allowed_categories"])) echo "checked"; ?>> - &nbsp;&nbsp;<?php echo $subcategoy['name']; ?><br>
 					      <?php endforeach;
 					    }
 						}?>
-						<!-- <span class="help-block">help</span> -->
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="mediawiki-panel" class="panel panel-default">
+			<div class="panel-heading">
+				<a data-toggle="collapse" data-target="#mediawiki-panel-body" class="collapsed" href="#"><?php echo lang("administration_mediawiki"); ?></a>
+				<input id="mediawiki_exportable_button" type="checkbox" <?php echo ($config["mediawiki"]["exportable"] ? "checked='checked'" : ""); ?>  data-toggle="toggle" data-size="mini" data-height="10">
+			</div>
+			<div class="panel-body panel-collapse collapse " id="mediawiki-panel-body">
+
+				<input id="mediawiki_exportable_input" name="mediawiki_exportable_input" type="hidden" value="<?php echo ($config["mediawiki"]["exportable"] ? "true" : "false"); ?>">
+
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="mediawiki_url_input"><?php echo lang("administration_mediawiki_url"); ?></label>
+					<div class="col-md-10">
+						<input id="mediawiki_url_input" name="mediawiki_url_input" type="text" value="<?php echo $config["mediawiki"]["url"]; ?>" placeholder="placeholder" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="mediawiki_login_input"><?php echo lang("administration_mediawiki_login"); ?></label>
+					<div class="col-md-10">
+						<input id="mediawiki_login_input" name="mediawiki_login_input" type="text" value="<?php echo $config["mediawiki"]["login"]; ?>" placeholder="placeholder" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="mediawiki_password_input"><?php echo lang("administration_mediawiki_password"); ?></label>
+					<div class="col-md-10">
+						<input id="mediawiki_password_input" name="mediawiki_password_input" type="text" value="<?php echo $config["mediawiki"]["password"]; ?>" placeholder="placeholder" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="mediawiki_base_input"><?php echo lang("administration_mediawiki_base"); ?></label>
+					<div class="col-md-10">
+						<input id="mediawiki_base_input" name="mediawiki_base_input" type="text" value="<?php echo $config["mediawiki"]["base"]; ?>" placeholder="placeholder" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="mediawiki_categories_input"><?php echo lang("administration_mediawiki_categories"); ?></label>
+					<div class="col-md-10">
+						<textarea name="mediawiki_categories_input" id="mediawiki_categories_input" class="form-control" rows="10"><?php	foreach($config["mediawiki"]["categories"] as $category) {
+										echo $category . "\n";
+									} ?></textarea>
 					</div>
 				</div>
 
@@ -335,7 +383,7 @@ include_once("config/discourse.structure.php");
 
 <div class="lastDiv"></div>
 
-<?php include("footer.php");?>
+<?php include("footer.php"); ?>
 
 </body>
 </html>

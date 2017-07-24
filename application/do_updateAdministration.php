@@ -93,19 +93,51 @@ if(!isset(\$config)) {
 }
 
 \$config[\"discourse\"] = array();
+\$config[\"discourse\"][\"exportable\"] = " . $_REQUEST["discourse_exportable_input"] . ";
 \$config[\"discourse\"][\"api_key\"] = \"" . $_REQUEST["discourse_api_key_input"] . "\";
-\$config[\"discourse\"][\"url\"] = \"" . $_REQUEST["discourse_url__input"] . "\";
+\$config[\"discourse\"][\"url\"] = \"" . $_REQUEST["discourse_url_input"] . "\";
 \$config[\"discourse\"][\"protocol\"] = \"" . $_REQUEST["discourse_protocol_input"] . "\";
 \$config[\"discourse\"][\"user\"] = \"" . $_REQUEST["discourse_user_input"] . "\";
 \$config[\"discourse\"][\"base\"] = \"" . $_REQUEST["discourse_base_input"] . "\";
 \$config[\"discourse\"][\"allowed_categories\"] = array(";
 $separator = "";
 foreach ($_REQUEST["allowed_categories_input"] as $allowed_category) {
-	 $discourseConfigDotPhp .=  $separator.$allowed_category;
-	 $separator = ",";
+	$discourseConfigDotPhp .= $separator . $allowed_category;
+
+	$separator = ",\n\t";
 }
 
 $discourseConfigDotPhp .= ");
+
+?>";
+
+// mediawiki.config.php
+$mediawikiConfigDotPhp = "<?php
+if(!isset(\$config)) {
+	\$config = array();
+}
+
+\$config[\"mediawiki\"] = array();
+\$config[\"mediawiki\"][\"exportable\"] = " . $_REQUEST["mediawiki_exportable_input"] . ";
+\$config[\"mediawiki\"][\"url\"] = \"" . $_REQUEST["mediawiki_url_input"] . "\";
+\$config[\"mediawiki\"][\"login\"] = \"" . $_REQUEST["mediawiki_user_login"] . "\";
+\$config[\"mediawiki\"][\"password\"] = \"" . $_REQUEST["mediawiki_user_password"] . "\";
+\$config[\"mediawiki\"][\"base\"] = \"" . $_REQUEST["discourse_base_input"] . "\";
+\$config[\"mediawiki\"][\"categories\"] = array(";
+$separator = "";
+foreach (explode("\n", $_REQUEST["mediawiki_categories_input"]) as $category) {
+	$category = str_replace("\"", "\\\"", trim($category));
+	if (!$category) continue;
+
+	$mediawikiConfigDotPhp .= $separator;
+	$mediawikiConfigDotPhp .= "\"";
+	$mediawikiConfigDotPhp .= $category;
+	$mediawikiConfigDotPhp .= "\"";
+
+	$separator = ",\n\t";
+}
+
+$mediawikiConfigDotPhp .= ");
 
 ?>";
 
@@ -132,6 +164,14 @@ if (file_exists("config/discourse.config.php")) {
 	rename("config/discourse.config.php", "config/discourse.config.php~");
 }
 file_put_contents("config/discourse.config.php", $discourseConfigDotPhp);
+
+if (file_exists("config/mediawiki.config.php")) {
+	if (file_exists("config/mediawiki.config.php~")) {
+		unlink("config/mediawiki.config.php~");
+	}
+	rename("config/mediawiki.config.php", "config/mediawiki.config.php~");
+}
+file_put_contents("config/mediawiki.config.php", $mediawikiConfigDotPhp);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

@@ -19,7 +19,11 @@
 /* global $ */
 
 $(function() {
-	pingDatabase = function() {
+	$("#discourse_exportable_button").change(function() {
+		$("#discourse_exportable_input").val($(this).prop('checked') ? "true" : "false");
+	});
+	
+	var pingDatabase = function() {
 		$("#btn-ping-database").prop("disabled", true);
 		
 		$.post("administration_api.php?method=do_pingDatabase", $("#administration-form").serialize(), function(data) {
@@ -38,12 +42,12 @@ $(function() {
 		}, "json");
 	}
 	
-	checkMailSecure = function() {
+	var checkMailSecure = function() {
 		$(".secure-message").hide();
 		$(".secure-value-" + $("#smtp_secure_input").val()).show();
 	}
 	
-	submitAdministrationForm = function() {
+	var submitAdministrationForm = function() {
 		$.post("do_updateAdministration.php", $("#administration-form").serialize(), function(data) {
 			$("#administration_save_successAlert").show().delay(2000).fadeOut(1000);
 		}, "json");
@@ -65,7 +69,7 @@ $(function() {
 		event.preventDefault();
 		submitAdministrationForm();
 	});
-	
+
 	checkMailSecure();
 	
 	$("#btn-ping-database").prop("disabled", false);

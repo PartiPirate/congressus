@@ -21,6 +21,7 @@ if(!isset($config)) {
 	$config = array();
 }
 
+$config["mediawiki"] = array();
 $config["mediawiki"]["exportable"] = false; // set to true to enable export with a mediawiki
 $config["mediawiki"]["url"] = ""; // ex : https://wiki.partipirate.org/api.php
 $config["mediawiki"]["login"] = "";

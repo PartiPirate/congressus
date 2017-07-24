@@ -40,6 +40,7 @@
 <script src="assets/js/bootbox.min.js"></script>
 <script src="assets/js/moment-with-locales.js"></script>
 <script src="assets/js/bootstrap-datetimepicker.js"></script>
+<script src="assets/js/bootstrap-toggle.min.js"></script>
 <script src="assets/js/jquery-ui.min.js"></script>
 <script src="assets/js/jquery.timer.js"></script>
 <script src="assets/js/jquery.scrollTo.min.js"></script>

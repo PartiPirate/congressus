@@ -61,4 +61,19 @@ $lang["administration_alert_ping_bad_credentials"] = "Mauvais compte";
 $lang["administration_alert_ping_no_database"] = "Base de données inexistante";
 $lang["administration_congressus_ballot_majorities"] = "Modalité de vote";
 
+$lang["administration_discourse"] = "Discourse";
+$lang["administration_discourse_api_key"] = "Clef API";
+$lang["administration_discourse_url"] = "Hôte";
+$lang["administration_discourse_protocol"] = "Protocole";
+$lang["administration_discourse_user"] = "Impersonification";
+$lang["administration_discourse_base"] = "Base d'url Discourse";
+$lang["administration_discourse_allowed_categories"] = "Catégories autorisées";
+
+$lang["administration_mediawiki"] = "Mediawiki"; 
+$lang["administration_mediawiki_url"] = "Hôte";
+$lang["administration_mediawiki_login"] = "Identifiant";
+$lang["administration_mediawiki_password"] = "Mot de passe";
+$lang["administration_mediawiki_base"] = "Base d'url Mediawiki";
+$lang["administration_mediawiki_categories"] = "Catégories connues";
+
 ?>

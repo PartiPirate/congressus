@@ -32,7 +32,7 @@ addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 $pingBo = PingBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["id"];

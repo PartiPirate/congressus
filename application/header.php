@@ -94,7 +94,7 @@ $connection = openConnection();
 	<?php if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
 	require_once("engine/bo/MeetingBo.php");
 
-	$meetingBo = MeetingBo::newInstance($connection);
+	$meetingBo = MeetingBo::newInstance($connection, $config);
 	$meeting = $meetingBo->getById($_REQUEST["id"], true);
 	}
 	$page_title = lang("congressus_title");

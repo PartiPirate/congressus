@@ -32,7 +32,7 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$motionBo = MotionBo::newInstance($connection);
+$motionBo = MotionBo::newInstance($connection, $config);
 $voteBo = VoteBo::newInstance($connection, $config);
 
 $motion = $motionBo->getById($_REQUEST["motionId"]);

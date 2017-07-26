@@ -36,9 +36,9 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$agendaBo = AgendaBo::newInstance($connection);
-$meetingBo = MeetingBo::newInstance($connection);
-$motionBo = MotionBo::newInstance($connection);
+$agendaBo = AgendaBo::newInstance($connection, $config);
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$motionBo = MotionBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["meetingId"];
 $meeting = $meetingBo->getById($meetingId);

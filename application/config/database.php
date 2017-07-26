@@ -1,23 +1,25 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
-	This file is part of PPMoney.
+	This file is part of Congressus.
 
-    PPMoney is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    PPMoney is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 @include_once("config/config.php");
 @include_once("config/salt.php");
+@include_once("engine/requests/sql/QueryFactory.php");
+@include_once("engine/requests/sql/MySQLQuery.php");
 
 function openConnection($dbname = null) {
 	global $config;
@@ -25,7 +27,7 @@ function openConnection($dbname = null) {
 		$dbname = $config["database"]["database"];
 	}
 
-	$dns = 'mysql:host='.$config["database"]["host"].';dbname=' . $dbname;
+	$dns = $config["database"]["dialect"].':host='.$config["database"]["host"].';dbname=' . $dbname;
 
 	if (isset($config["database"]["port"])) {
 		$dns .= ";port=" . $config["database"]["port"];

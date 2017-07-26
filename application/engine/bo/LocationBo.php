@@ -19,16 +19,18 @@
 
 class LocationBo {
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "locations";
 	var $ID_FIELD = "loc_id";
 
-	function __construct($pdo) {
+	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo) {
-		return new LocationBo($pdo);
+	static function newInstance($pdo, $config) {
+		return new LocationBo($pdo, $config);
 	}
 
 	function create(&$location) {
@@ -92,23 +94,31 @@ class LocationBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect("*");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["loc_meeting_id"])) {
 			$args["loc_meeting_id"] = $filters["loc_meeting_id"];
-			$query .= " AND loc_meeting_id = :loc_meeting_id \n";
+//			$query .= " AND loc_meeting_id = :loc_meeting_id \n";
+			$queryBuilder->where("loc_meeting_id = :loc_meeting_id");
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

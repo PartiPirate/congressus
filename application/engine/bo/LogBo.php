@@ -19,12 +19,13 @@
 
 class LogBo {
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "logs";
 	var $ID_FIELD = "log_id";
 
 	function __construct($pdo, $config = null) {
-
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
@@ -93,18 +94,25 @@ class LogBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect($this->TABLE . ".*");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

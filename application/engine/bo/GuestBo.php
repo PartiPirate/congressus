@@ -19,16 +19,18 @@
 
 class GuestBo {
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "guests";
 	var $ID_FIELD = "gue_id";
 
-	function __construct($pdo) {
+	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo) {
-		return new GuestBo($pdo);
+	static function newInstance($pdo, $config) {
+		return new GuestBo($pdo, $config);
 	}
 
 	function create(&$guest) {
@@ -105,16 +107,23 @@ class GuestBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect($this->TABLE . ".*");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

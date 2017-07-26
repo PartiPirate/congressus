@@ -36,7 +36,7 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 $pingBo = PingBo::newInstance($connection, $config);
 
 $meeting = $meetingBo->getById($_REQUEST["meetingId"]);

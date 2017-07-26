@@ -25,16 +25,18 @@ class MeetingRightBo {
 	const HANDLE_DESK = "handle_desk";
 	
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "meeting_rights";
 	var $ID_FIELD = "mri_id";
 
-	function __construct($pdo) {
+	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo) {
-		return new MeetingRightBo($pdo);
+	static function newInstance($pdo, $config) {
+		return new MeetingRightBo($pdo, $config);
 	}
 
 	function create(&$right) {
@@ -111,23 +113,32 @@ class MeetingRightBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
+
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect($this->TABLE . ".*");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["mri_meeting_id"])) {
 			$args["mri_meeting_id"] = $filters["mri_meeting_id"];
-			$query .= " AND mri_meeting_id = :mri_meeting_id \n";
+//			$query .= " AND mri_meeting_id = :mri_meeting_id \n";
+			$queryBuilder->where("mri_meeting_id = :mri_meeting_id");
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

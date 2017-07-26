@@ -40,7 +40,7 @@ if (!$userId) {
 $connection = openConnection();
 
 $locationBo = LocationBo::newInstance($connection, $config);
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 
 $meeting = array();
 $meeting["mee_label"] = $_REQUEST["mee_label"];

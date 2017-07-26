@@ -9,8 +9,8 @@ require_once("engine/bo/AgendaBo.php");
 
 $connection = openConnection();
 
-$motionBo = MotionBo::newInstance($connection);
-$agendaBo = AgendaBo::newInstance($connection);
+$motionBo = MotionBo::newInstance($connection, $config);
+$agendaBo = AgendaBo::newInstance($connection, $config);
 
 
 print_r($argv);

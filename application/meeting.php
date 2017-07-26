@@ -38,7 +38,7 @@ else {
 $userId = SessionUtils::getUserId($_SESSION);
 if (!$userId) {
 	if (!isset($_SESSION["guestId"])) {
-		$guestBo = GuestBo::newInstance($connection);
+		$guestBo = GuestBo::newInstance($connection, $config);
 		// Create guestId
 		$guest = array();
 		$guestBo->save($guest);

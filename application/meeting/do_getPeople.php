@@ -43,8 +43,8 @@ $json = $memcache->get($memcacheKey);
 if (!$json) {
 	$connection = openConnection();
 
-	$meetingBo = MeetingBo::newInstance($connection);
-	$noticeBo = NoticeBo::newInstance($connection);
+	$meetingBo = MeetingBo::newInstance($connection, $config);
+	$noticeBo = NoticeBo::newInstance($connection, $config);
 	$pingBo = PingBo::newInstance($connection, $config);
 
 	$fixationBo = FixationBo::newInstance($connection, $config);

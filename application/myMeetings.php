@@ -21,7 +21,7 @@ include_once("header.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/GuestBo.php");
 
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 
 $userId = SessionUtils::getUserId($_SESSION);
 

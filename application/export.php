@@ -28,7 +28,7 @@ require_once("engine/utils/SessionUtils.php");
 require_once("config/config.php");
 
 $connection = openConnection();
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 $meeting = $meetingBo->getById($_REQUEST["id"], true);
 if (!$meeting) {
 	// Ask for creation

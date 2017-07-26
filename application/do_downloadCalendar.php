@@ -30,7 +30,7 @@ if ($config["server"]["timezone"]) {
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 $meetings = $meetingBo->getByFilters(array("with_principal_location" => true, "with_status" => array("waiting", "open", "closed")));
 
 //print_r($meetings);

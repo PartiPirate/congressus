@@ -32,7 +32,7 @@ addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
 
-$motionBo = MotionBo::newInstance($connection);
+$motionBo = MotionBo::newInstance($connection, $config);
 $data = array();
 
 $propositions = $motionBo->getByFilters(array($motionBo->ID_FIELD => $_REQUEST["motionId"]));

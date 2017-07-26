@@ -34,8 +34,8 @@ $data["ok"] = "ok";
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
-$noticeBo = NoticeBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$noticeBo = NoticeBo::newInstance($connection, $config);
 $taskBo = TaskBo::newInstance($connection, $config);
 
 $meeting = $meetingBo->getById($_REQUEST["meetingId"]);

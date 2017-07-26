@@ -19,6 +19,7 @@
 
 class PingBo {
 	var $pdo = null;
+	var $config = null;
 	var $galetteDatabase = "";
 	var $personaeDatabase = "";
 
@@ -26,6 +27,7 @@ class PingBo {
 	var $ID_FIELD = "pin_id";
 
 	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
 		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
@@ -97,39 +99,52 @@ class PingBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					LEFT JOIN ".$this->galetteDatabase."galette_adherents ON id_adh = pin_member_id
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect("*");
+
+		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = pin_member_id", null, "left");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					LEFT JOIN ".$this->galetteDatabase."galette_adherents ON id_adh = pin_member_id
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["pin_member_id"])) {
 			$args["pin_member_id"] = $filters["pin_member_id"];
-			$query .= " AND pin_member_id = :pin_member_id \n";
+//			$query .= " AND pin_member_id = :pin_member_id \n";
+			$queryBuilder->where("pin_member_id = :pin_member_id");
 		}
 
 		if (isset($filters["pin_guest_id"])) {
 			$args["pin_guest_id"] = $filters["pin_guest_id"];
-			$query .= " AND pin_guest_id = :pin_guest_id \n";
+//			$query .= " AND pin_guest_id = :pin_guest_id \n";
+			$queryBuilder->where("pin_guest_id = :pin_guest_id");
 		}
 
 		if (isset($filters["pin_meeting_id"])) {
 			$args["pin_meeting_id"] = $filters["pin_meeting_id"];
-			$query .= " AND pin_meeting_id = :pin_meeting_id \n";
+//			$query .= " AND pin_meeting_id = :pin_meeting_id \n";
+			$queryBuilder->where("pin_meeting_id = :pin_meeting_id");
 		}
 
 		if (isset($filters["pin_speaking"])) {
 			$args["pin_speaking"] = $filters["pin_speaking"];
-			$query .= " AND pin_speaking = :pin_speaking \n";
+//			$query .= " AND pin_speaking = :pin_speaking \n";
+			$queryBuilder->where("pin_speaking = :pin_speaking");
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

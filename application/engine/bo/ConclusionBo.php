@@ -19,6 +19,7 @@
 
 class ConclusionBo {
 	var $pdo = null;
+	var $config = null;
 	var $galetteDatabase = "";
 	var $personaeDatabase = "";
 
@@ -26,6 +27,7 @@ class ConclusionBo {
 	var $ID_FIELD = "con_id";
 
 	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
 		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
@@ -97,23 +99,31 @@ class ConclusionBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM $this->TABLE
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect($this->TABLE . ".*");
+
+//		$query = "	SELECT *
+//					FROM $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["con_agenda_id"])) {
 			$args["con_agenda_id"] = $filters["con_agenda_id"];
-			$query .= " AND con_agenda_id = :con_agenda_id \n";
+//			$query .= " AND con_agenda_id = :con_agenda_id \n";
+			$queryBuilder->where("con_agenda_id = :con_agenda_id");
 		}
 
 //		$query .= "	ORDER BY con_parent_id ASC , con_order ASC ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

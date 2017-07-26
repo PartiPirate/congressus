@@ -26,9 +26,9 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$locationBo = LocationBo::newInstance($connection);
-$meetingBo = MeetingBo::newInstance($connection);
-$noticeBo = NoticeBo::newInstance($connection);
+$locationBo = LocationBo::newInstance($connection, $config);
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$noticeBo = NoticeBo::newInstance($connection, $config);
 
 $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);

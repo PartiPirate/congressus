@@ -35,9 +35,9 @@ $json = $memcache->get($memcacheKey);
 if (!$json) {
 	$connection = openConnection();
 
-	$meetingBo = MeetingBo::newInstance($connection);
-	$meetingRightBo = MeetingRightBo::newInstance($connection);
-	$agendaBo = AgendaBo::newInstance($connection);
+	$meetingBo = MeetingBo::newInstance($connection, $config);
+	$meetingRightBo = MeetingRightBo::newInstance($connection, $config);
+	$agendaBo = AgendaBo::newInstance($connection, $config);
 
 	$meeting = $meetingBo->getById($meetingId);
 

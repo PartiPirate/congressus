@@ -19,16 +19,18 @@
 
 class AgendaBo {
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "agendas";
 	var $ID_FIELD = "age_id";
 
-	function __construct($pdo) {
+	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo) {
-		return new AgendaBo($pdo);
+	static function newInstance($pdo, $config = null) {
+		return new AgendaBo($pdo, $config);
 	}
 
 	function create(&$agenda) {
@@ -105,10 +107,17 @@ class AgendaBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect("*");
+
 		$query = "	SELECT * ";
 
 		if (isset($filters["with_count_motions"]) && $filters["with_count_motions"]) {
 			$query .= "	, (SELECT COUNT(*) FROM motions WHERE mot_agenda_id = age_id AND mot_deleted = 0) AS age_number_of_motions ";
+			// TODO 
+			$queryBuilder->addSelect("(SELECT COUNT(*) FROM motions WHERE mot_agenda_id = age_id AND mot_deleted = 0)", "age_number_of_motions");
 		}
 
 		$query .= "	FROM  $this->TABLE
@@ -118,15 +127,21 @@ class AgendaBo {
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["age_meeting_id"])) {
 			$args["age_meeting_id"] = $filters["age_meeting_id"];
 			$query .= " AND age_meeting_id = :age_meeting_id \n";
+			$queryBuilder->where("age_meeting_id = :age_meeting_id");
 		}
 
 		$query .= "	ORDER BY age_parent_id ASC , age_order ASC ";
+//		echo showQuery($query, $args);
 
+		$queryBuilder->orderBy("age_parent_id")->orderBy("age_order");
+
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

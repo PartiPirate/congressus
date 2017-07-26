@@ -23,12 +23,6 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
-require_once("engine/bo/NoticeBo.php");
-require_once("engine/bo/PingBo.php");
-
-require_once("engine/bo/FixationBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
@@ -40,13 +34,7 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
-$noticeBo = NoticeBo::newInstance($connection);
-$pingBo = PingBo::newInstance($connection, $config);
-
-$fixationBo = FixationBo::newInstance($connection, $config);
-$groupBo = GroupBo::newInstance($connection, $config);
-$themeBo = ThemeBo::newInstance($connection, $config);
+$meetingBo = MeetingBo::newInstance($connection, $config);
 
 $meeting = $meetingBo->getById($meetingId);
 

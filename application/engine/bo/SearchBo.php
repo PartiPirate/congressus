@@ -19,15 +19,17 @@
 
 class SearchBo {
 	var $pdo = null;
-	var $galetteDatabase = "";
-	var $personaeDatabase = "";
+	var $config = null;
+//	var $galetteDatabase = "";
+//	var $personaeDatabase = "";
 
 	var $TABLE = "searchs";
 	var $ID_FIELD = "cha_id";
 
 	function __construct($pdo, $config) {
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
+		$this->config = $config;
+//		$this->galetteDatabase = $config["galette"]["db"] . ".";
+//		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
 		$this->pdo = $pdo;
 	}
@@ -63,13 +65,23 @@ class SearchBo {
 	function meetingSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("mee_label", "text");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ']')", "object");
+		$queryBuilder->where("mee_label LIKE :likeQuery");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ']') AS object,
 						mee_label AS text,
 						meetings . *
 					FROM  meetings
 					WHERE mee_label LIKE :likeQuery";
-
+*/
 		//		echo showQuery($query, $args);
 
 		$args = array("likeQuery" => $likeQuery);
@@ -83,6 +95,21 @@ class SearchBo {
 	function agendaSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+
+		$queryBuilder->addSelect("age_label", "text");
+		$queryBuilder->addSelect("age_description", "text2");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',', 
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ']')", "object");
+		$queryBuilder->where("(age_description LIKE :likeQuery OR age_label LIKE :likeQuery)");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ']') AS object,
@@ -93,7 +120,7 @@ class SearchBo {
 					FROM  meetings
 					JOIN agendas ON age_meeting_id = mee_id
 					WHERE age_description LIKE :likeQuery OR age_label LIKE :likeQuery";
-
+*/
 		//		echo showQuery($query, $args);
 
 		$args = array("likeQuery" => $likeQuery);
@@ -107,6 +134,26 @@ class SearchBo {
 	function conclusionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("conclusions", "con_agenda_id = age_id");
+		$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1", null, "left");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+		$queryBuilder->addSelect("conclusions.*");
+		$queryBuilder->addSelect("notices.*");
+
+		$queryBuilder->addSelect("con_text", "text");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"conclusion\",\"id\":\"', con_id, '\"}',']')", "object");
+		$queryBuilder->where("con_text LIKE :likeQuery");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
@@ -121,7 +168,7 @@ class SearchBo {
 					JOIN conclusions ON con_agenda_id = age_id
 					LEFT JOIN notices ON not_meeting_id = mee_id AND not_voting = 1
 					WHERE con_text LIKE :likeQuery";
-
+*/
 		//		echo showQuery($query, $args);
 
 		$args = array("likeQuery" => $likeQuery);
@@ -143,6 +190,24 @@ class SearchBo {
 	function chatSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("chats", "cha_agenda_id = age_id");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+		$queryBuilder->addSelect("chats.*");
+
+		$queryBuilder->addSelect("cha_text", "text");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"chat\",\"id\":\"', cha_id, '\"}', ']')", "object");
+		$queryBuilder->where("cha_text LIKE :likeQuery");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
@@ -155,7 +220,7 @@ class SearchBo {
 					JOIN agendas ON age_meeting_id = mee_id
 					JOIN chats ON cha_agenda_id = age_id
 					WHERE cha_text LIKE :likeQuery";
-
+*/
 		//		echo showQuery($query, $args);
 
 		$args = array("likeQuery" => $likeQuery);
@@ -168,7 +233,25 @@ class SearchBo {
 
 	function taskSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
-	
+
+
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("tasks", "tas_agenda_id = age_id");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+		$queryBuilder->addSelect("tasks.*");
+
+		$queryBuilder->addSelect("tas_label", "text");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"task\",\"id\":\"', tas_id, '\"}', ']')", "object");
+		$queryBuilder->where("tas_label LIKE :likeQuery");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
@@ -181,7 +264,7 @@ class SearchBo {
 					JOIN agendas ON age_meeting_id = mee_id
 					JOIN tasks ON tas_agenda_id = age_id
 					WHERE tas_label LIKE :likeQuery";
-	
+*/
 		$args = array("likeQuery" => $likeQuery);
 
 //		echo showQuery($query, $args);
@@ -196,6 +279,24 @@ class SearchBo {
 	function motionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("motions", "mot_agenda_id = age_id AND mot_deleted = 0");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+		$queryBuilder->addSelect("motions.*");
+
+		$queryBuilder->addSelect("mot_title", "text");
+		$queryBuilder->addSelect("mot_description", "text2");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"motion\",\"id\":\"', mot_id, '\"}', ']')", "object");
+		$queryBuilder->where("(mot_title LIKE :likeQuery OR mot_description LIKE :likeQuery)");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
@@ -209,7 +310,7 @@ class SearchBo {
 					JOIN agendas ON age_meeting_id = mee_id
 					JOIN motions ON mot_agenda_id = age_id AND mot_deleted = 0
 					WHERE mot_title LIKE :likeQuery OR mot_description LIKE :likeQuery";
-
+*/
 		//		echo showQuery($query, $args);
 
 		$args = array("likeQuery" => $likeQuery);
@@ -223,6 +324,29 @@ class SearchBo {
 	function propositionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
 
+
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select("meetings");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("motions", "mot_agenda_id = age_id AND mot_deleted = 0");
+		$queryBuilder->join("motion_propositions", "mpr_motion_id = mot_id");
+		$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1", null, "left");
+		$queryBuilder->addSelect("meetings.*");
+		$queryBuilder->addSelect("agendas.*");
+		$queryBuilder->addSelect("motions.*");
+		$queryBuilder->addSelect("motion_propositions.*");
+		$queryBuilder->addSelect("notices.*");
+
+		$queryBuilder->addSelect("mpr_label", "text");
+		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
+								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
+								'{\"type\":\"motion\",\"id\":\"', mot_id, '\"}', ',' ,
+								'{\"type\":\"proposition\",\"id\":\"', mpr_id, '\"}', ']')", "object");
+		$queryBuilder->where("mpr_label LIKE :likeQuery");
+
+		$query = $queryBuilder->constructRequest();
+
+/*
 		$query = "	SELECT
 						CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',' ,
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
@@ -240,6 +364,7 @@ class SearchBo {
 					JOIN motion_propositions ON mpr_motion_id = mot_id
 					LEFT JOIN notices ON not_meeting_id = mee_id AND not_voting = 1
 					WHERE mpr_label LIKE :likeQuery";
+*/
 
 		$args = array("likeQuery" => $likeQuery);
 //				echo showQuery($query, $args);

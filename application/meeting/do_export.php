@@ -47,16 +47,16 @@ addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
 
-$meetingBo = MeetingBo::newInstance($connection);
-$agendaBo = AgendaBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$agendaBo = AgendaBo::newInstance($connection, $config);
 $chatBo = ChatBo::newInstance($connection, $config);
 $conclusionBo = ConclusionBo::newInstance($connection, $config);
 $taskBo = TaskBo::newInstance($connection, $config);
-$motionBo = MotionBo::newInstance($connection);
+$motionBo = MotionBo::newInstance($connection, $config);
 $voteBo = VoteBo::newInstance($connection, $config);
 
 // People
-$noticeBo = NoticeBo::newInstance($connection);
+$noticeBo = NoticeBo::newInstance($connection, $config);
 $pingBo = PingBo::newInstance($connection, $config);
 $fixationBo = FixationBo::newInstance($connection, $config);
 $groupBo = GroupBo::newInstance($connection, $config);

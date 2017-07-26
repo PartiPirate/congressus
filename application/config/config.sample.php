@@ -8,6 +8,7 @@ $config["administrator"]["login"] = "r00t";
 $config["administrator"]["password"] = "r00t";
 
 $config["database"] = array();
+$config["database"]["dialect"] = "mysql";
 $config["database"]["host"] = "127.0.0.1";
 $config["database"]["port"] = 3306;
 $config["database"]["login"] = "root";

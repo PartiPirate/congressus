@@ -19,16 +19,18 @@
 
 class NoticeBo {
 	var $pdo = null;
+	var $config = null;
 
 	var $TABLE = "notices";
 	var $ID_FIELD = "not_id";
 
-	function __construct($pdo) {
+	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo) {
-		return new NoticeBo($pdo);
+	static function newInstance($pdo, $config) {
+		return new NoticeBo($pdo, $config);
 	}
 
 	function create(&$notice) {
@@ -105,23 +107,31 @@ class NoticeBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT *
-					FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect("*");
+
+//		$query = "	SELECT *
+//					FROM  $this->TABLE
+//					WHERE
+//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["not_meeting_id"])) {
 			$args["not_meeting_id"] = $filters["not_meeting_id"];
-			$query .= " AND not_meeting_id = :not_meeting_id \n";
+//			$query .= " AND not_meeting_id = :not_meeting_id \n";
+			$queryBuilder->where("not_meeting_id = :not_meeting_id");
 		}
 
 //		$query .= "	ORDER BY gro_label, the_label ";
 
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

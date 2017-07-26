@@ -19,6 +19,7 @@
 
 class TaskBo {
 	var $pdo = null;
+	var $config = null;
 	var $galetteDatabase = "";
 	var $personaeDatabase = "";
 
@@ -26,6 +27,7 @@ class TaskBo {
 	var $ID_FIELD = "tas_id";
 
 	function __construct($pdo, $config) {
+		$this->config = $config;
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
 		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
@@ -97,34 +99,47 @@ class TaskBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT DISTINCT $this->TABLE.* ";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->setDistinct();
+		$queryBuilder->addSelect($this->TABLE . ".*");
+
+//		$query = "	SELECT DISTINCT $this->TABLE.* ";
 		
 		if ($filters && isset($filters["notices"])) {
-			$query .= ", age_meeting_id as tas_meeting_id ";
+//			$query .= ", age_meeting_id as tas_meeting_id ";
+			$queryBuilder->addSelect("age_meeting_id", "tas_meeting_id");
 		}
 		
-		$query .= "	FROM $this->TABLE";
+//		$query .= "	FROM $this->TABLE";
 
 		if ($filters && isset($filters["notices"])) {
-			$query .= "	JOIN agendas ON age_id = tas_agenda_id
-						JOIN notices ON not_meeting_id = age_meeting_id ";
+//			$query .= "	JOIN agendas ON age_id = tas_agenda_id
+//						JOIN notices ON not_meeting_id = age_meeting_id ";
+						
+			$queryBuilder->join("agendas", "age_id = tas_agenda_id");
+			$queryBuilder->join("notices", "not_meeting_id = age_meeting_id");
+						
 		}
-		
-		$query .= "	WHERE
-						1 = 1 \n";
+
+//		$query .= "	WHERE
+//						1 = 1 \n";
 
 		if ($filters && isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
+			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if ($filters && isset($filters["tas_agenda_id"])) {
 			$args["tas_agenda_id"] = $filters["tas_agenda_id"];
-			$query .= " AND tas_agenda_id = :tas_agenda_id \n";
+//			$query .= " AND tas_agenda_id = :tas_agenda_id \n";
+			$queryBuilder->where("tas_agenda_id = :tas_agenda_id");
 		}
 		
 		if ($filters && isset($filters["only_open"]) && $filters["only_open"]) {
-			$query .= " AND tas_finish_datetime IS NULL \n";
+//			$query .= " AND tas_finish_datetime IS NULL \n";
+			$queryBuilder->where("tas_finish_datetime IS NULL");
 		}
 		
 		if ($filters && isset($filters["notices"])) {
@@ -144,16 +159,20 @@ class TaskBo {
 				$noticeOrs .= ")";
 			}
 			
-			$query .= " AND ($noticeOrs) \n";
+//			$query .= " AND ($noticeOrs) \n";
+			$queryBuilder->where("($noticeOrs)");
 		}
 		
 // 		if ($filters && isset($filters["tas_agenda_id"])) {
 // 			$args["tas_agenda_id"] = $filters["tas_agenda_id"];
-			$query .= " AND tas_deleted = 0 \n";
+//			$query .= " AND tas_deleted = 0 \n";
+			$queryBuilder->where("tas_deleted = 0");
 // 		}
-		
-		$query .= "	ORDER BY tas_start_datetime ASC ";
 
+//		$query .= "	ORDER BY tas_start_datetime ASC ";
+		$queryBuilder->orderBy("tas_start_datetime");
+
+		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
 

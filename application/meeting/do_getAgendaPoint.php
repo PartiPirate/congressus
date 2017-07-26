@@ -36,12 +36,12 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$agendaBo = AgendaBo::newInstance($connection);
+$agendaBo = AgendaBo::newInstance($connection, $config);
 $chatBo = ChatBo::newInstance($connection, $config);
-$chatAdviceBo = ChatAdviceBo::newInstance($connection);
+$chatAdviceBo = ChatAdviceBo::newInstance($connection, $config);
 $conclusionBo = ConclusionBo::newInstance($connection, $config);
-$meetingBo = MeetingBo::newInstance($connection);
-$motionBo = MotionBo::newInstance($connection);
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$motionBo = MotionBo::newInstance($connection, $config);
 $taskBo = TaskBo::newInstance($connection, $config);
 $voteBo = VoteBo::newInstance($connection, $config);
 

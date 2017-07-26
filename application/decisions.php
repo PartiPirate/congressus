@@ -18,7 +18,7 @@
 */
 include_once("header.php");
 
-require_once("engine/bo/MeetingBo.php");
+//require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/SearchBo.php");
 require_once("engine/bo/GaletteBo.php");

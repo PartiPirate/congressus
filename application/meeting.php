@@ -230,21 +230,12 @@ if (!$userId) {
 			</div>
 		</div>
 		<div class="col-md-4" id="right-panel">
-			<div id="meeting_rights" class="panel panel-default" style="display: none;">
+			<div id="meeting-agenda" class="panel panel-default">
 				<div class="panel-heading">
-<!--
-					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"
-						title="Montrer / cacher les absents" data-toggle="tooltip" data-placement="bottom"
-						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-eye-open"></span></button>
-					<button class="btn btn-primary btn-xs pull-right btn-add-notice" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
--->
-					<a data-toggle="collapse" data-target="#meeting_rights_list" href="#"><?php echo lang("meeting_rights"); ?></a>
+					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
+					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
 				</div>
-				<ul class="list-group panel-collapse collapse in" id="meeting_rights_list">
-					<li class="list-group-item"><label for="handle_notice_checkbox" class="right-label"><input type="checkbox" id="handle_notice_checkbox" value="handle_notice" class="right" /> <?php echo lang("meeting_rights_noticed"); ?></label></li>
-					<li class="list-group-item"><label for="handle_agenda_checkbox" class="right-label"><input type="checkbox" id="handle_agenda_checkbox" value="handle_agenda" class="right" /> <?php echo lang("meeting_rights_topics"); ?></label></li>
-					<li class="list-group-item"><label for="handle_motion_checkbox" class="right-label"><input type="checkbox" id="handle_motion_checkbox" value="handle_motion" class="right" /> <?php echo lang("meeting_rights_motion"); ?></label></li>
-					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> <?php echo lang("meeting_rights_conclusion"); ?></label></li>
+				<ul class="list-group panel-collapse collapse in" id="agenda-points-list">
 				</ul>
 			</div>
 
@@ -263,18 +254,6 @@ if (!$userId) {
 				</div>
 			</div>
 
-			<div id="meeting-agenda" class="panel panel-default">
-				<div class="panel-heading">
-				<!--
-					<button class="btn btn-danger btn-xs pull-right btn-remove-point" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-remove"></span></button>
-				 -->
-					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
-					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
-				</div>
-				<ul class="list-group panel-collapse collapse in" id="agenda-points-list">
-				</ul>
-			</div>
-
 			<div id="visitors" class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-target="#visitors-list" href="#"><?php echo lang("meeting_visitors"); ?></a>
@@ -283,6 +262,17 @@ if (!$userId) {
 				</ul>
 			</div>
 
+			<div id="meeting_rights" class="panel panel-default" style="display: none;">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-target="#meeting_rights_list" href="#"><?php echo lang("meeting_rights"); ?></a>
+				</div>
+				<ul class="list-group panel-collapse collapse in" id="meeting_rights_list">
+					<li class="list-group-item"><label for="handle_notice_checkbox" class="right-label"><input type="checkbox" id="handle_notice_checkbox" value="handle_notice" class="right" /> <?php echo lang("meeting_rights_noticed"); ?></label></li>
+					<li class="list-group-item"><label for="handle_agenda_checkbox" class="right-label"><input type="checkbox" id="handle_agenda_checkbox" value="handle_agenda" class="right" /> <?php echo lang("meeting_rights_topics"); ?></label></li>
+					<li class="list-group-item"><label for="handle_motion_checkbox" class="right-label"><input type="checkbox" id="handle_motion_checkbox" value="handle_motion" class="right" /> <?php echo lang("meeting_rights_motion"); ?></label></li>
+					<li class="list-group-item"><label for="handle_conclusion_checkbox" class="right-label"><input type="checkbox" id="handle_conclusion_checkbox" value="handle_conclusion" class="right" /> <?php echo lang("meeting_rights_conclusion"); ?></label></li>
+				</ul>
+			</div>
 		</div>
 	</div>
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -20,17 +20,12 @@
 class ConclusionBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
-	var $personaeDatabase = "";
 
 	var $TABLE = "conclusions";
 	var $ID_FIELD = "con_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
-
 		$this->pdo = $pdo;
 	}
 
@@ -104,24 +99,15 @@ class ConclusionBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect($this->TABLE . ".*");
 
-//		$query = "	SELECT *
-//					FROM $this->TABLE
-//					WHERE
-//						1 = 1 \n";
-
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["con_agenda_id"])) {
 			$args["con_agenda_id"] = $filters["con_agenda_id"];
-//			$query .= " AND con_agenda_id = :con_agenda_id \n";
 			$queryBuilder->where("con_agenda_id = :con_agenda_id");
 		}
-
-//		$query .= "	ORDER BY con_parent_id ASC , con_order ASC ";
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

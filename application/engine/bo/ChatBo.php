@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -21,7 +21,6 @@ class ChatBo {
 	var $pdo = null;
 	var $config = null;
 	var $galetteDatabase = "";
-	var $personaeDatabase = "";
 
 	var $TABLE = "chats";
 	var $ID_FIELD = "cha_id";
@@ -29,7 +28,6 @@ class ChatBo {
 	function __construct($pdo, $config) {
 		$this->config = $config;
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
 		$this->pdo = $pdo;
 	}
@@ -42,7 +40,6 @@ class ChatBo {
 		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
 
 		try {
 			$statement->execute();
@@ -107,15 +104,6 @@ class ChatBo {
 		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = cha_member_id", null, "left");
 		$queryBuilder->join("agendas", "age_id = cha_agenda_id", null, "left");
 		$queryBuilder->join("pings", "pin_guest_id = cha_guest_id", null, "left");
-/*
-		$query = "	SELECT galette_adherents.*, agendas.*, pings.*, chats.*
-					FROM $this->TABLE
-					LEFT JOIN ".$this->galetteDatabase."galette_adherents ON id_adh = cha_member_id
-					LEFT JOIN agendas ON age_id = cha_agenda_id
-					LEFT JOIN pings ON pin_guest_id = cha_guest_id
-					WHERE
-						1 = 1 \n";
-*/
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
@@ -129,13 +117,8 @@ class ChatBo {
 			$queryBuilder->where("cha_agenda_id = :cha_agenda_id");
 		}
 
-//		$query .= "	ORDER BY cha_parent_id ASC , cha_order ASC ";
-
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
-		
-//		echo showQuery($query, $args);
-//		echo showQuery($queryBuilder->constructRequest(), $args);
 
 		$results = array();
 

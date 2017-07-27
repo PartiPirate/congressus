@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -20,7 +20,6 @@
 class MeetingBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
 	var $personaeDatabase = "";
 
 	var $TABLE = "meetings";
@@ -29,7 +28,6 @@ class MeetingBo {
 	function __construct($pdo, $config) {
 		$this->config = $config;
 
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
 		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
 		$this->pdo = $pdo;
@@ -109,54 +107,36 @@ class MeetingBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect("*");
 
-//		$query = "	SELECT *
-//					FROM  $this->TABLE ";
-
 		if (isset($filters["with_principal_location"]) && $filters["with_principal_location"]) {
-//			$query .= " LEFT JOIN locations ON loc_meeting_id = $this->ID_FIELD AND loc_principal = 1 ";
 			$queryBuilder->join("locations", "loc_meeting_id = $this->ID_FIELD AND loc_principal = 1", null, "left");
 		}
 
 		if (isset($filters["by_personae_group"])) {
 			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD AND not_target_type = 'dlp_groups'");
 			$queryBuilder->join($this->personaeDatabase."dlp_groups", "gro_id = not_target_id");
-//			$query .= " JOIN notices ON not_meeting_id = $this->ID_FIELD AND not_target_type = 'dlp_groups' ";
-//			$query .= "	JOIN ".$this->personaeDatabase."dlp_groups ON gro_id = not_target_id ";
 		}
-
-//		$query .= " WHERE
-//						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["mee_secretary_member_id"])) {
 			$args["mee_secretary_member_id"] = $filters["mee_secretary_member_id"];
-//			$query .= " AND mee_secretary_member_id = :mee_secretary_member_id \n";
 			$queryBuilder->where("mee_secretary_member_id = :mee_secretary_member_id");
 		}
 
 		if (isset($filters["with_status"])) {
-//			$query .= " AND mee_status IN ('";
-//			$query .= implode("', '", $filters["with_status"]);
-//			$query .= " ')";
 			$status = "mee_status IN ('";
 			$status .= implode("', '", $filters["with_status"]);
 			$status .= " ')";
 			$queryBuilder->where("$status");
 		}
 
-//		$query .= "	ORDER BY ";
-
 		if (isset($filters["by_personae_group"])) {
-//			$query .= "gro_label, ";
 			$queryBuilder->orderBy("gro_label");
 		}
 
-//		$query .= "mee_datetime ";
 		$queryBuilder->orderBy("mee_datetime");
 
 		$query = $queryBuilder->constructRequest();

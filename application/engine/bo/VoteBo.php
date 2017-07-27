@@ -21,7 +21,6 @@ class VoteBo {
 	var $pdo = null;
 	var $config = null;
 	var $galetteDatabase = "";
-	var $personaeDatabase = "";
 
 	var $TABLE = "votes";
 	var $ID_FIELD = "vot_id";
@@ -29,7 +28,6 @@ class VoteBo {
 	function __construct($pdo, $config) {
 		$this->config = $config;
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
 
 		$this->pdo = $pdo;
 	}
@@ -110,44 +108,25 @@ class VoteBo {
 		$queryBuilder->join("motions", "mot_id = mpr_motion_id");
 		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = vot_member_id", null, "left");
 
-//		$query = "	SELECT
-//						$this->TABLE.*,
-//						motion_propositions.*,
-//						motions.*,
-//						".$this->galetteDatabase."galette_adherents.id_adh,
-//						".$this->galetteDatabase."galette_adherents.pseudo_adh
-//					FROM $this->TABLE
-//					JOIN motion_propositions ON mpr_id = vot_motion_proposition_id
-//					JOIN motions ON mot_id = mpr_motion_id
-//					LEFT JOIN ".$this->galetteDatabase."galette_adherents ON id_adh = vot_member_id
-//					WHERE
-//						1 = 1 \n";
-
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["vot_member_id"])) {
 			$args["vot_member_id"] = $filters["vot_member_id"];
-//			$query .= " AND vot_member_id = :vot_member_id \n";
 			$queryBuilder->where("vot_member_id = :vot_member_id");
 		}
 
 		if (isset($filters["vot_motion_proposition_id"])) {
 			$args["vot_motion_proposition_id"] = $filters["vot_motion_proposition_id"];
-//			$query .= " AND vot_motion_proposition_id = :vot_motion_proposition_id \n";
 			$queryBuilder->where("vot_motion_proposition_id = :vot_motion_proposition_id");
 		}
 
 		if (isset($filters["mot_agenda_id"])) {
 			$args["mot_agenda_id"] = $filters["mot_agenda_id"];
-//			$query .= " AND mot_agenda_id = :mot_agenda_id \n";
 			$queryBuilder->where("mot_agenda_id = :mot_agenda_id");
 		}
-
-//		$query .= "	ORDER BY vot_parent_id ASC , vot_order ASC ";
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

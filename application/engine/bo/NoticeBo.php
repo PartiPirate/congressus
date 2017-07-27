@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -112,24 +112,15 @@ class NoticeBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect("*");
 
-//		$query = "	SELECT *
-//					FROM  $this->TABLE
-//					WHERE
-//						1 = 1 \n";
-
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["not_meeting_id"])) {
 			$args["not_meeting_id"] = $filters["not_meeting_id"];
-//			$query .= " AND not_meeting_id = :not_meeting_id \n";
 			$queryBuilder->where("not_meeting_id = :not_meeting_id");
 		}
-
-//		$query .= "	ORDER BY gro_label, the_label ";
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

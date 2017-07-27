@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -112,32 +112,20 @@ class AgendaBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect("*");
 
-		$query = "	SELECT * ";
-
 		if (isset($filters["with_count_motions"]) && $filters["with_count_motions"]) {
-			$query .= "	, (SELECT COUNT(*) FROM motions WHERE mot_agenda_id = age_id AND mot_deleted = 0) AS age_number_of_motions ";
 			// TODO 
 			$queryBuilder->addSelect("(SELECT COUNT(*) FROM motions WHERE mot_agenda_id = age_id AND mot_deleted = 0)", "age_number_of_motions");
 		}
 
-		$query .= "	FROM  $this->TABLE
-					WHERE
-						1 = 1 \n";
-
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["age_meeting_id"])) {
 			$args["age_meeting_id"] = $filters["age_meeting_id"];
-			$query .= " AND age_meeting_id = :age_meeting_id \n";
 			$queryBuilder->where("age_meeting_id = :age_meeting_id");
 		}
-
-		$query .= "	ORDER BY age_parent_id ASC , age_order ASC ";
-//		echo showQuery($query, $args);
 
 		$queryBuilder->orderBy("age_parent_id")->orderBy("age_order");
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -111,54 +111,39 @@ class ChatAdviceBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect("*");
 
-//		$query = "	SELECT * ";
-//		$query .= "	FROM  $this->TABLE ";
-
 		if (isset($filters["cad_agenda_id"]) && $filters["cad_agenda_id"]) {
-//			$query .= "	LEFT JOIN chats ON cha_id = cad_chat_id ";
 			$queryBuilder->join("chats", "cha_id = cad_chat_id", null, "left");
 		}
 
-//		$query .= "	WHERE
-//						1 = 1 \n";
-
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["cad_agenda_id"]) && $filters["cad_agenda_id"]) {
 			$args["cad_agenda_id"] = $filters["cad_agenda_id"];
-//			$query .= " AND cha_agenda_id = :cad_agenda_id \n";
 			$queryBuilder->where("cha_agenda_id = :cad_agenda_id");
 		}
 		
 		if (isset($filters["cad_chat_id"])) {
 			$args["cad_chat_id"] = $filters["cad_chat_id"];
-//			$query .= " AND cad_chat_id = :cad_chat_id \n";
 			$queryBuilder->where("cad_chat_id = :cad_chat_id");
 		}
 
 		if (isset($filters["cad_user_id"])) {
 			$args["cad_user_id"] = $filters["cad_user_id"];
-//			$query .= " AND cad_user_id = :cad_user_id \n";
 			$queryBuilder->where("cad_user_id = :cad_user_id");
 		}
 
 		if (isset($filters["cad_advice"])) {
 			$args["cad_advice"] = $filters["cad_advice"];
-//			$query .= " AND cad_advice = :cad_advice \n";
 			$queryBuilder->where("cad_advice = :cad_advice");
 		}
 		
-//		$query .= "	ORDER BY cad_advice ASC ";
 		$queryBuilder->orderBy("cad_advice");
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
-//		echo showQuery($query, $args);
-//		echo showQuery($queryBuilder->constructRequest(), $args);
 
 		$results = array();
 

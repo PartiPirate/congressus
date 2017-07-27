@@ -47,6 +47,7 @@ if(!isset(\$config)) {
 \$config[\"administrator\"][\"password\"] = \"" . $_REQUEST["administrator_password_input"] . "\";
 
 \$config[\"database\"] = array();
+\$config[\"database\"][\"dialect\"] = \"mysql\";
 \$config[\"database\"][\"host\"] = \"" . $_REQUEST["database_host_input"] . "\";
 \$config[\"database\"][\"port\"] = " . $_REQUEST["database_port_input"] . ";
 \$config[\"database\"][\"login\"] = \"" . $_REQUEST["database_login_input"] . "\";

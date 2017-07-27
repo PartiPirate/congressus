@@ -26,7 +26,7 @@ require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MeetingRightBo.php");
 require_once("engine/bo/AgendaBo.php");
 
-$meetingId = $_REQUEST["id"];
+$meetingId = intval($_REQUEST["id"]);
 $memcacheKey = "do_getAgenda_$meetingId";
 
 $memcache = openMemcacheConnection();
@@ -61,6 +61,11 @@ if (!$json) {
 	$meeting["mee_end_datetime"] = $meeting["mee_end_datetime"]->format("Y-m-d H:i:s");
 
 	$meeting["mee_rights"] = array();
+	
+//	error_log("Meeting id : $meetingId");
+//	error_log("User : $meetingId");
+
+//	error_log("Meeting : " . print_r($meeting, true));
 	
 	$rights = $meetingRightBo->getByFilters(array("mri_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 	foreach($rights as $right) {

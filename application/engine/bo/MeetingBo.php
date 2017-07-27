@@ -162,6 +162,7 @@ class MeetingBo {
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
+//		error_log(showQuery($query, $args));
 
 		$results = array();
 

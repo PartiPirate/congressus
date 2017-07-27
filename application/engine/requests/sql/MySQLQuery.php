@@ -25,8 +25,39 @@ class MySQLQuery {
 	var $joins = array();
 	var $wheres = array();
 	var $orderBys = array();
+	var $sets = array();
 	var $request = null;
 	var $distinct = false;
+
+	function insert($table = null) {
+	    $this->request = "INSERT";
+
+        if ($table) {
+            $this->setTable($table);
+        }
+
+	    return $this;
+	}
+
+	function update($table = null) {
+	    $this->request = "UPDATE";
+
+        if ($table) {
+            $this->setTable($table);
+        }
+
+	    return $this;
+	}
+
+	function delete($table = null) {
+	    $this->request = "DELETE";
+
+        if ($table) {
+            $this->setTable($table);
+        }
+
+	    return $this;
+	}
 
     function select($table = null, $as = null) {
 	    $this->request = "SELECT";
@@ -42,6 +73,10 @@ class MySQLQuery {
     	$this->distinct = $distinct;
     }
 
+	function set($column, $value) {
+		$this->sets[] = array("column" => $column, "value" => $value);
+	}
+
     /**
      * $column column or "*"
      * $as
@@ -49,6 +84,12 @@ class MySQLQuery {
 	function addSelect($column, $as = null) {
 	    $this->select();
 	    $this->selects[] = array("column" => $column, "as" => $as);
+
+	    return $this;
+	}
+
+	function setTable($table) {
+		$this->froms[]  = array("table" => $table, "as" => null);
 
 	    return $this;
 	}
@@ -117,6 +158,16 @@ class MySQLQuery {
 	    switch($this->request) {
 	        case "SELECT":
 	            $query = $this->constructSelectRequest();
+	            break;
+	        case "INSERT":
+	            $query = $this->constructInsertRequest();
+	            break;
+	        case "UPDATE":
+	            $query = $this->constructUpdateRequest();
+	            break;
+	        case "DELETE":
+	            $query = $this->constructDeleteRequest();
+	            break;
 	    }
 
 	    return $query;
@@ -192,7 +243,10 @@ class MySQLQuery {
 	        $separator = "\n";
 	    }
 
+		$query .= $this->addWhereClauseInQuery();
+/*		
 	    $separator = "\nWHERE 1 = 1 \nAND ";
+
 
 	    foreach($this->wheres as $where) {
 	        $query .= $separator;
@@ -203,6 +257,7 @@ class MySQLQuery {
 
 	        $separator = "\nAND ";
 	    }
+*/
 
 	    $separator = "\nORDER BY ";
 
@@ -224,6 +279,73 @@ class MySQLQuery {
 	    }
 
         return $query;
+	}
+
+	function constructInsertRequest() {
+		$query = "INSERT INTO " . $this->froms[0]["table"] . "\n(";
+
+		$separator = "";
+		foreach($this->sets as $set) {
+			$query .= $separator;
+			$query .= $set["column"];
+			$separator = ", ";
+		}
+
+		$query .= ")\nVALUES\n(";
+
+		$separator = "";
+		foreach($this->sets as $set) {
+			$query .= $separator;
+			$query .= $set["value"];
+			$separator = ", ";
+		}
+
+		$query .= ")\n";
+
+		return $query;
+	}
+
+	function constructUpdateRequest() {
+		$query = "UPDATE " . $this->froms[0]["table"] ." SET\n";
+
+		$separator = "";
+		foreach($this->sets as $set) {
+			$query .= $separator;
+			$query .= $set["column"];
+			$query .= " = ";
+			$query .= $set["value"];
+			$separator = ",\n";
+		}
+
+		$query .= $this->addWhereClauseInQuery();
+
+		return $query;
+	}
+
+	function constructDeleteRequest() {
+		$query = "DELETE FROM " . $this->froms[0]["table"];
+
+		$query .= $this->addWhereClauseInQuery();
+
+		return $query;
+	}
+
+	private function addWhereClauseInQuery() {
+		$query = "";
+
+	    $separator = "\nWHERE 1 = 1 \nAND ";
+
+	    foreach($this->wheres as $where) {
+	        $query .= $separator;
+
+//            print_r($where);
+
+            $query .= $where["where"];
+
+	        $separator = "\nAND ";
+	    }
+	    
+	    return $query;
 	}
 
 }

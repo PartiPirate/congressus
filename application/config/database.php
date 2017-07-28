@@ -18,6 +18,7 @@
 */
 @include_once("config/config.php");
 @include_once("config/salt.php");
+@include_once("engine/bo/BoHelper.php");
 @include_once("engine/requests/sql/QueryFactory.php");
 @include_once("engine/requests/sql/MySQLQuery.php");
 

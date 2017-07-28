@@ -37,40 +37,11 @@ class PingBo {
 	}
 
 	function create(&$ping) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$ping[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($ping, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($ping) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($ping as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $ping);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($ping);
+		return BoHelper::update($ping, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$ping) {

@@ -37,39 +37,11 @@ class ChatBo {
 	}
 
 	function create(&$chat) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-
-		try {
-			$statement->execute();
-			$chat[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($chat, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($chat) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($chat as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $chat);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($chat);
+		return BoHelper::update($chat, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$chat) {

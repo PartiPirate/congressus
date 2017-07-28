@@ -38,40 +38,11 @@ class MeetingBo {
 	}
 
 	function create(&$meeting) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$meeting[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($meeting, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($meeting) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($meeting as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $meeting);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($meeting);
+		return BoHelper::update($meeting, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$meeting) {

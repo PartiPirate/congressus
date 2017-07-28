@@ -47,40 +47,11 @@ class MotionBo {
 	}
 
 	function create(&$motion) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$motion[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($motion, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($motion) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($motion as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $motion);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($motion);
+		return BoHelper::update($motion, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$motion) {
@@ -253,7 +224,9 @@ class MotionBo {
 	}
 
 	function createProposition(&$proposition) {
-		$query = "	INSERT INTO $this->TABLE_PROPOSITION () VALUES ()	";
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+		$queryBuilder->insert($this->TABLE_PROPOSITION);
+		$query = $queryBuilder->constructRequest();
 
 		$statement = $this->pdo->prepare($query);
 		//				echo showQuery($query, $args);

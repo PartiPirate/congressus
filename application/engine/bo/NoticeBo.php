@@ -34,40 +34,11 @@ class NoticeBo {
 	}
 
 	function create(&$notice) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$notice[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($notice, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($notice) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($notice as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $notice);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($notice);
+		return BoHelper::update($notice, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$notice) {

@@ -34,40 +34,11 @@ class GuestBo {
 	}
 
 	function create(&$guest) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$guest[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($guest, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($guest) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($guest as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $guest);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($guest);
+		return BoHelper::update($guest, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$guest) {

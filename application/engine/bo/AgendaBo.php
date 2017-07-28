@@ -34,40 +34,11 @@ class AgendaBo {
 	}
 
 	function create(&$agenda) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$agenda[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($agenda, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($agenda) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($agenda as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $agenda);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($agenda);
+		return BoHelper::update($agenda, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$agenda) {

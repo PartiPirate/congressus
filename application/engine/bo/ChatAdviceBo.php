@@ -33,41 +33,13 @@ class ChatAdviceBo {
 		return new ChatAdviceBo($pdo, $config);
 	}
 
+
 	function create(&$chatAdvice) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$chatAdvice[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($chatAdvice, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($chatAdvice) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($chatAdvice as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $chatAdvice);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($chatAdvice);
+		return BoHelper::update($chatAdvice, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$chatAdvice) {

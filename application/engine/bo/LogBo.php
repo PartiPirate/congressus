@@ -34,40 +34,11 @@ class LogBo {
 	}
 
 	function create(&$log) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$log[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($log, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($log) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($log as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $log);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($log);
+		return BoHelper::update($log, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$log) {

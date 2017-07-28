@@ -34,40 +34,11 @@ class LocationBo {
 	}
 
 	function create(&$location) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$location[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($location, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($location) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($location as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $location);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($location);
+		return BoHelper::update($location, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$location) {

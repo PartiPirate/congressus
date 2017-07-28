@@ -37,40 +37,11 @@ class VoteBo {
 	}
 
 	function create(&$vote) {
-		$query = "	INSERT INTO $this->TABLE () VALUES ()	";
-
-		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$vote[$this->ID_FIELD] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function update($vote) {
-		$query = "	UPDATE $this->TABLE SET ";
-
-		$separator = "";
-		foreach($vote as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $vote);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($vote);
+		return BoHelper::update($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function save(&$vote) {

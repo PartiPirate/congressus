@@ -19,6 +19,10 @@
 
 class GaletteGroupSource {
 
+    function getGroupKey() {
+        return "galette_groups";
+    }
+
     function getGroupKeyLabel() {
         return array("key" => "galette_groups", "label" => lang("notice_groupGalette"));
     }

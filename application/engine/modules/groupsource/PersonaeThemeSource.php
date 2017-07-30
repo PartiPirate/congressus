@@ -19,6 +19,10 @@
 
 class PersonaeThemeSource {
 
+    function getGroupKey() {
+        return "dlp_themes";
+    }
+
     function getGroupKeyLabel() {
         return array("key" => "dlp_themes", "label" => lang("notice_themes"));
     }

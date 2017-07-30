@@ -225,10 +225,10 @@ class MotionBo {
 	}
 
 	function createProposition(&$proposition) {
-		return BoHelper::create($proposition$motion, $this->TABLE_PROPOSITION, $this->ID_FIELD_PROPOSITION, $this->config, $this->pdo);
+		return BoHelper::create($proposition, $this->TABLE_PROPOSITION, $this->ID_FIELD_PROPOSITION, $this->config, $this->pdo);
 	}
 
-	function update($motion) {
+	function updateProposition($proposition) {
 		return BoHelper::update($proposition, $this->TABLE_PROPOSITION, $this->ID_FIELD_PROPOSITION, $this->config, $this->pdo);
 	}
 

@@ -89,6 +89,7 @@ else {
 
 $pingBo->save($ping);
 
+$data["ping"] = $ping;
 $data["ok"] = "ok";
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

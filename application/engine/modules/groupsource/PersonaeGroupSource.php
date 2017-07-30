@@ -19,6 +19,10 @@
 
 class PersonaeGroupSource {
 
+    function getGroupKey() {
+        return "dlp_groups";
+    }
+
     function getGroupKeyLabel() {
         return array("key" => "dlp_groups", "label" => lang("notice_group"));
     }

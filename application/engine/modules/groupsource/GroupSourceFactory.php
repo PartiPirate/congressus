@@ -32,9 +32,14 @@ class GroupSourceFactory {
 
 		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-		if ($diff < CONNECTED_TIME) {
+		if ($diff < 60) {
 			$people["mem_connected"] = true;
 		}
+		else {
+			$people["mem_connected"] = false;
+		}
+
+		$people["mem_present"] = ($ping["pin_first_presence_datetime"] ? 1 : 0);
 
 		$people["mem_speaking"] = $ping["pin_speaking"];
 		$people["mem_speaking_request"] = $ping["pin_speaking_request"];

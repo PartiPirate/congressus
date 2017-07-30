@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -19,20 +19,16 @@
 
 require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
 include_once("language/language.php");
 
 $connection = openConnection();
 
-$themeBo = ThemeBo::newInstance($connection, $config);
-$groupBo = GroupBo::newInstance($connection, $config);
-$galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
+$groupKeyLabels = array();
 
-$themes = $themeBo->getThemes(array("with_group_information" => true));
-$groups = $groupBo->getGroups();
-$galetteGroups = $galetteBo->getGroups();
+foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+	$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+	$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
+}
 
 ?>
 
@@ -48,9 +44,10 @@ $galetteGroups = $galetteBo->getGroups();
 			<label for="not_target_type" class="col-md-4 control-label"><?php echo lang("notice_source"); ?></label>
 			<div class="col-md-8">
 				<select class="form-control input-md" id="not_target_type" name="not_target_type">
-					<option value="dlp_groups"><?php echo lang("notice_group"); ?></option>
-					<option value="dlp_themes"><?php echo lang("notice_themes"); ?></option>
-					<option value="galette_groups"><?php echo lang("notice_groupGalette"); ?></option>
+
+					<?php	foreach($groupKeyLabels as $groupKeyLabel) { ?>
+						<option value="<?php echo $groupKeyLabel["key"]; ?>"><?php echo $groupKeyLabel["label"]; ?></option>
+					<?php	} ?>
 <!--
 					<option value="galette_adherents">Adh&eacute;rents Galette</option>
 					<option value="con_external">Par mail</option>
@@ -64,44 +61,15 @@ $galetteGroups = $galetteBo->getGroups();
 			<div class="col-md-8">
 				<select class="form-control input-md" id="not_target_id" name="not_target_id">
 
-					<!-- Groups -->
-					<option class="dlp_groups" value="0" >Veuillez choisir un groupe</option>
-			<?php 	foreach($groups as $listGroup) {?>
-					<option class="dlp_groups"
-						value="<?php echo $listGroup["gro_id"]; ?>"
-					><?php echo $listGroup["gro_label"]; ?></option>
-			<?php 	}?>
-
-					<!-- Themes -->
-					<option class="dlp_themes" value="0" >Veuillez choisir un theme</option>
-			<?php 	$groupLabel = null;
-					foreach($themes as $listTheme) {
-						if ($listTheme["gro_label"] != $groupLabel) {
-							if ($groupLabel) {
-								?></optgroup><?php
-							}
-							$groupLabel = $listTheme["gro_label"];
-							?><optgroup class="dlp_themes" label="<?php echo $groupLabel; ?>"><?php
-						}
-			?>
-					<option class="dlp_themes"
-						value="<?php echo $listTheme["the_id"]; ?>"
-					><?php echo $listTheme["the_label"]; ?></option>
-			<?php 	}
-					if ($groupLabel) {
-						?></optgroup><?php
-					}
-			?>
-					<!-- Galette groups -->
-					<option class="galette_groups" value="0" >Veuillez choisir un groupe</option>
-			<?php 	foreach($galetteGroups as $listGroup) {?>
-					<option class="galette_groups"
-						value="<?php echo $listGroup["id_group"]; ?>"
-					><?php echo utf8_encode($listGroup["group_name"]); ?></option>
-			<?php 	}?>
-
-
 					<option class="galette_adherents" value="0" >Tous les adh&eacute;rents</option>
+
+					<?php					
+					foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+						$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+						$groupSource->getGroupOptions();
+					}
+					?>
+
 				</select>
 			</div>
 		</div>

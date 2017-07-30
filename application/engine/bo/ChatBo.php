@@ -20,15 +20,12 @@
 class ChatBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
 
 	var $TABLE = "chats";
 	var $ID_FIELD = "cha_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-
 		$this->pdo = $pdo;
 	}
 
@@ -71,21 +68,21 @@ class ChatBo {
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 
 		$queryBuilder->select($this->TABLE);
-		$queryBuilder->addSelect($this->TABLE . ".*")->addSelect("agendas.*")->addSelect("pings.*")->addSelect("galette_adherents.*");
+		$queryBuilder->addSelect($this->TABLE . ".*")->addSelect("agendas.*")->addSelect("pings.*");
 
-		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = cha_member_id", null, "left");
+		$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
+		$userSource->upgradeQuery($queryBuilder, $this->config, "cha_member_id");
+
 		$queryBuilder->join("agendas", "age_id = cha_agenda_id", null, "left");
 		$queryBuilder->join("pings", "pin_guest_id = cha_guest_id", null, "left");
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
-//			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
 		if (isset($filters["cha_agenda_id"])) {
 			$args["cha_agenda_id"] = $filters["cha_agenda_id"];
-//			$query .= " AND cha_agenda_id = :cha_agenda_id \n";
 			$queryBuilder->where("cha_agenda_id = :cha_agenda_id");
 		}
 

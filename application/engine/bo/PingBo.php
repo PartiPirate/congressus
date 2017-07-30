@@ -20,15 +20,12 @@
 class PingBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
 
 	var $TABLE = "pings";
 	var $ID_FIELD = "pin_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-
 		$this->pdo = $pdo;
 	}
 
@@ -71,9 +68,10 @@ class PingBo {
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 
 		$queryBuilder->select($this->TABLE);
-		$queryBuilder->addSelect("*");
+		$queryBuilder->addSelect($this->TABLE . ".*");
 
-		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = pin_member_id", null, "left");
+		$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
+		$userSource->upgradeQuery($queryBuilder, $this->config, "pin_member_id");
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
@@ -102,7 +100,7 @@ class PingBo {
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
-//		echo showQuery($query, $args);
+//		error_log(showQuery($query, $args));
 
 		$results = array();
 

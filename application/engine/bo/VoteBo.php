@@ -20,14 +20,12 @@
 class VoteBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
 
 	var $TABLE = "votes";
 	var $ID_FIELD = "vot_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
 
 		$this->pdo = $pdo;
 	}
@@ -72,12 +70,12 @@ class VoteBo {
 
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect($this->TABLE . ".*")->addSelect("motion_propositions.*")->addSelect("motions.*");
-		$queryBuilder->addSelect($this->galetteDatabase . "galette_adherents.id_adh");
-		$queryBuilder->addSelect($this->galetteDatabase . "galette_adherents.pseudo_adh");
+
+		$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
+		$userSource->upgradeQuery($queryBuilder, $this->config, "vot_member_id");
 
 		$queryBuilder->join("motion_propositions", "mpr_id = vot_motion_proposition_id");
 		$queryBuilder->join("motions", "mot_id = mpr_motion_id");
-		$queryBuilder->join($this->galetteDatabase."galette_adherents", "id_adh = vot_member_id", null, "left");
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];

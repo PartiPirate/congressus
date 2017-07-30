@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -18,12 +18,8 @@
 */
 include_once("header.php");
 
-//require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/SearchBo.php");
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
 
 function meetingCompare($meetingA, $meetingB) {
     if ($meetingA["mee_datetime"] == $meetingB["mee_datetime"]) {
@@ -39,14 +35,6 @@ if (isset($_REQUEST["id"])) {
     $skeleton = false;
     $groupId = $_REQUEST["id"];
 }
-
-$themeBo = ThemeBo::newInstance($connection, $config);
-$groupBo = GroupBo::newInstance($connection, $config);
-$galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
-
-$themes = $themeBo->getThemes(array("with_group_information" => true));
-$groups = $groupBo->getGroups();
-$galetteGroups = $galetteBo->getGroups();
 
 $searchBo = SearchBo::newInstance($connection, $config);
 $conclusions = $searchBo->conclusionSearch(array("query" => ""));
@@ -167,34 +155,27 @@ foreach($propositions as $proposition) {
 		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
 
             $voterLabel = $id;
-            
-            switch($voter["voter"]["not_target_type"]) {
-                case "dlp_groups":
-                    $voterLabel = $groups[$voter["voter"]["not_target_id"]]["gro_label"];
-                    break;
-                case "dlp_themes":
-                    foreach($themes as $theme) {
-                        if ($theme["the_id"] == $voter["voter"]["not_target_id"]) {
-                            $voterLabel = $theme["the_label"];
-                            break;
-                        }
-                    }
-                    break;
-                case "galette_groups":
-                    foreach($galetteGroups as $galetteGroup) {
-                        if ($galetteGroup["id_group"] == $voter["voter"]["not_target_id"]) {
-                            $voterLabel = utf8_encode($galetteGroup["group_name"]);
-                            break;
-                        }
-                    }
-                    break;
+
+            foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+            	$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+            	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+
+            	if ($groupKeyLabel["key"] != $voter["voter"]["not_target_type"]) continue;
+
+            	$label = $groupSource->getGroupLabel($voter["voter"]["not_target_id"]);
+            	
+            	if ($label != null) {
+            	    $voterLabel = $label;
+            	}
+
+            	break;
             }
 
 ?>
 		<li role="presentation" class="<?php echo $active; ?>">
 			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $voterLabel; ?></a>
 		</li>
-<?php 	$active = "";
+<?php 	    $active = "";
 		}?>
 	</ul>
 

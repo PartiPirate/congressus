@@ -112,6 +112,7 @@ class MotionBo {
 			$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1");
 			
 			//  galette groups
+
 			$queryBuilder->join($this->galetteDatabase."galette_groups",			"gg.id_group = not_target_id AND not_target_type = 'galette_groups'",	"gg", "left");
 
 			if (isset($filters["vot_member_id"])) {
@@ -224,42 +225,11 @@ class MotionBo {
 	}
 
 	function createProposition(&$proposition) {
-		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
-		$queryBuilder->insert($this->TABLE_PROPOSITION);
-		$query = $queryBuilder->constructRequest();
-
-		$statement = $this->pdo->prepare($query);
-		//				echo showQuery($query, $args);
-
-		try {
-			$statement->execute();
-			$proposition[$this->ID_FIELD_PROPOSITION] = $this->pdo->lastInsertId();
-
-			return true;
-		}
-		catch(Exception $e){
-			echo 'Erreur de requète : ', $e->getMessage();
-		}
-
-		return false;
+		return BoHelper::create($proposition$motion, $this->TABLE_PROPOSITION, $this->ID_FIELD_PROPOSITION, $this->config, $this->pdo);
 	}
 
-	function updateProposition($proposition) {
-		$query = "	UPDATE $this->TABLE_PROPOSITION SET ";
-
-		$separator = "";
-		foreach($proposition as $field => $value) {
-			$query .= $separator;
-			$query .= $field . " = :". $field;
-			$separator = ", ";
-		}
-
-		$query .= "	WHERE $this->ID_FIELD_PROPOSITION = :$this->ID_FIELD_PROPOSITION ";
-
-//		echo showQuery($query, $proposition);
-
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($proposition);
+	function update($motion) {
+		return BoHelper::update($proposition, $this->TABLE_PROPOSITION, $this->ID_FIELD_PROPOSITION, $this->config, $this->pdo);
 	}
 
 	function saveProposition(&$proposition) {

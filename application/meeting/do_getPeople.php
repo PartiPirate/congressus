@@ -19,6 +19,9 @@
 
 if (!isset($api)) exit();
 
+define("CONNECTED_TIME", 60);
+define("DISCONNECTED_TIME", 65);
+
 include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
@@ -28,11 +31,6 @@ require_once("engine/utils/DateTimeUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/PingBo.php");
-
-require_once("engine/bo/FixationBo.php");
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
 
 $meetingId = $_REQUEST["id"];
 $memcacheKey = "do_getPeople_$meetingId";
@@ -46,11 +44,6 @@ if (!$json) {
 	$meetingBo = MeetingBo::newInstance($connection, $config);
 	$noticeBo = NoticeBo::newInstance($connection, $config);
 	$pingBo = PingBo::newInstance($connection, $config);
-
-	$fixationBo = FixationBo::newInstance($connection, $config);
-	$groupBo = GroupBo::newInstance($connection, $config);
-	$themeBo = ThemeBo::newInstance($connection, $config);
-	$galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 	$meeting = $meetingBo->getById($_REQUEST["id"]);
 
@@ -86,8 +79,8 @@ if (!$json) {
 
 		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-		if ($diff >= 60) {
-			if ($diff <= 65) {
+		if ($diff >= CONNECTED_TIME) {
+			if ($diff <= DISCONNECTED_TIME) {
 				addEvent($meetingId, EVENT_LEFT, "", array("userId" => $ping["pin_member_id"] ? $ping["pin_member_id"] : "G" . $ping["pin_guest_id"]));
 			}
 			
@@ -117,204 +110,14 @@ if (!$json) {
 	$usedPings = array();
 
 	foreach($notices as $notice) {
-		// Search fixation for the notice
 
-		if ($notice["not_target_type"] == "galette_groups") {
+		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 
-	//		echo "galette_groups\n";
-
-			$groups = $galetteBo->getGroups(array("id_group" => $notice["not_target_id"]));
-
-			$group = array("group_name" => "");
-			if (count($groups)) {
-				$group = $groups[0];
-			}
-			$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"])));
-
-	//		print_r($members);
-
-			$notice["not_label"] = htmlspecialchars(utf8_encode($group["group_name"]), ENT_SUBSTITUTE);
-			$notice["not_people"] = array();
-
-			foreach($members as $member) {
-				$people = array("mem_id" => $member["id_adh"]);
-				$people["mem_nickname"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
-				$people["mem_power"] = 2;
-				$people["mem_noticed"] = 1;
-				$people["mem_voting"] = $notice["not_voting"];
-				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
-				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
-
-				$found = false;
-				foreach($pings as $index => $ping) {
-					if ($ping["pin_member_id"] == $member["id_adh"]) {
-						$found = true;
-						$lastPing = new DateTime($ping["pin_datetime"]);
-
-						$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-						if ($diff < 60) {
-							$people["mem_connected"] = true;
-						}
-
-						$people["mem_speaking"] = $ping["pin_speaking"];
-						$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-
-						$usedPings[] = $ping;
-						unset($pings[$index]);
-					}
-				}
-				if (!$found) {
-					foreach($usedPings as $index => $ping) {
-						if ($ping["pin_member_id"] == $member["id_adh"]) {
-							$found = true;
-							$lastPing = new DateTime($ping["pin_datetime"]);
-
-							$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-							if ($diff < 60) {
-								$people["mem_connected"] = true;
-							}
-
-							$people["mem_speaking"] = $ping["pin_speaking"];
-							$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-						}
-					}
-				}
-
-				$notice["not_people"][] = $people;
-			}
-
-	//		print_r($notice["not_people"]);
-		}
-		else if ($notice["not_target_type"] == "dlp_themes") {
-			$theme = $themeBo->getTheme($notice["not_target_id"]);
-			$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
-
-	//		$theme["the_fixation_members"] = $fixationMembers;
-	//		$notice["not_target"] = $theme;
-
-			$notice["not_label"] = $theme["the_label"];
-			$notice["not_people"] = array();
-
-			foreach($fixationMembers as $fixationMember) {
-				if (!$fixationMember["id_adh"]) continue;
-				$people = array("mem_id" => $fixationMember["id_adh"]);
-				$people["mem_nickname"] = htmlspecialchars(utf8_encode($fixationMember["pseudo_adh"] ? $fixationMember["pseudo_adh"] : $fixationMember["nom_adh"] . ' ' . $fixationMember["prenom_adh"]), ENT_SUBSTITUTE);
-				$people["mem_power"] = $fixationMember["fme_power"];
-				$people["mem_voting"] = $notice["not_voting"];
-				$people["mem_noticed"] = 1;
-				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
-				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
-
-				$found = false;
-				foreach($pings as $index => $ping) {
-					if ($ping["pin_member_id"] == $fixationMember["id_adh"]) {
-						$lastPing = new DateTime($ping["pin_datetime"]);
-
-						$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-						if ($diff < 60) {
-							$people["mem_connected"] = true;
-						}
-
-						$people["mem_speaking"] = $ping["pin_speaking"];
-						$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-
-						$usedPings[] = $ping;
-						unset($pings[$index]);
-					}
-				}
-				if (!$found) {
-					foreach($usedPings as $index => $ping) {
-						if ($ping["pin_member_id"] == $fixationMember["id_adh"]) {
-							$found = true;
-							$lastPing = new DateTime($ping["pin_datetime"]);
-
-							$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-							if ($diff < 60) {
-								$people["mem_connected"] = true;
-							}
-
-							$people["mem_speaking"] = $ping["pin_speaking"];
-							$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-						}
-					}
-				}
-
-				$notice["not_people"][] = $people;
-			}
-		}
-		else if ($notice["not_target_type"] == "dlp_groups") {
-			$group = $groupBo->getGroup($notice["not_target_id"]);
-
-	//		$notice["not_group"] = $group;
-
-			$notice["not_label"] = $group["gro_label"];
-			$notice["not_people"] = array();
-			$notice["not_children"] = array();
-
-			foreach($group["gro_themes"] as $theme) {
-				$child = array();
-				$child["not_voting"] = $notice["not_voting"];
-				$child["not_label"] = $theme["the_label"];
-				$child["not_people"] = array();
-				$child["not_power"] = $theme["gth_power"];
-
-				foreach($theme["fixation"]["members"] as $fixationMember) {
-					if (!$fixationMember["id_adh"]) continue;
-					$people = array("mem_id" => $fixationMember["id_adh"]);
-					$people["mem_nickname"] = htmlspecialchars(utf8_encode($fixationMember["pseudo_adh"] ? $fixationMember["pseudo_adh"] : $fixationMember["nom_adh"] . ' ' . $fixationMember["prenom_adh"]), ENT_SUBSTITUTE);
-					$people["mem_power"] = $fixationMember["fme_power"];
-					$people["mem_voting"] = $notice["not_voting"];
-					$people["mem_noticed"] = 1;
-					$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
-					$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
-
-					$found = false;
-					foreach($pings as $index => $ping) {
-						if ($ping["pin_member_id"] == $fixationMember["id_adh"]) {
-							$lastPing = new DateTime($ping["pin_datetime"]);
-
-							$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-							if ($diff < 60) {
-								$people["mem_connected"] = true;
-							}
-
-							$people["mem_speaking"] = $ping["pin_speaking"];
-							$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-
-							$usedPings[] = $ping;
-							unset($pings[$index]);
-						}
-					}
-					if (!$found) {
-						foreach($usedPings as $index => $ping) {
-							if ($ping["pin_member_id"] == $fixationMember["id_adh"]) {
-								$found = true;
-								$lastPing = new DateTime($ping["pin_datetime"]);
-
-								$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
-
-								if ($diff < 60) {
-									$people["mem_connected"] = true;
-								}
-
-								$people["mem_speaking"] = $ping["pin_speaking"];
-								$people["mem_speaking_request"] = $ping["pin_speaking_request"];
-							}
-						}
-					}
-
-					$child["not_people"][] = $people;
-				}
-
-				$notice["not_children"][] = $child;
-			}
-
-	//		$notice["not_target"] = $group;
+        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+        	
+        	$groupSource->updateNotice($meeting, $notice, $pings, $usedPings);
 		}
 
 		$data["notices"][] = $notice;
@@ -340,7 +143,7 @@ if (!$json) {
 
 				$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-				if ($diff < 60) {
+				if ($diff < CONNECTED_TIME) {
 					$presencePing = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
 					$presencePing["pin_first_presence_datetime"] = $nowString;
 					$pingBo->save($presencePing);
@@ -354,7 +157,7 @@ if (!$json) {
 
 				$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-				if ($diff < 60) {
+				if ($diff < CONNECTED_TIME) {
 					$presencePing = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
 					$presencePing["pin_first_presence_datetime"] = $nowString;
 					$pingBo->save($presencePing);
@@ -375,7 +178,7 @@ if (!$json) {
 
 		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
-		if ($diff < 60) {
+		if ($diff < CONNECTED_TIME) {
 			$people["mem_connected"] = true;
 		}
 		else if (!$ping["id_adh"]) {

@@ -20,8 +20,6 @@
 class MotionBo {
 	var $pdo = null;
 	var $config = null;
-	var $galetteDatabase = "";
-	var $personaeDatabase = "";
 
 	var $TABLE = "motions";
 	var $ID_FIELD = "mot_id";
@@ -35,10 +33,6 @@ class MotionBo {
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-
-		$this->galetteDatabase = $config["galette"]["db"] . ".";
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
-
 		$this->pdo = $pdo;
 	}
 
@@ -88,73 +82,26 @@ class MotionBo {
 			$queryBuilder->addSelect("votes.*");
 		}
 
-		if (isset($filters["with_meeting"]) && $filters["with_meeting"]) {
-			$queryBuilder->addSelect("agendas.*")->addSelect("meetings.*");
-		}
-
 		if (isset($filters["vot_member_id"])) {
 			$args["vot_member_id"] = $filters["vot_member_id"];
 			$queryBuilder->join("votes", "vot_motion_proposition_id = mpr_id AND vot_member_id = :vot_member_id", null, "left");
 		}
 
 		if (isset($filters["with_meeting"]) && $filters["with_meeting"]) {
+			$queryBuilder->addSelect("agendas.*")->addSelect("meetings.*");
 			$queryBuilder->join("agendas", "age_id = mot_agenda_id");
-			$queryBuilder->join("meetings", "mee_id = age_meeting_id AND mee_deleted = 0");
+			$queryBuilder->join("meetings", "mee_id = age_meeting_id AND mee_deleted = 0 AND mee_status != 'deleted'");
 		}
 
 		if (isset($filters["with_notice"]) && $filters["with_notice"]) {
 
 			$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1");
-			
-			//  galette groups
 
-			$queryBuilder->join($this->galetteDatabase."galette_groups",			"gg.id_group = not_target_id AND not_target_type = 'galette_groups'",	"gg", "left");
+			foreach($this->config["modules"]["groupsources"] as $groupSourceKey) {
+				$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
-			if (isset($filters["vot_member_id"])) {
-				$queryBuilder->join($this->galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group	AND ggm.id_adh = :vot_member_id",		"ggm", "left");
+		    	$groupSource->addMotionNoticeVoters($queryBuilder, $filters);
 			}
-			else {
-				$queryBuilder->join($this->galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group",										"ggm", "left");
-			}
-
-			// TODO 2 <= externalize
-			$queryBuilder->addSelect(2, "gga_vote_power");
-			$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
-			$queryBuilder->join($this->galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",											"gga", "left");
-
-			//  personae theme
-
-			$queryBuilder->join($this->personaeDatabase."dlp_themes",			"t.the_id = not_target_id AND not_target_type = 'dlp_themes'",					"t", "left");
-			$queryBuilder->join($this->personaeDatabase."dlp_fixations",		"tf.fix_id = t.the_current_fixation_id AND tf.fix_theme_type = 'dlp_themes'",	"tf", "left");
-
-			if (isset($filters["vot_member_id"])) {
-				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members", "tfm.fme_fixation_id = tf.fix_id AND tfm.fme_member_id = :vot_member_id",	"tfm", "left");
-			}
-			else {
-				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members", "tfm.fme_fixation_id = tf.fix_id",											"tfm", "left");
-			}
-
-			$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
-			$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
-			$queryBuilder->join($this->galetteDatabase."galette_adherents", 		"ta.id_adh = tfm.fme_member_id",											"ta", "left");
-
-			//  personae group
-
-			$queryBuilder->join($this->personaeDatabase."dlp_groups",			"g.gro_id = not_target_id AND not_target_type = 'dlp_groups'",						"g", "left");
-			$queryBuilder->join($this->personaeDatabase."dlp_group_themes",		"ggt.gth_group_id = g.gro_id",														"ggt", "left");
-			$queryBuilder->join($this->personaeDatabase."dlp_themes",			"gt.the_id = ggt.gth_theme_id",														"gt", "left");
-			$queryBuilder->join($this->personaeDatabase."dlp_fixations",		"gtf.fix_id = gt.the_current_fixation_id AND gtf.fix_theme_type = 'dlp_themes'",	"gtf", "left");
-
-			if (isset($filters["vot_member_id"])) {
-				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members",	"gtfm.fme_fixation_id = gtf.fix_id AND gtfm.fme_member_id = :vot_member_id",	"gtfm", "left");
-			}
-			else {
-				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members",	"gtfm.fme_fixation_id = gtf.fix_id",											"gtfm", "left");
-			}
-
-			$queryBuilder->addSelect("gtfm.fme_power", "gta_vote_power");
-			$queryBuilder->addSelect("gta.id_adh", "gta_id_adh");
-			$queryBuilder->join($this->galetteDatabase."galette_adherents", 		"gta.id_adh = gtfm.fme_member_id",												"gta", "left");
 		}
 
 		if (isset($filters[$this->ID_FIELD])) {
@@ -203,6 +150,8 @@ class MotionBo {
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
+//		exit();
+//		error_log(showQuery($query, $args));
 //		echo showQuery($queryBuilder->constructRequest(), $args);
 
 		$results = array();

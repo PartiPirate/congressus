@@ -118,6 +118,41 @@ class PersonaeGroupSource {
 
 		return $members;
     }
+    
+    function addMotionNoticeVoters($queryBuilder, $filters) {
+        global $config;
+		//  personae group
+
+        $galetteDatabase = "";
+
+        if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
+            $galetteDatabase = $config["galette"]["db"];
+            $galetteDatabase .= ".";
+        }
+
+        $personaeDatabase = "";
+
+        if (isset($config["personae"]["db"]) && $config["personae"]["db"]) {
+            $personaeDatabase = $config["personae"]["db"];
+            $personaeDatabase .= ".";
+        }
+
+		$queryBuilder->join($personaeDatabase."dlp_groups",		        	"g.gro_id = not_target_id AND not_target_type = 'dlp_groups'",						"g", "left");
+		$queryBuilder->join($personaeDatabase."dlp_group_themes",   		"ggt.gth_group_id = g.gro_id",														"ggt", "left");
+		$queryBuilder->join($personaeDatabase."dlp_themes",		         	"gt.the_id = ggt.gth_theme_id",														"gt", "left");
+		$queryBuilder->join($personaeDatabase."dlp_fixations",	        	"gtf.fix_id = gt.the_current_fixation_id AND gtf.fix_theme_type = 'dlp_themes'",	"gtf", "left");
+
+		if (isset($filters["vot_member_id"])) {
+			$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"gtfm.fme_fixation_id = gtf.fix_id AND gtfm.fme_member_id = :vot_member_id",    	"gtfm", "left");
+		}
+		else {
+			$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"gtfm.fme_fixation_id = gtf.fix_id",									    		"gtfm", "left");
+		}
+
+		$queryBuilder->addSelect("gtfm.fme_power", "gta_vote_power");
+		$queryBuilder->addSelect("gta.id_adh", "gta_id_adh");
+		$queryBuilder->join($galetteDatabase."galette_adherents", 	    	"gta.id_adh = gtfm.fme_member_id",										    		"gta", "left");
+    }
 }
 
 ?>

@@ -121,6 +121,39 @@ class PersonaeThemeSource {
 
 		return $fixationMembers;
     }
+    
+    function addMotionNoticeVoters($queryBuilder, $filters) {
+        global $config;
+		//  personae theme
+
+        $galetteDatabase = "";
+
+        if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
+            $galetteDatabase = $config["galette"]["db"];
+            $galetteDatabase .= ".";
+        }
+
+        $personaeDatabase = "";
+
+        if (isset($config["personae"]["db"]) && $config["personae"]["db"]) {
+            $personaeDatabase = $config["personae"]["db"];
+            $personaeDatabase .= ".";
+        }
+
+		$queryBuilder->join($personaeDatabase."dlp_themes",					"t.the_id = not_target_id AND not_target_type = 'dlp_themes'",					"t", "left");
+		$queryBuilder->join($personaeDatabase."dlp_fixations",				"tf.fix_id = t.the_current_fixation_id AND tf.fix_theme_type = 'dlp_themes'",	"tf", "left");
+
+		if (isset($filters["vot_member_id"])) {
+			$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"tfm.fme_fixation_id = tf.fix_id AND tfm.fme_member_id = :vot_member_id",		"tfm", "left");
+		}
+		else {
+			$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"tfm.fme_fixation_id = tf.fix_id",												"tfm", "left");
+		}
+
+		$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
+		$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
+		$queryBuilder->join($galetteDatabase."galette_adherents", 			"ta.id_adh = tfm.fme_member_id",												"ta", "left");
+    }
 }
 
 ?>

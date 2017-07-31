@@ -103,6 +103,32 @@ class GaletteGroupSource {
 
 		return $members;
     }
+    
+    function addMotionNoticeVoters($queryBuilder, $filters) {
+        global $config;
+		//  galette groups
+
+        $galetteDatabase = "";
+
+        if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
+            $galetteDatabase = $config["galette"]["db"];
+            $galetteDatabase .= ".";
+        }
+
+		$queryBuilder->join($galetteDatabase."galette_groups",		    	"gg.id_group = not_target_id AND not_target_type = 'galette_groups'",	"gg", "left");
+
+		if (isset($filters["vot_member_id"])) {
+			$queryBuilder->join($galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group	AND ggm.id_adh = :vot_member_id",	    	"ggm", "left");
+		}
+		else {
+			$queryBuilder->join($galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group",								    		"ggm", "left");
+		}
+
+		// TODO 2 <= externalize
+		$queryBuilder->addSelect(2, "gga_vote_power");
+		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
+		$queryBuilder->join($galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",								    			"gga", "left");
+    }
 }
 
 ?>

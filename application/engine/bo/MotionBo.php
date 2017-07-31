@@ -92,12 +92,6 @@ class MotionBo {
 			$queryBuilder->addSelect("agendas.*")->addSelect("meetings.*");
 		}
 
-		if (isset($filters["with_notice"]) && $filters["with_notice"]) {
-			$queryBuilder->addSelect("gga.id_adh", "gga_id_adh")->addSelect("ta.id_adh", "ta_id_adh")->addSelect("gta.id_adh", "gta_id_adh");
-			// TODO 2 <= externalize
-			$queryBuilder->addSelect(2, "gga_vote_power")->addSelect("tfm.fme_power", "ta_vote_power")->addSelect("gtfm.fme_power", "gta_vote_power");
-		}
-
 		if (isset($filters["vot_member_id"])) {
 			$args["vot_member_id"] = $filters["vot_member_id"];
 			$queryBuilder->join("votes", "vot_motion_proposition_id = mpr_id AND vot_member_id = :vot_member_id", null, "left");
@@ -109,6 +103,7 @@ class MotionBo {
 		}
 
 		if (isset($filters["with_notice"]) && $filters["with_notice"]) {
+
 			$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1");
 			
 			//  galette groups
@@ -122,6 +117,9 @@ class MotionBo {
 				$queryBuilder->join($this->galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group",										"ggm", "left");
 			}
 
+			// TODO 2 <= externalize
+			$queryBuilder->addSelect(2, "gga_vote_power");
+			$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
 			$queryBuilder->join($this->galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",											"gga", "left");
 
 			//  personae theme
@@ -136,9 +134,11 @@ class MotionBo {
 				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members", "tfm.fme_fixation_id = tf.fix_id",											"tfm", "left");
 			}
 
+			$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
+			$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
 			$queryBuilder->join($this->galetteDatabase."galette_adherents", 		"ta.id_adh = tfm.fme_member_id",											"ta", "left");
 
-			//  personae groupe
+			//  personae group
 
 			$queryBuilder->join($this->personaeDatabase."dlp_groups",			"g.gro_id = not_target_id AND not_target_type = 'dlp_groups'",						"g", "left");
 			$queryBuilder->join($this->personaeDatabase."dlp_group_themes",		"ggt.gth_group_id = g.gro_id",														"ggt", "left");
@@ -152,6 +152,8 @@ class MotionBo {
 				$queryBuilder->join($this->personaeDatabase."dlp_fixation_members",	"gtfm.fme_fixation_id = gtf.fix_id",											"gtfm", "left");
 			}
 
+			$queryBuilder->addSelect("gtfm.fme_power", "gta_vote_power");
+			$queryBuilder->addSelect("gta.id_adh", "gta_id_adh");
 			$queryBuilder->join($this->galetteDatabase."galette_adherents", 		"gta.id_adh = gtfm.fme_member_id",												"gta", "left");
 		}
 

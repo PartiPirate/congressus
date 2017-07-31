@@ -107,6 +107,20 @@ class PersonaeThemeSource {
 		}
 	}
 
+    function getNoticeMembers($notice) {
+		require_once("engine/bo/FixationBo.php");
+        require_once("engine/bo/ThemeBo.php");
+        global $config;
+        global $connection;
+
+		$fixationBo = FixationBo::newInstance($connection, $config);
+        $themeBo = ThemeBo::newInstance($connection, $config);
+
+		$theme = $themeBo->getTheme($notice["not_target_id"]);
+		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
+
+		return $fixationMembers;
+    }
 }
 
 ?>

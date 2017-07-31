@@ -98,9 +98,26 @@ class PersonaeGroupSource {
 
 			$notice["not_children"][] = $child;
 		}
-
     }
 
+    function getNoticeMembers($notice) {
+        require_once("engine/bo/ThemeBo.php");
+        global $config;
+        global $connection;
+
+        $groupBo = GroupBo::newInstance($connection, $config);
+
+		$group = $groupBo->getGroup($notice["not_target_id"]);
+        $members = array();
+
+		foreach($group["gro_themes"] as $theme) {
+			foreach($theme["fixation"]["members"] as $member) {
+				$members[] = $member;
+			}
+		}
+
+		return $members;
+    }
 }
 
 ?>

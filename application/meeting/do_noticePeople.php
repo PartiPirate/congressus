@@ -68,28 +68,15 @@ $membersToNotice = array();
 foreach($notices as $notice) {
 	if ($notice["not_noticed"] == 1) continue;
 
-	if ($notice["not_target_type"] == "galette_groups") {
-		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"])));
+	foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+		$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
+    	if ($groupSource->getGroupKey() != $notice["not_target_type"]) continue;
+    	
+    	$members = $groupSource->getNoticeMembers($notice);
+    	
 		foreach($members as $member) {
 			$membersToNotice[$member["id_adh"]] = $member;
-		}
-	}
-	else if ($notice["not_target_type"] == "dlp_themes") {
-		$theme = $themeBo->getTheme($notice["not_target_id"]);
-		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
-
-		foreach($fixationMembers as $member) {
-			$membersToNotice[$member["id_adh"]] = $member;
-		}
-	}
-	else if ($notice["not_target_type"] == "dlp_groups") {
-		$group = $groupBo->getGroup($notice["not_target_id"]);
-
-		foreach($group["gro_themes"] as $theme) {
-			foreach($theme["fixation"]["members"] as $member) {
-				$membersToNotice[$member["id_adh"]] = $member;
-			}
 		}
 	}
 

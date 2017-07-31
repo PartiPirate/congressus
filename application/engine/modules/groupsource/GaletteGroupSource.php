@@ -91,7 +91,17 @@ class GaletteGroupSource {
 
 			$notice["not_people"][] = $people;
 		}
+    }
+    
+    function getNoticeMembers($notice) {
+        require_once("engine/bo/GaletteBo.php");
+        global $config;
+        global $connection;
 
+        $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
+		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"])));
+
+		return $members;
     }
 }
 

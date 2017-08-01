@@ -152,7 +152,11 @@ class PersonaeThemeSource {
 
 		$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
 		$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
-		$queryBuilder->join($galetteDatabase."galette_adherents", 			"ta.id_adh = tfm.fme_member_id",												"ta", "left");
+//		$queryBuilder->join($galetteDatabase."galette_adherents", 			"ta.id_adh = tfm.fme_member_id",												"ta", "left");
+
+		$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);
+		$userSource->upgradeQuery($queryBuilder, $config, "tfm.fme_member_id", "ta");
+
     }
 }
 

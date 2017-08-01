@@ -21,7 +21,7 @@ along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 
 class GaletteUserSource {
     
-    function upgradeQuery(&$queryBuilder, $config, $joinField) {
+    function upgradeQuery(&$queryBuilder, $config, $joinField, $as = null) {
         $galetteDatabase = "";
 
         if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
@@ -29,8 +29,9 @@ class GaletteUserSource {
             $galetteDatabase .= ".";
         }
 
-		$queryBuilder->addSelect("galette_adherents.*");
-		$queryBuilder->join($galetteDatabase . "galette_adherents", "id_adh = $joinField", null, "left");
+		$queryBuilder->addSelect(($as ? $as : "galette_adherents") . ".*");
+
+		$queryBuilder->join($galetteDatabase . "galette_adherents", ($as ? $as . "." : "")."id_adh = $joinField", $as, "left");
     }
 
 }

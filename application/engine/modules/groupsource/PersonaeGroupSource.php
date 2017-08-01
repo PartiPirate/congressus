@@ -151,7 +151,10 @@ class PersonaeGroupSource {
 
 		$queryBuilder->addSelect("gtfm.fme_power", "gta_vote_power");
 		$queryBuilder->addSelect("gta.id_adh", "gta_id_adh");
-		$queryBuilder->join($galetteDatabase."galette_adherents", 	    	"gta.id_adh = gtfm.fme_member_id",										    		"gta", "left");
+//		$queryBuilder->join($galetteDatabase."galette_adherents", 	    	"gta.id_adh = gtfm.fme_member_id",										    		"gta", "left");
+
+		$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);
+		$userSource->upgradeQuery($queryBuilder, $config, "gtfm.fme_member_id", "gta");
     }
 }
 

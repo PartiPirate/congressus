@@ -61,8 +61,6 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			<div class="col-md-8">
 				<select class="form-control input-md" id="not_target_id" name="not_target_id">
 
-					<option class="galette_adherents" value="0" >Tous les adh&eacute;rents</option>
-
 					<?php					
 					foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 						$groupSource = GroupSourceFactory::getInstance($groupSourceKey);

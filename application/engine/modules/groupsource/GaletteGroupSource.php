@@ -129,6 +129,14 @@ class GaletteGroupSource {
 		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
 		$queryBuilder->join($galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",								    			"gga", "left");
     }
+
+    function getMaxVotepower($motion) {
+    	return $motion["gga_vote_power"];
+    }
+
+    function getVoterNotNull() {
+    	return "(gga.id_adh IS NOT NULL)";
+    }
 }
 
 ?>

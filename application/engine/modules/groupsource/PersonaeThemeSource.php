@@ -126,13 +126,6 @@ class PersonaeThemeSource {
         global $config;
 		//  personae theme
 
-        $galetteDatabase = "";
-
-        if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
-            $galetteDatabase = $config["galette"]["db"];
-            $galetteDatabase .= ".";
-        }
-
         $personaeDatabase = "";
 
         if (isset($config["personae"]["db"]) && $config["personae"]["db"]) {
@@ -152,11 +145,17 @@ class PersonaeThemeSource {
 
 		$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
 		$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
-//		$queryBuilder->join($galetteDatabase."galette_adherents", 			"ta.id_adh = tfm.fme_member_id",												"ta", "left");
 
 		$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);
 		$userSource->upgradeQuery($queryBuilder, $config, "tfm.fme_member_id", "ta");
+    }
 
+    function getMaxVotepower($motion) {
+    	return $motion["ta_vote_power"];
+    }
+
+    function getVoterNotNull() {
+    	return "(ta.id_adh IS NOT NULL)";
     }
 }
 

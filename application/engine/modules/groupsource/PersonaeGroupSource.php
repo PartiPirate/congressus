@@ -123,13 +123,6 @@ class PersonaeGroupSource {
         global $config;
 		//  personae group
 
-        $galetteDatabase = "";
-
-        if (isset($config["galette"]["db"]) && $config["galette"]["db"]) {
-            $galetteDatabase = $config["galette"]["db"];
-            $galetteDatabase .= ".";
-        }
-
         $personaeDatabase = "";
 
         if (isset($config["personae"]["db"]) && $config["personae"]["db"]) {
@@ -151,10 +144,17 @@ class PersonaeGroupSource {
 
 		$queryBuilder->addSelect("gtfm.fme_power", "gta_vote_power");
 		$queryBuilder->addSelect("gta.id_adh", "gta_id_adh");
-//		$queryBuilder->join($galetteDatabase."galette_adherents", 	    	"gta.id_adh = gtfm.fme_member_id",										    		"gta", "left");
 
 		$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);
 		$userSource->upgradeQuery($queryBuilder, $config, "gtfm.fme_member_id", "gta");
+    }
+
+    function getMaxVotepower($motion) {
+    	return $motion["gta_vote_power"];
+    }
+
+    function getVoterNotNull() {
+    	return "(gta.id_adh IS NOT NULL)";
     }
 }
 

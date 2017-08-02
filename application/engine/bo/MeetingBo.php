@@ -27,9 +27,6 @@ class MeetingBo {
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-
-		$this->personaeDatabase = $config["personae"]["db"] . ".";
-
 		$this->pdo = $pdo;
 	}
 

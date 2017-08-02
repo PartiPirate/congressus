@@ -23,6 +23,7 @@ class GroupSourceFactory {
         if (strtolower($source) == "galettegroups") return new GaletteGroupSource();
         else if (strtolower($source) == "personaegroups") return new PersonaeGroupSource();
         else if (strtolower($source) == "personaethemes") return new PersonaeThemeSource();
+        else if (strtolower($source) == "customgroups") return new CustomGroupSource();
         
         return null;
     }

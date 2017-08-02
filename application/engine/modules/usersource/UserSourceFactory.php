@@ -23,6 +23,7 @@ class UserSourceFactory {
     
     static function getInstance($source) {
         if (strtolower($source) == "galette") return new GaletteUserSource();
+        if (strtolower($source) == "custom") return new CustomUserSource();
         
         return null;
     }

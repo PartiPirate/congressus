@@ -93,7 +93,13 @@ function sortPropositions($a, $b) {
 
 <?php	foreach($sortedMotions as $motionId => $motion) { 
 
-	$maxVotePower = $motion["gta_vote_power"] ? $motion["gta_vote_power"] : ($motion["ta_vote_power"] ? $motion["ta_vote_power"] : $motion["gga_vote_power"]);
+	foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+		$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+
+    	if ($groupSource->getGroupKey() != $motion["not_target_type"]) continue;
+
+	    $maxVotePower = $groupSource->getMaxVotePower($motion);
+	}
 
 	$propositions = $motion["propositions"];
 

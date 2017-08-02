@@ -94,13 +94,28 @@ class MotionBo {
 		}
 
 		if (isset($filters["with_notice"]) && $filters["with_notice"]) {
-
+			$queryBuilder->addSelect("not_target_type");
 			$queryBuilder->join("notices", "not_meeting_id = mee_id AND not_voting = 1");
+
+			$or = "(";
+			$orSeparator = "";
 
 			foreach($this->config["modules"]["groupsources"] as $groupSourceKey) {
 				$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
 		    	$groupSource->addMotionNoticeVoters($queryBuilder, $filters);
+
+				if (isset($filters["vot_member_id"]) && $filters["vot_member_id"]) {
+			    	$or .= $orSeparator;
+			    	$or .= $groupSource->getVoterNotNull();
+			    	$orSeparator = " OR ";
+				}
+			}
+			
+			$or .= ")";
+
+			if (isset($filters["vot_member_id"]) && $filters["vot_member_id"] && $or != "()") {
+				$queryBuilder->where($or);
 			}
 		}
 
@@ -141,10 +156,6 @@ class MotionBo {
 
 		if (!isset($filters["with_deleted"])) {
 			$queryBuilder->where("mot_deleted = 0");
-		}
-
-		if (isset($filters["vot_member_id"]) && $filters["vot_member_id"] && isset($filters["with_notice"]) && $filters["with_notice"]) {
-			$queryBuilder->where("((gga.id_adh IS NOT NULL) OR (ta.id_adh IS NOT NULL) OR (gta.id_adh IS NOT NULL))");
 		}
 
 		$query = $queryBuilder->constructRequest();

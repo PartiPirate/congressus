@@ -254,6 +254,7 @@ $lang["notice_source"] = "Source primaire";
 $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
+$lang["notice_customUsers"] = "Utilisateurs Custom";
 
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";

@@ -24,14 +24,13 @@
 
 @include_once("engine/modules/usersource/UserSourceFactory.php");
 @include_once("engine/modules/usersource/GaletteUserSource.php");
+@include_once("engine/modules/usersource/CustomUserSource.php");
 
 @include_once("engine/modules/groupsource/GroupSourceFactory.php");
 @include_once("engine/modules/groupsource/GaletteGroupSource.php");
 @include_once("engine/modules/groupsource/PersonaeGroupSource.php");
 @include_once("engine/modules/groupsource/PersonaeThemeSource.php");
-
-$config["modules"]["usersource"] = "Galette";
-$config["modules"]["groupsources"] = array("PersonaeGroups", "PersonaeThemes", "GaletteGroups");
+@include_once("engine/modules/groupsource/CustomGroupSource.php");
 
 function openConnection($dbname = null) {
 	global $config;

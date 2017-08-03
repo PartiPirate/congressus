@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -20,7 +20,8 @@ include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/LogUtils.php");
 require_once("engine/bo/GaletteBo.php");
-require_once("engine/authenticators/GaletteAuthenticator.php");
+require_once("engine/authenticators/AuthenticatorFactory.php");
+@require_once("engine/authenticators/GaletteAuthenticator.php");
 
 session_start();
 
@@ -28,7 +29,9 @@ session_start();
 xssCleanArray($_REQUEST);
 
 $connection = openConnection();
-$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config["galette"]["db"]);
+
+$galetteAuthenticator = AuthenticatorFactory::getInstance($connection, $config, "galette");
+//$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config["galette"]["db"]);
 
 $login = $_REQUEST["login"];
 $password = $_REQUEST["password"];

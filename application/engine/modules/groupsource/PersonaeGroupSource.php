@@ -62,6 +62,7 @@ class PersonaeGroupSource {
 
     function updateNotice($meeting, &$notice, &$pings, &$usedPings) {
         require_once("engine/bo/ThemeBo.php");
+        require_once("engine/bo/GroupBo.php");
         global $config;
         global $connection;
         global $now;
@@ -102,6 +103,7 @@ class PersonaeGroupSource {
 
     function getNoticeMembers($notice) {
         require_once("engine/bo/ThemeBo.php");
+        require_once("engine/bo/GroupBo.php");
         global $config;
         global $connection;
 

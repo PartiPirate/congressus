@@ -124,9 +124,9 @@ if (count($membersToNotice)) {
 	$body = str_replace("\n", "<br>\n", $body);
 
 	$message->Subject = $subject;
-	
+
 	$message->isHTML(true); 
-	
+
 	$message->Body = $body;
 	$message->AltBody = $altBody;
 	$message->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);

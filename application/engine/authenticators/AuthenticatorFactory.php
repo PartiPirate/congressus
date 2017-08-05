@@ -20,8 +20,9 @@
 class AuthenticatorFactory {
 
     static function getInstance($pdo, $config, $source = "") {
-        if (strtolower($source) == "galette") return GaletteAuthenticator::newInstance($pdo, $config);
-        
+        if (strtolower($source) == "galette")   return GaletteAuthenticator::newInstance($pdo, $config);
+        if (strtolower($source) == "custom")    return CustomAuthenticator::newInstance($pdo, $config);
+
         return GaletteAuthenticator::newInstance($pdo, $config);
     }
 }

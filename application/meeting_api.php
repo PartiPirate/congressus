@@ -32,11 +32,6 @@ require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/GameEvents.php");
 
-require_once("engine/bo/GaletteBo.php");
-require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
-require_once("engine/bo/FixationBo.php");
-
 session_start();
 
 xssCleanArray($_REQUEST);

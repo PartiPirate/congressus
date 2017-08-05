@@ -17,6 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 @include_once("config/config.php");
+@include_once("config/modules.config.php");
 @include_once("config/salt.php");
 @include_once("engine/bo/BoHelper.php");
 @include_once("engine/requests/sql/QueryFactory.php");
@@ -31,6 +32,10 @@
 @include_once("engine/modules/groupsource/PersonaeGroupSource.php");
 @include_once("engine/modules/groupsource/PersonaeThemeSource.php");
 @include_once("engine/modules/groupsource/CustomGroupSource.php");
+
+require_once("engine/authenticators/AuthenticatorFactory.php");
+@require_once("engine/authenticators/GaletteAuthenticator.php");
+@require_once("engine/authenticators/CustomAuthenticator.php");
 
 function openConnection($dbname = null) {
 	global $config;

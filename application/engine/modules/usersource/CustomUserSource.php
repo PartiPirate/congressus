@@ -46,6 +46,28 @@ class CustomUserSource {
 		$queryBuilder->join($customDatabase . "." . $config["modules"]["custom"]["table"], ($as ? $as . "." : "") . $config["modules"]["custom"]["fields"]["id_adh"] . " = $joinField", $as, "left");
     }
 
+    function selectQuery(&$queryBuilder, $config) {
+        $customDatabase = $config["modules"]["custom"]["database"];
+
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . ".*");
+
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["id_adh"],      "id_adh");
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["pseudo_adh"],  "pseudo_adh");
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["login_adh"],   "login_adh");
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["nom_adh"],     "nom_adh");
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["prenom_adh"],  "prenom_adh");
+		$queryBuilder->addSelect($config["modules"]["custom"]["table"] . "." . $config["modules"]["custom"]["fields"]["email_adh"],   "email_adh");
+
+		$queryBuilder->select($customDatabase . "." . $config["modules"]["custom"]["table"]);
+    }
+
+    function whereId(&$queryBuilder, $config, $value) {
+        $queryBuilder->where($config["modules"]["custom"]["fields"]["id_adh"] . " = " . $value);
+    }
+
+    function whereEmail(&$queryBuilder, $config, $value) {
+        $queryBuilder->where($config["modules"]["custom"]["fields"]["email_adh"] . " = " . $value);
+    }
 }
 
 ?>

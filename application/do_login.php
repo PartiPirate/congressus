@@ -20,8 +20,6 @@ include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/LogUtils.php");
 require_once("engine/bo/GaletteBo.php");
-require_once("engine/authenticators/AuthenticatorFactory.php");
-@require_once("engine/authenticators/GaletteAuthenticator.php");
 
 session_start();
 
@@ -30,8 +28,7 @@ xssCleanArray($_REQUEST);
 
 $connection = openConnection();
 
-$galetteAuthenticator = AuthenticatorFactory::getInstance($connection, $config, "galette");
-//$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config["galette"]["db"]);
+$authenticator = AuthenticatorFactory::getInstance($connection, $config, $config["modules"]["authenticator"]);
 
 $login = $_REQUEST["login"];
 $password = $_REQUEST["password"];
@@ -49,7 +46,7 @@ if ($login == $config["administrator"]["login"] && $password == $config["adminis
 	exit();
 }
 
-$member = $galetteAuthenticator->authenticate($login, $password);
+$member = $authenticator->authenticate($login, $password);
 if ($member) {
 	$data["ok"] = "ok";
 	$connectedMember = array();
@@ -67,17 +64,6 @@ else {
 }
 
 session_write_close();
-
-/*
-$referer = $_SERVER["HTTP_REFERER"];
-
-if ($referer) {
-	header("Location: $referer");
-}
-else {
-	header("Location: index.php");
-}
-*/
 
 if (isset($data["ok"]) && $_POST["referer"]) {
 	header('Location: ' . $_POST["referer"]);

@@ -27,6 +27,7 @@ include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
 include_once("engine/utils/LogUtils.php");
+include_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
 
@@ -91,17 +92,18 @@ $connection = openConnection();
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
 <head>
-	<?php if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
-	require_once("engine/bo/MeetingBo.php");
+<?php	if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
+			require_once("engine/bo/MeetingBo.php");
 
-	$meetingBo = MeetingBo::newInstance($connection, $config);
-	$meeting = $meetingBo->getById($_REQUEST["id"], true);
-	}
-	$page_title = lang("congressus_title");
-	if (isset($meeting)) {
-		$page_title .= " : " . $meeting['mee_label'];
-	}
-	?>
+			$meetingBo = MeetingBo::newInstance($connection, $config);
+			$meeting = $meetingBo->getById($_REQUEST["id"], true);
+		}
+
+		$page_title = lang("congressus_title");
+		if (isset($meeting)) {
+			$page_title .= " : " . $meeting['mee_label'];
+		}
+?>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">

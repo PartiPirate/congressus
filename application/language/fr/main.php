@@ -86,6 +86,7 @@ ainsi de retrouver rapidement un point de détail.<br>";
 $lang["index_connect_button"] = "Se connecter";
 $lang["index_downloadCalendar"] = "Télécharger le calendrier iCal";
 $lang["index_description"] = "Congressus permet de gérer des réunions en fonction de différents groupes et de définir qui est convoqué aux réunions, qui a le droit de vote, définir des motions.";
+$lang["index_open_meetings"] = "Réunions actuellement ouvertes : ";
 
 $lang["mybadges_guide"] = "Les badges que vous avez obtenus ou que vous pouvez obtenir";
 

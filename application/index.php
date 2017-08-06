@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -18,7 +18,15 @@
 */
 include_once("header.php");
 
-//include_once("groups.php");
+require_once("engine/bo/MeetingBo.php");
+
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$filters = array();
+$filters["with_status"] = array("open");
+
+$meetings = $meetingBo->getByFilters($filters);
+
+//print_r($meetings);
 
 ?>
 
@@ -30,6 +38,29 @@ include_once("header.php");
 	<div class="well well-sm">
 		<p><?php echo lang("index_guide"); ?></p>
 	</div>
+
+	<?php	if (count($meetings)) { ?>
+	<div class="well well-sm">
+		<?php echo lang("index_open_meetings"); ?>
+		
+		<?php	
+				$now = getNow();
+				$separator = "";
+				foreach($meetings as $meeting) { 
+		
+					$openDate = new DateTime($meeting["mee_start_time"]);
+					$diff = $openDate->diff($now);
+					
+					if ($diff->days > 15) continue;
+					
+					echo $separator;
+		?>
+		<a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a>
+		<?php	
+					$separator = ", ";
+				} ?>
+	</div>
+	<?php	} ?>
 
 	<div class="calendar-nav clearfix">
 		<div class="pull-right form-inline" style="margin-top: 15px;">
@@ -71,6 +102,7 @@ include_once("header.php");
 
 <?php include("footer.php");?>
 <script type="text/javascript">
+/* global $ */
 $(function() {
 	var calendar = $("#calendar").calendar(
             {

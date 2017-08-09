@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -29,12 +29,6 @@ $connection = openConnection();
 $locationBo = LocationBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection, $config);
 $noticeBo = NoticeBo::newInstance($connection, $config);
-
-$groupBo = GroupBo::newInstance($connection, $config);
-$themeBo = ThemeBo::newInstance($connection, $config);
-$fixationBo = FixationBo::newInstance($connection, $config);
-
-$galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 $meeting = $meetingBo->getById($meetingId);
 

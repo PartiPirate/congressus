@@ -64,7 +64,19 @@ $pings = $pingBo->getByFilters(array("pin_meeting_id" => $meetingId, "pin_speaki
 foreach ($pings as $ping) {
 	
 //	print_r($ping);
-	
+    if (SessionUtils::getUserId($_SESSION) == $meeting["mee_president_member_id"]) {
+    }
+    else if (SessionUtils::getUserId($_SESSION) == $meeting["mee_secretary_member_id"]) {
+    }
+    else if (SessionUtils::getUserId($_SESSION) == $ping["pin_member_id"]) {
+    }
+    else if (isset($_SESSION["guestId"]) && ($_SESSION["guestId"] == $ping["pin_member_id"])) {
+    }
+    else {
+    	echo json_encode(array("ko" => "ko", "message" => "president_or_actor_only"));
+    	exit();
+    }
+
 	$myping = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
 	$myping["pin_speaking_time"] = $ping["pin_speaking_time"] + intval($_REQUEST["speakingTime"]);
 	$myping["pin_speaking"] = 0;

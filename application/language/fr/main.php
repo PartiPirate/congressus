@@ -146,6 +146,7 @@ $lang["meeting_speaking"] = "A la parole";
 $lang["meeting_speakingAsk"] = "Demande la parole";
 $lang["meeting_speakingEnd"] = "Fin de parole";
 $lang["meeting_speakingRenounce"] = "a renoncé à prendre la parole";
+$lang["meeting_speakingSet"] = "Donner la parole";
 $lang["meeting_start"] = "Démarrage";
 $lang["meeting_status"] = "Statut de la réunion";
 $lang["meeting_talkManagement"] = "Gestion de la parole";

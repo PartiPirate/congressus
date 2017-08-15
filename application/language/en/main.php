@@ -143,6 +143,7 @@ $lang["meeting_speaking"] = "Speaking";
 $lang["meeting_speakingAsk"] = "Ask fot speaking";
 $lang["meeting_speakingEnd"] = "Speaking End";
 $lang["meeting_speakingRenounce"] = "renounce his speaking";
+$lang["meeting_speakingSet"] = "Give speaking";
 $lang["meeting_start"] = "Start";
 $lang["meeting_status"] = "Meeting's status";
 $lang["meeting_talkManagement"] = "Talk management";

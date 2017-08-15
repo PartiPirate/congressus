@@ -57,6 +57,7 @@ if (!$userId) {
 <div class="container theme-showcase meeting" role="main"
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
+	data-speaking-id="-1"
 	>
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
@@ -571,11 +572,20 @@ if (!$userId) {
 				title="<?php echo lang("meeting_speaking"); ?>"
 				style="display: none;"></span>
 			<button
+				data-id="${mem_id}"
 				title="<?php echo lang("meeting_speakingAsk"); ?>"
 				class="btn btn-default btn-xs request-speaking">
 				<span class="fa fa-hand-paper-o"></span><span class="badge"
 					style="display: none;">0</span>
 			</button>
+
+			<button
+				data-id="${mem_id}"
+				title="<?php echo lang("meeting_speakingSet"); ?>"
+				class="btn btn-default btn-xs set-speaking">
+				<span class="fa fa-commenting-o"></span>
+			</button>
+
 			<span class="fa fa-archive voting"
 				title="<?php echo lang("meeting_rightsVote"); ?>"
 				style="display: none;">
@@ -601,6 +611,14 @@ if (!$userId) {
 				style="display: none;">
 				<span class="badge">0</span>
 			</span>
+
+			<button
+				data-id="${mem_id}"
+				title="<?php echo lang("meeting_speakingSet"); ?>"
+				class="btn btn-default btn-xs set-speaking">
+				<span class="fa fa-commenting-o"></span>
+			</button>
+
 			<span class="fa fa-archive voting"
 				title="<?php echo lang("meeting_rightsVote"); ?>"
 				style="display: none;">

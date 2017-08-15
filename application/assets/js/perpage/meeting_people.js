@@ -173,15 +173,24 @@ function updateMemberLi(member, people) {
 		
 		var previous = $("#speaking-panel .speaker").text();
 		$("#speaking-panel .speaker").text(people.mem_nickname);
+		$(".meeting").data("speaking-id", people.mem_id);
 
 		if (people.mem_nickname != previous) {
 			speakingTime = 0;
 		}
 
 		member.children("span.fa-commenting-o").show();
+		member.children(".set-speaking").hide();
 	}
 	else {
 		member.children("span.fa-commenting-o").hide();
+
+		if (hasWritingRight(getUserId()) && people["mem_connected"]) {
+			member.children(".set-speaking").show();
+		}
+		else {
+			member.children(".set-speaking").hide();
+		}
 	}
 
 	if (people.mem_id == userId) {
@@ -241,7 +250,7 @@ function updateMemberLi(member, people) {
 	}
 
 	if (people.mem_power) {
-		powerSpan = member.find(".fa-archive.voting .power");
+		var powerSpan = member.find(".fa-archive.voting .power");
 		powerSpan.text(people.mem_power);
 	}
 
@@ -391,6 +400,7 @@ function addNotice(notice, parent) {
 
 //	console.log(notice.not_label + " members " + members.children().length);
 
+	// Set paging system
 	if (notice.not_people.length) {
 		memberPages.show();
 		memberPages.children().remove();
@@ -490,6 +500,10 @@ function addNotice(notice, parent) {
 	noticeHtml.removeClass("to-deleted");
 }
 
+function getSpeakingUserId() {
+	return $(".meeting").data("speaking-id");
+}
+
 function updatePeople() {
 	var meetingId = $(".meeting").data("id");
 
@@ -549,19 +563,18 @@ function updatePeople() {
 
 		if (hasWritingRight(userId)) {
 			$(".btn-add-motion, .btn-add-task").show();
-			if ($(".speaker").text()) {
-				$(".btn-remove-speaker").show().removeAttr("disabled");
-
-			}
-			else {
-				$(".btn-remove-speaker").hide().attr("disabled", "disabled");
-			}
-
 		}
 		else {
 			$(".btn-add-motion, .btn-add-task").hide();
+		}
+
+		if ($(".speaker").text() && (hasWritingRight(userId) || userId == getSpeakingUserId())) {
+			$(".btn-remove-speaker").show().removeAttr("disabled");
+		}
+		else {
 			$(".btn-remove-speaker").hide().attr("disabled", "disabled");
 		}
+
 
 		if ($(".speaker").text()) {
 			$(".speaking-time").show();
@@ -613,12 +626,15 @@ function setSpeaking(event) {
 
 	if (!hasWritingRight(getUserId())) return;
 
-	$(this).addClass("disabled");
+	var button = $(this);
+
+	button.addClass("disabled");
 
 	var meetingId = $(".meeting").data("id");
 	var userId = $(this).data("id");
 
 	$.get("meeting_api.php?method=do_setSpeaking", {meetingId: meetingId, userId: userId, speakingTime: speakingTime}, function(data) {
+		button.removeClass("disabled");
 		speakingTime = 0;
 	}, "json");
 }
@@ -675,6 +691,7 @@ function toggleMissingPeople() {
 
 function addNoticeHandlers() {
 	$(".meeting .row").on("click", "button.request-speaking", requestSpeaking);
+	$(".meeting .row").on("click", "button.set-speaking", setSpeaking);
 
 	$("#noticed-people").on("click", ".page", function(event) {
 		event.stopPropagation();

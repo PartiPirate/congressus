@@ -53,6 +53,16 @@ if (false) {
 	exit();
 }
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "connected_only"));
+	exit();
+}
+
+if (SessionUtils::getUserId($_SESSION) != $meeting["mee_president_member_id"] && SessionUtils::getUserId($_SESSION) != $meeting["mee_secretary_member_id"]) {
+	echo json_encode(array("ko" => "ko", "message" => "president_only"));
+	exit();
+}
+
 $userId = $_REQUEST["userId"];
 
 $pings = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID_FIELD], "pin_speaking" => 1));

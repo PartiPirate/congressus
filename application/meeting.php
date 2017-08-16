@@ -492,7 +492,7 @@ if (!$userId) {
 
 			<div class="motion-propositions">
 			</div>
-			<div class="motion-charts-disabled">
+			<div class="motion-charts" data-status="to-init" style="display: none;">
 			</div>
 			<div class="motion-actions">
 				<button class="btn btn-primary btn-xs btn-add-proposition"
@@ -527,6 +527,11 @@ if (!$userId) {
 					title="<?php echo lang("meeting_motionCloseVote"); ?>"
 					style="display: none;">
 					<?php echo lang("meeting_voteClose"); ?>&nbsp;<span class="fa fa-archive"></span>
+				</button>
+				
+				<button class="btn btn-info btn-xs btn-see-motion-stats pull-right"
+					titleeee="<?php echo lang("meeting_speakingStats"); ?>"
+					style="margin-left: 5px;"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
 				</button>
 
 				<span class="simply-hidden voters badge pull-right">

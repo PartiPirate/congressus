@@ -209,20 +209,29 @@ function computeMotion(motion) {
 			}
 
 			if ((winLimit > 0 && percent >= winLimit) || ((winLimit == 0 || winLimit == -1) && propositionPower == max)) {
-				$("#proposition-" + id).addClass("text-success");
-				$("#proposition-" + id).removeClass("text-danger");
+				if ($("#proposition-" + id).hasClass("text-danger")) {
+					$("#proposition-" + id).addClass("text-success");
+					$("#proposition-" + id).removeClass("text-danger");
+				}
 			}
-			else if (winLimit == 2) {
+			else if (winLimit == -2) {
 			}
 			else {
-				$("#proposition-" + id).removeClass("text-success");
-				$("#proposition-" + id).addClass("text-danger");
+				if ($("#proposition-" + id).hasClass("text-success")) {
+					$("#proposition-" + id).removeClass("text-success");
+					$("#proposition-" + id).addClass("text-danger");
+				}
 			}
 
 			if (winLimit != -2) {
 				propositionPower = voteRound(propositionPower);
 	
-				$("#proposition-" + id + " .powers").html("&nbsp;(" + propositionPower + " / " + percent + "%)");
+				var html = $("#proposition-" + id + " .powers").html();
+				var newHtml = "&nbsp;(" + propositionPower + " / " + percent + "%)";
+				if (html != newHtml) {
+					$("#proposition-" + id + " .powers").html(newHtml);
+				}
+
 			}
 			else {
 				var percent = 0;
@@ -235,10 +244,18 @@ function computeMotion(motion) {
 				}
 
 				if (percent == maxJMPercent && winning == maxJMValue) {
-					$("#proposition-" + id).addClass("text-success");
-					$("#proposition-" + id).removeClass("text-danger");
+
+					if ($("#proposition-" + id).hasClass("text-danger")) {
+						$("#proposition-" + id).addClass("text-success");
+						$("#proposition-" + id).removeClass("text-danger");
+					}
+
 				}
-				
+				else if ($("#proposition-" + id).hasClass("text-success")) {
+					$("#proposition-" + id).removeClass("text-success");
+					$("#proposition-" + id).addClass("text-danger");
+				}
+
 				var winningTranslate = winning;
 				for(jmValue = 0; jmValue < majority_judgement_values.length; ++jmValue) {
 					if (majority_judgement_values[jmValue] == winning) {
@@ -246,10 +263,96 @@ function computeMotion(motion) {
 					}
 				}
 
-				$("#proposition-" + id + " .powers").html("&nbsp;(" + winningTranslate + " / " + percent + "%)");
+				var html = $("#proposition-" + id + " .powers").html();
+				var newHtml = "&nbsp;(" + winningTranslate + " / " + percent + "%)";
+				if (html != newHtml) {
+					$("#proposition-" + id + " .powers").html(newHtml);
+				}
 			}
 		}
 
+		if (winLimit >= 0) {
+			initPercentChart(motion);
+			
+			var data = [];
+			var propositionIndexes = {};
+			var propositionOffset = 0;
+
+			var datum = {
+				type: "pie",
+				showInLegend: true,
+				legendText: "{indexLabel}",
+				dataPoints: []
+			}
+
+			for(var id in propositionPowers) {
+				var propositionPower = propositionPowers[id];
+	
+				var percent = 0;
+				if (totalPowers) {
+					percent = Math.round(propositionPower / totalPowers * 1000, 1) / 10;
+				}
+
+				var propositionLabel = $("#proposition-" + id + " .proposition-label").text();
+				var point = {indexLabel: propositionLabel, y: percent};
+
+				datum.dataPoints.push(point);
+			}
+
+			data.push(datum);
+
+			updateChart(motion, data);
+			
+		}
+		else if (winLimit == -2) {
+			initJMChart(motion);
+
+			var data = [];
+			var propositionIndexes = {};
+			var propositionOffset = 0;
+			
+			for(var index = majority_judgement_values.length - 1; index >= 0; --index) {
+
+//				var color = 120 * index / majority_judgement_values.length;
+				var color = 120 * index / (majority_judgement_values.length - 1);
+
+				var datum = {        
+			       type: "stackedColumn",       
+			       showInLegend:true,
+			       color: "hsl(" + color + ", 70%, 70%)",
+//			       color: "#0000" + (color < 10 ? "0" : "") + Math.round(color) + "",
+			       name: "" + majority_judgement_translations[index],
+			       dataPoints: []
+				}
+
+				for(var id in scaledJudgedPropositions) {
+					if (!propositionIndexes[id]) {
+						propositionOffset++;
+						propositionIndexes[id] =propositionOffset; 
+					}
+					
+					var scaledJudgedProposition = scaledJudgedPropositions[id];
+					var number = scaledJudgedProposition[majority_judgement_values[index]];
+					if (number == 0) continue;
+
+					var propositionLabel = $("#proposition-" + id + " .proposition-label").text();
+
+					var percent = number / totalJudgedPropositions[id];
+					percent = (Math.round(percent * 1000, 1) / 10);
+
+					var point = {  y: percent, x: propositionIndexes[id], xLabel: propositionLabel, yLabel: majority_judgement_translations[index]};
+					datum.dataPoints.push(point);
+				}
+
+				data.push(datum);
+			}
+
+//				debugger;
+			
+			updateChart(motion, data);
+		}
+
+/*
 		if (winLimit == -2) {
 			var charts = motion.find(".motion-charts");
 			charts.children().remove();
@@ -260,7 +363,7 @@ function computeMotion(motion) {
 				var propositionLabel = $("#proposition-" + id + " .proposition-label").text();
 
 				var bar = "<div style='width:100%;'><div class='label' style='width: 25%; box-sizing: border-box; display: inline-block; color: #000; '>"+propositionLabel+"</div><div style='width: 75%; box-sizing: border-box; display: inline-block;'>";
-				
+
 				for(var index = 0; index < majority_judgement_values.length; ++index) {
 					var number = scaledJudgedProposition[majority_judgement_values[index]];
 					if (number == 0) continue;
@@ -278,6 +381,8 @@ function computeMotion(motion) {
 				charts.append(bar);
 			}
 		}
+*/
+
 	}
 //	console.log(propositionPowers);
 }

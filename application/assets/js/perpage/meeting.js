@@ -275,6 +275,7 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-motion-limits").show();
 					motionActions.find(".btn-motion-limits").removeClass("active").removeClass("disabled");
 					motionActions.find(".btn-motion-anonymous").show();
+					motionActions.find(".btn-see-motion-stats").hide();
 					break;
 				case "voting":
 					motionActions.find(".btn-do-close").show();
@@ -282,11 +283,13 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
 					motionActions.find(".btn-motion-anonymous").show();
+					motionActions.find(".btn-see-motion-stats").show();
 					break;
 				case "resolved":
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
 					motionActions.find(".btn-motion-anonymous").hide();
+					motionActions.find(".btn-see-motion-stats").show();
 					break;
 				default:
 			}
@@ -723,11 +726,13 @@ function addVotes(votes, proposition, motion) {
 			proposition.find("ul").append(voteLi);
 		}
 
-		voteLi.find(".nickname").text(vote.mem_nickname);
 		voteLi.data("memberId", vote.mem_id);
 		voteLi.attr("data-power", vote.vot_power);
 		voteLi.data("power", vote.vot_power);
-		voteLi.find(".power").text(vote.vot_power);
+
+		if (voteLi.find(".nickname").text() != vote.mem_nickname) {
+			voteLi.find(".nickname").text(vote.mem_nickname);	
+		}
 
 		var motionWinLimit = motion.find(".btn-motion-limits.active").attr("value") - 0;
 		
@@ -735,10 +740,15 @@ function addVotes(votes, proposition, motion) {
 			for(var jmIndex = 0; jmIndex < majority_judgement_values.length; ++jmIndex) {
 				var jmValue = majority_judgement_values[jmIndex];
 				if (jmValue == vote.vot_power && vote.vot_power != 0) {
-					voteLi.find(".power").text(majority_judgement_translations[jmIndex]);
+					if (voteLi.find(".power").text() != majority_judgement_translations[jmIndex]) {
+						voteLi.find(".power").text(majority_judgement_translations[jmIndex]);
+					}
 					break;
 				}
 			}
+		}
+		else if (voteLi.find(".power").text() != vote.vot_power) {
+			voteLi.find(".power").text(vote.vot_power);
 		}
 
 		if (vote.mem_id != getUserId() && areVotesAnonymous(motion)) {

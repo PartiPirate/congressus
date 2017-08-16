@@ -25,7 +25,120 @@
 
 var speakingStats = {speakingTimePerPerson: {}};
 
-function showSpeakingStats() {
+function updateChart(motionContainer, data) {
+	var chartContainer = motionContainer.find(".motion-charts");
+	var chart = chartContainer.CanvasJSChart(); 
+ 
+	chart.options.data = data;
+	chart.render();
+}
+
+function initPercentChart(motionContainer) {
+	var chartContainer = motionContainer.find(".motion-charts");
+
+	if (chartContainer.data("status") != "to-init") return;
+	chartContainer.data("status", "in-construction");
+
+	var width = chartContainer.width();
+	var height = 400;
+
+	chartContainer.css({height: height + "px"});
+
+	var chartOptions = {
+		theme: "theme2",
+		exportFileName: speakingTimesChartTitle,
+		exportEnabled: true,
+        animationEnabled: true,
+        height: height,
+        width: width,
+        legend:{
+			verticalAlign: "bottom",
+			horizontalAlign: "center"
+		},
+		toolTip: {
+			shared: true,
+			contentFormatter: function (e) {
+				var content = " ";
+				content += e.entries[0].dataPoint.indexLabel + " - " + "<strong>" + e.entries[0].dataPoint.y + "%</strong>";
+				return content;
+			}
+		},
+		data: []
+	};
+
+
+	chartContainer.CanvasJSChart(chartOptions);
+
+	chartContainer.data("status", "initialized");
+}
+
+function initJMChart(motionContainer) {
+	var chartContainer = motionContainer.find(".motion-charts");
+
+	if (chartContainer.data("status") != "to-init") return;
+	chartContainer.data("status", "in-construction");
+
+	var width = chartContainer.width();
+	var height = 400;
+
+	chartContainer.css({height: height + "px"});
+
+	var chartOptions = {
+		theme: "theme2",
+		exportFileName: motionContainer.find(".motion-title").text(),
+		exportEnabled: true,
+        animationEnabled: true,
+        height: height,
+        width: width,
+        legend:{
+			verticalAlign: "bottom",
+			horizontalAlign: "center"
+		},
+		axisX: {
+			minimum: 0,
+			interval: 1,
+			labelFormatter: function ( e ) {
+				var content = "";
+
+				if (e.value && (e.value == Math.round(e.value))) {
+					
+					content += motionContainer.find(".proposition").eq(e.value - 1).find(".proposition-label").text();
+				}
+			
+				return content;
+			}
+		},
+		axisY: {
+			minimum: 0,
+			maximum: 100,
+			interval: 10,
+			labelFormatter: function ( e ) {
+				var content = "";
+
+				content += e.value + "%";
+
+				return content;
+        	}  
+		},
+		toolTip: {
+			contentFormatter: function (e) {
+				var content = " ";
+				content += e.entries[0].dataPoint.xLabel + " - " + "<strong>" + e.entries[0].dataPoint.yLabel + "</strong>";
+
+				content += " (" +e.entries[0].dataPoint.y + "%)";
+
+				return content;
+			}
+		},
+		data: []
+	};
+
+	chartContainer.CanvasJSChart(chartOptions);
+
+	chartContainer.data("status", "initialized");
+}
+
+function showSpeakingStats(event) {
 	
 	var width = 568;
 	var height = 400;
@@ -52,12 +165,8 @@ function showSpeakingStats() {
 		speakingTimesData[speakingTimesData.length] = {indexLabel: nickname, y: speakingStats.speakingTimePerPerson[nickname], timeLabel: computeTimeString(speakingStats.speakingTimePerPerson[nickname])};
 	}
 
-	var chart = new CanvasJS.Chart("speaking-charts-container",
-	{
+	var chartOptions = {
 		theme: "theme2",
-/*		title:{
-			text: speakingTimesChartTitle
-		},*/
 		exportFileName: speakingTimesChartTitle,
 		exportEnabled: true,
         animationEnabled: true,
@@ -79,11 +188,7 @@ function showSpeakingStats() {
 				}
 				
 				content += " (" + Math.round(e.entries[0].dataPoint.y * 10000 / total) / 100 + "%)";
-				
-				
-//					content += e.entries[i].dataSeries.name + " " + "<strong>" + e.entries[i].dataPoint.timeLabel + "</strong>";
-//					content += "<br/>";
-//				}
+
 				return content;
 			}
 		},
@@ -91,18 +196,31 @@ function showSpeakingStats() {
 		{
 			type: "pie",
 			showInLegend: true,
-/*
-			toolTipContent: "{y} - #percent %",
-			yValueFormatString: "{timeLabel}",
-*/			
 			legendText: "{indexLabel}",
 			dataPoints: speakingTimesData
 		}
 		]
-	});
+	};
+	var chart = new CanvasJS.Chart("speaking-charts-container", chartOptions);
 	chart.render();
 }
 
 $(function() {
 	$(".btn-see-speaking-stats").click(showSpeakingStats);
+	$("#agenda_point ul.objects").on("click", ".btn-see-motion-stats", function(event) {
+		var button = $(this);
+		
+		button.toggleClass("active");
+		
+		var chartContainer = button.parents(".motion").find(".motion-charts");
+		
+		if (button.hasClass("active")) {
+			chartContainer.show();
+		}
+		else {
+			chartContainer.hide();
+		}
+
+	});
+//	$(".btn-see-motion-stats").click(showMotionStats);
 });

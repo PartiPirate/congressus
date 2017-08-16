@@ -144,11 +144,18 @@ if (!$userId) {
 					<div class="row form-horizontal">
 						<label class="control-label col-md-3"><?php echo lang("meeting_speaking"); ?> : </label>
 						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
-						<label class="control-label col-md-2 speaking-time"></label>
-						<label class="control-label col-md-5">
+						<label class="control-label col-md-2 speaking-time"><span></span></label>
+						<label class="control-label col-md-4">
 							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
 								title="<?php echo lang("meeting_removeSpeaking"); ?>"
 								style="display: none;"><?php echo lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
+							</button>
+						</label>
+						<label class="control-label col-md-1">
+							<button class="btn btn-info btn-xs btn-see-speaking-stats pull-left"
+								title="<?php echo lang("meeting_speakingStats"); ?>"
+								style=""><i class="fa fa-pie-chart" aria-hidden="true"></i></span>
+							</button>
 						</label>
 					</div>
 					<div class="row form-horizontal">
@@ -687,6 +694,7 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 <script src="assets/js/perpage/meeting_events.js"></script>
 <script src="assets/js/perpage/meeting_timer.js"></script>
 <script src="assets/js/perpage/meeting_export.js"></script>
+<script src="assets/js/perpage/meeting_charts.js"></script>
 
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
@@ -711,6 +719,8 @@ var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>"
 var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 
 var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
+
+var speakingTimesChartTitle = "Temps de parole par personne";
 
 <?php
 

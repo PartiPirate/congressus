@@ -36,6 +36,7 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/calendar.min.js"></script>
+<script src="assets/js/canvasjs.min.js"></script>
 <script src="assets/js/language/fr-FR.js"></script>
 <script src="assets/js/bootbox.min.js"></script>
 <script src="assets/js/moment-with-locales.js"></script>

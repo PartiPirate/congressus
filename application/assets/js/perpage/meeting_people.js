@@ -20,6 +20,7 @@
 /* global getUserId */
 /* global hasWritingRight */
 /* global hasRight */
+/* global speakingStats */
 
 var peoples = {};
 var numberOfConnected = 0;
@@ -58,6 +59,10 @@ function notSoDifferent(people, previousPeople) {
 
 function updateMemberLi(member, people) {
 	var userId = getUserId();
+
+	if (people.mem_speaking_time) {
+		speakingStats.speakingTimePerPerson[people.mem_nickname] = people.mem_speaking_time;
+	}
 
 	// The member is updated, do not delete it
 	member.removeClass("to-deleted");
@@ -577,10 +582,10 @@ function updatePeople() {
 
 
 		if ($(".speaker").text()) {
-			$(".speaking-time").show();
+			$(".speaking-time span").show();
 		}
 		else {
-			$(".speaking-time").hide();
+			$(".speaking-time span").hide();
 		}
 
 		var isPeopleNoticed = true;
@@ -1033,18 +1038,22 @@ function addNoticeHandlers() {
 
 var speakingTime = 0;
 
+function computeTimeString(time) {
+	var seconds = time % 60;
+	var minutes = (time - seconds) / 60
+
+	seconds = (seconds < 10 ? "0" : "") + seconds;
+	minutes = (minutes < 10 ? "0" : "") + minutes;
+
+	return minutes + ":" + seconds;
+}
+
 function updateTime() {
 	if ($(".speaker").text()) {
 		speakingTime++;
 	}
 
-	var seconds = speakingTime % 60;
-	var minutes = (speakingTime - seconds) / 60
-
-	seconds = (seconds < 10 ? "0" : "") + seconds;
-	minutes = (minutes < 10 ? "0" : "") + minutes;
-
-	$(".speaking-time").text(minutes + ":" + seconds);
+	$(".speaking-time span").text(computeTimeString(speakingTime));
 }
 
 function addSpeakerHandlers() {
@@ -1056,7 +1065,7 @@ function addSpeakerHandlers() {
 		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId, speakingTime: speakingTime}, function(data) {
 			$(".speaker").text("");
 			$(".btn-remove-speaker").hide();
-			$(".speaking-time").hide();
+			$(".speaking-time span").hide();
 
 			speakingTime = 0;
 		}, "json");

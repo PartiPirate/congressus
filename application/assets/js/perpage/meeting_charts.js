@@ -138,6 +138,72 @@ function initJMChart(motionContainer) {
 	chartContainer.data("status", "initialized");
 }
 
+function initBordaChart(motionContainer) {
+	var chartContainer = motionContainer.find(".motion-charts");
+
+	if (chartContainer.data("status") != "to-init") return;
+	chartContainer.data("status", "in-construction");
+
+	var width = chartContainer.width();
+	var height = 400;
+
+	chartContainer.css({height: height + "px"});
+
+	var chartOptions = {
+		theme: "theme2",
+		exportFileName: motionContainer.find(".motion-title").text(),
+		exportEnabled: true,
+        animationEnabled: true,
+        height: height,
+        width: width,
+        legend:{
+			verticalAlign: "bottom",
+			horizontalAlign: "center"
+		},
+		axisX: {
+			minimum: 0,
+			interval: 1,
+			labelFormatter: function ( e ) {
+				var content = "";
+
+				if (e.value && (e.value == Math.round(e.value))) {
+					
+					content += motionContainer.find(".proposition").eq(e.value - 1).find(".proposition-label").text();
+				}
+			
+				return content;
+			}
+		},
+		axisY: {
+			minimum: 0,
+//			maximum: 100,
+//			interval: 10,
+			labelFormatter: function ( e ) {
+				var content = "";
+
+				content += e.value;
+
+				return content;
+        	}  
+		},
+		toolTip: {
+			contentFormatter: function (e) {
+				var content = " ";
+				content += e.entries[0].dataPoint.xLabel + " - " + "<strong>" + e.entries[0].dataPoint.yLabel + "</strong>";
+
+//				content += " (" +e.entries[0].dataPoint.y + "%)";
+
+				return content;
+			}
+		},
+		data: []
+	};
+
+	chartContainer.CanvasJSChart(chartOptions);
+
+	chartContainer.data("status", "initialized");
+}
+
 function showSpeakingStats(event) {
 	
 	var width = 568;

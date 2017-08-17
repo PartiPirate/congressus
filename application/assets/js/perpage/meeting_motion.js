@@ -118,6 +118,8 @@ function computeMotion(motion) {
 			jmPower += $(this).find(".power").eq(0).text() * (1 - neutral);
 		}
 
+//		if (winLimit == -1) debugger;
+
 		vote.attr("data-effective-power", votePower);
 		vote.data("effective-power", votePower);
 
@@ -138,6 +140,7 @@ function computeMotion(motion) {
 					judgedPropositions[propositionId][jmValue] += jmPower;
 				}
 
+				// If the actual sum is greater than the half of the total, we surpass the majority, this is the average judgment
 				if (judgedPropositions[propositionId][jmValue] * 2 >= totalJudgedPropositions[propositionId]) {
 					winningJudgedPropositions[propositionId] = jmValue;
 				}
@@ -226,10 +229,13 @@ function computeMotion(motion) {
 			if (winLimit != -2) {
 				propositionPower = voteRound(propositionPower);
 	
-				var html = $("#proposition-" + id + " .powers").html();
+				var powers = $("#proposition-" + id + " .powers");
+				var html = powers.html();
 				var newHtml = "&nbsp;(" + propositionPower + " / " + percent + "%)";
 				if (html != newHtml) {
-					$("#proposition-" + id + " .powers").html(newHtml);
+					powers.html(newHtml);
+					powers.data("proposition-power", propositionPower);
+					powers.data("percent", percent);
 				}
 
 			}
@@ -263,10 +269,11 @@ function computeMotion(motion) {
 					}
 				}
 
-				var html = $("#proposition-" + id + " .powers").html();
+				var powers = $("#proposition-" + id + " .powers");
+				var html = powers.html();
 				var newHtml = "&nbsp;(" + winningTranslate + " / " + percent + "%)";
 				if (html != newHtml) {
-					$("#proposition-" + id + " .powers").html(newHtml);
+					powers.html(newHtml);
 				}
 			}
 		}
@@ -303,6 +310,48 @@ function computeMotion(motion) {
 
 			updateChart(motion, data);
 			
+		}
+		else if (winLimit == -1) {
+			initBordaChart(motion);
+
+			var data = [];
+			var propositionIndexes = {};
+			var propositionOffset = 0;
+			
+			var datum = {        
+		       type: "stackedColumn",       
+//		       showInLegend:true,
+//			       color: "hsl(" + color + ", 70%, 70%)",
+//			       color: "#0000" + (color < 10 ? "0" : "") + Math.round(color) + "",
+//		       name: "" + majority_judgement_translations[index],
+		       dataPoints: []
+			}
+
+			for(var id in scaledJudgedPropositions) {
+				if (!propositionIndexes[id]) {
+					propositionOffset++;
+					propositionIndexes[id] =propositionOffset; 
+				}
+				
+//				var scaledJudgedProposition = scaledJudgedPropositions[id];
+//				var number = scaledJudgedProposition[majority_judgement_values[index]];
+//				if (number == 0) continue;
+
+				var propositionLabel = $("#proposition-" + id + " .proposition-label").text();
+				var powers = $("#proposition-" + id + " .powers");
+				var number = powers.data("proposition-power");
+
+//				var percent = number / totalJudgedPropositions[id];
+//				percent = (Math.round(percent * 1000, 1) / 10);
+
+				var point = {  y: number, x: propositionIndexes[id], xLabel: propositionLabel, yLabel: number};
+				datum.dataPoints.push(point);
+			}
+
+			data.push(datum);
+
+			updateChart(motion, data);
+
 		}
 		else if (winLimit == -2) {
 			initJMChart(motion);

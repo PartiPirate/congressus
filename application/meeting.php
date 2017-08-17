@@ -492,8 +492,6 @@ if (!$userId) {
 
 			<div class="motion-propositions">
 			</div>
-			<div class="motion-charts" data-status="to-init" style="display: none;">
-			</div>
 			<div class="motion-actions">
 				<button class="btn btn-primary btn-xs btn-add-proposition"
 					title="<?php echo lang("meeting_proposalAdd"); ?>"
@@ -537,6 +535,8 @@ if (!$userId) {
 				<span class="simply-hidden voters badge pull-right">
 					<span class="number-of-voters">XX</span> <?php echo lang("meeting_voters"); ?>
 				</span>
+			</div>
+			<div class="motion-charts" data-status="to-init" style="display: none;">
 			</div>
 		</li>
 

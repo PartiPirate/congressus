@@ -76,13 +76,17 @@ $newContent = new \Mediawiki\DataModel\Content($wikiReport);
 
 $identifier = new \Mediawiki\DataModel\PageIdentifier($title );
 $revision = new \Mediawiki\DataModel\Revision($newContent, $identifier);
+
+//print_r($revision);
+
 $result = $services->newRevisionSaver()->save($revision);
 
 //$result = $services->newPageGetter()->getFromTitle($title);
 
+//print_r($result);
+
 //$topicId = $new_topic->apiresult->topic_id;
 
-//$http_code_topic = $discourseApi->getTopic($topicId)->http_code;
 //$rootCatIdent = new \Mediawiki\DataModel\PageIdentifier( new \Mediawiki\DataModel\Title('Category:Categories'));
 //$rootCat = $services->newPageGetter()->getFromPageIdentifier($rootCatIdent);
 //$categories = $services->newCategoryTraverser()->descend($rootCat);
@@ -92,6 +96,6 @@ if ($result) {
 	echo "<div id='wiki-result' class='alert alert-success' role='alert'>" . lang("export_wiki_success") . " <a target='_blank' href='$topic_url'>$topic_url</a></div>";
 }
 else {
-	echo "<div id='wiki-result' class='alert alert-danger' role='alert'>" . lang("export_wiki_fail") . " (code http $http_code_topic)</div>";
+	echo "<div id='wiki-result' class='alert alert-danger' role='alert'>" . lang("export_wiki_fail") . " (code http $result)</div>";
 }
 ?>

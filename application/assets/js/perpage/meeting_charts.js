@@ -27,10 +27,17 @@ var speakingStats = {speakingTimePerPerson: {}};
 
 function updateChart(motionContainer, data) {
 	var chartContainer = motionContainer.find(".motion-charts");
-	var chart = chartContainer.CanvasJSChart(); 
- 
-	chart.options.data = data;
-	chart.render();
+	if (chartContainer.length) {
+		var chart = chartContainer.CanvasJSChart(); 
+	
+		chart.options.data = data;
+		try {
+			chart.render();
+		}
+		catch(e) {
+			
+		}
+	}
 }
 
 function initPercentChart(motionContainer) {

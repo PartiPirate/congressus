@@ -227,6 +227,7 @@ $lang["createMeeting_length_hours"] = "hours";
 $lang["createMeeting_length_day"] = "day";
 $lang["createMeeting_length_days"] = "days";
 $lang["createMeeting_mumblePlace"] = "Mumble's channel :";
+$lang["createMeeting_discordPlace"] = "Discord's channels :";
 $lang["createMeeting_type"] = "Event's type :";
 $lang["createMeeting_type_meeting"] = "Meeting";
 $lang["createMeeting_type_aperitif"] = "Aperitif";
@@ -247,6 +248,7 @@ $lang["loc_type_mumble"] = "On mumble";
 $lang["loc_type_afk"] = "In a physical place";
 $lang["loc_type_irc"] = "On irc";
 $lang["loc_type_framatalk"] = "On framatalk";
+$lang["loc_type_discord"] = "On discord";
 $lang["loc_type_unknown"] = "at an unknown place";
 
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convening at the meeting \"{meeting_label}\"";

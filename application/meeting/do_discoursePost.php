@@ -73,7 +73,15 @@ if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_ca
 $report = $_REQUEST["report"];
 
 $new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], 0);
+/*
+echo "POST<br>";
+print_r($_REQUEST);
+echo "<br>POST<br>";
 
+echo "<br>";
+print_r($new_topic);
+echo "<br>";
+*/
 $topicId = $new_topic->apiresult->topic_id;
 
 $http_code_topic = $discourseApi->getTopic($topicId)->http_code;

@@ -58,7 +58,14 @@ $data["meeting"] = $meeting;
 $location = array();
 $location["loc_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
 $location["loc_type"] = $_REQUEST["loc_type"];
-$location["loc_channel"] = $_REQUEST["loc_channel"];
+
+if ($location["loc_type"] == "discord") {
+    $location["loc_channel"] = $_REQUEST["loc_discord_text_channel"] . "," . $_REQUEST["loc_discord_vocal_channel"];
+}
+else {
+    $location["loc_channel"] = $_REQUEST["loc_channel"];
+}
+
 $location["loc_extra"] = $_REQUEST["loc_extra"];
 $location["loc_principal"] = 1;
 

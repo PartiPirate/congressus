@@ -10,6 +10,7 @@ define("EVENT_SECRETARY_READS_ANOTHER_POINT", "secretary_reads_another_point");
 define("EVENT_SPEAK_REQUEST", "speak_request");
 define("EVENT_SPEAK_RENOUNCE", "speak_renounce");
 define("EVENT_SPEAK_SET", "speak_set");
+define("EVENT_EXTERNAL_CHAT", "external_chat");
 
 function addEvent($meetingId, $type, $text, $options = null) {
 	$events = getEvents($meetingId);

@@ -388,7 +388,11 @@ class DiscourseAPI
             'archetype' => 'regular',
             'reply_to_post_number' => $replyToId,
         );
-                
+/*
+        echo "\n<br>PARAM<br>\n";
+        print_r($params);
+        echo "\n<br>PARAM<br>\n";
+*/
         return $this->_postRequest('/posts', $params, $userName);
     }
 

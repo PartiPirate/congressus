@@ -58,23 +58,34 @@ $(function() {
 
 	mumbleLink($("#loc_channel").val());
 	$("#loc_extra_group").hide();
-});
+	$("#loc_discord_form").hide();
 
-$(document).on('change', '#loc_type', function() {
-	if($("#loc_type").val()=="mumble"){
-		$("#loc_channel_form").show();
-		$("#loc_channel").val('Accueil Taverne');
+	$(document).on('change', '#loc_type', function() {
+		if($("#loc_type").val()=="mumble"){
+			$("#loc_discord_form").hide();
+			$("#loc_channel_form").show();
+			$("#loc_channel").val('Accueil Taverne');
+			mumbleLink($("#loc_channel").val());
+			$('#loc_extra_group').hide();
+		}
+		else if($("#loc_type").val()=="discord"){
+			$("#loc_channel_form").hide();
+			$("#loc_discord_form").show();
+			$("#loc_text_channel").val('discussion');
+	//		discordsLink($("#loc_channel").val());
+			$('#loc_extra_group').hide();
+		}
+		else {
+			$("#loc_discord_form").hide();
+			$("#loc_channel_form").hide();
+			$("#loc_channel").val('AFK');
+			$("#loc_extra").empty();
+			$('#loc_extra_group').show();
+		}
+	
+	});
+	
+	$(document).on('change', '#loc_channel', function() {
 		mumbleLink($("#loc_channel").val());
-		$('#loc_extra_group').hide();
-	} else {
-		$("#loc_channel_form").hide();
-		$("#loc_channel").val('AFK');
-		$("#loc_extra").empty();
-		$('#loc_extra_group').show();
-	}
-
-});
-
-$(document).on('change', '#loc_channel', function() {
-	mumbleLink($("#loc_channel").val());
+	});
 });

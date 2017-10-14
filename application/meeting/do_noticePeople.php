@@ -111,6 +111,17 @@ if (count($membersToNotice)) {
 	if ($location["loc_type"] == "mumble") {
 		$location["loc_extra"] = "<a href='" . $location["loc_extra"] . "'>" . $location["loc_extra"] . "</a>";
 	}
+	else if ($location["loc_type"] == "discord") {
+		include("config/discord.structure.php");
+
+		list($discord_text_channel, $discord_vocal_channel) = explode(",", utf8_decode($location["loc_channel"]));
+		
+		$discord_text_link = @$discord_text_channels[$discord_text_channel];
+		$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
+		
+		$location["loc_extra"] = "Texte : <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
+		$location["loc_extra"] .= "Voix : <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
+	}
 	$meetingLink = "<a href='$meetingLink'>$meetingLink</a>";
 	
 	$body = str_replace("{meeting_link}", $meetingLink, $body);

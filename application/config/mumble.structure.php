@@ -72,4 +72,5 @@ $mumble_disabled = array(
   "Équipes",
   "AFK"
 );
- ?>
+
+?>

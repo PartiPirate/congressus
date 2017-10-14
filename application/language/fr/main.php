@@ -237,6 +237,7 @@ $lang["createMeeting_length_hours"] = "heures";
 $lang["createMeeting_length_day"] = "jour";
 $lang["createMeeting_length_days"] = "jours";
 $lang["createMeeting_mumblePlace"] = "Canal de Mumble :";
+$lang["createMeeting_discordPlace"] = "Canaux de Discord :";
 $lang["createMeeting_type"] = "Type événement :";
 $lang["createMeeting_type_meeting"] = "Réunion";
 $lang["createMeeting_type_aperitif"] = "Apéro";
@@ -263,6 +264,7 @@ $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";
 $lang["loc_type_irc"] = "Sur irc";
 $lang["loc_type_framatalk"] = "Sur framatalk";
+$lang["loc_type_discord"] = "Sur discord";
 $lang["loc_type_unknown"] = "à un endroit inconnu";
 
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";

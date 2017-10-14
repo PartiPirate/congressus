@@ -17,7 +17,8 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
-include("config/mumble.structure.php")
+include("config/mumble.structure.php");
+include("config/discord.structure.php");
 ?>
 
 <div class="container theme-showcase meeting" role="main">
@@ -97,6 +98,7 @@ include("config/mumble.structure.php")
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
 					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
 					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
+					<option value="discord"><?php echo lang("loc_type_discord"); ?></option>
 					<!--
 					<option value="irc">IRC</option>
 					 -->
@@ -119,6 +121,34 @@ include("config/mumble.structure.php")
 					}
 					?>
 				</select>
+			</div>
+		</div>
+
+		<div class="form-group" id="loc_discord_form">
+			<label for="loc_discord_text_channel" class="col-md-4 control-label"><?php echo lang("createMeeting_discordPlace"); ?></label>
+			<div class="col-md-4">
+				<div class="input-group">
+					<span class="input-group-addon"><i class='fa fa-hashtag' aria-hidden='true'></i></span>
+					<select class="form-control input-md" id="loc_discord_text_channel" name="loc_discord_text_channel">
+						<?php
+						foreach ($discord_text_channels as $channel => $channelLink) {
+							echo "<option value='$channel'>$channel</option>";
+						}
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="input-group">
+					<span class="input-group-addon"><i class='fa fa-volume-up' aria-hidden='true'></i></span>
+					<select class="form-control input-md" id="loc_discord_vocal_channel" name="loc_discord_vocal_channel">
+						<?php
+						foreach ($discord_vocal_channels as $channel => $channelLink) {
+							echo "<option value='$channel'>$channel</option>";
+						}
+						?>
+					</select>
+				</div>
 			</div>
 		</div>
 

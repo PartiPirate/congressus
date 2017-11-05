@@ -140,7 +140,24 @@ foreach($propositions as $proposition) {
 
 ?>
 
-<div class="container theme-showcase meeting" role="main">
+<style>
+    
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.nav-tabs>li>a {
+    border-radius: 4px;
+}
+
+</style>
+
+<div class=" theme-showcase meeting" role="main"
+	style="margin-left: 32px; margin-right: 32px; "
+    role="main">
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
 		<li class="active"><?php echo lang("breadcrumb_decisions"); ?></li>
@@ -148,9 +165,13 @@ foreach($propositions as $proposition) {
 
 <?php if ($skeleton) {?>
 
-	<!-- Nav tabs -->
-	<ul class="nav nav-tabs" role="tablist">
+	<div class="row">
+		<div class="col-md-3">
+
+        	<!-- Nav tabs -->
+        	<ul class="nav nav-tabs" role="tablist">
 <?php 	$active = "active";
+
 		foreach($objects as $voterIndex => $voter) {
 		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
 
@@ -170,26 +191,44 @@ foreach($propositions as $proposition) {
 
             	break;
             }
+            
+            $objects[$voterIndex]["label"] = $voterLabel;
+        }
 
+        function compareVoterByLabel($voterA, $voterB) {
+            if ($voterA["label"] == $voterB["label"]) return 0;
+            
+            return $voterA["label"] < $voterB["label"] ? -1 : 1;
+        }
+
+        uasort($objects, "compareVoterByLabel");
+
+		foreach($objects as $voterIndex => $voter) {
+		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
 ?>
-		<li role="presentation" class="<?php echo $active; ?>">
-			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $voterLabel; ?></a>
-		</li>
+        		<li role="presentation" class="<?php echo $active; ?>" style="float: none;">
+        			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $objects[$voterIndex]["label"]; ?></a>
+        		</li>
 <?php 	    $active = "";
 		}?>
-	</ul>
+        	</ul>
+    	</div>
+		<div class="col-md-9">
 
 	<!-- Tab panes -->
-	<div class="tab-content">
+        	<div class="tab-content">
 <?php 	$active = "active";
 		foreach($objects as $voterIndex => $voter) {
 		    $id = $voter["voter"]["not_target_type"] . "_" . $voter["voter"]["not_target_id"];
 ?>
-		<div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="<?php echo $id; ?>">
-
-		</div>
+        		<div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="<?php echo $id; ?>">
+        
+        		</div>
 <?php 		$active = "";
 		}?>
+        	</div>
+
+    	</div>
 	</div>
 
 <?php } ?>

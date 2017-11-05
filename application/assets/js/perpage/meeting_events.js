@@ -49,7 +49,7 @@ function getEventText(event) {
 	}
 	else if (event.type == "speak_renounce") {
 		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
-		text = "<i><b>" + userNickname + "</b></i>" + meeting_speakingRenounce;
+		text = "<i><b>" + userNickname + "</b></i> " + meeting_speakingRenounce;
 	}
 	else if (event.type == "join") {
 		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
@@ -73,9 +73,31 @@ function getEventText(event) {
 	return text;
 }
 
+function showExternalChat(event) {
+	var echat = {mem_avatar_url: event.options.user.mem_avatar_url, mem_nickname: event.options.user.mem_nickname, message: event.options.message, message_id: event.options.message_id};
+
+	var ul = $("#meeting_external_chat ul");
+
+	var echatLi = ul.find("#echat-" + event.options.message_id);
+	if (!echatLi.length) {
+		echatLi = $("li[data-template-id=echat]").template("use", {data: echat});
+		ul.append(echatLi);
+	}
+	else {
+		echatLi.find(".message").text(event.options.message);
+	}
+
+	ul.get(0).scrollTop = ul.get(0).scrollHeight
+}
+
 function showEvent(event) {
 
 	var eventClass = "success";
+
+	if (event.type == "external_chat") {
+		showExternalChat(event);
+		return;
+	}
 
 	switch(event.type) {
 		case "motion_add":

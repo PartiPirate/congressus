@@ -90,6 +90,7 @@ $lang["mybadges_guide"] = "The badge you have earn or the ones you can get";
 $lang["meeting_action"] = "Action on the meeting";
 $lang["meeting_agenda_point"] = "Ongoing topics : ";
 $lang["meeting_agenda"] = "Ordrer of the day";
+$lang["meeting_agenda_mode"] = "Activate / Deactivate the agenda authoring mode";
 $lang["meeting_arrival"] = "just came to the meeting";
 $lang["meeting_at"] = "at";
 $lang["meeting_attended"] = "Attended";
@@ -167,6 +168,7 @@ $lang["meeting_votePower"] = "Vote power";
 $lang["meeting_voters"] = "Voters";
 $lang["meeting_waiting"] = "Ready";
 $lang["meeting_voteExternal"] = "Vote interface";
+$lang["meeting_external_chat"] = "Chat";
 
 $lang["myMeetings_closed"] = "Ended meetings";
 $lang["myMeetings_construction"] = "In construction meetings";

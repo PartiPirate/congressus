@@ -115,7 +115,7 @@ function computeMotion(motion) {
 		}
 		else if (parentNotice.find(".btn-modify-voting.active").length == 1) {
 			votePower += vote.data("power") * (1 - neutral);
-			jmPower += $(this).find(".power").eq(0).text() * (1 - neutral);
+			jmPower += $(".member[data-id=" + memberId + "]").find(".power").eq(0).text() * (1 - neutral);
 		}
 
 //		if (winLimit == -1) debugger;
@@ -126,7 +126,7 @@ function computeMotion(motion) {
 		if (winLimit != -2) {
 			vote.find(".power").attr("title", meeting_votePower + " " + vote.data("power") + " => " + voteRound(votePower)).text(voteRound(votePower));
 		}
-		else {
+		else if (votePower) {
 //			console.log(propositionId + " , " + vote.data("power") + " , " + jmPower)
 
 			totalJudgedPropositions[propositionId] += jmPower;
@@ -523,7 +523,7 @@ function dumpMotion(motion) {
 				propositionVote["votePower"] = vote.data("power") * (1 - neutral);
 			}
 			else {
-				propositionVote["votePower"] = $(this).find(".power").eq(0).text() * (1 - neutral);
+				propositionVote["votePower"] = $(".member[data-id=" + memberId + "]").find(".power").eq(0).text() * (1 - neutral);
 			}
 		}
 		else {

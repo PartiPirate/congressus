@@ -185,7 +185,7 @@ if (!$json) {
 			continue;
 		}
 
-		$people["mem_speaking"] = $ping["pin_speaking"];
+		$people["mem_speaking_time"] = $ping["pin_speaking_time"];
 		$people["mem_speaking_request"] = $ping["pin_speaking_request"];
 
 		$data["visitors"][] = $people;

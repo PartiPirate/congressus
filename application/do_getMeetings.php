@@ -33,10 +33,15 @@ $data = array();
 
 $events = array();
 
+$timezone = null;
+if ($config["server"]["timezone"]) {
+	$timezone = new DateTimeZone($config["server"]["timezone"]);
+}
+
 foreach($meetings as $meeting) {
 
-	$start = new DateTime($meeting["mee_datetime"]);
-	$start = $start->getTimestamp() - 7200; // TODO fix this
+	$start = new DateTime($meeting["mee_datetime"], $timezone);
+	$start = $start->getTimestamp(); // TODO fix this
 	$end = $start + 60 * ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60);
 
 	$event = array(
@@ -51,8 +56,23 @@ foreach($meetings as $meeting) {
 	if ($meeting["loc_type"]) {
 		$event["title"] .= " - " . lang("loc_type_" . $meeting["loc_type"]);
 
-		if ($meeting["loc_extra"]) {
+		if ($meeting["loc_extra"] && $meeting["loc_type"] != "discord") {
 			$event["title"] .= " (" . $meeting["loc_extra"] . ")";
+		}
+		else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
+			include_once("config/discord.structure.php");
+
+			list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
+			
+			$discord_text_link = @$discord_text_channels[$discord_text_channel];
+			$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
+
+			if ($discord_text_link || $discord_vocal_link) {
+				$event["title"] .= " (";
+				if ($discord_text_link) $event["title"] .= "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
+				if ($discord_vocal_link) $event["title"] .= "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
+				$event["title"] .= ")";
+			}
 		}
 	}
 

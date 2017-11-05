@@ -52,9 +52,21 @@ if (!$userId) {
 	$guestId = $_SESSION["guestId"];
 }
 
+$hasChat = false;
+$leftColumn = 3;
+$mainColumn = 9;
+$rightColumn = 0;
+
+if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
+	$hasChat = true;
+	$mainColumn = 6;
+	$rightColumn = 3;
+}
+
 ?>
 
-<div class="container theme-showcase meeting" role="main"
+<div class=" theme-showcase meeting" role="main"
+	style="margin-left: 32px; margin-right: 32px; "
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
 	data-speaking-id="-1"
@@ -224,40 +236,11 @@ if (!$userId) {
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8" id="main-panel">
-			<div id="tasks" class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" class="collapsed" data-target="#tasks-list" href="#"><?php echo lang("meeting_tasks"); ?> <span
-						class="badge tasks-counter" style="display: none;">0</span></a>
-				</div>
-				<ul class="list-group panel-collapse collapse" id="tasks-list">
-				</ul>
-			</div>
-
-			<div id="agenda_point" class="panel panel-default" data-id="0" style="display: none;">
-				<div class="panel-heading">
-					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
-					<button class="btn btn-default btn-xs pull-right btn-next-point"
-						title="Point suivant" data-toggle="tooltip" data-placement="bottom"
-						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
-					<button class="btn btn-default btn-xs pull-right btn-previous-point"
-						title="Point précédent" data-toggle="tooltip" data-placement="bottom"
-						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-left"></span></button>
-				</div>
-				<ul class="list-group objects">
-				</ul>
-				<div class="panel-footer">
-					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
-					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
-					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
-					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4" id="right-panel">
+		<div class="col-md-<?php echo $leftColumn ?>" id="right-panel">
 			<div id="meeting-agenda" class="panel panel-default">
 				<div class="panel-heading">
-					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
+					<button class="btn btn-warning btn-xs pull-right btn-agenda-mode" style="display: none; margin-left: 5px;" title="<?php echo lang("meeting_agenda_mode"); ?>" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-book"></span></button>
+					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;" ><span class="glyphicon glyphicon-plus"></span></button>
 					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
 				</div>
 				<ul class="list-group panel-collapse collapse in" id="agenda-points-list">
@@ -299,6 +282,47 @@ if (!$userId) {
 				</ul>
 			</div>
 		</div>
+		<div class="col-md-<?php echo $mainColumn; ?>" id="main-panel">
+			<div id="tasks" class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" class="collapsed" data-target="#tasks-list" href="#"><?php echo lang("meeting_tasks"); ?> <span
+						class="badge tasks-counter" style="display: none;">0</span></a>
+				</div>
+				<ul class="list-group panel-collapse collapse" id="tasks-list">
+				</ul>
+			</div>
+
+			<div id="agenda_point" class="panel panel-default" data-id="0" style="display: none;">
+				<div class="panel-heading">
+					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
+					<button class="btn btn-default btn-xs pull-right btn-next-point"
+						title="Point suivant" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+					<button class="btn btn-default btn-xs pull-right btn-previous-point"
+						title="Point précédent" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+				</div>
+				<ul class="list-group objects">
+				</ul>
+				<div class="panel-footer">
+					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
+					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
+					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
+					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
+				</div>
+			</div>
+		</div>
+		<?php	if ($hasChat) { ?>
+		<div class="col-md-<?php echo $rightColumn; ?>">
+			<div id="meeting_external_chat" class="panel panel-default" style="margin-bottom: 0px;">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-target="#echat-list" href="#"><?php echo lang("meeting_external_chat"); ?></a>
+				</div>
+				<ul class="list-group panel-collapse collapse in" id="echat-list" style="max-height: 422px; overflow-y: scroll;">
+				</ul>
+			</div>
+		</div>
+		<?php	} ?>
 	</div>
 
 <?php include("connect_button.php"); ?>
@@ -405,6 +429,12 @@ if (!$userId) {
 			<span class="task-label"></span>
 		</li>
 
+		<li data-template-id="echat" id="echat-${message_id}"
+				class="template list-group-item echat" data-id="${message_id}">
+			<img src="${mem_avatar_url}" style="max-height: 20px; max-width: 20px; border-radius: 10px; ">
+			<span class="nickname">${mem_nickname}</span> : 
+			<span class="message">${message}</span>
+		</li>
 
 		<li data-template-id="task" id="task-${tas_id}"
 				class="template list-group-item task" data-id="${tas_id}" style="display: block;">
@@ -724,8 +754,9 @@ var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
 var common_edit = "<?php echo lang("common_edit"); ?>";
 var common_close = "<?php echo lang("common_close"); ?>";
 
-var meeting_speakingAsk = "<?php echo lang("meeting_speakingAsk"); ?>";
+var meeting_speakingAsk = "<?php echo strtolower(lang("meeting_speakingAsk")); ?>";
 var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
+var meeting_speakingRenounce = "<?php echo lang("meeting_speakingRenounce"); ?>";
 var meeting_arrival = "<?php echo lang("meeting_arrival"); ?>";
 var meeting_left = "<?php echo lang("meeting_left"); ?>";
 var meeting_votePower = "<?php echo lang("meeting_votePower"); ?>";

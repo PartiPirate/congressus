@@ -84,6 +84,25 @@ function computeGameUserId($userId) {
     return sha1($config["gamifier"]["user_secret"] . $userId);
 }
 
+function testTokens() {
+    $token = $_GET["token"];
+    $secret = $_GET["secret"]; 
+
+    global $config;
+
+    if (!isset($config["applications"])) {
+        return false;
+    }
+
+    foreach($config["applications"] as $application) {
+        if ($token == $application["token"] && $secret == $application["secret"]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 include("meeting/$method.php");
 
 ?>

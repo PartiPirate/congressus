@@ -48,6 +48,8 @@ $voteBo = VoteBo::newInstance($connection, $config);
 $meetingId = $_REQUEST["id"];
 $pointId = $_REQUEST["pointId"];
 
+// error_log(print_r($_REQUEST, true));
+
 $meeting = $meetingBo->getById($meetingId);
 
 if (!$meeting) {
@@ -82,6 +84,7 @@ if (!$json) {
 	
 	if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 		echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
+		exit();
 	}
 	
 	$agenda["age_objects"] = json_decode($agenda["age_objects"]);
@@ -89,6 +92,9 @@ if (!$json) {
 	$data = array();
 	
 	$data["agenda"] = $agenda;
+
+//	error_log($_REQUEST["pointId"]);
+//	error_log(print_r($agenda, true));
 	
 	$data["motions"] = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	$data["chats"] = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
@@ -112,9 +118,10 @@ if (!$json) {
 
  				$data["chats"][$index]["advices"][] = $advice;
  			}
+ 		
  		}
 	}
-	
+
 	$data["votes"] = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	
 	foreach($data["votes"] as $index => $vote) {
@@ -130,9 +137,9 @@ if (!$json) {
 	}
 
 	$data["tasks"] = $taskBo->getByFilters(array("tas_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
-	
+
 	$data["conclusions"] = $conclusionBo->getByFilters(array("con_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
-	
+
 	$data["requestId"] = $_REQUEST["requestId"];
 	$data["ok"] = "ok";
 }
@@ -140,6 +147,8 @@ else {
 	$data = json_decode($json, true);
 	$data["cached"] = true;
 }
+
+//print_r($data);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

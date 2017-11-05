@@ -75,7 +75,7 @@ class MeetingBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect("*");
 
-		if (isset($filters["with_principal_location"]) && $filters["with_principal_location"]) {
+		if ((isset($filters["with_principal_location"]) && $filters["with_principal_location"]) || isset($filters["loc_text_channel"])) {
 			$queryBuilder->join("locations", "loc_meeting_id = $this->ID_FIELD AND loc_principal = 1", null, "left");
 		}
 
@@ -92,6 +92,11 @@ class MeetingBo {
 		if (isset($filters["mee_secretary_member_id"])) {
 			$args["mee_secretary_member_id"] = $filters["mee_secretary_member_id"];
 			$queryBuilder->where("mee_secretary_member_id = :mee_secretary_member_id");
+		}
+
+		if (isset($filters["loc_text_channel"])) {
+			$args["loc_text_channel"] = $filters["loc_text_channel"] . ",%";
+			$queryBuilder->where("loc_channel LIKE :loc_text_channel");
 		}
 
 		if (isset($filters["with_status"])) {

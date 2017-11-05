@@ -27,7 +27,9 @@
 
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
-		if (hasRight(getUserId(), "handle_agenda")) {
+		var button = $("#meeting-agenda button.btn-agenda-mode");
+
+		if (hasRight(getUserId(), "handle_agenda") && button.hasClass("btn-success")) {
 			$(this).children(".glyphicon-pencil").show();
 			$(this).children("button").show();
 		}
@@ -86,6 +88,23 @@ function addAgendaHandlers() {
 			}, "json");
 		}
 	});
+
+	$("#meeting-agenda").on("click", "button.btn-agenda-mode", function(event) {
+		event.stopPropagation();
+
+		if (hasRight(getUserId(), "handle_agenda")) {
+			var button = $("#meeting-agenda button.btn-agenda-mode");
+			if (button.hasClass("btn-success")) {
+				button.removeClass("btn-success").addClass("btn-warning");
+				button.find(".glyphicon").removeClass("glyphicon-pencil").addClass("glyphicon-book");
+			}
+			else {
+				button.addClass("btn-success").removeClass("btn-warning");
+				button.find(".glyphicon").addClass("glyphicon-pencil").removeClass("glyphicon-book");
+			}
+		}
+	});
+
 
 	$("#meeting-agenda").on("click", "li", function(event) {
 

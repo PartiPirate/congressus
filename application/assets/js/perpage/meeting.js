@@ -1577,7 +1577,6 @@ function updateTasks() {
 
 	$.post("meeting_api.php?method=do_getTasks", {meetingId : meetingId}, function(data) {
 		if (data.ok) {
-			$("#tasks .tasks-counter").text(data.tasks.length);
 			if (data.tasks.length) {
 				$("#tasks .tasks-counter").show();
 			}
@@ -1603,6 +1602,8 @@ function updateTasks() {
 			}
 
 			$("#tasks-list li.to-remove").remove();
+
+			$("#tasks .tasks-counter").text($("#tasks-list li").length);
 		}
 	}, "json");
 }

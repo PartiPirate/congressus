@@ -1,20 +1,20 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
-	This file is part of OpenTweetBar.
+	This file is part of Congressus.
 
-    OpenTweetBar is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    OpenTweetBar is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
 ini_set('display_errors', 1);
@@ -100,8 +100,18 @@ $connection = openConnection();
 		}
 
 		$page_title = lang("congressus_title");
+		$page_description = lang("index_description");
 		if (isset($meeting)) {
 			$page_title .= " : " . $meeting['mee_label'];
+			
+			$start = new DateTime($meeting["mee_datetime"]);
+
+			$date = lang("datetime_format");
+
+			$date = str_replace("{date}", @$start->format(lang("date_format")), $date);
+			$date = str_replace("{time}", @$start->format(lang("time_format")), $date);
+
+			$page_description = $date;
 		}
 ?>
 <meta charset="utf-8">
@@ -114,14 +124,14 @@ $connection = openConnection();
 <meta property="og:type" content="website" />
 <meta property="og:url" content="<?php echo $current_url; ?>" />
 <meta property="og:title" content="Parti Pirate <?php echo $page_title;?>" />
-<meta property="og:description" content="<?php echo lang("index_description");?>" />
+<meta property="og:description" content="<?php echo $page_description;?>" />
 <meta property="og:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="fb:page_id" content="partipiratefr" />
 <!-- Google +1 -->
 <meta itemprop="name" content="Parti Pirate <?php echo $page_title;?>" />
-<meta itemprop="description" content="<?php echo lang("index_description");?>" />
+<meta itemprop="description" content="<?php echo $page_description;?>" />
 <meta itemprop="image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
 <meta itemprop="author" content="farlistener" />
 <!-- Twitter -->
@@ -130,7 +140,7 @@ $connection = openConnection();
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:url" content="<?php echo $current_url; ?>" />
 <meta name="twitter:title" content="Parti Pirate <?php echo $page_title;?>" />
-<meta name="twitter:description" content="<?php echo lang("index_description");?>" />
+<meta name="twitter:description" content="<?php echo $page_description;?>" />
 <meta name="twitter:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
 <meta name="twitter:image:alt" content="Logo de Congressus" />
 

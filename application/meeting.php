@@ -76,7 +76,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
 	</ol>
 
-	<div class="row" style="margin-bottom: 5px;">
+	<div class="row" style="margin-bottom: 5px; height: 30px; ">
 		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
 			<span class="mee_start datetime-control">
@@ -107,10 +107,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</span>
 			</span>
 		</div>
+	</div>
+	<div class="row" style="margin-bottom: 5px; height: 30px; ">
 		<div class="col-md-6 president">
-			<span class="glyphicon glyphicon-education" style="margin-top: 10px;"></span> <?php echo lang("meeting_president"); ?>
+			<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
 			<span class="mee_president_member_id read-data" data-id="0"></span>
-			<select class="form-control" data-type="president">
+			<select class="form-control" data-type="president" style="margin-top: -7px;">
 				<option value="0"></option>
 				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
 				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
@@ -119,9 +121,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			</select>
 		</div>
 		<div class="col-md-6 secretary">
-			<span class="glyphicon glyphicon-user" style="margin-top: 10px;"></span> <?php echo lang("meeting_secretary"); ?>
+			<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
-			<select class="form-control" data-type="secretary">
+			<select class="form-control" data-type="secretary" style="margin-top: -7px;">
 				<option value="0"></option>
 				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
 				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
@@ -129,6 +131,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
+	</div>
+	<div class="row" style="margin-bottom: 5px; height: 30px; ">
 		<div class="col-md-6">
 			<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 			<?php echo $meeting["loc_type"];?>

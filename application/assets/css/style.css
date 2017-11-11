@@ -206,7 +206,7 @@ span.chat-nickname {
 
 span.chat-text {
     display: inline-block;
-    width: 500px;
+    width: calc(100% - 195px);
 }
 
 .btn-group-xs>.btn, .btn-xs {

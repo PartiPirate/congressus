@@ -46,7 +46,13 @@ $message = $_GET["message"];
 $messageId = $_GET["messageId"];
 $channel = $_GET["channel"];
 $externalUser = $_GET["user"];
-$avatar = $_GET["avatar"];
+
+if (isset($_GET["avatar"])) {
+    $avatar = $_GET["avatar"];
+}
+else {
+    $avatar = "assets/images/no_avatar.svg";
+}
 
 // FOUND DATA
 $meetingBo = MeetingBo::newInstance($connection, $config);

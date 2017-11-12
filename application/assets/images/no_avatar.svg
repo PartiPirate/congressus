@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created with Sodipodi ("http://www.sodipodi.com/") -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="150"
+   height="150"
+   id="svg2"
+   sodipodi:version="0.34"
+   inkscape:version="0.44.1"
+   sodipodi:docname="/home2/zerosoul/misc/Wikipedia/Replace this image1.svg"
+   sodipodi:docbase="/home2/zerosoul/misc/Wikipedia"
+   xmlns:xlink="http://www.w3.org/1999/xlink">
+  <metadata
+     id="metadata1943">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="573"
+     inkscape:window-width="853"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     width="150px"
+     height="150px"
+     inkscape:zoom="0.88444467"
+     inkscape:cx="157.5"
+     inkscape:cy="57.894899"
+     inkscape:window-x="44"
+     inkscape:window-y="58"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs5" />
+  <path
+     transform="matrix(0.927682,0,0,0.899448,7.883789,9.999466)"
+     style="font-size:12;fill:#cccccc;fill-rule:evenodd;stroke-width:2.5;stroke-opacity:0.251;"
+     d="M 104.3499 51.90949 C 101.6626 78.5382 91.86466 97.02538 71.67155 97.02538 C 51.47843 97.02538 42.15349 80.39216 38.99312 52.57722 C 36.36971 27.72742 51.47843 6.449162 71.67155 6.449162 C 91.86466 6.449162 106.6533 27.01063 104.3499 51.90949 z "
+     id="path622"
+     sodipodi:nodetypes="cssss" />
+  <path
+     d="M 92.5675 89.6048 C 90.79484 93.47893 89.39893 102.4504 94.86478 106.9039 C 103.9375 114.2963 106.7064 116.4723 118.3117 118.9462 C 144.0432 124.4314 141.6492 138.1543 146.5244 149.2206 L 4.268444 149.1023 C 8.472223 138.6518 6.505799 124.7812 32.40051 118.387 C 41.80992 116.0635 45.66513 113.8823 53.58659 107.0158 C 58.52744 102.7329 57.52583 93.99267 56.43084 89.26926 C 52.49275 88.83011 94.1739 88.14054 92.5675 89.6048 z "
+     style="fill:#ccc;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     id="path1873"
+     sodipodi:nodetypes="ccccccccc" />
+</svg>

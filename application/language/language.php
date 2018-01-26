@@ -104,4 +104,29 @@ function lang($key, $htmlencode = true, $language = null, $path = "") {
 
     return '$lang["'.$key.'"] = "";';
 }
+
+function dateTranslate($date) {
+    $date = str_replace("Sunday", lang("Sunday"), $date);
+    $date = str_replace("Monday", lang("Monday"), $date);
+    $date = str_replace("Tuesday", lang("Tuesday"), $date);
+    $date = str_replace("Wednesday", lang("Wednesday"), $date);
+    $date = str_replace("Thursday", lang("Thursday"), $date);
+    $date = str_replace("Friday", lang("Friday"), $date);
+    $date = str_replace("Saturday", lang("Saturday"), $date);
+
+    $date = str_replace("January", lang("January"), $date);
+    $date = str_replace("February", lang("February"), $date);
+    $date = str_replace("March", lang("March"), $date);
+    $date = str_replace("April", lang("April"), $date);
+    $date = str_replace("May", lang("May"), $date);
+    $date = str_replace("June", lang("June"), $date);
+    $date = str_replace("July", lang("July"), $date);
+    $date = str_replace("August", lang("August"), $date);
+    $date = str_replace("September", lang("September"), $date);
+    $date = str_replace("October", lang("October"), $date);
+    $date = str_replace("November", lang("November"), $date);
+    $date = str_replace("December", lang("December"), $date);
+    
+    return $date;
+}
 ?>

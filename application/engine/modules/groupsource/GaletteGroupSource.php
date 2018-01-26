@@ -73,7 +73,7 @@ class GaletteGroupSource {
 		if (count($groups)) {
 			$group = $groups[0];
 		}
-		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"])));
+		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"]), "adh_only" => true));
 
 		$notice["not_label"] = htmlspecialchars(utf8_encode($group["group_name"]), ENT_SUBSTITUTE);
 		$notice["not_people"] = array();
@@ -99,7 +99,7 @@ class GaletteGroupSource {
         global $connection;
 
         $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
-		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"])));
+		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"]), "adh_only" => true));
 
 		return $members;
     }

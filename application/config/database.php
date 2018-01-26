@@ -33,7 +33,7 @@
 @include_once("engine/modules/groupsource/PersonaeThemeSource.php");
 @include_once("engine/modules/groupsource/CustomGroupSource.php");
 
-require_once("engine/authenticators/AuthenticatorFactory.php");
+@require_once("engine/authenticators/AuthenticatorFactory.php");
 @require_once("engine/authenticators/GaletteAuthenticator.php");
 @require_once("engine/authenticators/CustomAuthenticator.php");
 

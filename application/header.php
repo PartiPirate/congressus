@@ -31,6 +31,7 @@ include_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
 
+
 $gamifierClient = null;
 if (isset($config["gamifier"]["url"])) {
 	$gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);

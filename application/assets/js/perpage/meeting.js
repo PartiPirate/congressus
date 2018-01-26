@@ -1423,7 +1423,7 @@ function addMotionHandlers() {
 		bootbox.setLocale("fr");
 		bootbox.confirm(meeting_proposalDelete + " \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
 			if (result) {
-				$.post("meeting_api.php?method=do_removeMotion", {
+				$.post("meeting_api.php?method=do_removeMotionProposition", {
 					meetingId: meetingId,
 					pointId: agendaId,
 					motionId: motionId,

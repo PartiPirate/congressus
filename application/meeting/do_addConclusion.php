@@ -67,7 +67,7 @@ $data = array();
 
 $conclusion = array();
 $conclusion["con_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
-$conclusion["con_text"] = "";
+$conclusion["con_text"] = isset($_REQUEST["startingText"]) ? $_REQUEST["startingText"] : "";
 
 $conclusionBo->save($conclusion);
 $conclusion = $conclusionBo->getById($conclusion[$conclusionBo->ID_FIELD]);

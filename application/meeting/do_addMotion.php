@@ -75,7 +75,7 @@ $agenda["age_objects"] = json_decode($agenda["age_objects"]);
 
 $motion = array();
 $motion["mot_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
-$motion["mot_title"] = "Titre de la motion";
+$motion["mot_title"] = isset($_REQUEST["startingText"]) ? $_REQUEST["startingText"] : "Titre de la motion";
 $motion["mot_description"] = "Description de la motion";
 $motion["mot_type"] = "yes_no";
 $motion["mot_status"] = "construction";

@@ -309,10 +309,17 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<ul class="list-group objects">
 				</ul>
 				<div class="panel-footer">
-					<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
-					<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
-					<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
-					<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
+					<div class="form-group">
+					  	<div class="col-md-12">                     
+					    	<textarea class="form-control" id="starting-text" rows="3"></textarea>
+						</div>
+					</div>
+					<div>
+						<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
+						<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
+						<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
+						<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
+					</div>
 				</div>
 			</div>
 		</div>

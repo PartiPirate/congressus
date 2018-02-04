@@ -375,11 +375,13 @@ function addOwnChat() {
 	var userId = $(".meeting").data("user-id");
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
+	var startingText = $("#starting-text").val();
 
-	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId}, function(data) {
+	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
 		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
 		testBadges(data.gamifiedUser.data);
+		$("#starting-text").val("");
 	}, "json");
 }
 
@@ -388,32 +390,38 @@ function addOwnTask() {
 	var targetType = "galette_adherent";
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
+	var startingText = $("#starting-text").val();
 
-	$.get("meeting_api.php?method=do_addTask", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType}, function(data) {
-		setAgendaTask(data.task.task_id, [data.task]);
+	$.get("meeting_api.php?method=do_addTask", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType, startingText: startingText}, function(data) {
+		setAgendaTask(data.task.tas_id, [data.task]);
 		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
+		$("#starting-text").val("");
 	}, "json");
 }
 
 function addConclusion() {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
+	var startingText = $("#starting-text").val();
 
-	$.get("meeting_api.php?method=do_addConclusion", {id: meetingId, pointId: agendaId}, function(data) {
+	$.get("meeting_api.php?method=do_addConclusion", {id: meetingId, pointId: agendaId, startingText: startingText}, function(data) {
 		setAgendaConclusion(data.conclusion.con_id, [data.conclusion]);
 		$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
+		$("#starting-text").val("");
 	}, "json");
 }
 
 function addMotion(event) {
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
+	var startingText = $("#starting-text").val();
 
-	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId}, function(data) {
+	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId, startingText: startingText}, function(data) {
 		testBadges(data.gamifiedUser.data);
 
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
+		$("#starting-text").val("");
 	}, "json");
 }
 

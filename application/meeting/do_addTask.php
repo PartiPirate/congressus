@@ -68,7 +68,7 @@ $data = array();
 
 $task = array();
 $task["tas_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
-$task["tas_label"] = "";
+$task["tas_label"] = isset($_REQUEST["startingText"]) ? $_REQUEST["startingText"] : "";
 
 $now = getNow();
 $task["tas_start_datetime"] = $now->format("Y-m-d H:i:s");

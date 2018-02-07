@@ -28,6 +28,7 @@ class MeetingBo {
 	function __construct($pdo, $config) {
 		$this->config = $config;
 		$this->pdo = $pdo;
+		$this->personaeDatabase = $this->config["personae"]["db"] ? $this->config["personae"]["db"] . "." : "";
 	}
 
 	static function newInstance($pdo, $config) {
@@ -81,6 +82,7 @@ class MeetingBo {
 
 		if (isset($filters["by_personae_group"])) {
 			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD AND not_target_type = 'dlp_groups'");
+			//print_r($this->config);
 			$queryBuilder->join($this->personaeDatabase."dlp_groups", "gro_id = not_target_id");
 		}
 
@@ -110,7 +112,7 @@ class MeetingBo {
 			$queryBuilder->orderBy("gro_label");
 		}
 
-		$queryBuilder->orderBy("mee_datetime");
+		$queryBuilder->orderDescBy("mee_datetime");
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

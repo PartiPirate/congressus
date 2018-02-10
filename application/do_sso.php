@@ -64,7 +64,7 @@ $updateSsoArgs = array("tok_id" => $results[0]["tok_id"]);
 $statement = $connection->prepare($updateSsoQuery);
 $statement->execute($updateSsoArgs);
 
-$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config["galette"]["db"]);
+$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config);
 
 $data = array();
 

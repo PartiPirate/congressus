@@ -262,6 +262,9 @@ $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
 $lang["notice_customUsers"] = "Utilisateurs Custom";
 
+$lang["mee_synchro_vote_0"] = "Votes disponibles sur l'interface de vote";
+$lang["mee_synchro_vote_1"] = "Votes synchronisés";
+
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";
 $lang["loc_type_irc"] = "Sur irc";
@@ -307,7 +310,7 @@ $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas
 $lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
 $lang["myVotes_maxPower"] = "Points à distribuer : {value}";
 $lang["myVotes_voteMethod"] = "Méthode : {value}";
-
+$lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce qu'elles ne sont pas ouvertes.";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

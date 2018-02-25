@@ -81,6 +81,12 @@ function sortPropositions($a, $b) {
 
 <?php echo str_replace("{value}", count($sortedMotions), lang("myVotes_numberOfMotions")); ?><br><br>
 
+<?php	if (!count($sortedMotions)) {
+?>	<div class="well well-sm"><?php
+			echo lang("myVotes_no_motion");				
+?>	</div><?php
+		}
+		else { ?>
 <div class="text-center">
 	<button class="btn btn-default btn-previous pull-left" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-left"></span></button>
 	<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
@@ -88,8 +94,10 @@ function sortPropositions($a, $b) {
 	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> Imprimer un bulletin papier</button>
 	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;">Télécharger le bulletin</a>
 </div>
+<?php	} ?>
 
 <div class="clearfix"></div><br>
+
 
 <?php	foreach($sortedMotions as $motionId => $motion) { 
 
@@ -121,7 +129,8 @@ function sortPropositions($a, $b) {
 		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?></h4>
 
 		<div class="propositions">
-	<?php	foreach($propositions as $index => $proposition) {
+	<?php	
+			foreach($propositions as $index => $proposition) {
 	
 				if ($motion["mot_win_limit"] == -2) {
 					if ($index != 0) echo "<br>";
@@ -139,9 +148,11 @@ function sortPropositions($a, $b) {
 				else {?>
 			<div class="btn btn-default proposition" style="width: 100%;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
 	<?php 		}
-			}?>
+			}
+			?>
+
 		</div>
-	
+
 		<br>
 		<button class="btn btn-default btn-primary btn-vote" style="width: 100%;" type="button">Voter</button>
 

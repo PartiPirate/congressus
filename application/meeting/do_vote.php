@@ -60,6 +60,18 @@ $vote["mem_id"] = $vote["id_adh"] ? $vote["id_adh"] : "G" . $vote["chat_guest_id
 $vote["mem_nickname"] = htmlspecialchars(utf8_encode($vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["pin_nickname"]));
 
 $data["ok"] = "ok";
+
+foreach ($vote as $key => $value) {
+    if (strpos($key, "_adh")) unset($vote[$key]);
+    if ($key == "id_statut") unset($vote[$key]);
+    if ($key == "bool_display_info") unset($vote[$key]);
+    if ($key == "date_echeance") unset($vote[$key]);
+    if ($key == "pref_lang") unset($vote[$key]);
+    if ($key == "lieu_naissance") unset($vote[$key]);
+    if ($key == "gpgid") unset($vote[$key]);
+    if ($key == "fingerprint") unset($vote[$key]);
+    if ($key == "parent_id") unset($vote[$key]);
+}
 $data["vote"] = $vote;
 
 if ($gamifierClient) {

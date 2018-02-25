@@ -214,6 +214,8 @@ function setAgendaMotion(id, motions) {
 	var userId = $(".meeting").data("user-id");
 	var list = $("#agenda_point ul.objects");
 	var motionContainer = list.find("li#motion-" + id);
+	var meeting = $(".meeting").data("json");
+	var synchroVote = meeting.mee_synchro_vote;
 
 	if (!motionContainer.length) {
 		motionContainer = $("li[data-template-id=motion]").template("use", {data: {mot_id: id}});
@@ -323,7 +325,7 @@ function setAgendaMotion(id, motions) {
 			proposition.hide().fadeIn(400);
 		}
 
-		if (hasVotingRight(userId) && motion.mot_status == "voting") {
+		if (hasVotingRight(userId) && motion.mot_status == "voting" && synchroVote) {
 			proposition.find("button.btn-vote").show();
 		}
 		else {
@@ -1757,7 +1759,6 @@ function autogrowEvent() {
 
 	this.scrollTop = currentScroll;
 }
-
 
 $(function() {
 	setFramatalkPosition("left");

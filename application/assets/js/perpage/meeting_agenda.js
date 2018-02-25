@@ -23,7 +23,8 @@
 /* global getUserId */
 /* global testBadges */
 /* global bootbox */
-
+/* global clearKeyup */
+/* global keyupTimeoutId */
 
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
@@ -231,13 +232,16 @@ function updateMeeting(meeting) {
 			break;
 	}
 
-
 	$("#meeting-status-panel .btn-vote-meeting").show();
 
 	$("#meeting_rights_list input").prop("checked", false);
 	for(var index = 0; index < meeting["mee_rights"].length; ++index) {
 		$("input[value=" + meeting["mee_rights"][index] + "]").prop("checked", true);
 	}
+	
+	$(".synchro-vote-option").hide();
+	$(".synchro-vote-" + meeting.mee_synchro_vote).show();
+	$(".synchro-vote select").val(meeting.mee_synchro_vote);
 
 	if (!hasWritingRight(getUserId())) {
 		$("#meeting-status-panel button.btn-waiting-meeting").hide();
@@ -271,7 +275,6 @@ function updateMeeting(meeting) {
 		$(".mee_finish .span-date").text(moment(date).format("DD/MM/YYYY"));
 		$(".mee_finish .span-time").text(moment(date).format("HH:mm"));
 	}
-
 
 	if (meeting.mee_start_time) {
 		var date = moment(meeting.mee_start_time, "YYYY-MM-DD HH:mm:ss").toDate();
@@ -327,6 +330,9 @@ function updateAgenda() {
 }
 
 function addMeetingHandlers() {
+	$(".synchro-vote select").hide();
+
+	
 	$("#meeting-status-panel .btn-delete-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");

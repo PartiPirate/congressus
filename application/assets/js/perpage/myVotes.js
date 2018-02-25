@@ -63,10 +63,40 @@ function setMotionDirty(motion, state) {
 	}
 }
 
+function computeEventPositions() {
+	var margin = 5;
+	var currentPosition = 60;
+
+	$(".congressus-event").each(function() {
+		var eventAlert = $(this);
+
+		eventAlert.css({"bottom" : currentPosition + "px"});
+
+		currentPosition += (eventAlert.height() + margin + 16);
+
+	});
+}
+
+function showAlert(text, eventClass) {
+	var eventAlert = $("<p style='width: 350px; height: 55px; z-index: 1000; position: fixed; right: 10px;' class='congressus-event form-alert simply-hidden bg-" + eventClass + "'>" + text + "</p>");
+	var body = $("body");
+	body.append(eventAlert);
+
+	computeEventPositions();
+
+	eventAlert.show().delay(5000).fadeOut(1000, function() {
+		$(this).remove();
+		computeEventPositions();
+	});
+	
+}
+
 function doPointVote(motion) {
 //    addLog("point vote on : " + motion.data("id"));
 	
 	var propositionHolders = motion.find(".proposition");
+
+	var numberOfWaitingVotes = propositionHolders.length;
 
 	propositionHolders.each(function() {
 
@@ -79,16 +109,27 @@ function doPointVote(motion) {
 
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
+				numberOfWaitingVotes--;
 //				addVotes([data.vote], proposition, motion);
 //				testBadges(data.gamifiedUser.data);
 			//    addLog("Done !");
+			
+				if (numberOfWaitingVotes == 0) {
+					setMotionDirty(motion, false);
+					
+					if ($(".btn-next").is(":disabled")) {
+						showAlert("Votre vote a été pris en compte. C'est fini !", "success");
+					}
+					else {
+						showAlert("Votre vote a été pris en compte, on passe à la suite", "success");
+					}
+					
+					$(".btn-next").click();
+				}
 			}
 		}, "json");
 
 	});
-
-	setMotionDirty(motion, false);
-	$(".btn-next").click();
 }
 
 function doBordaVote(motion) {
@@ -98,6 +139,8 @@ function doBordaVote(motion) {
 	
 	var index = 0;
 	var maxPower = motion.data("max-power");
+
+	var numberOfWaitingVotes = propositionHolders.length;
 	
 	propositionHolders.each(function() {
 
@@ -111,18 +154,21 @@ function doBordaVote(motion) {
 
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
+				numberOfWaitingVotes--;
 //				addVotes([data.vote], proposition, motion);
 //				testBadges(data.gamifiedUser.data);
 			//    addLog("Done !");
+			
+				if (numberOfWaitingVotes == 0) {
+					setMotionDirty(motion, false);
+					$(".btn-next").click();
+				}
 			}
 		}, "json");
 
 		++index;
 
 	});
-
-	setMotionDirty(motion, false);
-	$(".btn-next").click();
 }
 
 function checkMaxValues(propositions, maxPower) {
@@ -156,6 +202,7 @@ function addPointHandlers(motion) {
 		motion.find(".proposition").click(function() {
 			motion.find(".proposition").removeClass("active").data("power", 0);
 			$(this).addClass("active").data("power", 1);
+			setMotionDirty(motion, true);
 		});
 
 		motion.find(".proposition").each(function() {
@@ -171,7 +218,7 @@ function addPointHandlers(motion) {
 			input.change(function() {
 				checkMaxValues(motion.find(".proposition"), maxPower);
 				setMotionDirty(motion, true);
-				
+
 				if ($(this).val() == 0) {
 					proposition.removeClass("active");
 				}

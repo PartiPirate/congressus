@@ -17,6 +17,9 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* global $ */
+/* global moment */
+
 function resizeWindow() {
 	$(".theme-showcase").css("min-height", ($(window).height() - 166) + "px");
 }

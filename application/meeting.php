@@ -77,7 +77,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	</ol>
 
 	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
+		<div class="col-md-4" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
 			<span class="mee_start datetime-control">
 				<?php echo lang("meeting_the"); ?>
@@ -92,7 +92,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</span>
 			</span>
 		</div>
-		<div class="col-md-6" style="/*padding-top: 7px; padding-bottom: 7px;*/">
+		<div class="col-md-4" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
 			<span class="mee_finish datetime-control">
 				<?php echo lang("meeting_the"); ?>
@@ -107,9 +107,19 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</span>
 			</span>
 		</div>
+		<div class="col-md-4 synchro-vote" style="/*padding-top: 7px; padding-bottom: 7px;*/">
+			<span class="fa fa-archive"></span> 
+				<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
+				<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
+
+			<select class="form-control" data-type="mee_synchro_vote" style="margin-top: -7px;">
+				<option value="0"><?php echo lang("mee_synchro_vote_0"); ?></option>
+				<option value="1"><?php echo lang("mee_synchro_vote_1"); ?></option>
+			</select>
+		</div>
 	</div>
 	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-6 president">
+		<div class="col-md-4 president">
 			<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
 			<span class="mee_president_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="president" style="margin-top: -7px;">
@@ -120,7 +130,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
-		<div class="col-md-6 secretary">
+		<div class="col-md-4 secretary">
 			<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
 			<span class="mee_secretary_member_id read-data" data-id="0"></span>
 			<select class="form-control" data-type="secretary" style="margin-top: -7px;">
@@ -133,12 +143,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</div>
 	</div>
 	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 			<?php echo $meeting["loc_type"];?>
 		</div>
 		<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
-			<div class="col-md-6" >
+			<div class="col-md-4" >
 				<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
 				<?php
 				include("config/mumble.structure.php");
@@ -149,7 +159,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			</div>
 		<?php }
 			  else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {?>
-			<div class="col-md-6" >
+			<div class="col-md-4" >
 				<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
 				<?php
 				include("config/discord.structure.php");

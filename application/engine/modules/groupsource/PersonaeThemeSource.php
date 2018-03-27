@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 	
 	This file is part of Congressus.
 	
@@ -67,7 +67,7 @@ class PersonaeThemeSource {
         global $connection;
 
         $themeBo = ThemeBo::newInstance($connection, $config);
-        $themes = $themeBo->getThemes(array("with_group_information" => true, "the_id" => $groupId));
+        $themes = $themeBo->getThemes(array("with_group_information" => true, "the_id" => $groupId, "with_deleted" => true));
 
         if (count($themes)) return $themes[0]["the_label"];
 

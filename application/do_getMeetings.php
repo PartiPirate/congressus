@@ -55,12 +55,12 @@ foreach($meetings as $meeting) {
 
 	$event = array(
 			'id' => $meeting[$meetingBo->ID_FIELD],
-			'title' => $meeting["mee_label"],
+			'title' => str_replace("\"", "&quot;", $meeting["mee_label"]),
 			'url' => $config["server"]["base"] . "meeting.php?id=" . $meeting[$meetingBo->ID_FIELD],
 			'class' => $meeting["mee_class"],
 			'start' => $start . '000',
 			'end' => $end . '000',
-			'meetingTitle' => $meeting["mee_label"],
+			'meetingTitle' => str_replace("\"", "&quot;", $meeting["mee_label"]),
 			'meetingDatetime' => dateTranslate($startDatetime->format('\L\e l j F Y \à H:i'))
 //			'meetingDatetime' => $dateFormatter->formatObject($startDatetime)
 	);

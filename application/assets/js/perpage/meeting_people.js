@@ -517,6 +517,11 @@ function updatePeople() {
 	$.get("meeting_api.php?method=do_getPeople", {id: meetingId}, function(data) {
 //		console.log("Get people @ " + new Date());
 
+		var numberOfPresents = $(".number-of-presents");
+		if (numberOfPresents.eq(0).text() != ("" + data["numberOfPresents"])) {
+			numberOfPresents.text(data["numberOfPresents"]);
+		}
+
 		var parent = $("#noticed-people > ul");
 //		parent.children().remove();
 		parent.find("li").addClass("to-deleted");

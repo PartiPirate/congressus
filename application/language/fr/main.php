@@ -36,6 +36,8 @@ $lang["common_text"] = "Texte";
 $lang["common_type"] = "Type";
 $lang["common_validate"] = "Valider";
 $lang["common_edit"] = "Modifier";
+$lang["common_next"] = "Suivant";
+$lang["common_previous"] = "Précédent";
 
 $lang["language_fr"] = "Français";
 $lang["language_en"] = "Anglais";
@@ -101,6 +103,7 @@ $lang["meeting_chat"] = "Parole";
 $lang["meeting_chatDelete"] = "Supprimer le chat";
 $lang["meeting_chatDisapprove"] = "Je désapprouve ce message";
 $lang["meeting_chatLike"] = "J'apprécie ce message";
+$lang["meeting_chatShare"] = "J'ai un avis partagé";
 $lang["meeting_clicEdit"] = "Cliquer pour éditer";
 $lang["meeting_close"] = "Clore la séance";
 $lang["meeting_closed"] = "Séance fermée";
@@ -172,6 +175,7 @@ $lang["meeting_voters"] = "Votants";
 $lang["meeting_waiting"] = "Prête";
 $lang["meeting_voteExternal"] = "Interface de vote";
 $lang["meeting_external_chat"] = "Tchat";
+$lang["meeting_number_of_presents"] = "Nombre de présent-e-s : ";
 
 $lang["myMeetings_closed"] = "Réunions terminés";
 $lang["myMeetings_construction"] = "Réunions en construction";
@@ -232,7 +236,8 @@ $lang["calendar_week"] = "Semaine";
 $lang["calendar_day"] = "Jour";
 
 $lang["createMeeting_datetime"] = "Date et heure de la réunion :";
-$lang["createMeeting_datetimeError"] = "Veuillez entre une date au format AAAA-MM-JJ et un horaire au format HH:MM";
+$lang["createMeeting_labelError"] = "Veuillez entrer un nom pour la réunion";
+$lang["createMeeting_datetimeError"] = "Veuillez entrer une date au format AAAA-MM-JJ et un horaire au format HH:MM";
 $lang["createMeeting_length"] = "Durée prévue :";
 $lang["createMeeting_length_hour"] = "heure";
 $lang["createMeeting_length_hours"] = "heures";
@@ -254,8 +259,10 @@ $lang["createMeeting_visualIndication_success"] = "Succès";
 $lang["createMeeting_visualIndication_special"] = "Spécial";
 $lang["createMeeting_place"] = "Type de lieu :";
 $lang["createMeeting_placeAddress"] = "Adresse du lieu :";
-
-
+$lang["createMeeting_base_type"] = "Type :";
+$lang["createMeeting_base_type_meeting"] = "Réunion et prises de décision";
+$lang["createMeeting_base_type_construction"] = "Discussion et co-construction";
+					
 $lang["notice_source"] = "Source primaire";
 $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";
@@ -264,6 +271,13 @@ $lang["notice_customUsers"] = "Utilisateurs Custom";
 
 $lang["mee_synchro_vote_0"] = "Votes disponibles sur l'interface de vote";
 $lang["mee_synchro_vote_1"] = "Votes synchronisés";
+
+$lang["save_amendment_title"] = "Ajouter un amendement";
+$lang["save_agenda_title"] = "Ajouter un groupe d'amendement";
+
+$lang["advice_pro"] = "D'accord";
+$lang["advice_doubtful"] = "Mitigé";
+$lang["advice_against"] = "Pas d'accord";
 
 $lang["loc_type_mumble"] = "Sur mumble";
 $lang["loc_type_afk"] = "En espace réel";

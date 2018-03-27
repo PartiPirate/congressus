@@ -69,6 +69,11 @@ $data = array();
 $chat = array();
 $chat["cha_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
 $chat["cha_text"] = isset($_REQUEST["startingText"]) ? $_REQUEST["startingText"] : "";
+$chat["cha_type"] = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "neutral";
+
+if (isset($_REQUEST["motionId"])) {
+	$chat["cha_motion_id"] = intval($_REQUEST["motionId"]);
+}
 
 $now = getNow();
 $chat["cha_datetime"] = $now->format("Y-m-d H:i:s");

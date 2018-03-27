@@ -473,6 +473,7 @@ function setAgendaChat(id, chats) {
 		var advices = {};
 
 		advices["thumb_up"] = 0;
+		advices["thumb_middle"] = 0;
 		advices["thumb_down"] = 0;
 		advices["total"] = 0;
 
@@ -1219,6 +1220,7 @@ function addChatHandlers() {
 
 		if (Number.isInteger(getUserId())) {
 			$(this).find(".btn-thumb-up").show();
+			$(this).find(".btn-thumb-middle").show();
 			$(this).find(".btn-thumb-down").show();
 		}
 
@@ -1232,6 +1234,7 @@ function addChatHandlers() {
 		$(this).find(".glyphicon-pencil").hide();
 		$(this).find(".btn-remove-chat").hide();
 		$(this).find(".btn-thumb-up").hide();
+		$(this).find(".btn-thumb-middle").hide();
 		$(this).find(".btn-thumb-down").hide();
 	});
 

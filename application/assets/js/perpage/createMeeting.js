@@ -38,9 +38,49 @@ function mumbleLink(loc_channel) {
 	$("#loc_extra").empty().append(mumble_url);
 }
 
+// Notice handling
+$(function() {
+	var targetChangeHandler = function(type) {
+		if (type != "con_external") {
+			$(".not_mails").show();
+			$(".mails").hide();
+			$("#not_target_id option, #not_target_id optgroup").hide();
+			$("#not_target_id option." + type + ", #not_target_id optgroup." + type).show();
+			$("#not_target_id option").removeAttr("selected");
+			$("#not_target_id option." + type).eq(0).attr("selected", "selected");
+		}
+		else {
+			$(".not_mails").hide();
+			$(".mails").show();
+		}
+	};
+	
+	$("body").on("change", "#not_target_type", function() {
+		var type = $(this).val();
+		targetChangeHandler(type);
+	});
+
+	$("body #not_target_type").change();
+});
+
+
+function addTabListeners() {
+	$(".show-notice").click(function() {
+		$('.nav-tabs li:eq(1) a').tab('show');
+	});
+
+	$(".show-location").click(function() {
+		$('.nav-tabs li:eq(2) a').tab('show');
+	});
+}
+
 $(function() {
 
+	addTabListeners();
+
 	$("#create-meeting-form").submit(function(event) {
+
+		$("#create-meeting-form").find(".form-group").removeClass("has-success").removeClass("has-warning").removeClass("has-error");
 
 		var errorCount = 0;
 
@@ -49,10 +89,38 @@ $(function() {
 
 		if (errorCount) {
 
+			$("#mee_date").parents(".form-group").addClass("has-error");
+
+			$('.nav-tabs li:eq(0) a').tab('show');
+
 			$("#date-time-error-alert").show().delay(5000).fadeOut(1000, function() {
 			});
 
 			event.preventDefault();
+		}
+		else {
+			$("#mee_date").parents(".form-group").addClass("has-success");
+		}
+
+		if ($("#mee_label").val() == "") {
+			$("#mee_label").parents(".form-group").addClass("has-error");
+
+			$('.nav-tabs li:eq(0) a').tab('show');
+
+			$("#label-error-alert").show().delay(5000).fadeOut(1000, function() {
+			});
+
+			event.preventDefault();
+		}
+		else {
+			$("#mee_label").parents(".form-group").addClass("has-success");
+		}
+
+		if ($("#not_target_id").val() == "0") {
+			$("#not_target_id").parents(".form-group").addClass("has-warning");
+		}
+		else {
+			$("#not_target_id").parents(".form-group").addClass("has-success");
 		}
 	})
 

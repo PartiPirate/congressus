@@ -98,6 +98,16 @@ class AgendaBo {
 			$queryBuilder->where("age_meeting_id = :age_meeting_id");
 		}
 
+		if (isset($filters["age_parent_id"])) {
+			$args["age_parent_id"] = $filters["age_parent_id"];
+			$queryBuilder->where("age_parent_id = :age_parent_id");
+		}
+
+		if (isset($filters["age_label"])) {
+			$args["age_label"] = $filters["age_label"];
+			$queryBuilder->where("age_label = :age_label");
+		}
+
 		$queryBuilder->orderBy("age_parent_id")->orderBy("age_order");
 
 		$query = $queryBuilder->constructRequest();

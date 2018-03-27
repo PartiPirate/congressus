@@ -1,0 +1,743 @@
+<?php /*
+	Copyright 2018 Cédric Levieux, Parti Pirate
+
+	This file is part of Congressus.
+
+    Congressus is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Congressus is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
+*/
+include_once("header.php");
+
+require_once("engine/bo/GuestBo.php");
+require_once("engine/bo/AgendaBo.php");
+require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/VoteBo.php");
+require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/ChatAdviceBo.php");
+require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/NoticeBo.php");
+require_once("engine/bo/UserBo.php");
+require_once("engine/bo/SourceBo.php");
+
+function showDate($date) {
+	$msg = lang("datetime_format");
+	$msg = str_replace("{date}", $date->format(lang("date_format")), $msg);
+	$msg = str_replace("{time}", $date->format(lang("time_format")), $msg);
+	
+	return $msg;
+}
+
+$hasWritingRights = false;
+$userId = SessionUtils::getUserId($_SESSION);
+if (!$userId) {
+	if (!isset($_SESSION["guestId"])) {
+		$guestBo = GuestBo::newInstance($connection, $config);
+		// Create guestId
+		$guest = array();
+		$guestBo->save($guest);
+
+		$guestId = $guest[$guestBo->ID_FIELD];
+		$nickname = "Guest $guestId";
+
+		$_SESSION["guestId"] = $guestId;
+		$_SESSION["guestNickname"] = $nickname;
+	}
+	$guestId = $_SESSION["guestId"];
+}
+else {
+	if ($userId == $meeting["mee_president_member_id"]) {
+		$hasWritingRights = true;
+	}
+	else if ($userId == $meeting["mee_secretary_member_id"]) {
+		$hasWritingRights = true;
+	}
+}
+
+$motionId = intval($_REQUEST["motionId"]);
+
+$agendaBo = AgendaBo::newInstance($connection, $config);
+$motionBo = MotionBo::newInstance($connection, $config);
+$voteBo   = VoteBo::newInstance($connection, $config);
+$chatBo   = ChatBo::newInstance($connection, $config);
+$chatAdviceBo = ChatAdviceBo::newInstance($connection, $config);
+$noticeBo = NoticeBo::newInstance($connection, $config);
+$userBo   = UserBo::newInstance($connection, $config);
+$sourceBo = SourceBo::newInstance($connection, $config);
+
+$motion = $motionBo->getByFilters(array("with_meeting" => true, "mot_id" => $motionId));
+
+if (count($motion)) {
+	$motion = $motion[0];
+	$meeting = $motion;
+	
+//	print_r($motion);
+}
+else {
+	exit();
+}
+
+$agendas = $agendaBo->getByFilters(array("age_id" => $motion["mot_agenda_id"]));
+
+if (count($agendas)) {
+	$agenda = $agendas[0];
+}
+else {
+	exit();
+}
+// print_r($agendas);
+
+$author = null;
+if ($motion["mot_author_id"]) {
+	$author = $userBo->getById($motion["mot_author_id"]);
+}
+
+$votingPower = 0;
+
+if ($userId) {
+	$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
+	foreach($notices as $notice) {
+		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+
+        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+        	
+        	$members = $groupSource->getNoticeMembers($notice);
+        	
+        	foreach($members as $member) {
+        		if ($member["id_adh"] != $userId) continue;
+
+//        		echo "<pre>" . print_r($member, true) . "</pre>";
+
+        		$votingPower = $member["fme_power"];
+        	}
+		}
+	}
+}
+
+$amendmentAgenda = $agendaBo->getByFilters(array("age_parent_id" => $motion["mot_agenda_id"], "age_label" => "amendments-" . $motion["mot_id"]));
+if (count($amendmentAgenda)) {
+	$amendmentAgenda = $amendmentAgenda[0];
+}
+else {
+	$amendmentAgenda = array("age_parent_id" => $motion["mot_agenda_id"], "age_label" => "amendments-" . $motion["mot_id"], "age_meeting_id" => $meeting["mee_id"]);
+	$amendmentAgenda["age_order"] = time();
+	$amendmentAgenda["age_active"] = 0;
+	$amendmentAgenda["age_expected_duration"] = 0;
+	$amendmentAgenda["age_objects"] = "[]";
+	$amendmentAgenda["age_description"] = "Pas de description";
+
+	// create
+	$agendaBo->save($amendmentAgenda);
+}
+
+$amendments = $motionBo->getByFilters(array("mot_agenda_id" => $amendmentAgenda[$agendaBo->ID_FIELD]));
+
+$previousAmendmentId = null;
+$numberOfAmendments = 0;
+foreach($amendments as $amendment) {
+	if ($previousAmendmentId == $amendment["mot_id"]) continue;
+	$previousAmendmentId = $amendment["mot_id"];
+	
+	$numberOfAmendments++;
+}
+
+$amendmentAgenda["age_motions"] = $amendments;
+
+$chats = $chatBo->getByFilters(array("cha_motion_id" => $motion["mot_id"]));
+$numberOfChats = array(0, 0, 0);
+foreach($chats as $chat) {
+	if ($chat["cha_type"] != "pro" && $chat["cha_type"] != "against") continue;
+	
+	$numberOfChats[0]++;
+	
+	if ($chat["cha_type"] == "pro") $numberOfChats[1]++;
+	if ($chat["cha_type"] == "against") $numberOfChats[2]++;
+}
+
+$parentMotion = null;
+
+if ($agenda["age_parent_id"])	 { 
+	$parentAgenda = $agendaBo->getById($agenda["age_parent_id"]);
+	$parentMotionId = str_replace("amendments-", "", $agenda["age_label"]);
+	$parentMotion = $motionBo->getById($parentMotionId);
+}
+
+$sources = $sourceBo->getByFilters(array('sou_motion_id' => $motion["mot_id"]));
+$source = null;
+
+foreach($sources as $src) {
+	if ($src["sou_is_default_source"]) $source = $src;
+	break;
+}
+
+$mainColumn = 12;
+
+?>
+
+<style>
+
+#diff del, #motion-description del {
+	color: #a94442;
+	background-color: #f2dfde;
+}
+
+#diff ins, #motion-description ins {
+	color: #3c763d;
+	background-color: #ddeedd;
+	text-decoration: none;
+}
+
+#diff, #motion-description, #source, #destination {
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+#diff, #motion-description {
+	width: calc(100% - 20px);
+/*	background: #d0d0ff;	*/
+}
+
+.change-scroll {
+	border: #ccc 1px solid;
+	width: 18px;
+/*	margin-top:-1px;*/
+/*	margin-bottom:-1px;*/
+	margin-right: 2px;
+/*	background: #ffd0d0;	*/
+	float: left;
+	position: relative;
+}
+
+.scroll-zone {
+	position: relative;
+	width: 16px;
+	background: #eee;
+	float: left;
+}
+
+.inserted {
+	border-radius: 4px;
+	border: #3c763d 1px solid;
+	background-color: #ddeedd;
+	height: 8px;
+	width: 8px;
+	margin: 0 -8px -8px 0;
+	cursor: zoom-in;
+}
+
+.deleted {
+	border-radius: 4px;
+	border: #a94442 1px solid;;
+	background-color: #f2dfde;
+	height: 8px;
+	width: 8px;
+	margin: 0 -8px -8px 0;
+	cursor: zoom-in;
+}
+
+</style>
+
+<script type="text/javascript">
+$(function() {
+	CanvasJS.addColorSet("adviceColorSet",
+	                [//colorSet Array
+	                "#5cb85c",
+	                "#f0ad4e",
+	                "#d9534f"                
+	                ]);	
+});
+</script>
+
+<div class=" theme-showcase construction-motion" role="main"
+	style="margin-left: 32px; margin-right: 32px; "
+	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
+	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
+	data-speaking-id="-1"
+	>
+	<ol class="breadcrumb">
+		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
+		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
+		
+<?php	if ($agenda["age_parent_id"])	 { ?>
+		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $parentAgenda["age_id"]; ?>"><?php echo $parentAgenda["age_label"]; ?></a></li>
+		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>"><?php echo $parentMotion["mot_title"]; ?></a></li>
+		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>#amendments">Amendements</a></li>
+<?php	} else { ?>
+		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a></li>
+<?php	} ?>
+		<li class="active"><?php echo $motion["mot_title"]; ?></li>
+	</ol>
+
+	<div class="row">
+		<div class="col-md-<?php echo $mainColumn; ?>" id="main-panel">
+			
+<?php 
+//		foreach($agendas as $agenda) { 
+// TODO			if ($agenda["age_parent_id"]) continue;
+			
+			$votes = $voteBo->getByFilters(array("mot_id" => $motionId, "mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+?>			
+			<div class="panel panel-default motion-entry" data-id="<?php echo $motion["mot_id"]; ?>">
+				<div class="panel-heading">
+<?php
+//			$previousMotionId = null;
+			
+//			foreach($motions as $motion) {
+////				echo $motion["mot_title"] . "<br>";
+
+//				if ($previousMotionId == $motion["mot_id"]) continue;
+//				$previousMotionId = $motion["mot_id"];
+
+					$voteCounters = array(0, 0, 0, 0);
+					$votingMembers = array();
+
+					$hasPro = 0;
+					$hasDoubt = 0;
+					$hasAgainst = 0;
+
+					foreach($votes as $vote) {
+						if ($motion["mot_id"] != $vote["mot_id"]) continue;
+						if (!$vote["vot_power"]) continue;
+						$voteCounters[0] += $vote["vot_power"];
+
+//						print_r($vote);
+
+						if ($userId == $vote["vot_member_id"]) {
+							if (($vote["mpr_label"] == "pro" || strtolower($vote["mpr_label"]) == "oui" || strtolower($vote["mpr_label"]) == "pour") && $vote["vot_power"]) $hasPro = $vote["vot_power"];
+							else if (($vote["mpr_label"] == "doubtful") && $vote["vot_power"]) $hasDoubt = $vote["vot_power"];
+							else if (($vote["mpr_label"] == "against" || strtolower($vote["mpr_label"]) == "non" || strtolower($vote["mpr_label"]) == "contre") && $vote["vot_power"]) $hasAgainst = $vote["vot_power"];
+						}
+
+						$memberName = GaletteBo::showIdentity($vote);
+
+						$votingMembers[$memberName] = $memberName;
+
+						if ($vote["mpr_label"] == "pro" || strtolower($vote["mpr_label"]) == "oui" || strtolower($vote["mpr_label"]) == "pour") $voteCounters[1] += $vote["vot_power"];
+						else if ($vote["mpr_label"] == "doubtful") $voteCounters[2] += $vote["vot_power"];
+						else if ($vote["mpr_label"] == "against" || strtolower($vote["mpr_label"]) == "non" || strtolower($vote["mpr_label"]) == "contre") $voteCounters[3] += $vote["vot_power"];
+					}
+
+?>
+					<div class="pull-right" style="width: 36px; height: 36px; font-size: smaller;" id="mini-voting-panel">
+
+<?php	
+
+$chartId = "mini-voting-panel";
+$width = 36;
+$height = 36;
+
+echo include("construction/pieChart.php"); 
+
+?>
+
+					</div>
+					<div style="font-size: larger;">
+						<p class="text-info"><?php echo $motion["mot_title"]; ?></p>
+					</div>
+					<div style="font-size: smaller;">
+						<?php 	if ($author) { ?>
+							<?php echo GaletteBo::showIdentity($author); ?>
+						<?php 	}	?>
+					</div>
+					<div style="font-size: smaller;">
+							<span class="all-votes"><?php echo $voteCounters[0]; ?></span> votes - 
+							<span class="all-counter"><?php echo $numberOfChats[0]; ?></span> arguments -
+							<span class="all-amendments"><?php echo $numberOfAmendments; ?></span> amendements
+					</div>
+<?php 		
+//		} ?>			
+				</div>
+				<div class="btn-toolbar panel-body" role="toolbar">
+					<div class="btn-group btn-type-group " role="group">
+						<button id="show-motion-btn" type="button" class="btn btn-default active"><i class="fa fa-archive" aria-hidden="true"></i></button>
+						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
+						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
+						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<?php	} ?>
+					</div>
+						<?php if ($motion["mot_author_id"] == $userId) { ?>
+					<div class="btn-group btn_authoring-group" style="display: none;" role="group">
+						<button id="show-both-panels-btn" type="button" class="btn btn-default active"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
+						<button id="show-right-panel-btn" type="button" class="btn btn-default"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+					</div>
+						<?php	} ?>
+				</div>
+				<div class="panel-body">
+					<div id="motion-description-group" class="with-scroll">
+						<div class="change-scroll"><div class="scroll-zone"></div></div>
+						<div id="motion-description" class="scroller" style="position: relative; "><?php echo str_replace("\n", "<br>", $motion["mot_description"]); ?></div>
+					</div>
+					<textarea class="col-md-6 autogrow" disabled="disabled" style="height: auto;" id="source"><?php 
+						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
+					<textarea class="col-md-6 autogrow" style="height: auto;" id="destination"><?php echo $motion["mot_description"]; ?></textarea>
+					<div class="clearfix "></div>
+					<div id="diff-group" class="with-scroll" style="display: none;">
+						<div class="change-scroll"><div class="scroll-zone"></div></div>
+						<div id="diff" class="scroller" style="position: relative; display: none;" ></div>
+					</div>
+
+					<hr>
+					<div>
+						<div class="pull-right" style="width: 72px; height: 72px; font-size: smaller;" id="voting-panel">
+
+<?php	
+
+$chartId = "voting-panel";
+$width = 72;
+$height = 72;
+
+echo include("construction/pieChart.php"); 
+
+?>
+
+						</div>
+						<div id="motion-buttons-bar" class="" data-voting-power="<?php echo $votingPower; ?>">
+							<form>
+								<input type="hidden" name="meetingId" value="<?php echo $meeting["mee_id"]; ?>">
+								<input type="hidden" name="motionId"  value="<?php echo  $motion["mot_id"]; ?>">
+							<?php	if ($votingPower) { ?>
+							<button class="btn btn-success <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
+								<span class="glyphicon glyphicon-thumbs-up"></span> <?php echo lang("advice_pro"); ?> &nbsp;
+								<?php	if ($votingPower > 1) { ?>
+									<input type='number' name="pro" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasPro; ?>">
+								<?php	} else {?>
+									<input type='hidden' name="pro" value="<?php echo $hasPro; ?>">
+								<?php	} ?>
+							</button>
+							<button class="btn btn-warning <?php echo $hasDoubt ? "active" : "zero"; ?>" type="button">
+								<span class="glyphicon glyphicon-hand-left"></span> <?php echo lang("advice_doubtful"); ?> &nbsp;
+								<?php	if ($votingPower > 1) { ?>
+									<input type='number' name="doubtful" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasDoubt; ?>">
+								<?php	} else {?>
+									<input type='hidden' name="doubtful" value="<?php echo $hasDoubt; ?>">
+								<?php	} ?>
+							</button>
+							<button class="btn btn-danger  <?php echo $hasAgainst ? "active" : "zero"; ?>" type="button">
+								<span class="glyphicon glyphicon-thumbs-down"></span> <?php echo lang("advice_against"); ?> &nbsp;
+								<?php	if ($votingPower > 1) { ?>
+									<input type='number' name="against" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasAgainst; ?>">
+								<?php	} else {?>
+									<input type='hidden' name="against" value="<?php echo $hasAgainst; ?>">
+								<?php	} ?>
+							</button>
+							<?php	} ?>
+							</form>
+						</div>
+						<br>
+						<div id="voting-members-panel">
+							<?php echo implode(", ", $votingMembers); ?>
+						</div>
+					</div>
+				</div>
+<!--
+				<div class="panel-footer">
+				</div>
+-->				
+			</div>
+<?php 	
+//		} 
+?>			
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#arguments" aria-controls="home" role="tab" data-toggle="tab">Arguments</a></li>
+<?php 				
+			if (!$agenda["age_parent_id"]) {
+?>		
+				<li role="presentation"><a href="#amendments" aria-controls="profile" role="tab" data-toggle="tab">Amendements</a></li>
+<?php 				
+			}
+?>
+			</ul>
+
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="arguments" style="padding-top: 15px;">
+				<div class="col-md-6 pro-chats">
+					<div class="well">
+	
+						<form class="form-horizontal" data-chat-type="pro">
+							<fieldset>
+	
+								<input type="hidden" name="id" value="<?php echo $motion["mee_id"]; ?>">
+								<input type="hidden" name="motionId" value="<?php echo $motion["mot_id"]; ?>">
+								<input type="hidden" name="pointId" value="<?php echo $motion["mot_agenda_id"]; ?>">
+								<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+								<input type="hidden" name="type" class="chat-type" value="pro">
+	
+								<!-- Form Name -->
+								<!--<legend>Form Name</legend>-->
+								
+								<!-- Textarea -->
+								<div class="form-group">
+									<div class="col-md-12">
+										<textarea class="form-control chat-text" name="startingText" placeholder="Un argument pour"></textarea>
+									</div>
+								</div>
+								
+								<!-- Button -->
+								<div class="form-group">
+									<div class="col-md-12">
+										<button class="btn btn-primary btn-chat-send">Envoyer</button>
+									</div>
+								</div>
+								
+							</fieldset>
+						</form>
+	
+					</div>
+	
+					<div class="panel panel-default">
+						<div class="panel-heading"><p class="text-success pro-counter">
+							<?php echo $numberOfChats[1]; ?> arguments pour
+						</p></div>
+						<ul class="list-group objects">
+	<?php	foreach($chats as $chat) {
+				if ($chat["cha_type"] != "pro") continue;
+
+				$chatAdvices = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat["cha_id"]));
+
+				$chatAdviceCounters = array("me" => "", "thumb_up" => 0, "thumb_down" => 0, "thumb_middle" => 0, "total" => 0);
+				foreach($chatAdvices as $chatAdvice) {
+					$chatAdviceCounters[$chatAdvice["cad_advice"]]++;
+					$chatAdviceCounters["total"]++;
+					if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
+				}
+
+	?>
+							<li class="list-group-item pro-chat">
+								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div><?php echo $chat["cha_text"]; ?></div>
+
+								<div class="btn-group btn-group-xs btn-chat-group" role="group">
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+								</div>
+								<?php	if ($chatAdviceCounters["total"]) { ?>
+								<div class="advice-progress-bar" style="padding-top: 2px;">
+									<div class="progress" style="height: 3px;">
+										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										</div>
+									</div>
+								</div>
+								<?php	} ?>
+							</li>
+	
+	<?php	} ?>
+						</ul>
+					</div>
+	
+				</div>
+				<div class="col-md-6 against-chats">
+					<div class="well">
+	
+						<form class="form-horizontal" data-chat-type="against">
+							<fieldset>
+	
+								<input type="hidden" name="id" value="<?php echo $motion["mee_id"]; ?>">
+								<input type="hidden" name="motionId" value="<?php echo $motion["mot_id"]; ?>">
+								<input type="hidden" name="pointId" value="<?php echo $motion["mot_agenda_id"]; ?>">
+								<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+								<input type="hidden" name="type" class="chat-type" value="against">
+	
+								<!-- Form Name -->
+								<!--<legend>Form Name</legend>-->
+								
+								<!-- Textarea -->
+								<div class="form-group">
+									<div class="col-md-12">
+										<textarea class="form-control chat-text" name="startingText" placeholder="Un argument contre"></textarea>
+									</div>
+								</div>
+								
+								<!-- Button -->
+								<div class="form-group">
+									<div class="col-md-12">
+										<button class="btn btn-primary btn-chat-send">Envoyer</button>
+									</div>
+								</div>
+								
+							</fieldset>
+						</form>
+	
+					</div>
+	
+					<div class="panel panel-default">
+						<div class="panel-heading"><p class="text-danger against-counter">
+							<?php echo $numberOfChats[2]; ?> arguments contre
+						</p></div>
+						<ul class="list-group objects">
+	<?php	foreach($chats as $chat) {
+				if ($chat["cha_type"] != "against") continue;
+
+				$chatAdvices = $chatAdviceBo->getByFilters(array("cad_chat_id" => $chat["cha_id"]));
+
+				$chatAdviceCounters = array("me" => "", "thumb_up" => 0, "thumb_down" => 0, "thumb_middle" => 0, "total" => 0);
+				foreach($chatAdvices as $chatAdvice) {
+					$chatAdviceCounters[$chatAdvice["cad_advice"]]++;
+					$chatAdviceCounters["total"]++;
+					if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
+				}
+
+	?>
+							<li class="list-group-item against-chat">
+								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div><?php echo $chat["cha_text"]; ?></div>
+
+								<div class="btn-group btn-group-xs btn-chat-group" role="group">
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+								</div>
+								<?php	if ($chatAdviceCounters["total"]) { ?>
+								<div class="advice-progress-bar" style="padding-top: 2px;">
+									<div class="progress" style="height: 3px;">
+										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										</div>
+									</div>
+								</div>
+								<?php	} ?>
+							</li>
+	
+	<?php	} ?>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+
+<?php 
+	if (!$agenda["age_parent_id"]) {
+		$agenda = $amendmentAgenda;
+		$hasWritingRights = $hasWritingRights || $votingPower > 0;
+		$showTitle = false;
+?>
+			<div role="tabpanel" class="tab-pane" id="amendments" style="padding-top: 15px;">
+<?php	
+		include("construction/amendment_list.php");
+?>
+			</div>
+<?php	
+	}
+?>
+
+		</div>
+	</div>
+
+<?php include("connect_button.php"); ?>
+
+</div>
+
+<div class="lastDiv"></div>
+
+<div class="container otbHidden">
+</div>
+
+<templates>
+	<ul>
+		<li data-template-id="echat" id="echat-${message_id}"
+				class="template list-group-item echat" data-id="${message_id}">
+			<img src="${mem_avatar_url}" style="max-height: 20px; max-width: 20px; border-radius: 10px; ">
+			<span class="nickname">${mem_nickname}</span> : 
+			<span class="message">${message}</span>
+		</li>
+	</ul>
+</templates>
+
+
+<div id="exportModal"></div>
+
+<?php
+	include("construction/amendment_modal.php");
+?>
+
+<script>
+</script>
+<?php include("footer.php");?>
+<script src="assets/js/perpage/construction_motion_save.js"></script>
+<script src="assets/js/perpage/meeting_events.js"></script>
+<script>
+sourceEnabled = false;
+var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
+
+var getEventsTimer;
+var getEventsTimerInterval = 1500;
+
+$(function() {
+	getEventsTimer = $.timer(getEvents);
+	getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+});
+
+</script>
+
+<script type="text/javascript">
+var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
+
+var common_edit = "<?php echo lang("common_edit"); ?>";
+var common_close = "<?php echo lang("common_close"); ?>";
+
+var meeting_speakingAsk = "<?php echo strtolower(lang("meeting_speakingAsk")); ?>";
+var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
+var meeting_speakingRenounce = "<?php echo lang("meeting_speakingRenounce"); ?>";
+var meeting_arrival = "<?php echo lang("meeting_arrival"); ?>";
+var meeting_left = "<?php echo lang("meeting_left"); ?>";
+var meeting_votePower = "<?php echo lang("meeting_votePower"); ?>";
+var meeting_notification = "<?php echo lang("meeting_notification"); ?>";
+var meeting_notificationDelete = "<?php echo lang("meeting_notificationDelete"); ?>";
+var meeting_motionVote2 = "<?php echo lang("meeting_motionVote2"); ?>";
+var meeting_vote = "<?php echo lang("meeting_vote"); ?>";
+var meeting_motionDelete = "<?php echo lang("meeting_motionDelete"); ?>";
+var meeting_taskDelete = "<?php echo lang("meeting_taskDelete"); ?>";
+var meeting_taskEnd = "<?php echo lang("meeting_taskEnd"); ?>";
+var meeting_chatDelete = "<?php echo lang("meeting_chatDelete"); ?>";
+var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>";
+var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
+
+var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
+
+var speakingTimesChartTitle = "Temps de parole par personne";
+
+<?php
+
+$translatons = array();
+foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
+	$translatons[] = lang("motion_majorityJudgment_" . $value, false);
+}
+
+?>
+
+var majority_judgement_translations = <?php echo json_encode($translatons); ?>
+
+</script>
+
+</body>
+</html>

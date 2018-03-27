@@ -307,6 +307,8 @@ foreach($propositions as $proposition) {
                     			    
 <?php                           foreach($object["propositions"] as $proposition) {
 
+//                                    print_r($proposition);
+
                                     $propositionClass = "text-danger";
                                     if ($proposition["mpr_winning"] == "1") {
                                         $propositionClass = "text-success";
@@ -321,14 +323,28 @@ foreach($propositions as $proposition) {
 		<span class="pull-left"> : </span>
 		
 		<ul class="pull-left vote-container">
-		<?php   $explanation = json_decode($proposition["mpr_explanation"], true);
+<?php   
+//		        echo $proposition["mpr_explanation"];
+		        $explanation = json_decode($proposition["mpr_explanation"], true);
+//		        print_r($explanation);
 		        if (isset($explanation["votes"])) {
-		            foreach($explanation["votes"] as $vote) { ?>
+		            foreach($explanation["votes"] as $vote) { 
+		                if (!$vote["power"]) continue;
+?>
 				<li class="vote">
         			<span class="nickname"><?php echo $vote["memberLabel"]; ?></span>
         			<span
         				title="Pouvoir du vote"
-        				class="badge power"><?php echo $vote["votePower"]; ?></span>
+        				class="badge power">
+        			    <?php if ($vote["votePower"]) { ?>
+        			    <?php     echo $vote["power"]; ?>
+        			    
+        			    <?php    if ($vote["votePower"] != $vote["power"]) { ?>
+        				/ <?php      echo $vote["votePower"]; ?>
+        				<?php    } ?>
+        				<?php } else echo "0"; ?>
+        				
+        				</span>
         		</li>
 		<?php       }
 		        }?>

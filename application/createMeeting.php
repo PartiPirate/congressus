@@ -19,6 +19,15 @@
 include_once("header.php");
 include("config/mumble.structure.php");
 include("config/discord.structure.php");
+
+$groupKeyLabels = array();
+
+foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+	$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+	$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
+}
+
+
 ?>
 
 <div class="container theme-showcase meeting" role="main">
@@ -29,11 +38,25 @@ include("config/discord.structure.php");
 
 	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal" id="create-meeting-form">
 
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Information</a></li>
+			<li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">Convocation</a></li>
+			<li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab">Localisation</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active padding-top-5" id="info">
+
 		<div class="form-group">
 			<label for="mee_label" class="col-md-4 control-label"><?php echo lang("meeting_name"); ?> :</label>
 			<div class="col-md-8">
 				<input type="text" class="form-control input-md" id="mee_label" name="mee_label" />
 			</div>
+		</div>
+		<div class="alert alert-danger simply-hidden" id="label-error-alert">
+			<?php echo lang("createMeeting_labelError"); ?>
 		</div>
 		<div class="form-group">
 			<label for="mee_date" class="col-md-4 control-label"><?php echo lang("createMeeting_datetime"); ?></label>
@@ -53,17 +76,97 @@ include("config/discord.structure.php");
 			<label for="mee_expected_duration" class="col-md-4 control-label"><?php echo lang("createMeeting_length"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_expected_duration" name="mee_expected_duration">
-					<option value="60">1 <?php echo lang("createMeeting_length_hour"); ?></option>
-					<option value="120">2 <?php echo lang("createMeeting_length_hours"); ?></option>
-					<option value="180">3 <?php echo lang("createMeeting_length_hours"); ?></option>
-					<option value="240">4 <?php echo lang("createMeeting_length_hours"); ?></option>
-					<option value="480">8 <?php echo lang("createMeeting_length_hours"); ?></option>
-					<option value="1440">1 <?php echo lang("createMeeting_length_day"); ?></option>
-					<option value="2880">2 <?php echo lang("createMeeting_length_days"); ?></option>
-					<option value="4320">3 <?php echo lang("createMeeting_length_days"); ?></option>
+					<option    value="60">1 <?php echo lang("createMeeting_length_hour"); ?></option>
+					<option   value="120">2 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option   value="180">3 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option   value="240">4 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option   value="480">8 <?php echo lang("createMeeting_length_hours"); ?></option>
+					<option  value="1440">1 <?php echo lang("createMeeting_length_day"); ?></option>
+					<option  value="2880">2 <?php echo lang("createMeeting_length_days"); ?></option>
+					<option  value="4320">3 <?php echo lang("createMeeting_length_days"); ?></option>
+					<option value="10080">7 <?php echo lang("createMeeting_length_days"); ?></option>
 				</select>
 			</div>
 		</div>
+
+		<div class="form-group">
+			<label for="mee_tyoe" class="col-md-4 control-label"><?php echo lang("createMeeting_base_type"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="mee_type" name="mee_type">
+					<option value="meeting"><?php echo lang("createMeeting_base_type_meeting"); ?></option>
+					<option value="construction"><?php echo lang("createMeeting_base_type_construction"); ?></option>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="row text-center">
+			<button class="btn btn-primary show-notice" type="button" ><?php echo lang("common_next"); ?></button>
+		</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
+
+
+
+<!-- NOTICE -->
+
+		<div class="form-group">
+			<label for="not_target_type" class="col-md-4 control-label"><?php echo lang("notice_source"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="not_target_type" name="not_target_type">
+
+					<?php	foreach($groupKeyLabels as $groupKeyLabel) { ?>
+						<option value="<?php echo $groupKeyLabel["key"]; ?>"><?php echo $groupKeyLabel["label"]; ?></option>
+					<?php	} ?>
+
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group not_mails">
+			<label for="not_target_id" class="col-md-4 control-label">Source secondaire :</label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="not_target_id" name="not_target_id">
+
+					<?php					
+					foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+						$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+						$groupSource->getGroupOptions();
+					}
+					?>
+
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group mails">
+			<label for="not_external_mails" class="col-md-4 control-label">Mails :</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control input-md" id="not_external_mails" name="not_external_mails" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-4 text-right">
+				<input type="checkbox" name="not_voting" id="not_voting"
+					placeholder="" class=""
+					value="1"/>
+			</div>
+			<div class="col-md-4">
+				<label class="form-control labelForCheckbox" for="not_voting">A le droit de vote</label>
+			</div>
+		</div>
+
+<!-- END NOTICE -->
+
+			<div class="row text-center">
+				<button class="btn btn-primary show-location" type="button" ><?php echo lang("common_next"); ?></button>
+			</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane padding-top-5" id="location">
+
 
 		<div class="form-group">
 			<label for="mee_meeting_type_id" class="col-md-4 control-label"><?php echo lang("createMeeting_type"); ?></label>
@@ -161,8 +264,12 @@ include("config/discord.structure.php");
 		</div>
 
 		<div class="row text-center">
-			<button class="btn btn-primary" type="submit"><?php echo lang("common_create"); ?></button>
+			<button class="btn btn-success" type="submit"><?php echo lang("common_create"); ?></button>
 		</div>
+
+			</div>
+		</div>
+
 
 	</form>
 

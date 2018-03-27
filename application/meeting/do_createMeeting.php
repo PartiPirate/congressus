@@ -26,6 +26,7 @@ include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/NoticeBo.php");
 
 require_once("engine/utils/GamifierClient.php");
 
@@ -47,10 +48,25 @@ $meeting["mee_label"] = $_REQUEST["mee_label"];
 $meeting["mee_class"] = $_REQUEST["mee_class"];
 $meeting["mee_secretary_member_id"] = $userId;
 $meeting["mee_meeting_type_id"] = $_REQUEST["mee_meeting_type_id"];
+$meeting["mee_type"] = $_REQUEST["mee_type"];
 $meeting["mee_datetime"] = $_REQUEST["mee_date"] . ' ' . $_REQUEST["mee_time"];
 $meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
 
 $meetingBo->save($meeting);
+
+if (isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"] && isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) {
+    $noticeBo = NoticeBo::newInstance($connection, $config);
+
+    $notice = array();
+
+    $notice["not_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
+	$notice["not_target_id"] = $_REQUEST["not_target_id"];
+    $notice["not_target_type"] = $_REQUEST["not_target_type"];
+	$notice["not_voting"] = isset($_REQUEST["not_voting"]) ? 1 : 0;
+
+    $noticeBo->save($notice);
+    $data["notice"] = $notice;
+}
 
 $data["ok"] = "ok";
 $data["meeting"] = $meeting;

@@ -86,6 +86,11 @@ class ChatBo {
 			$queryBuilder->where("cha_agenda_id = :cha_agenda_id");
 		}
 
+		if (isset($filters["cha_motion_id"])) {
+			$args["cha_motion_id"] = $filters["cha_motion_id"];
+			$queryBuilder->where("cha_motion_id = :cha_motion_id");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 

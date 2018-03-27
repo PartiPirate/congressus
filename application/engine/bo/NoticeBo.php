@@ -93,6 +93,11 @@ class NoticeBo {
 			$queryBuilder->where("not_meeting_id = :not_meeting_id");
 		}
 
+		if (isset($filters["not_voting"])) {
+			$args["not_voting"] = $filters["not_voting"];
+			$queryBuilder->where("not_voting = :not_voting");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

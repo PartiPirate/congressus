@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -17,37 +17,36 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-class VoteBo {
+class SourceBo {
 	var $pdo = null;
 	var $config = null;
 
-	var $TABLE = "votes";
-	var $ID_FIELD = "vot_id";
+	var $TABLE = "sources";
+	var $ID_FIELD = "sou_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
-
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo, $config) {
-		return new VoteBo($pdo, $config);
+	static function newInstance($pdo, $config = null) {
+		return new SourceBo($pdo, $config);
 	}
 
-	function create(&$vote) {
-		return BoHelper::create($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
+	function create(&$source) {
+		return BoHelper::create($source, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
-	function update($vote) {
-		return BoHelper::update($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
+	function update($source) {
+		return BoHelper::update($source, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
-	function save(&$vote) {
- 		if (!isset($vote[$this->ID_FIELD]) || !$vote[$this->ID_FIELD]) {
-			$this->create($vote);
+	function save(&$source) {
+ 		if (!isset($source[$this->ID_FIELD]) || !$source[$this->ID_FIELD]) {
+			$this->create($source);
 		}
 
-		$this->update($vote);
+		$this->update($source);
 	}
 
 	function getById($id) {
@@ -69,40 +68,28 @@ class VoteBo {
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 
 		$queryBuilder->select($this->TABLE);
-		$queryBuilder->addSelect($this->TABLE . ".*")->addSelect("motion_propositions.*")->addSelect("motions.*");
-
-		$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
-		$userSource->upgradeQuery($queryBuilder, $this->config, "vot_member_id");
-
-		$queryBuilder->join("motion_propositions", "mpr_id = vot_motion_proposition_id");
-		$queryBuilder->join("motions", "mot_id = mpr_motion_id");
+		$queryBuilder->addSelect($this->TABLE . ".*");
 
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
-		if (isset($filters["vot_member_id"])) {
-			$args["vot_member_id"] = $filters["vot_member_id"];
-			$queryBuilder->where("vot_member_id = :vot_member_id");
+		if (isset($filters["sou_motion_id"])) {
+			$args["sou_motion_id"] = $filters["sou_motion_id"];
+			$queryBuilder->where("sou_motion_id = :sou_motion_id");
 		}
 
-		if (isset($filters["vot_motion_proposition_id"])) {
-			$args["vot_motion_proposition_id"] = $filters["vot_motion_proposition_id"];
-			$queryBuilder->where("vot_motion_proposition_id = :vot_motion_proposition_id");
+		if (!isset($filters["with_deleted"])) {
+			$queryBuilder->where("sou_deleted = 0");
 		}
-
-		if (isset($filters["mot_agenda_id"])) {
-			$args["mot_agenda_id"] = $filters["mot_agenda_id"];
-			$queryBuilder->where("mot_agenda_id = :mot_agenda_id");
-		}
-
-		$queryBuilder->orderBy("mot_id");
-		$queryBuilder->orderBy("mpr_id");
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
+//		exit();
+//		error_log(showQuery($query, $args));
+//		echo showQuery($queryBuilder->constructRequest(), $args);
 
 		$results = array();
 

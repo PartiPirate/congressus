@@ -89,32 +89,102 @@ if ($page == "administration" && !$isAdministrator) {
 
 $connection = openConnection();
 
+
+
+if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
+	require_once("engine/bo/MeetingBo.php");
+
+	$meetingBo = MeetingBo::newInstance($connection, $config);
+	$meetingId = intval($_REQUEST["id"]);
+	
+	$meeting = null;
+	
+	if ($meetingId != 0) {
+		$meeting = $meetingBo->getById($meetingId, true);
+	}
+	
+	if (!$meeting) {
+		header("Location: createMeeting.php");
+		exit();
+	}
+	
+	if (basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php" && $meeting["mee_type"] == "construction") {
+		header("Location: construction.php?id=" . $meetingId);
+		exit();
+	}
+	else if (basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" && $meeting["mee_type"] == "meeting") {
+		header("Location: meeting.php?id=" . $meetingId);
+		exit();
+	}
+}
+else if (basename($_SERVER["SCRIPT_FILENAME"])== "construction_motion.php") {
+	require_once("engine/bo/MotionBo.php");
+	require_once("engine/bo/AgendaBo.php");
+
+	$motionBo = MotionBo::newInstance($connection, $config);
+	$agendaBo = AgendaBo::newInstance($connection, $config);
+
+	$motionId = intval($_REQUEST["motionId"]);
+	$motion = $motionBo->getByFilters(array("with_meeting" => true, "mot_id" => $motionId));
+	
+	if (count($motion)) {
+		$motion = $motion[0];
+		$meeting = $motion;
+
+		if ($meeting["mee_type"] == "meeting") {
+			header("Location: meeting.php?id=" . $meeting["mee_id"]);
+			exit();
+		}
+		
+	//	print_r($motion);
+		$agendas = $agendaBo->getByFilters(array("age_id" => $motion["mot_agenda_id"]));
+		
+		if (count($agendas)) {
+			$agenda = $agendas[0];
+
+			if ($agenda["age_parent_id"]) { 
+				$parentAgenda = $agendaBo->getById($agenda["age_parent_id"]);
+				$parentMotionId = str_replace("amendments-", "", $agenda["age_label"]);
+				$parentMotion = $motionBo->getById($parentMotionId);
+			}
+		}
+	}
+	
+	if (!$motion) {
+		header("Location: createMeeting.php");
+		exit();
+	}
+
+}
+
+$page_title = lang("congressus_title");
+$page_description = lang("index_description");
+
+if (isset($meeting)) {
+	$page_title .= " : " . $meeting['mee_label'];
+	
+	$start = new DateTime($meeting["mee_datetime"]);
+
+	$date = lang("datetime_format");
+
+	$date = str_replace("{date}", @$start->format(lang("date_format")), $date);
+	$date = str_replace("{time}", @$start->format(lang("time_format")), $date);
+
+	$page_description = $date;
+}
+
+if (isset($motion)) {
+	$page_description = "Motion &quot;" . str_replace("\"", "&quot;", $motion["mot_title"]) . "&quot;";
+	
+	if (isset($parentMotion)) {
+		$page_description .= ", amendement de &quot;" . str_replace("\"", "&quot;", $parentMotion["mot_title"]) . "&quot;";
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
 <head>
-<?php	if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
-			require_once("engine/bo/MeetingBo.php");
-
-			$meetingBo = MeetingBo::newInstance($connection, $config);
-			$meeting = $meetingBo->getById($_REQUEST["id"], true);
-		}
-
-		$page_title = lang("congressus_title");
-		$page_description = lang("index_description");
-		if (isset($meeting)) {
-			$page_title .= " : " . $meeting['mee_label'];
-			
-			$start = new DateTime($meeting["mee_datetime"]);
-
-			$date = lang("datetime_format");
-
-			$date = str_replace("{date}", @$start->format(lang("date_format")), $date);
-			$date = str_replace("{time}", @$start->format(lang("time_format")), $date);
-
-			$page_description = $date;
-		}
-?>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">

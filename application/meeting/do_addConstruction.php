@@ -26,6 +26,7 @@ require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/SourceBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/EventStackUtils.php");
 
@@ -44,6 +45,7 @@ $connection = openConnection();
 $agendaBo = AgendaBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection, $config);
 $motionBo = MotionBo::newInstance($connection, $config);
+$sourceBo = SourceBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["meetingId"];
 
@@ -73,18 +75,40 @@ if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 
 $agenda["age_objects"] = json_decode($agenda["age_objects"]);
 
+// Create motion
+
 $motion = array();
 $motion["mot_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
-$motion["mot_title"] = isset($_REQUEST["startingText"]) ? $_REQUEST["startingText"] : "Titre de la motion";
-$motion["mot_description"] = "Description de la motion";
+$motion["mot_title"] = isset($_REQUEST["title"]) ? $_REQUEST["title"] : "Titre de la motion";
+$motion["mot_description"] = isset($_REQUEST["description"]) ? $_REQUEST["description"] : "";
 $motion["mot_type"] = "yes_no";
-$motion["mot_status"] = "construction";
+$motion["mot_status"] = "voting";
 $motion["mot_deleted"] = "0";
+
 $motion["mot_author_id"] = $userId;
 
 $motionBo->save($motion);
 
+// Add it to the agenda
+
 $agenda["age_objects"][] = array("motionId" => $motion[$motionBo->ID_FIELD]);
+
+if ($_REQUEST["sourceUrl"] && $_REQUEST["sourceType"]) {
+    $source = array();
+    $source["sou_title"] = $_REQUEST["sourceTitle"];
+    $source["sou_is_default_source"] = 1;
+    $source["sou_url"] = $_REQUEST["sourceUrl"];
+    $source["sou_articles"] = json_encode($_REQUEST["sourceArticles"]);
+    $source["sou_content"] = $_REQUEST["sourceContent"];
+    $source["sou_type"] = $_REQUEST["sourceType"];
+    $source["sou_motion_id"] = $motion["mot_id"];
+    
+    $sourceBo->save($source);
+    
+    // Add it to the agenda
+    $agenda["age_objects"][] = array("sourceId" => $source[$sourceBo->ID_FIELD]);
+}
+
 $agenda["age_objects"] = json_encode($agenda["age_objects"]);
 
 $agendaBo->save($agenda);
@@ -101,10 +125,21 @@ if ($gamifierClient) {
     $data["gamifiedUser"] = $addEventsResult;
 }
 
+addEvent($meetingId, EVENT_MOTION_ADD, "Une nouvelle motion dans le point \"".$agenda["age_label"]."\"");
+
+// Add the propositions
+
+$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD], "mpr_label" => "pro");
+$motionBo->saveProposition($proposition);
+
+$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD], "mpr_label" => "doubtful");
+$motionBo->saveProposition($proposition);
+
+$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD], "mpr_label" => "against");
+$motionBo->saveProposition($proposition);
+
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
-
-addEvent($meetingId, EVENT_MOTION_ADD, "Une nouvelle motion dans le point \"".$agenda["age_label"]."\"");
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

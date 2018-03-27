@@ -175,7 +175,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				?>
 			</div>
 		<?php }?>
+		<div class="col-md-4">
+			<span class="glyphicon glyphicon-list-alt"></span> <?php echo lang("meeting_number_of_presents"); ?>
+			<span class="number-of-presents">0</span>
+		</div>
 	</div>
+
+	<div style="clear: both;"></div>
 
 	<div class="row president-panels" style="margin-bottom: 5px; ">
 		<div class="col-md-8">
@@ -472,7 +478,6 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="task-label"></span>
 		</li>
 
-
 		<li data-template-id="chat" id="chat-${cha_id}"
 				class="template list-group-item chat" data-id="${cha_id}" style="display: block;">
 			<button class="btn btn-danger btn-xs btn-remove-chat pull-right"
@@ -481,14 +486,21 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
 
-			<button class="btn btn-default btn-xs btn-advice btn-thumb-down pull-right"
+			<button class="btn btn-danger btn-xs btn-advice btn-thumb-down pull-right zero"
 				data-advice="thumb_down" data-chat-id="${cha_id}"
 				title="<?php echo lang("meeting_chatDisapprove"); ?>"
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-thumbs-down"></span>
 			</button>
 
-			<button class="btn btn-default btn-xs btn-advice btn-thumb-up pull-right"
+			<button class="btn btn-warning btn-xs btn-advice btn-thumb-middle pull-right zero"
+				data-advice="thumb_middle" data-chat-id="${cha_id}"
+				title="<?php echo lang("meeting_chatShare"); ?>"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-hand-left"></span>
+			</button>
+
+			<button class="btn btn-success btn-xs btn-advice btn-thumb-up pull-right zero"
 				data-advice="thumb_up" data-chat-id="${cha_id}"
 				title="<?php echo lang("meeting_chatLike"); ?>"
 				style="margin-right: 5px; display: none;">
@@ -514,6 +526,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
 					style="width: 0%; padding: 1px;"><span class="glyphicon glyphicon-thumbs-down pull-left" style="margin: 2px;"></span>
 					<span class="value pull-left"></span>
+					<span class="sr-only">&nbsp;</span>
+				</div>
+				<div class="progress-bar progress-bar-warning text-center" role="progressbar"
+					data-advice="thumb_middle"
+					aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
+					style="width: 0%; padding: 1px;"><span class="glyphicon glyphicon-hand-left" style="margin: 2px;"></span>
+					<span class="value pull-right" style=""></span>
 					<span class="sr-only">&nbsp;</span>
 				</div>
 				<div class="progress-bar progress-bar-success" role="progressbar"

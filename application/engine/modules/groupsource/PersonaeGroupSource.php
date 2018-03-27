@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2018 Cédric Levieux, Parti Pirate
     
     This file is part of Congressus.
     
@@ -53,7 +53,7 @@ class PersonaeGroupSource {
         global $connection;
 
         $groupBo = GroupBo::newInstance($connection, $config);
-        $group = $groupBo->getGroup($groupId);
+        $group = $groupBo->getGroup($groupId, true);
 
         if ($group) return $group["gro_label"];
 

@@ -201,8 +201,11 @@ class GroupBo {
 		return array();
 	}
 
-	function getGroup($groupId) {
+	function getGroup($groupId, $withDeleted = false) {
 		$filters = array("gro_id" => $groupId);
+		if ($withDeleted) {
+			$filters["with_deleted"] = true;
+		}
 		$groups = $this->getGroups($filters);
 
 		foreach($groups as $groupId => $group) return $group;

@@ -91,23 +91,28 @@ $data["ok"] = "ok";
 $data["advice"] = $advice;
 
 if ($gamifierClient) {
-    $events = array();
+    $addEventsResult = array();
+
+    if ($advice["cad_advice"] == "thumb_up" || $advice["cad_advice"] == "thumb_down") {
+        $events = array();
+
+        $userEventId = GameEvents::HAS_APPROVED;
+        $targetEventId = GameEvents::IS_APPROVED;
+
+        if ($advice["cad_advice"] == "thumb_down") {
+    	    $userEventId = GameEvents::HAS_REPROVED;
+    	    $targetEventId = GameEvents::IS_REPROVED;
+        }
+
+        $events[] = createGameEvent($userId, $userEventId);
+        if (isset($chat["cha_member_id"]) && $chat["cha_member_id"]) {
+        	$events[] = createGameEvent($chat["cha_member_id"], $targetEventId);
+        }
     
-    $userEventId = GameEvents::HAS_APPROVED;
-    $targetEventId = GameEvents::IS_APPROVED;
+        $addEventsResult = $gamifierClient->addEvents($events);
 
-    if ($advice["cad_advice"] != "thumb_up") {
-	    $userEventId = GameEvents::HAS_REPROVED;
-	    $targetEventId = GameEvents::IS_REPROVED;
     }
-
-    $events[] = createGameEvent($userId, $userEventId);
-    if (isset($chat["cha_member_id"]) && $chat["cha_member_id"]) {
-    	$events[] = createGameEvent($chat["cha_member_id"], $targetEventId);
-    }
-
-    $addEventsResult = $gamifierClient->addEvents($events);
-
+    
     $data["gamifiedUser"] = $addEventsResult;
 }
 

@@ -73,6 +73,7 @@ if (!$json) {
 	$now = getNow();
 
 	$numberOfConnected = 0;
+	$numberOfPresents = 0;
 
 	foreach($pings as $index => $ping) {
 		$lastPing = new DateTime($ping["pin_datetime"]);
@@ -92,6 +93,8 @@ if (!$json) {
 		else {
 			$numberOfConnected++;
 		}
+		
+		if ($ping["pin_first_presence_datetime"] && $ping["pin_noticed"] == 1) $numberOfPresents++;
 
 		if (!$ping["pin_speaking_request"]) continue;
 		
@@ -105,6 +108,7 @@ if (!$json) {
 
 	$data = array();
 	$data["numberOfConnected"] = $numberOfConnected;
+	$data["numberOfPresents"] = $numberOfPresents;
 	$data["notices"] = array();
 
 	$usedPings = array();

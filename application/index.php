@@ -39,7 +39,17 @@ $meetings = $meetingBo->getByFilters($filters);
 		<p><?php echo lang("index_guide"); ?></p>
 	</div>
 
-	<?php	if (count($meetings)) { ?>
+	<?php	$nearMeetings = 0;
+			$now = getNow();
+			foreach($meetings as $meeting) { 
+				$openDate = new DateTime($meeting["mee_start_time"]);
+				$diff = $openDate->diff($now);
+				if ($diff->days > 15) continue;
+				
+				$nearMeetings++;
+			};
+
+			if ($nearMeetings) { ?>
 	<div class="well well-sm">
 		<?php echo lang("index_open_meetings"); ?>
 		
@@ -50,12 +60,12 @@ $meetings = $meetingBo->getByFilters($filters);
 		
 					$openDate = new DateTime($meeting["mee_start_time"]);
 					$diff = $openDate->diff($now);
-					
+
 					if ($diff->days > 15) continue;
 					
 					echo $separator;
 		?>
-		<a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a>
+		<a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"] ? $meeting["mee_label"] : "-"; ?></a>
 		<?php	
 					$separator = ", ";
 				} ?>

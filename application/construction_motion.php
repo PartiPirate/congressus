@@ -103,8 +103,9 @@ if ($motion["mot_author_id"]) {
 
 $votingPower = 0;
 
+$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
+
 if ($userId) {
-	$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
 	foreach($notices as $notice) {
 		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
@@ -279,25 +280,43 @@ $(function() {
 		<li class="active"><?php echo $motion["mot_title"]; ?></li>
 	</ol>
 
+	<div id="notices-panel" class="panel panel-default">
+		<div class="panel-heading">
+			<?php echo lang("notice_groups"); ?>
+		</div>
+		<div class="panel-body">
+<?php
+	$groupLabels = array();
+
+	foreach($notices as $notice) {
+		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+
+        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+        	
+//        	$members = $groupSource->getNoticeMembers($notice);
+			$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
+			
+			$groupLabels[] = $groupLabel;
+		}
+	}
+
+	echo implode(", ", $groupLabels);
+?>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-md-<?php echo $mainColumn; ?>" id="main-panel">
 			
 <?php 
-//		foreach($agendas as $agenda) { 
-// TODO			if ($agenda["age_parent_id"]) continue;
-			
+
 			$votes = $voteBo->getByFilters(array("mot_id" => $motionId, "mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 ?>			
 			<div class="panel panel-default motion-entry" data-id="<?php echo $motion["mot_id"]; ?>">
 				<div class="panel-heading">
 <?php
-//			$previousMotionId = null;
-			
-//			foreach($motions as $motion) {
-////				echo $motion["mot_title"] . "<br>";
-
-//				if ($previousMotionId == $motion["mot_id"]) continue;
-//				$previousMotionId = $motion["mot_id"];
 
 					$voteCounters = array(0, 0, 0, 0);
 					$votingMembers = array();
@@ -306,10 +325,15 @@ $(function() {
 					$hasDoubt = 0;
 					$hasAgainst = 0;
 
+					$voters = array();
+
 					foreach($votes as $vote) {
 						if ($motion["mot_id"] != $vote["mot_id"]) continue;
 						if (!$vote["vot_power"]) continue;
-						$voteCounters[0] += $vote["vot_power"];
+						if (!isset($voters[$vote["vot_member_id"]])) {
+							$voteCounters[0] += 1;
+							$voters[$vote["vot_member_id"]] = $vote["vot_member_id"];
+						}
 
 //						print_r($vote);
 
@@ -408,30 +432,30 @@ echo include("construction/pieChart.php");
 								<input type="hidden" name="meetingId" value="<?php echo $meeting["mee_id"]; ?>">
 								<input type="hidden" name="motionId"  value="<?php echo  $motion["mot_id"]; ?>">
 							<?php	if ($votingPower) { ?>
-							<button class="btn btn-success <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
+							<div class="btn btn-success <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-thumbs-up"></span> <?php echo lang("advice_pro"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
-									<input type='number' name="pro" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasPro; ?>">
+									<input type='number' name="pro" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasPro; ?>">
 								<?php	} else {?>
 									<input type='hidden' name="pro" value="<?php echo $hasPro; ?>">
 								<?php	} ?>
-							</button>
-							<button class="btn btn-warning <?php echo $hasDoubt ? "active" : "zero"; ?>" type="button">
+							</div>
+							<div class="btn btn-warning <?php echo $hasDoubt ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-hand-left"></span> <?php echo lang("advice_doubtful"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
-									<input type='number' name="doubtful" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasDoubt; ?>">
+									<input type='number' name="doubtful" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasDoubt; ?>">
 								<?php	} else {?>
 									<input type='hidden' name="doubtful" value="<?php echo $hasDoubt; ?>">
 								<?php	} ?>
-							</button>
-							<button class="btn btn-danger  <?php echo $hasAgainst ? "active" : "zero"; ?>" type="button">
+							</div>
+							<div class="btn btn-danger <?php echo $hasAgainst ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-thumbs-down"></span> <?php echo lang("advice_against"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
-									<input type='number' name="against" class='pull-right text-right' style='width: 40px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasAgainst; ?>">
+									<input type='number' name="against" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasAgainst; ?>">
 								<?php	} else {?>
 									<input type='hidden' name="against" value="<?php echo $hasAgainst; ?>">
 								<?php	} ?>
-							</button>
+							</div>
 							<?php	} ?>
 							</form>
 						</div>

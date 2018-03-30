@@ -21,10 +21,13 @@ include_once("header.php");
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserBo.php");
+
+$noticeBo = NoticeBo::newInstance($connection, $config);
 
 if (!$meeting) {
 	// Ask for creation
@@ -42,6 +45,32 @@ else {
 }
 
 $userId = SessionUtils::getUserId($_SESSION);
+
+$votingPower = 0;
+
+$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
+
+if ($userId) {
+	foreach($notices as $notice) {
+		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+
+        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+        	
+        	$members = $groupSource->getNoticeMembers($notice);
+        	
+        	foreach($members as $member) {
+        		if ($member["id_adh"] != $userId) continue;
+
+//        		echo "<pre>" . print_r($member, true) . "</pre>";
+
+        		$votingPower = $member["fme_power"];
+        	}
+		}
+	}
+}
+
 $hasWritingRights = false;
 if (!$userId) {
 	if (!isset($_SESSION["guestId"])) {
@@ -116,6 +145,33 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
 		<?php	} ?>
 	</ol>
+
+	<div id="notices-panel" class="panel panel-default">
+		<div class="panel-heading">
+			<?php echo lang("notice_groups"); ?>
+		</div>
+		<div class="panel-body">
+<?php
+	$groupLabels = array();
+
+	foreach($notices as $notice) {
+		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+
+        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+        	
+//        	$members = $groupSource->getNoticeMembers($notice);
+			$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
+			
+			$groupLabels[] = $groupLabel;
+		}
+	}
+
+	echo implode(", ", $groupLabels);
+?>
+		</div>
+	</div>
 
 <!--
 	<div class="row" style="margin-bottom: 5px; height: 30px; ">
@@ -319,7 +375,12 @@ $(function() {
 
 			$showTitle = true;
 
+			$phasWritingRights = $hasWritingRights;
+			$hasWritingRights = $votingPower || $hasWritingRights;
+
 			include("construction/amendment_list.php");
+
+			$hasWritingRights = $phasWritingRights;
 			
 	 	} ?>			
 			

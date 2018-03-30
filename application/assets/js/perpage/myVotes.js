@@ -214,7 +214,7 @@ function addPointHandlers(motion) {
 	else {
 		motion.find(".proposition").each(function() {
 			var proposition = $(this);
-			var input = $("<input type='number' class='pull-right text-right' style='width: 40px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
+			var input = $("<input type='number' class='pull-right text-right' style='width: 60px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
 			input.change(function() {
 				checkMaxValues(motion.find(".proposition"), maxPower);
 				setMotionDirty(motion, true);

@@ -268,6 +268,7 @@ $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
 $lang["notice_customUsers"] = "Utilisateurs Custom";
+$lang["notice_groups"] = "Groupes convoqués";
 
 $lang["mee_synchro_vote_0"] = "Votes disponibles sur l'interface de vote";
 $lang["mee_synchro_vote_1"] = "Votes synchronisés";

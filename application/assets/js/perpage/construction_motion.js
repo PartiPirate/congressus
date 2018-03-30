@@ -45,7 +45,7 @@ function renewVotes(successHandler) {
 		existingMotionEntry.find("#mini-voting-panel").html(motionEntry.find("#mini-voting-panel"));
 		existingMotionEntry.find("#voting-panel").html(motionEntry.find("#voting-panel"));
 
-		$("#motion-buttons-bar button").removeClass("active").addClass("zero").each(function() {
+		$("#motion-buttons-bar div").removeClass("active").addClass("zero").each(function() {
 			if (($(this).find("input").val() * 2.) != 0) {
 				$(this).addClass("active").removeClass("zero");
 			}
@@ -119,15 +119,6 @@ function addChatListeners() {
 
 		var formData = form.serialize();
 
-/*
-		var userId = $(".meeting").data("user-id");
-		var agendaId = $("#agenda_point").data("id");
-		var meetingId = $(".meeting").data("id");
-		var startingText = $(".chat-text").val();
-*/
-
-//		$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
-
 		$.post("meeting_api.php?method=do_addChat", formData, function(data) {
 
 			testBadges(data.gamifiedUser.data);
@@ -156,12 +147,13 @@ function addMotionListeners() {
 
 	if (votingPower > 1) {
 //		$("body").on("click", "#motion-buttons-bar button", function(event) { event.preventDefault(); });
-		$("body").on("change", "#motion-buttons-bar button input", function(event) {
+		$("body").on("change", "#motion-buttons-bar div input", function(event) {
+			event.preventDefault();
 
 			var changedInput = $(this);
 			var totalScore = 0;
 
-			$("#motion-buttons-bar button input").each(function() {
+			$("#motion-buttons-bar div input").each(function() {
 				if (this == changedInput.get(0)) return;
 				
 				totalScore -= -$(this).val();
@@ -177,10 +169,10 @@ function addMotionListeners() {
 		});
 	}
 	else {
-		$("body").on("click", "#motion-buttons-bar button", function(event) {
+		$("body").on("click", "#motion-buttons-bar div", function(event) {
 			event.preventDefault();
 
-			$("#motion-buttons-bar button input").val(0);
+			$("#motion-buttons-bar div input").val(0);
 			
 			$(this).find("input").val(1);
 

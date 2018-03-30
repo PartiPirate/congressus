@@ -62,9 +62,13 @@
 				}
 
 				$voteCounters = array(0, 0, 0, 0);
+				$voters = array();
 				foreach($votes as $vote) {
 					if ($motion["mot_id"] != $vote["mot_id"]) continue;
-					$voteCounters[0] += $vote["vot_power"];
+					if (!isset($voters[$vote["vot_member_id"]])) {
+						$voteCounters[0] += 1;
+						$voters[$vote["vot_member_id"]] = $vote["vot_member_id"];
+					}
 
 					if ($vote["mpr_label"] == "pro" || strtolower($vote["mpr_label"]) == "oui" || strtolower($vote["mpr_label"]) == "pour") $voteCounters[1] += $vote["vot_power"];
 					else if ($vote["mpr_label"] == "doubtful") $voteCounters[2] += $vote["vot_power"];

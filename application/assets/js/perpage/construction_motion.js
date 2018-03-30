@@ -20,6 +20,7 @@
 /* global $ */
 /* global testBadges */
 /* global htmlDiff */
+/* global showdown */
 
 var setTimeoutId = null;
 
@@ -276,7 +277,57 @@ function addAutogrowListeners() {
 
 function addButtonsListeners() {
 	var globalScrollTop = 0;
-	
+
+	$("#show-markdown-btn").click(function() {
+		var converter = new showdown.Converter();
+		$("#markdown").html("");
+		
+		/* mediawiki markdown transformation to normalized markdown titles */
+		var source = $("#destination").val();
+		const regex = /^(=+)( .* )(=+)$/gm;
+		
+		let m;
+
+		var dashes = ["", "#", "##", "###", "####", "#####", "######", "#######"];
+
+		while ((m = regex.exec(source)) !== null) {
+		    // This is necessary to avoid infinite loops with zero-width matches
+		    if (m.index === regex.lastIndex) {
+		        regex.lastIndex++;
+		    }
+		    
+//		    console.log(m);
+		    
+		    var search = m[1] + m[2] + m[3];
+		    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
+/*		    
+		    // The result can be accessed through the `m`-variable.
+		    m.forEach((match, groupIndex) => {
+		        console.log(`Found match, group ${groupIndex}: ${match}`);
+		    });
+*/
+
+			source = source.replace(search, replace);
+		}
+
+		$("#markdown").html(converter.makeHtml(source));
+
+		$("#markdown").show();
+		$("#markdown-group").show();
+
+		$("#motion-description").hide();
+		$("#motion-description-group").hide();
+		$("#diff").hide();
+		$("#diff-group").hide();
+		$("#source").hide();
+		$("#destination").hide();
+
+		$(".btn-type-group button").removeClass("active");
+		$(this).addClass("active");
+
+		$(".btn_authoring-group").hide();
+	});
+
 	$("#show-motion-btn").click(function() {
 		$("#motion-description").show();
 		$("#motion-description-group").show();
@@ -286,6 +337,8 @@ function addButtonsListeners() {
 		$("#diff-group").hide();
 		$("#source").hide();
 		$("#destination").hide();
+		$("#markdown").hide();
+		$("#markdown-group").hide();
 
 		$("#motion-description").get(0).scrollTop = globalScrollTop;
 
@@ -303,6 +356,8 @@ function addButtonsListeners() {
 		constructChangeScroll($("#diff-group"));
 		$("#source").hide();
 		$("#destination").hide();
+		$("#markdown").hide();
+		$("#markdown-group").hide();
 
 		$("#diff").get(0).scrollTop = globalScrollTop;
 
@@ -320,6 +375,8 @@ function addButtonsListeners() {
 		constructChangeScroll($("#diff-group"));
 		$("#source").show();
 		$("#destination").show();
+		$("#markdown").hide();
+		$("#markdown-group").hide();
 
 		$("#destination").get(0).scrollTop = globalScrollTop;
 		$("#source").get(0).scrollTop = globalScrollTop;

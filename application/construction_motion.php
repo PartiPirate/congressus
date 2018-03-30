@@ -28,6 +28,9 @@ require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/UserBo.php");
 require_once("engine/bo/SourceBo.php");
+require_once("engine/utils/Parsedown.php");
+
+$Parsedown = new Parsedown();
 
 function showDate($date) {
 	$msg = lang("datetime_format");
@@ -247,6 +250,40 @@ $mainColumn = 12;
 	cursor: zoom-in;
 }
 
+#markdown h1 {
+	padding-left: calc(1 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h2 {
+	padding-left: calc(2 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h3 {
+	padding-left: calc(3 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h4 {
+	padding-left: calc(4 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h5 {
+	padding-left: calc(5 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h6 {
+	padding-left: calc(6 * 5px);
+	text-decoration: underline;
+}
+
+#markdown h7 {
+	padding-left: calc(7 * 5px);
+}
+
 </style>
 
 <script type="text/javascript">
@@ -386,6 +423,7 @@ echo include("construction/pieChart.php");
 					<div class="btn-group btn-type-group " role="group">
 						<button id="show-motion-btn" type="button" class="btn btn-default active"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
+						<button id="show-markdown-btn" type="button" class="btn btn-default"><i class="fa fa-file-text" aria-hidden="true"></i></button>
 						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
 						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<?php	} ?>
@@ -410,6 +448,12 @@ echo include("construction/pieChart.php");
 					<div id="diff-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
 						<div id="diff" class="scroller" style="position: relative; display: none;" ></div>
+					</div>
+					<div id="markdown-group" class="with-scroll" style="display: none;">
+						<!--
+						<div class="change-scroll"><div class="scroll-zone"></div></div>
+						-->
+						<div id="markdown" class="scroller" style="position: relative; display: none;" ></div>
 					</div>
 
 					<hr>
@@ -544,7 +588,7 @@ echo include("construction/pieChart.php");
 	?>
 							<li class="list-group-item pro-chat">
 								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $chat["cha_text"]; ?></div>
+								<div><?php echo $Parsedown->text($chat["cha_text"]); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -627,7 +671,7 @@ echo include("construction/pieChart.php");
 	?>
 							<li class="list-group-item against-chat">
 								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $chat["cha_text"]; ?></div>
+								<div><?php echo $Parsedown->text($chat["cha_text"]); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>

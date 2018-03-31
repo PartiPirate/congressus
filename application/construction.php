@@ -444,9 +444,10 @@ var getEventsTimer;
 var getEventsTimerInterval = 1500;
 
 $(function() {
-
-	getEventsTimer = $.timer(getEvents);
-	getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+	if ($("#meeting_external_chat").length) {
+		getEventsTimer = $.timer(getEvents);
+		getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+	}
 });
 
 </script>

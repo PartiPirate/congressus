@@ -284,6 +284,11 @@ $mainColumn = 12;
 	padding-left: calc(7 * 5px);
 }
 
+.children-chat {
+    margin-left: 50px;
+    background-color: #f8f8f8;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -594,6 +599,7 @@ echo include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
 									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button" style="height: 19px;"      data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
@@ -612,7 +618,89 @@ echo include("construction/pieChart.php");
 								<?php	} ?>
 							</li>
 	
-	<?php	} ?>
+	<?php	
+				$childrenChats = $chatBo->getByFilters(array("cha_parent_id" => $chat["cha_id"]));
+				
+				// Start children chats
+				
+				foreach($childrenChats as $childrenChat) {
+
+					$chatAdvices = $chatAdviceBo->getByFilters(array("cad_chat_id" => $childrenChat["cha_id"]));
+	
+					$chatAdviceCounters = array("me" => "", "thumb_up" => 0, "thumb_down" => 0, "thumb_middle" => 0, "total" => 0);
+					foreach($chatAdvices as $chatAdvice) {
+						$chatAdviceCounters[$chatAdvice["cad_advice"]]++;
+						$chatAdviceCounters["total"]++;
+						if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
+					}
+
+	?>
+							<li class="list-group-item pro-chat children-chat">
+								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div><?php echo $Parsedown->text($childrenChat["cha_text"]); ?></div>
+
+								<div class="btn-group btn-group-xs btn-chat-group" role="group">
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+								</div>
+								<?php	if ($chatAdviceCounters["total"]) { ?>
+								<div class="advice-progress-bar" style="padding-top: 2px;">
+									<div class="progress" style="height: 3px;">
+										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										</div>
+									</div>
+								</div>
+								<?php	} ?>
+							</li>
+	
+	<?php	
+
+				} 
+
+				// End children chats
+?>
+							<li class="list-group-item pro-chat answer-chat" id="answer-chat-<?php echo $chat["cha_id"]; ?>" style="display: none;">
+
+								<form class="form-horizontal" data-chat-type="pro">
+									<fieldset>
+			
+										<input type="hidden" name="id" value="<?php echo $motion["mee_id"]; ?>">
+										<input type="hidden" name="pointId" value="<?php echo $motion["mot_agenda_id"]; ?>">
+										<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+										<input type="hidden" name="parentId" value="<?php echo $chat["cha_id"]; ?>">
+										<input type="hidden" class="chat-type" value="pro">
+			
+										<!-- Form Name -->
+										<!--<legend>Form Name</legend>-->
+										
+										<!-- Textarea -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<textarea class="form-control chat-text" name="startingText" placeholder="Une réponse"></textarea>
+											</div>
+										</div>
+
+										<!-- Button -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<button class="btn btn-primary btn-chat-send">Envoyer</button>
+											</div>
+										</div>
+										
+									</fieldset>
+								</form>
+
+							</li>
+
+<?php		} ?>
 						</ul>
 					</div>
 	
@@ -677,6 +765,7 @@ echo include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
 									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button" style="height: 19px;"      data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
@@ -695,7 +784,91 @@ echo include("construction/pieChart.php");
 								<?php	} ?>
 							</li>
 	
-	<?php	} ?>
+	<?php	
+	
+				$childrenChats = $chatBo->getByFilters(array("cha_parent_id" => $chat["cha_id"]));
+				
+				// Start children chats
+				
+				foreach($childrenChats as $childrenChat) {
+
+					$chatAdvices = $chatAdviceBo->getByFilters(array("cad_chat_id" => $childrenChat["cha_id"]));
+	
+					$chatAdviceCounters = array("me" => "", "thumb_up" => 0, "thumb_down" => 0, "thumb_middle" => 0, "total" => 0);
+					foreach($chatAdvices as $chatAdvice) {
+						$chatAdviceCounters[$chatAdvice["cad_advice"]]++;
+						$chatAdviceCounters["total"]++;
+						if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
+					}
+
+	?>
+							<li class="list-group-item against-chat children-chat">
+								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div><?php echo $Parsedown->text($childrenChat["cha_text"]); ?></div>
+
+								<div class="btn-group btn-group-xs btn-chat-group" role="group">
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+								</div>
+								<?php	if ($chatAdviceCounters["total"]) { ?>
+								<div class="advice-progress-bar" style="padding-top: 2px;">
+									<div class="progress" style="height: 3px;">
+										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										</div>
+										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										</div>
+									</div>
+								</div>
+								<?php	} ?>
+							</li>
+	
+	<?php	
+
+				} 
+
+				// End children chats
+?>
+							<li class="list-group-item against-chat answer-chat" id="answer-chat-<?php echo $chat["cha_id"]; ?>" style="display: none;">
+
+								<form class="form-horizontal" data-chat-type="against">
+									<fieldset>
+			
+										<input type="hidden" name="id" value="<?php echo $motion["mee_id"]; ?>">
+										<input type="hidden" name="pointId" value="<?php echo $motion["mot_agenda_id"]; ?>">
+										<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+										<input type="hidden" name="parentId" value="<?php echo $chat["cha_id"]; ?>">
+										<input type="hidden" class="chat-type" value="against">
+			
+										<!-- Form Name -->
+										<!--<legend>Form Name</legend>-->
+										
+										<!-- Textarea -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<textarea class="form-control chat-text" name="startingText" placeholder="Une réponse"></textarea>
+											</div>
+										</div>
+
+										<!-- Button -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<button class="btn btn-primary btn-chat-send">Envoyer</button>
+											</div>
+										</div>
+										
+									</fieldset>
+								</form>
+
+							</li>
+
+<?php		} ?>
+
 						</ul>
 					</div>
 				</div>
@@ -761,8 +934,10 @@ var getEventsTimer;
 var getEventsTimerInterval = 1500;
 
 $(function() {
-	getEventsTimer = $.timer(getEvents);
-	getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+	if ($("#meeting_external_chat").length) {
+		getEventsTimer = $.timer(getEvents);
+		getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+	}
 });
 
 </script>

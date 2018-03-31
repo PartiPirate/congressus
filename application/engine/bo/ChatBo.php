@@ -91,8 +91,14 @@ class ChatBo {
 			$queryBuilder->where("cha_motion_id = :cha_motion_id");
 		}
 
+		if (isset($filters["cha_parent_id"])) {
+			$args["cha_parent_id"] = $filters["cha_parent_id"];
+			$queryBuilder->where("cha_parent_id = :cha_parent_id");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
+//		echo showQuery($query, $args);
 
 		$results = array();
 

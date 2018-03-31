@@ -94,7 +94,11 @@ function addChatAdviceListeners() {
 		form["agendaId"] = $(this).data("agendaId");
 		form["advice"] = $(this).data("advice");
 
-		console.log(form);
+		if (!form["advice"]) {
+			$("#answer-chat-" + form["chatId"]).toggle();
+			
+			return;
+		}
 
 		$.post("meeting_api.php?method=do_setAdvice", form, function(data) {
 

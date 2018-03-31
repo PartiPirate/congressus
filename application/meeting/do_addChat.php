@@ -75,6 +75,10 @@ if (isset($_REQUEST["motionId"])) {
 	$chat["cha_motion_id"] = intval($_REQUEST["motionId"]);
 }
 
+if (isset($_REQUEST["parentId"])) {
+	$chat["cha_parent_id"] = intval($_REQUEST["parentId"]);
+}
+
 $now = getNow();
 $chat["cha_datetime"] = $now->format("Y-m-d H:i:s");
 

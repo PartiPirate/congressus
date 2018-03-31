@@ -85,7 +85,7 @@ $chartId = "mini-voting-panel-" . $motion["mot_id"];
 $width = 36;
 $height = 36;
 
-echo include("construction/pieChart.php"); 
+include("construction/pieChart.php"); 
 
 ?>
 

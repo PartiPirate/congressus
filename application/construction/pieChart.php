@@ -23,8 +23,125 @@
 // Need $height
 
 ?>
+<canvas id="<?php echo $chartId; ?>-chart-area" style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px"></canvas>
 <script type="text/javascript">
 $(function() {
+	var config = {
+		type: 'pie',
+		data: {
+			datasets: [{
+				data: [
+					<?php echo $voteCounters[1]; ?>,
+					<?php echo $voteCounters[2]; ?>,
+					<?php echo $voteCounters[3]; ?>,
+				],
+				backgroundColor: [
+	                "#5cb85c",
+	                "#f0ad4e",
+	                "#d9534f",
+				],
+				borderWidth: [
+					0,
+					0,
+					0,
+				],
+				label: 'Dataset 1'
+			}],
+			labels: [
+				<?php echo json_encode(lang("advice_pro", false)); ?>,
+				<?php echo json_encode(lang("advice_doubtful", false)); ?>,
+				<?php echo json_encode(lang("advice_against", false)); ?>,
+			]
+		},
+		options: {
+			rotation:	-0.25 * Math.PI	,
+			responsive: true,
+			legend: {
+            	display: false
+			},
+			tooltips: {
+	            // Disable the on-canvas tooltip
+	            enabled: false,
+	            custom: function(tooltipModel) {
+//	            	console.log(this);
+
+	                // Tooltip Element
+	                var tooltipEl = document.getElementById('chartjs-tooltip');
+	
+	                // Create element on first render
+	                if (!tooltipEl) {
+	                    tooltipEl = document.createElement('div');
+	                    tooltipEl.id = 'chartjs-tooltip';
+	                    
+		                tooltipEl.style.borderColor = "#101010";
+		                tooltipEl.style.borderStyle = "solid";
+		                tooltipEl.style.borderWidth = "1px";
+		                tooltipEl.style.borderRadius = "5px";
+		                tooltipEl.style.color = "#fff";
+		                tooltipEl.style.backgroundColor = "#101010";
+		                tooltipEl.style.padding = "5px";
+
+	                    document.body.appendChild(tooltipEl);
+	                }
+	
+	                // Hide if no tooltip
+	                if (tooltipModel.opacity === 0) {
+	                    tooltipEl.style.opacity = 0;
+	                    tooltipEl.style.display = "none";
+	                    return;
+	                }
+	
+	                // Set caret Position
+	                tooltipEl.classList.remove('above', 'below', 'no-transform');
+	                if (tooltipModel.yAlign) {
+	                    tooltipEl.classList.add(tooltipModel.yAlign);
+	                } 
+	                else {
+	                    tooltipEl.classList.add('no-transform');
+	                }
+	
+	                function getBody(bodyItem) {
+	                    return bodyItem.lines;
+	                }
+	
+	                // Set Text
+	                if (tooltipModel.body) {
+	                    var titleLines = tooltipModel.title || [];
+	                    var bodyLines = tooltipModel.body.map(getBody);
+	
+	                    var innerHtml = '';
+
+	                    bodyLines.forEach(function(body, i) {
+	                        var colors = tooltipModel.labelColors[i];
+	                        var coloredSquare = "<span style='display: inline-block; width: 14px; height: 14px; border: 2px solid #f0f0f0; background-color: "+colors.backgroundColor+"; position: relative; top: 2px;'></span> ";
+
+	                        innerHtml = coloredSquare + body;
+	                    });
+
+						tooltipEl.innerHTML = innerHtml;
+	                }
+	
+	                // `this` will be the overall tooltip
+	                var position = this._chart.canvas.getBoundingClientRect();
+	
+	                // Display, position
+	                tooltipEl.style.opacity = 0.85;
+                    tooltipEl.style.display = "inline";
+
+	                tooltipEl.style.position = 'absolute';
+	                tooltipEl.style.left = (position.left - $(tooltipEl).width() - 16 + this._eventPosition.x) + 'px';
+	                tooltipEl.style.top = (position.top - 15 + this._eventPosition.y) + 'px';
+
+	            }
+	        }
+		}
+	};
+
+	var ctx = document.getElementById('<?php echo $chartId; ?>-chart-area').getContext('2d');
+	new Chart(ctx, config);
+
+	
+/*	
 	var votingData = [];
 	votingData[0] = {indexLabel: <?php echo json_encode(lang("advice_pro")); ?>, y: <?php echo $voteCounters[1]; ?>};
 	votingData[1] = {indexLabel: <?php echo json_encode(lang("advice_doubtful")); ?>, y: <?php echo $voteCounters[2]; ?>};
@@ -66,5 +183,6 @@ $(function() {
 	};
 	var chart = new CanvasJS.Chart("<?php echo $chartId; ?>", chartOptions);
 	chart.render();	
+*/	
 });
 </script>	

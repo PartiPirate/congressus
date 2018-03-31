@@ -23,7 +23,22 @@ require_once("engine/bo/GuestBo.php");
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
-//$userId = SessionUtils::getUserId($_SESSION);
+$userId = SessionUtils::getUserId($_SESSION);
+if (!$userId) {
+	if (!isset($_SESSION["guestId"])) {
+		$guestBo = GuestBo::newInstance($connection, $config);
+		// Create guestId
+		$guest = array();
+		$guestBo->save($guest);
+
+		$guestId = $guest[$guestBo->ID_FIELD];
+		$nickname = "Guest $guestId";
+
+		$_SESSION["guestId"] = $guestId;
+		$_SESSION["guestNickname"] = $nickname;
+	}
+	$guestId = $_SESSION["guestId"];
+}
 
 $meetings = $meetingBo->getByFilters(array("by_personae_group" => true, "with_status" => array("waiting", "open", "closed")));
 

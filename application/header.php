@@ -89,8 +89,6 @@ if ($page == "administration" && !$isAdministrator) {
 
 $connection = openConnection();
 
-
-
 if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
 	require_once("engine/bo/MeetingBo.php");
 
@@ -244,6 +242,7 @@ if (isset($motion)) {
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
 <script>
+// Badges;
 var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]) : "{badges:[]}"); ?>;
 </script>
 <link rel="shortcut icon" type="image/png" href="favicon.png" />

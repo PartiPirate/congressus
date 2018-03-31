@@ -403,7 +403,7 @@ $chartId = "mini-voting-panel";
 $width = 36;
 $height = 36;
 
-echo include("construction/pieChart.php"); 
+include("construction/pieChart.php"); 
 
 ?>
 
@@ -471,7 +471,7 @@ $chartId = "voting-panel";
 $width = 72;
 $height = 72;
 
-echo include("construction/pieChart.php"); 
+include("construction/pieChart.php"); 
 
 ?>
 

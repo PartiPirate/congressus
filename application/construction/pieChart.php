@@ -62,7 +62,26 @@ $(function() {
 			tooltips: {
 	            // Disable the on-canvas tooltip
 	            enabled: false,
+				callbacks: {
+	                label: function(tooltipItem, data) {
+	                    var label = data.labels[tooltipItem.index] || '';
+	
+	                    if (label) {
+	                        label += ': ';
+	                    }
+	                    
+						var total = 0;
+						for(var index = 0; index < data.datasets[tooltipItem.datasetIndex].data.length; ++index) {
+							total += data.datasets[tooltipItem.datasetIndex].data[index];
+						}
+	                    
+	                    
+	                    label += Math.round(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] * 10000 / total) / 100 + "%";
+	                    return label;
+	                }
+	            },
 	            custom: function(tooltipModel) {
+//	            	debugger;
 //	            	console.log(this);
 
 	                // Tooltip Element
@@ -103,7 +122,7 @@ $(function() {
 	                function getBody(bodyItem) {
 	                    return bodyItem.lines;
 	                }
-	
+
 	                // Set Text
 	                if (tooltipModel.body) {
 	                    var titleLines = tooltipModel.title || [];

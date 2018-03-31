@@ -148,8 +148,8 @@ $(function() {
                     tooltipEl.style.display = "inline";
 
 	                tooltipEl.style.position = 'absolute';
-	                tooltipEl.style.left = (position.left - $(tooltipEl).width() - 16 + this._eventPosition.x) + 'px';
-	                tooltipEl.style.top = (position.top - 15 + this._eventPosition.y) + 'px';
+	                tooltipEl.style.left = (position.left - $(tooltipEl).width() - 16 + this._eventPosition.x + $(window).scrollLeft()) + 'px';
+	                tooltipEl.style.top = (position.top - 15 + this._eventPosition.y + $(window).scrollTop()) + 'px';
 
 	            }
 	        }

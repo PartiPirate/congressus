@@ -29,7 +29,29 @@ require_once("language/language.php");
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
-$meetings = $meetingBo->getByFilters(array("with_principal_location" => true, "with_status" => array("waiting", "open", "closed")));
+
+$filters = array("with_principal_location" => true, "with_status" => array("waiting", "open", "closed"));
+if (isset($_REQUEST["from"])) {
+	$from = $_REQUEST["from"];
+	$from /= 1000;
+	$fromDate = new DateTime();
+	$fromDate->setTimestamp($from);
+	$from = $fromDate->format("Y-m-d");
+	
+	$filters["mee_from"] = $from;
+}
+
+if (isset($_REQUEST["to"])) {
+	$to = $_REQUEST["to"];
+	$to /= 1000;
+	$toDate = new DateTime();
+	$toDate->setTimestamp($to);
+	$to = $toDate->format("Y-m-d");
+	
+	$filters["mee_to"] = $to;
+}
+
+$meetings = $meetingBo->getByFilters($filters);
 
 //print_r($meetings);
 

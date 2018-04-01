@@ -86,6 +86,16 @@ class MeetingBo {
 			$queryBuilder->join($this->personaeDatabase."dlp_groups", "gro_id = not_target_id");
 		}
 
+		if (isset($filters["mee_from"])) {
+			$args["mee_from"] = $filters["mee_from"];
+			$queryBuilder->where("DATE_ADD(mee_datetime, INTERVAL mee_expected_duration MINUTE) >= :mee_from");
+		}
+
+		if (isset($filters["mee_to"])) {
+			$args["mee_to"] = $filters["mee_to"];
+			$queryBuilder->where("mee_datetime <= :mee_to");
+		}
+
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");

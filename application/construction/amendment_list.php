@@ -112,7 +112,7 @@ include("construction/pieChart.php");
 				</ul>
 				<div class="panel-footer">
 <?php				if ($hasWritingRights) { ?>
-						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>">Amendement <span class="fa fa-archive"></span></button>
+						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>"><?php echo lang("amendments_add_amendment"); ?> <span class="fa fa-archive"></span></button>
 <?php				} ?>
 				</div>
 			</div>

@@ -514,16 +514,15 @@ include("construction/pieChart.php");
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#arguments" aria-controls="home" role="tab" data-toggle="tab">Arguments</a></li>
+				<li role="presentation" class="active"><a href="#arguments" aria-controls="home" role="tab" data-toggle="tab"><?php echo lang("construction_arguments"); ?></a></li>
 <?php 				
 			if (!$agenda["age_parent_id"]) {
 ?>		
-				<li role="presentation"><a href="#amendments" aria-controls="profile" role="tab" data-toggle="tab">Amendements</a></li>
+				<li role="presentation"><a href="#amendments" aria-controls="profile" role="tab" data-toggle="tab"><?php echo lang("construction_amendments"); ?></a></li>
 <?php 				
 			}
 ?>
 			</ul>
-
 
 		<!-- Tab panes -->
 		<div class="tab-content">
@@ -553,7 +552,7 @@ include("construction/pieChart.php");
 								<!-- Button -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<button class="btn btn-primary btn-chat-send">Envoyer</button>
+										<button class="btn btn-primary btn-chat-send"><?php echo lang("construction_argument_send"); ?></button>
 									</div>
 								</div>
 								
@@ -564,7 +563,7 @@ include("construction/pieChart.php");
 	
 					<div class="panel panel-default">
 						<div class="panel-heading"><p class="text-success pro-counter">
-							<?php echo $numberOfChats[1]; ?> arguments pour
+							<?php echo langFormat($numberOfChats[1] < 2, "amendments_pro_argument", "amendments_pro_arguments", array("argument" => $numberOfChats[1])); ?>
 						</p></div>
 						<ul class="list-group objects">
 	<?php	foreach($chats as $chat) {
@@ -680,7 +679,7 @@ include("construction/pieChart.php");
 										<!-- Button -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<button class="btn btn-primary btn-chat-send">Envoyer</button>
+												<button class="btn btn-primary btn-chat-send"><?php echo lang("construction_argument_send"); ?></button>
 											</div>
 										</div>
 										
@@ -719,7 +718,7 @@ include("construction/pieChart.php");
 								<!-- Button -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<button class="btn btn-primary btn-chat-send">Envoyer</button>
+										<button class="btn btn-primary btn-chat-send"><?php echo lang("construction_argument_send"); ?></button>
 									</div>
 								</div>
 								
@@ -730,7 +729,7 @@ include("construction/pieChart.php");
 	
 					<div class="panel panel-default">
 						<div class="panel-heading"><p class="text-danger against-counter">
-							<?php echo $numberOfChats[2]; ?> arguments contre
+							<?php echo langFormat($numberOfChats[2] < 2, "amendments_against_argument", "amendments_against_arguments", array("argument" => $numberOfChats[2])); ?>
 						</p></div>
 						<ul class="list-group objects">
 	<?php	foreach($chats as $chat) {
@@ -847,7 +846,7 @@ include("construction/pieChart.php");
 										<!-- Button -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<button class="btn btn-primary btn-chat-send">Envoyer</button>
+												<button class="btn btn-primary btn-chat-send"><?php echo lang("construction_argument_send"); ?></button>
 											</div>
 										</div>
 										

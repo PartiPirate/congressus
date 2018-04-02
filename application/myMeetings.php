@@ -41,7 +41,7 @@ foreach($meetings as $meeting) {
 
 ?>
 
-<div class="container theme-showcase meeting" role="main"
+<div class="container theme-showcase meeting-container" role="main"
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
 	>
@@ -73,8 +73,9 @@ foreach($meetings as $meeting) {
 			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 75%">Nom de la réunion</th>
+						<th style="">Nom de la réunion</th>
 						<th style="width: 170px;">Date</th>
+						<th style="width: 170px;">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -90,6 +91,13 @@ foreach($meetings as $meeting) {
 
 								echo $datetime;
 							?></td>
+						<td>
+							<?php // echo $status; ?>
+<?php				if ($status == "construction") { ?>
+						<button class="btn btn-primary btn-waiting-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_waiting"); ?></button>
+						<button class="btn btn-danger  btn-delete-meeting"  data-status="<?php echo $status; ?>"  data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+<?php				} ?>
+						</td>
 					</tr>
 <?php 			}?>
 				</tbody>

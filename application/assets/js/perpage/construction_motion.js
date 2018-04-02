@@ -30,19 +30,11 @@ function renewVotes(successHandler) {
 
 		// Replace chat
 		var mainPanel = $(htmldata).find("div#main-panel");
-/*
-		var counter = mainPanel.find(".all-votes").text().trim();
-		$(".all-votes").text(counter);
-
-		var voters = mainPanel.find("#voting-members-panel").html();
-		$("#voting-members-panel").html(voters);
-*/
-
 		var motionEntry = mainPanel.find(".motion-entry");
 		var existingMotionEntry = $(".motion-entry");
 
 		existingMotionEntry.find("#voting-members-panel").html(motionEntry.find("#voting-members-panel"));
-		existingMotionEntry.find(".all-votes").html(motionEntry.find(".all-votes"));
+		existingMotionEntry.find(".counters").html(motionEntry.find(".counters").html());
 		existingMotionEntry.find("#mini-voting-panel").html(motionEntry.find("#mini-voting-panel"));
 		existingMotionEntry.find("#voting-panel").html(motionEntry.find("#voting-panel"));
 
@@ -76,6 +68,10 @@ function renewChats(types, successHandler) {
 			var counter = mainPanel.find("." + type + "-counter").text().trim();
 			$("." + type + "-counter").text(counter);
 		}
+
+		var motionEntry = mainPanel.find(".motion-entry");
+		var existingMotionEntry = $(".motion-entry");
+		existingMotionEntry.find(".counters").html(motionEntry.find(".counters").html());
 
 		if (successHandler) successHandler();
 

@@ -29,9 +29,11 @@ function renewPropositions(agendaId, successHandler) {
 		// Replace chat
 		var mainPanel = $(htmldata).find("div#main-panel");
 
+		var motionEntry = mainPanel.find(".motion-entry");
+		var existingMotionEntry = $(".motion-entry");
+
 		// Change an amendment counter if there is one
-		var counter = mainPanel.find(".all-amendments").text().trim();
-		$(".all-amendments").text(counter);
+		existingMotionEntry.find(".counters").html(motionEntry.find(".counters").html());
 
 		var motions = mainPanel.find("#agenda-entry-" + agendaId + " ul").html();
 		$("#agenda-entry-" + agendaId + " ul").html(motions);

@@ -65,6 +65,8 @@
 				$voters = array();
 				foreach($votes as $vote) {
 					if ($motion["mot_id"] != $vote["mot_id"]) continue;
+					if (! $vote["vot_power"]) continue;
+
 					if (!isset($voters[$vote["vot_member_id"]])) {
 						$voteCounters[0] += 1;
 						$voters[$vote["vot_member_id"]] = $vote["vot_member_id"];

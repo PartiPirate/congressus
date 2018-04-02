@@ -73,24 +73,6 @@ function isLanguageKey($key, $language = null, $path = "") {
 function lang($key, $htmlencode = true, $language = null, $path = "") {
     global $lang;
 
-//     if (!$language) {
-// 	    $language = getLanguage();
-//     }
-
-//     if (!count($lang)) {
-//         $directoryHandler = dir("language/" . $language);
-//         while(($fileEntry = $directoryHandler->read()) !== false) {
-//             if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
-//                 include_once("language/" . $language . "/" . $fileEntry);
-//             }
-//         }
-//         $directoryHandler->close();
-
-//         // Uncomment if you're not in UTF-8
-// 		// $lang = changeCharset($lang);
-//     }
-
-//    if (array_key_exists($key, $lang)) {
     if (isLanguageKey($key, $language, $path)) {
     	$text = $lang[$key];
 
@@ -103,6 +85,16 @@ function lang($key, $htmlencode = true, $language = null, $path = "") {
     }
 
     return '$lang["'.$key.'"] = "";';
+}
+
+function langFormat($condition, $trueKey, $falseKey, $args = array(), $htmlencode = true, $language = null, $path = "") {
+    $result = $condition ? lang($trueKey, $htmlencode, $language, $path) : lang($falseKey, $htmlencode, $language, $path);
+    
+    foreach($args as $key => $value) {
+		$result = str_replace("{" . $key . "}", "$value", $result);
+	}
+	
+	return $result;
 }
 
 function dateTranslate($date) {

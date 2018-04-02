@@ -291,17 +291,6 @@ $mainColumn = 12;
 
 </style>
 
-<script type="text/javascript">
-$(function() {
-	CanvasJS.addColorSet("adviceColorSet",
-	                [//colorSet Array
-	                "#5cb85c",
-	                "#f0ad4e",
-	                "#d9534f"                
-	                ]);	
-});
-</script>
-
 <div class=" theme-showcase construction-motion" role="main"
 	style="margin-left: 32px; margin-right: 32px; "
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
@@ -417,9 +406,9 @@ include("construction/pieChart.php");
 						<?php 	}	?>
 					</div>
 					<div style="font-size: smaller;">
-							<span class="all-votes"><?php echo $voteCounters[0]; ?></span> votes - 
-							<span class="all-counter"><?php echo $numberOfChats[0]; ?></span> arguments -
-							<span class="all-amendments"><?php echo $numberOfAmendments; ?></span> amendements
+							<?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?> -
+							<?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?> -
+							<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?>
 					</div>
 <?php 		
 //		} ?>			

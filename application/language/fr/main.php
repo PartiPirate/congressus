@@ -287,6 +287,13 @@ $lang["loc_type_framatalk"] = "Sur framatalk";
 $lang["loc_type_discord"] = "Sur discord";
 $lang["loc_type_unknown"] = "à un endroit inconnu";
 
+$lang["amendments_vote"] = "{vote} vote";
+$lang["amendments_votes"] = "{vote} votes";
+$lang["amendments_argument"] = "{argument} argument";
+$lang["amendments_arguments"] = "{argument} arguments";
+$lang["amendments_amendment"] = "{amendment} amendement";
+$lang["amendments_amendments"] = "{amendment} amendements";
+
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";
 $lang["notice_mail_content"] = "Bonjour,
 

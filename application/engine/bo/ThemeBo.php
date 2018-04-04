@@ -88,10 +88,15 @@ class ThemeBo {
 		$this->save($theme);
 	}
 
-	function getTheme($id) {
+	function getTheme($id, $withDeleted = false) {
 		$id = intval($id);
 
 		$filters = array("the_id" => $id);
+		
+		if ($withDeleted) {
+			$filters["with_deleted"] = true;
+		}
+		
 		$themes = $this->getThemes($filters);
 
 		if (count($themes)) {

@@ -57,7 +57,7 @@ if ($userId) {
         	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 
         	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-        	
+
         	$members = $groupSource->getNoticeMembers($notice);
         	
         	foreach($members as $member) {

@@ -109,7 +109,7 @@ class PersonaeGroupSource {
 
         $groupBo = GroupBo::newInstance($connection, $config);
 
-		$group = $groupBo->getGroup($notice["not_target_id"]);
+		$group = $groupBo->getGroup($notice["not_target_id"], true);
         $members = array();
 
 		foreach($group["gro_themes"] as $theme) {

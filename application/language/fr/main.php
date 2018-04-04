@@ -298,11 +298,13 @@ $lang["amendments_arguments"] = "{argument} arguments";
 $lang["amendments_amendment"] = "{amendment} amendement";
 $lang["amendments_amendments"] = "{amendment} amendements";
 $lang["amendments_add_amendment"] = "Ajouter un amendement";
-
 $lang["amendments_pro_argument"] = "{argument} argument pour";
 $lang["amendments_pro_arguments"] = "{argument} arguments pour";
 $lang["amendments_against_argument"] = "{argument} argument contre";
 $lang["amendments_against_arguments"] = "{argument} arguments contre";
+$lang["amendments_argument_pro"] = "Un argument pour...";
+$lang["amendments_argument_against"] = "Un argument contre...";
+$lang["amendments_argument_answer"] = "Une réponse...";
 
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";
 $lang["notice_mail_content"] = "Bonjour,

@@ -24,6 +24,28 @@
 
 ?>
 <canvas id="<?php echo $chartId; ?>-chart-area" style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px"></canvas>
+<style>
+#chartjs-tooltip {
+	border-color: #101010;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+	color: #fff;
+	background-color: #101010;
+	padding: 5px;
+}
+
+#chartjs-tooltip:before {
+	position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-left-color: #1E2021;
+    right: -12px;
+    top: 9px;	
+}
+</style>
 <script type="text/javascript">
 $(function() {
 	var config = {
@@ -91,7 +113,8 @@ $(function() {
 	                if (!tooltipEl) {
 	                    tooltipEl = document.createElement('div');
 	                    tooltipEl.id = 'chartjs-tooltip';
-	                    
+//	                    tooltipEl.class='chart-tooltip';
+/*
 		                tooltipEl.style.borderColor = "#101010";
 		                tooltipEl.style.borderStyle = "solid";
 		                tooltipEl.style.borderWidth = "1px";
@@ -99,7 +122,7 @@ $(function() {
 		                tooltipEl.style.color = "#fff";
 		                tooltipEl.style.backgroundColor = "#101010";
 		                tooltipEl.style.padding = "5px";
-
+*/
 	                    document.body.appendChild(tooltipEl);
 	                }
 	
@@ -148,7 +171,7 @@ $(function() {
                     tooltipEl.style.display = "inline";
 
 	                tooltipEl.style.position = 'absolute';
-	                tooltipEl.style.left = (position.left - $(tooltipEl).width() - 16 + this._eventPosition.x + $(window).scrollLeft()) + 'px';
+	                tooltipEl.style.left = (position.left - $(tooltipEl).width() - 30 + this._eventPosition.x + $(window).scrollLeft()) + 'px';
 	                tooltipEl.style.top = (position.top - 15 + this._eventPosition.y + $(window).scrollTop()) + 'px';
 
 	            }

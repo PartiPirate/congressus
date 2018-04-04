@@ -70,10 +70,8 @@ foreach($meetings as $meeting) {
 
 	$start = new DateTime($meeting["mee_datetime"], $timezone);
 	$startDatetime = $start;
-	$start = $start->getTimestamp(); // TODO fix this
+	$start = $start->getTimestamp();
 	$end = $start + 60 * ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60);
-
-	
 
 	$event = array(
 			'id' => $meeting[$meetingBo->ID_FIELD],

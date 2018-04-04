@@ -19,9 +19,11 @@
 include_once("header.php");
 
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/GuestBo.php");
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
+$noticeBo = NoticeBo::newInstance($connection, $config);
 
 $userId = SessionUtils::getUserId($_SESSION);
 
@@ -37,6 +39,11 @@ $statusMeetings = array("waiting" => array(),
 
 foreach($meetings as $meeting) {
 	$statusMeetings[$meeting["mee_status"]][] = $meeting;
+}
+
+$timezone = null;
+if ($config["server"]["timezone"]) {
+	$timezone = new DateTimeZone($config["server"]["timezone"]);
 }
 
 ?>
@@ -74,14 +81,57 @@ foreach($meetings as $meeting) {
 				<thead>
 					<tr>
 						<th style="">Nom de la réunion</th>
+						<th style="width: 220px;">Type</th>
+						<th style="width: 220px;">Convocation</th>
 						<th style="width: 170px;">Date</th>
+						<th style="width: 170px;">Fin</th>
 						<th style="width: 170px;">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-<?php 			foreach($meetings as $meeting) {?>
+<?php 			foreach($meetings as $meeting) {
+					$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
+
+					$groupLabels = array();
+				
+					foreach($notices as $notice) {
+						foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+							$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+				        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+				
+				        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+				        	
+				//        	$members = $groupSource->getNoticeMembers($notice);
+							$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
+							
+				        	$members = $groupSource->getNoticeMembers($notice);
+				        	
+				        	foreach($members as $member) {
+				        		if ($member["id_adh"] != $userId) continue;
+				        		
+								$groupLabel = "<em>" . $groupLabel . "</em>";
+				        		break;
+				        	}
+
+//				        	$groupLabel = $groupLabel . "(".$notice["not_target_type"].")";
+//				        	$groupLabel = $groupLabel . "[".count($members)."]";
+				        	
+							$groupLabels[] = $groupLabel;
+						}
+					}
+
+					if ($meeting["mee_finish_time"]) {
+						$endDate = new DateTime($meeting["mee_finish_time"], $timezone);
+					}
+					else {
+						$endDate = new DateTime($meeting["mee_datetime"], $timezone);
+						$endDate->add(new DateInterval('PT' . $meeting["mee_expected_duration"] . 'M'));
+					}
+?>
 					<tr>
 						<td><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"] ? $meeting["mee_label"] : "-"; ?></a></td>
+						<td><?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?></td>
+						<td><?php echo implode(", ", $groupLabels); ?></td>
 						<td><?php
 								$start = new DateTime($meeting["mee_datetime"]);
 
@@ -91,11 +141,21 @@ foreach($meetings as $meeting) {
 
 								echo $datetime;
 							?></td>
+						<td><?php
+								$datetime = lang("datetime_format");
+								$datetime = str_replace("{date}", $endDate->format(lang("date_format")), $datetime);
+								$datetime = str_replace("{time}", $endDate->format(lang("time_format")), $datetime);
+
+								echo $datetime;
+							?></td>
 						<td>
 							<?php // echo $status; ?>
-<?php				if ($status == "construction") { ?>
+<?php				if ($status == "construction" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
 						<button class="btn btn-primary btn-waiting-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_waiting"); ?></button>
 						<button class="btn btn-danger  btn-delete-meeting"  data-status="<?php echo $status; ?>"  data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+<?php				} ?>
+<?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
+						<button class="btn btn-success btn-open-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
 <?php				} ?>
 						</td>
 					</tr>

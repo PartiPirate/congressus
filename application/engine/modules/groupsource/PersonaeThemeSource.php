@@ -84,7 +84,7 @@ class PersonaeThemeSource {
 		$fixationBo = FixationBo::newInstance($connection, $config);
         $themeBo = ThemeBo::newInstance($connection, $config);
 
-		$theme = $themeBo->getTheme($notice["not_target_id"]);
+		$theme = $themeBo->getTheme($notice["not_target_id"], true);
 		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
 
@@ -116,7 +116,7 @@ class PersonaeThemeSource {
 		$fixationBo = FixationBo::newInstance($connection, $config);
         $themeBo = ThemeBo::newInstance($connection, $config);
 
-		$theme = $themeBo->getTheme($notice["not_target_id"]);
+		$theme = $themeBo->getTheme($notice["not_target_id"], true);
 		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
 		return $fixationMembers;

@@ -401,30 +401,44 @@ $mainColumn = 12;
 		<li class="active"><?php echo $motion["mot_title"]; ?></li>
 	</ol>
 
-	<div id="notices-panel" class="panel panel-default">
-		<div class="panel-heading">
-			<?php echo lang("notice_groups"); ?>
+	<div class="row">
+		<div class="col-md-9">
+			<div id="notices-panel" class="panel panel-default">
+				<div class="panel-heading">
+					<?php echo lang("notice_groups"); ?>
+				</div>
+				<div class="panel-body">
+		<?php
+			$groupLabels = array();
+		
+			foreach($notices as $notice) {
+				foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+					$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+		
+		        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
+		        	
+		//        	$members = $groupSource->getNoticeMembers($notice);
+					$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
+					
+					$groupLabels[] = $groupLabel;
+				}
+			}
+		
+			echo implode(", ", $groupLabels);
+		?>
+				</div>
+			</div>
 		</div>
-		<div class="panel-body">
-<?php
-	$groupLabels = array();
-
-	foreach($notices as $notice) {
-		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
-			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
-        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
-
-        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-        	
-//        	$members = $groupSource->getNoticeMembers($notice);
-			$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
-			
-			$groupLabels[] = $groupLabel;
-		}
-	}
-
-	echo implode(", ", $groupLabels);
-?>
+		<div class="col-md-3">
+			<div id="notices-panel" class="panel panel-default">
+				<div class="panel-heading">
+					<?php echo lang("meeting_base_type"); ?>
+				</div>
+				<div class="panel-body">
+					<?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?>
+				</div>
+			</div>
 		</div>
 	</div>
 

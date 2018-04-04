@@ -141,6 +141,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 			</select>
 		</div>
+		<div class="col-md-4 meeting-type">
+			<span class="glyphicon glyphicon-flag" style=""></span> <?php //echo lang("createMeeting_base_type"); ?>
+			<?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?>
+		</div>
 	</div>
 	<div class="row" style="margin-bottom: 5px; height: 30px; ">
 		<div class="col-md-4">

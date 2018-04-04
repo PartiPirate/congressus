@@ -53,7 +53,7 @@ function showAddMotion(event) {
 
 	$("#save-amendment-modal #titleInput").val("");
 	$("#save-amendment-modal #descriptionArea").val("");
-
+	
 	$("#sourceSelect").val("");
 	$("#sourceUrlInput").val("");
 
@@ -68,6 +68,10 @@ function showAddMotion(event) {
 	else {
 		$("#sourceSelectDiv").hide();
 	}
+
+	$('#save-amendment-modal').one('shown.bs.modal', function () {
+		$("#save-amendment-modal #descriptionArea").keyup();
+	});
 
 	$("#save-amendment-modal").modal('show');
 }
@@ -126,6 +130,7 @@ function legifranceTextRequester(url) {
 			$("#sourceTitleInput").val(data.title);
 			$("#sourceContentDiv").show();
 			$("#sourceContentArea").val("");
+			$("#sourceContentArea").keyup();
 //			$("#sourceContentArea").val(data.content);
 
 			articles = data.articles;
@@ -155,6 +160,8 @@ function wikiTextRequester(url) {
 			$("#sourceTitleInput").val(data.title);
 			$("#sourceContentDiv").show();
 			$("#sourceContentArea").val("");
+			$("#sourceContentArea").keyup();
+
 //			$("#sourceContentArea").val(data.content);
 
 			articles = data.articles;
@@ -184,6 +191,7 @@ function legifranceArticleRequester(url) {
 			$("#sourceTitleInput").val(data.title);
 			$("#sourceContentDiv").show();
 			$("#sourceContentArea").val(data.content);
+			$("#sourceContentArea").keyup();
 		}
 		else {
 			$("#sourceTitleDiv").hide();
@@ -224,6 +232,7 @@ function sourceArticlesHandler() {
 	});
 	
 	$("#sourceContentArea").val(content);
+	$("#sourceContentArea").keyup();
 }
 
 function addAmendmentListeners() {

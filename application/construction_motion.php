@@ -643,7 +643,7 @@ include("construction/pieChart.php");
 								<!-- Textarea -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<textarea class="form-control chat-text" name="startingText" placeholder="<?php echo lang("amendments_argument_pro"); ?>"></textarea>
+										<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_pro"); ?>"></textarea>
 									</div>
 								</div>
 								
@@ -770,7 +770,7 @@ include("construction/pieChart.php");
 										<!-- Textarea -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<textarea class="form-control chat-text" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
+												<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
 											</div>
 										</div>
 
@@ -809,7 +809,7 @@ include("construction/pieChart.php");
 								<!-- Textarea -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<textarea class="form-control chat-text" name="startingText" placeholder="<?php echo lang("amendments_argument_against"); ?>"></textarea>
+										<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_against"); ?>"></textarea>
 									</div>
 								</div>
 								
@@ -937,7 +937,7 @@ include("construction/pieChart.php");
 										<!-- Textarea -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<textarea class="form-control chat-text" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
+												<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
 											</div>
 										</div>
 

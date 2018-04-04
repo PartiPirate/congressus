@@ -1,3 +1,15 @@
+<style>
+@media (min-width: 1024px)
+#save-agenda-modal .modal-dialog {
+    width: 900px;
+}
+
+@media (min-width: 1600px)
+#save-agenda-modal .modal-dialog {
+    width: 1300px;
+}
+</style>
+
 <div class="modal fade" tabindex="-1" role="dialog" id="save-agenda-modal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -27,7 +39,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="descriptionArea">Description</label>
                     <div class="col-md-8">                     
-                        <textarea class="form-control" id="descriptionArea" name="description" rows="5" ></textarea>
+                        <textarea class="form-control autogrow" id="descriptionArea" name="description" rows="5" style="max-height: 300px;"></textarea>
                     </div>
                 </div>
 

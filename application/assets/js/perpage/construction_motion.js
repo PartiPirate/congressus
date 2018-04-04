@@ -264,17 +264,6 @@ function addDiffListeners() {
 	$("#save-motion-btn").attr("disabled", "disabled");
 }
 
-function autogrowEvent() {
-	$(this).css({"height": "auto"});
-	var height = this.scrollHeight;
-	$(this).height(height);
-}
-
-function addAutogrowListeners() {
-	$("body").on("keyup", ".autogrow", autogrowEvent);
-	$("body .autogrow").keyup();
-}
-
 function addButtonsListeners() {
 	var globalScrollTop = 0;
 
@@ -443,7 +432,6 @@ function addDivResizeListeners() {
 var previousMotionText = "";
 
 $(function() {
-	addAutogrowListeners();
 	addChatListeners();
 	addMotionListeners();
 	addDiffListeners();

@@ -1726,7 +1726,7 @@ function setFramatalkPosition(position) {
 
 }
 
-function autogrowEvent() {
+function meetingAutogrowEvent() {
 	parent = $(window);
 	if ($(this).parents(".list-group objects").length) {
 		parent = $(this).parents(".list-group objects").get(0);
@@ -1765,6 +1765,8 @@ function autogrowEvent() {
 
 $(function() {
 	setFramatalkPosition("left");
-	$("body").on("keyup", "textarea.autogrow, div.autogrow", autogrowEvent);
-	$("body").on("focus", "textarea.autogrow, div.autogrow", autogrowEvent);
+/*	
+	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);
+	$("body").on("focus", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);
+*/	
 });

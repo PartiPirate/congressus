@@ -56,6 +56,10 @@ function showAddAgenda() {
 	$("#save-agenda-modal #titleInput").val("");
 	$("#save-agenda-modal #descriptionArea").val("");
 
+	$('#save-agenda-modal').one('shown.bs.modal', function () {
+		$("#save-agenda-modal #descriptionArea").keyup();
+	});
+
 	$("#save-agenda-modal").modal('show');
 }
 

@@ -29,8 +29,10 @@ require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/UserBo.php");
 require_once("engine/bo/SourceBo.php");
 require_once("engine/utils/Parsedown.php");
+require_once("engine/emojione/autoload.php");
 
 $Parsedown = new Parsedown();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 function showDate($date) {
 	$msg = lang("datetime_format");
@@ -693,7 +695,7 @@ include("construction/pieChart.php");
 	?>
 							<li class="list-group-item pro-chat">
 								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $Parsedown->text($chat["cha_text"]); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -737,7 +739,7 @@ include("construction/pieChart.php");
 	?>
 							<li class="list-group-item pro-chat children-chat">
 								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $Parsedown->text($childrenChat["cha_text"]); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -859,7 +861,7 @@ include("construction/pieChart.php");
 	?>
 							<li class="list-group-item against-chat">
 								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $Parsedown->text($chat["cha_text"]); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -904,7 +906,7 @@ include("construction/pieChart.php");
 	?>
 							<li class="list-group-item against-chat children-chat">
 								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
-								<div><?php echo $Parsedown->text($childrenChat["cha_text"]); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group">
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>

@@ -21,6 +21,7 @@
 /* global testBadges */
 /* global htmlDiff */
 /* global showdown */
+/* global emojione */
 
 var setTimeoutId = null;
 
@@ -92,6 +93,7 @@ function addChatAdviceListeners() {
 
 		if (!form["advice"]) {
 			$("#answer-chat-" + form["chatId"]).toggle();
+			$("#answer-chat-" + form["chatId"]).find(".autogrow").keyup();
 			
 			return;
 		}
@@ -299,7 +301,10 @@ function addButtonsListeners() {
 			source = source.replace(search, replace);
 		}
 
-		$("#markdown").html(converter.makeHtml(source));
+		source = converter.makeHtml(source);
+		source = emojione.shortnameToImage(source);
+
+		$("#markdown").html(source);
 
 		$("#markdown").show();
 		$("#markdown-group").show();

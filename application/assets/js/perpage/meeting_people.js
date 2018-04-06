@@ -603,7 +603,7 @@ function updatePeople() {
 			meeting = {mee_status: ''};
 		}
 
-		if (meeting.mee_status != "construction" || isPeopleNoticed || !hasRight(getUserId(), "handle_notice")) {
+		if (((meeting.mee_status != "construction") && (meeting.mee_status != "waiting")) || isPeopleNoticed || !hasRight(getUserId(), "handle_notice")) {
 			$("#noticed-people .panel-footer").hide();
 		}
 		else {

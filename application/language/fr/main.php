@@ -228,6 +228,9 @@ $lang["motion_majorityJudgment_4"] = "Assez bien";
 $lang["motion_majorityJudgment_5"] = "Bien";
 $lang["motion_majorityJudgment_6"] = "Très bien";
 
+$lang["motion_already_voted"] = "Vous avez déjà voté";
+$lang["motion_already_argumented"] = "Vous avez déjà argumenté";
+
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
 $lang["calendar_next"] = "Suivant";

@@ -52,20 +52,26 @@
 
 				$chats = $chatBo->getByFilters(array("cha_motion_id" => $motion["mot_id"]));
 				$numberOfChats = array(0, 0, 0);
+				$hasArgumented = false;
 				foreach($chats as $chat) {
 					if ($chat["cha_type"] != "pro" && $chat["cha_type"] != "against") continue;
 					
 					$numberOfChats[0]++;
-					
+
+					if (!$hasArgumented && $chat["cha_member_id"] == $userId) $hasArgumented = true;
+	
 					if ($chat["cha_type"] == "pro") $numberOfChats[1]++;
 					if ($chat["cha_type"] == "against") $numberOfChats[2]++;
 				}
 
 				$voteCounters = array(0, 0, 0, 0);
 				$voters = array();
+				$hasVoted = false;
 				foreach($votes as $vote) {
 					if ($motion["mot_id"] != $vote["mot_id"]) continue;
 					if (! $vote["vot_power"]) continue;
+
+					if (!$hasVoted && $vote["vot_member_id"] == $userId) $hasVoted = true;
 
 					if (!isset($voters[$vote["vot_member_id"]])) {
 						$voteCounters[0] += 1;
@@ -93,7 +99,15 @@ include("construction/pieChart.php");
 
 						</div>
 						<div style="font-size: larger;">
-							<p class="text-info"><a href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?></a></p>
+							<div>
+								<p class="text-info" style="display: inline-block;"><a href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?></a></p>
+								<?php	if ($hasVoted) { ?>
+									<p class="text-success" style="display: inline-block;"><span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="right" title="<?php echo lang("motion_already_voted"); ?>"></span></p>
+								<?php	} ?>
+								<?php	if ($hasArgumented) { ?>
+									<p class="text-success" style="display: inline-block;"><span class="glyphicon glyphicon-comment" data-toggle="tooltip" data-placement="right" title="<?php echo lang("motion_already_argumented"); ?>"></span></p>
+								<?php	} ?>
+							</div>
 						</div>
 						<div style="font-size: smaller;">
 							<?php 	if ($author) { ?>

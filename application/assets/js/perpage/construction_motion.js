@@ -156,7 +156,7 @@ function addMotionListeners() {
 			var changedInput = $(this);
 			var totalScore = 0;
 
-			$("#motion-buttons-bar div input").each(function() {
+			$("#motion-buttons-bar div.btn-vote input").each(function() {
 				if (this == changedInput.get(0)) return;
 				
 				totalScore -= -$(this).val();
@@ -172,7 +172,7 @@ function addMotionListeners() {
 		});
 	}
 	else {
-		$("body").on("click", "#motion-buttons-bar div", function(event) {
+		$("body").on("click", "#motion-buttons-bar div.btn-vote", function(event) {
 			event.preventDefault();
 
 			$("#motion-buttons-bar div input").val(0);
@@ -182,13 +182,21 @@ function addMotionListeners() {
 			setVotes();
 		});
 	}
+	
+	$("body").on("click", "#motion-buttons-bar div.btn-delete-motion", function(event) {
+		event.preventDefault();
+
+		var meetingId = $(this).data("meeting-id");
+		var pointId =   $(this).data("agenda-point-id");
+		var motionId =  $(this).data("motion-id");
+
+		$.post("meeting_api.php?method=do_removeMotion", {meetingId: meetingId, pointId: pointId, motionId: motionId}, function(data) {
+			window.location.href = "construction.php?id=" + meetingId;
+		}, "json");		
+	});
 }
 
 function constructChangeScroll(scrollGroup) {
-//	var scrollZone = scrollGroup.find(".scroll-zone");
-//	scrollZone.css({top: 0, height: 0});
-//	scrollZone.remove();
-
 	var scroll = scrollGroup.find(".change-scroll");
 	var scroller = scrollGroup.find(".scroller");
 	var scrollHeight = scroller.height();
@@ -286,17 +294,9 @@ function addButtonsListeners() {
 		    if (m.index === regex.lastIndex) {
 		        regex.lastIndex++;
 		    }
-		    
-//		    console.log(m);
-		    
+
 		    var search = m[1] + m[2] + m[3];
 		    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
-/*		    
-		    // The result can be accessed through the `m`-variable.
-		    m.forEach((match, groupIndex) => {
-		        console.log(`Found match, group ${groupIndex}: ${match}`);
-		    });
-*/
 
 			source = source.replace(search, replace);
 		}

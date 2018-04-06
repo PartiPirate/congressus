@@ -576,7 +576,7 @@ include("construction/pieChart.php");
 								<input type="hidden" name="meetingId" value="<?php echo $meeting["mee_id"]; ?>">
 								<input type="hidden" name="motionId"  value="<?php echo  $motion["mot_id"]; ?>">
 							<?php	if ($votingPower) { ?>
-							<div class="btn btn-success <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
+							<div class="btn btn-success btn-vote <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-thumbs-up"></span> <?php echo lang("advice_pro"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
 									<input type='number' name="pro" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasPro; ?>">
@@ -584,7 +584,7 @@ include("construction/pieChart.php");
 									<input type='hidden' name="pro" value="<?php echo $hasPro; ?>">
 								<?php	} ?>
 							</div>
-							<div class="btn btn-warning <?php echo $hasDoubt ? "active" : "zero"; ?>" type="button">
+							<div class="btn btn-warning btn-vote <?php echo $hasDoubt ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-hand-left"></span> <?php echo lang("advice_doubtful"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
 									<input type='number' name="doubtful" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasDoubt; ?>">
@@ -592,7 +592,7 @@ include("construction/pieChart.php");
 									<input type='hidden' name="doubtful" value="<?php echo $hasDoubt; ?>">
 								<?php	} ?>
 							</div>
-							<div class="btn btn-danger <?php echo $hasAgainst ? "active" : "zero"; ?>" type="button">
+							<div class="btn btn-danger btn-vote <?php echo $hasAgainst ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-thumbs-down"></span> <?php echo lang("advice_against"); ?> &nbsp;
 								<?php	if ($votingPower > 1) { ?>
 									<input type='number' name="against" class='pull-right text-right' style='width: 50px; color: #000; font-size: smaller;' min='0' max='<?php echo $votingPower; ?>' value="<?php echo $hasAgainst; ?>">
@@ -603,7 +603,13 @@ include("construction/pieChart.php");
 							<div class="help-tip">
 							    <p>Donnez votre avis, dispersez votre pouvoir</p>
 							</div>
-							
+							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
+							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								<span class="glyphicon glyphicon-remove"></span> <?php echo lang("common_delete"); ?> &nbsp;
+							</div>
+							<?php		} ?>
+
 							<?php	} ?>
 							</form>
 						</div>

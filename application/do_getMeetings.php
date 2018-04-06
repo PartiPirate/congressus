@@ -76,6 +76,7 @@ foreach($meetings as $meeting) {
 	$event = array(
 			'id' => $meeting[$meetingBo->ID_FIELD],
 			'title' => str_replace("\"", "&quot;", $meeting["mee_label"]),
+			'titleWithLink' => str_replace("\"", "&quot;", $meeting["mee_label"]),
 			'url' => $config["server"]["base"] . "meeting.php?id=" . $meeting[$meetingBo->ID_FIELD],
 			'class' => $meeting["mee_class"],
 			'start' => $start . '000',
@@ -87,32 +88,36 @@ foreach($meetings as $meeting) {
 
 	if ($meeting["loc_type"]) {
 		$event["title"] .= " - " . lang("loc_type_" . $meeting["loc_type"]);
+		$event["titleWithLink"] .= " - " . lang("loc_type_" . $meeting["loc_type"]);
 
 		$event["location"]["type"] = lang("loc_type_" . $meeting["loc_type"]);
 
 		if ($meeting["loc_extra"] && $meeting["loc_type"] != "discord") {
-			$event["title"] .= " (" . $meeting["loc_extra"] . ")";
+			$event["titleWithLink"] .= " (" . $meeting["loc_extra"] . ")";
 			$event["location"]["extra"] = $meeting["loc_extra"];
 		}
 		else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			include_once("config/discord.structure.php");
 
 			list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
-			
+
 			$discord_text_link = @$discord_text_channels[$discord_text_channel];
 			$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
 
 			if ($discord_text_link || $discord_vocal_link) {
-				$event["title"] .= " (";
-				if ($discord_text_link) $event["title"] .= "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
-				if ($discord_vocal_link) $event["title"] .= "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
-				$event["title"] .= ")";
+				$event["titleWithLink"] .= " (";
+				if ($discord_text_link) $event["titleWithLink"] .= "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
+				if ($discord_vocal_link) $event["titleWithLink"] .= "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
+				$event["titleWithLink"] .= ")";
 				$event["location"]["discord"]["vocal"]["link"] = $discord_vocal_link;
 				$event["location"]["discord"]["vocal"]["title"] = $discord_vocal_channel;
 				$event["location"]["discord"]["text"]["link"] = $discord_text_link;
 				$event["location"]["discord"]["text"]["title"] = $discord_text_channel;
 			}
 		}
+
+		$event["title"] .= " - " . dateTranslate($startDatetime->format('\L\e l j F Y \à H:i'));
+		$event["titleWithLink"] .= " - " . dateTranslate($startDatetime->format('\L\e l j F Y \à H:i'));
 	}
 
 	$events[] = $event;

@@ -274,6 +274,9 @@ $lang["notice_themes"] = "Theme";
 $lang["notice_customUsers"] = "Utilisateurs Custom";
 $lang["notice_groups"] = "Groupes convoqués";
 
+$lang["agenda_lines"] = "Agenda";
+$lang["agenda_lines_help"] = "Mettez un point à l'ordre du jour par ligne, ajoutez des espaces pour indenter et créer des dépendances entre les points.";
+
 $lang["mee_synchro_vote_0"] = "Votes disponibles sur l'interface de vote";
 $lang["mee_synchro_vote_1"] = "Votes synchronisés";
 

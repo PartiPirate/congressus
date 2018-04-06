@@ -25,6 +25,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/LocationBo.php");
+require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 
@@ -42,6 +43,7 @@ $connection = openConnection();
 
 $locationBo = LocationBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection, $config);
+$agendaBo = AgendaBo::newInstance($connection, $config);
 
 $meeting = array();
 $meeting["mee_label"] = $_REQUEST["mee_label"];
@@ -86,6 +88,77 @@ $location["loc_extra"] = $_REQUEST["loc_extra"];
 $location["loc_principal"] = 1;
 
 $locationBo->save($location);
+
+if (isset($_REQUEST["age_lines"])) {
+    $lines = explode("\n", $_REQUEST["age_lines"]);
+
+    $entries = array();
+
+    foreach($lines as $line) {
+
+        $levelCounter = 0;
+        foreach(explode(" ", $line) as $lineWords) {
+            if (strlen($lineWords)) break;
+            
+            $levelCounter++;
+        }
+
+        if (!trim($line)) continue;
+
+        $entry = array("label" => trim($line), "level" => $levelCounter, "root" => true, "children" => array(), "position" => count($entries));
+
+        for($index = count($entries) - 1; $index >= 0; $index--) {
+            $existingEntry = &$entries[$index];
+            if ($existingEntry["level"] < $entry["level"]) {
+                $entry["root"] = false;
+                $existingEntry["children"][] = $entry;
+                break;
+            }
+        }
+        
+        $entries[] = $entry;
+    }
+
+    function createChild($parent, $entry) {
+        global $entries;
+        global $meeting;
+        global $meetingBo;
+        global $agendaBo;
+        
+        foreach($entries as $existingEntry) {
+            if ($existingEntry["position"] == $entry["position"] && $existingEntry["position"] == $entry["position"]) {
+                $entry = $existingEntry;
+                break;
+            }
+        }
+  
+        $agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
+        $agenda["age_order"] = time();
+        $agenda["age_active"] = 0;
+        $agenda["age_expected_duration"] = 0;
+        $agenda["age_label"] = $entry["label"];
+        $agenda["age_objects"] = "[]";
+        $agenda["age_description"] = "Pas de description";
+
+        if ($parent) {
+        	$agenda["age_parent_id"] = $parent["age_id"];
+        }
+
+        $agendaBo->save($agenda);
+        
+        $entry["age_id"] = $agenda["age_id"];
+
+        foreach($entry["children"] as $child) {
+            createChild($entry, $child);
+        }
+    }
+
+    foreach($entries as $entry) {
+        if (!$entry["root"]) continue;
+
+        createChild($child, $entry);
+    }
+}
 
 if (isset($config["gamifier"]["url"])) {
     $gamifierClient = GamifierClient::newInstance($config["gamifier"]["url"]);

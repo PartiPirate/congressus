@@ -42,6 +42,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Information</a></li>
 			<li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">Convocation</a></li>
+			<li role="presentation"><a href="#agenda" aria-controls="agenda" role="tab" data-toggle="tab">Ordre du jour</a></li>
 			<li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab">Localisation</a></li>
 		</ul>
 
@@ -105,11 +106,8 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		</div>
 
 			</div>
-			<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
-
-
-
 <!-- NOTICE -->
+			<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
 
 		<div class="form-group">
 			<label for="not_target_type" class="col-md-4 control-label"><?php echo lang("notice_source"); ?></label>
@@ -158,13 +156,29 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			</div>
 		</div>
 
+
+		<div class="row text-center">
+			<button class="btn btn-primary show-agenda" type="button" ><?php echo lang("common_next"); ?></button>
+		</div>
+
+			</div>
 <!-- END NOTICE -->
+<!-- AGENDA -->
+			<div role="tabpanel" class="tab-pane padding-top-5" id="agenda">
+
+		<div class="form-group">
+			<label for="age_lines" class="col-md-4 control-label"><?php echo lang("agenda_lines"); ?> <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("agenda_lines_help"); ?>"></span></label>
+			<div class="col-md-4">                     
+				<textarea class="form-control autogrow" id="age_lines" name="age_lines" style="font-family: monospace; "></textarea>
+			</div>
+		</div>
 
 			<div class="row text-center">
 				<button class="btn btn-primary show-location" type="button" ><?php echo lang("common_next"); ?></button>
 			</div>
 
 			</div>
+<!-- END AGENDA -->
 			<div role="tabpanel" class="tab-pane padding-top-5" id="location">
 
 

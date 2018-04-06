@@ -69,8 +69,14 @@ function addTabListeners() {
 		$('.nav-tabs li:eq(1) a').tab('show');
 	});
 
-	$(".show-location").click(function() {
+	$(".show-agenda").click(function() {
 		$('.nav-tabs li:eq(2) a').tab('show');
+	});
+	$('.nav-tabs li:eq(2) a').on('shown.bs.tab', function (e) {
+		$(".autogrow").keyup();
+	});
+	$(".show-location").click(function() {
+		$('.nav-tabs li:eq(3) a').tab('show');
 	});
 }
 

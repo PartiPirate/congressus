@@ -73,6 +73,8 @@ function showAddMotion(event) {
 		$("#save-amendment-modal #descriptionArea").keyup();
 	});
 
+	$("#save-amendment-modal #titleInput").keyup();
+
 	$("#save-amendment-modal").modal('show');
 }
 
@@ -241,6 +243,25 @@ function addAmendmentListeners() {
 	$("body").on("change", "#sourceSelect", sourceSelectHandler);
 	$("body").on("change", "#sourceUrlInput", sourceUrlHandler);
 	$("body").on("change", "#sourceArticlesSelect", sourceArticlesHandler)
+
+	$("body").on("keyup", "#save-agenda-modal #titleInput", function() {
+		if ($("#save-agenda-modal #titleInput").val()) {
+			$(".btn-save-agenda").removeAttr("disabled");
+		}
+		else {
+			$(".btn-save-agenda").attr("disabled", "disabled");
+		}
+	});
+
+	$("body").on("keyup", "#save-amendment-modal #titleInput", function() {
+		if ($("#save-amendment-modal #titleInput").val()) {
+			$(".btn-save-motion").removeAttr("disabled");
+		}
+		else {
+			$(".btn-save-motion").attr("disabled", "disabled");
+		}
+	});
+
 }
 
 $(function() {

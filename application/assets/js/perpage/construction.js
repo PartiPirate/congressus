@@ -60,6 +60,9 @@ function showAddAgenda() {
 		$("#save-agenda-modal #descriptionArea").keyup();
 	});
 
+
+	$("#save-agenda-modal #titleInput").keyup();
+
 	$("#save-agenda-modal").modal('show');
 }
 

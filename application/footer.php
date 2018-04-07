@@ -34,6 +34,7 @@
 -->
 
 <script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/bootstrap-markdown.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/calendar.min.js"></script>
 <script src="assets/js/Chart.min.js"></script>

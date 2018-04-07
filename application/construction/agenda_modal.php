@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="descriptionArea">Description</label>
                     <div class="col-md-8">                     
-                        <textarea class="form-control autogrow" id="descriptionArea" name="description" rows="5" style="max-height: 300px;"></textarea>
+                        <textarea class="form-control autogrow" id="descriptionArea" name="description" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5" style="max-height: 300px;"></textarea>
                     </div>
                 </div>
 

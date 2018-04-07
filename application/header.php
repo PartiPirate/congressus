@@ -238,6 +238,7 @@ if (isset($motion)) {
 <link href="assets/css/style.css" rel="stylesheet" />
 <link href="assets/css/font-awesome.min.css" rel="stylesheet">
 <link href="assets/css/bootstrap-toggle.css" rel="stylesheet">
+<link href="assets/css/bootstrap-markdown.min.css" rel="stylesheet">
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>

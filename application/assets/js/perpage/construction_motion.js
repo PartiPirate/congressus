@@ -279,7 +279,7 @@ function addButtonsListeners() {
 
 	$("#show-markdown-btn").click(function() {
 		var converter = new showdown.Converter();
-		$("#markdown").html("");
+		$("#markdown-area").html("");
 		
 		/* mediawiki markdown transformation to normalized markdown titles */
 		var source = $("#destination").val();
@@ -304,9 +304,9 @@ function addButtonsListeners() {
 		source = converter.makeHtml(source);
 		source = emojione.shortnameToImage(source);
 
-		$("#markdown").html(source);
+		$("#markdown-area").html(source);
 
-		$("#markdown").show();
+		$("#markdown-area").show();
 		$("#markdown-group").show();
 
 		$("#motion-description").hide();
@@ -331,7 +331,7 @@ function addButtonsListeners() {
 		$("#diff-group").hide();
 		$("#source").hide();
 		$("#destination").hide();
-		$("#markdown").hide();
+		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
 		$("#motion-description").get(0).scrollTop = globalScrollTop;
@@ -350,7 +350,7 @@ function addButtonsListeners() {
 		constructChangeScroll($("#diff-group"));
 		$("#source").hide();
 		$("#destination").hide();
-		$("#markdown").hide();
+		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
 		$("#diff").get(0).scrollTop = globalScrollTop;
@@ -369,7 +369,7 @@ function addButtonsListeners() {
 		constructChangeScroll($("#diff-group"));
 		$("#source").show();
 		$("#destination").show();
-		$("#markdown").hide();
+		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
 		$("#destination").get(0).scrollTop = globalScrollTop;

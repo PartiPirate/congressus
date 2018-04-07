@@ -252,37 +252,37 @@ $mainColumn = 12;
 	cursor: zoom-in;
 }
 
-#markdown h1 {
+#markdown-area h1 {
 	padding-left: calc(1 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h2 {
+#markdown-area h2 {
 	padding-left: calc(2 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h3 {
+#markdown-area h3 {
 	padding-left: calc(3 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h4 {
+#markdown-area h4 {
 	padding-left: calc(4 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h5 {
+#markdown-area h5 {
 	padding-left: calc(5 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h6 {
+#markdown-area h6 {
 	padding-left: calc(6 * 5px);
 	text-decoration: underline;
 }
 
-#markdown h7 {
+#markdown-area h7 {
 	padding-left: calc(7 * 5px);
 }
 
@@ -552,7 +552,7 @@ include("construction/pieChart.php");
 					</div>
 					<textarea class="col-md-6 autogrow" disabled="disabled" style="height: auto;" id="source"><?php 
 						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
-					<textarea class="col-md-6 autogrow" style="height: auto;" id="destination"><?php echo $motion["mot_description"]; ?></textarea>
+					<textarea class="col-md-6 autogrow" style="height: auto;" id="destination" ><?php echo $motion["mot_description"]; ?></textarea>
 					<div class="clearfix "></div>
 					<div id="diff-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
@@ -562,7 +562,7 @@ include("construction/pieChart.php");
 						<!--
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
 						-->
-						<div id="markdown" class="scroller" style="position: relative; display: none;" ></div>
+						<div id="markdown-area" class="scroller" style="position: relative; display: none;" ></div>
 					</div>
 
 					<hr>
@@ -674,7 +674,7 @@ include("construction/pieChart.php");
 								<!-- Textarea -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_pro"); ?>"></textarea>
+										<textarea class="form-control chat-text autogrow" name="startingText" data-provide="markdown" data-hidden-buttons="cmdPreview" placeholder="<?php echo lang("amendments_argument_pro"); ?>"></textarea>
 									</div>
 								</div>
 								
@@ -801,7 +801,7 @@ include("construction/pieChart.php");
 										<!-- Textarea -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
+												<textarea class="form-control chat-text autogrow" name="startingText" data-provide="markdown" data-hidden-buttons="cmdPreview" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
 											</div>
 										</div>
 
@@ -840,7 +840,7 @@ include("construction/pieChart.php");
 								<!-- Textarea -->
 								<div class="form-group">
 									<div class="col-md-12">
-										<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_against"); ?>"></textarea>
+										<textarea class="form-control chat-text autogrow" name="startingText" data-provide="markdown" data-hidden-buttons="cmdPreview" placeholder="<?php echo lang("amendments_argument_against"); ?>"></textarea>
 									</div>
 								</div>
 								
@@ -968,7 +968,7 @@ include("construction/pieChart.php");
 										<!-- Textarea -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<textarea class="form-control chat-text autogrow" name="startingText" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
+												<textarea class="form-control chat-text autogrow" name="startingText" data-provide="markdown" data-hidden-buttons="cmdPreview" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
 											</div>
 										</div>
 

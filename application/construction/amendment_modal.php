@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="descriptionArea">Description</label>
                         <div class="col-md-8">
-                            <textarea class="form-control autogrow" id="descriptionArea" name="description" rows="5" style="max-height: 200px;"></textarea>
+                            <textarea class="form-control autogrow" id="descriptionArea" name="description" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5" style="max-height: 200px;"></textarea>
                         </div>
                         </div>
                 </fieldset>
@@ -87,7 +87,7 @@
                     <div id="sourceContentDiv" class="form-group" style="display: none;">
                         <label class="col-md-4 control-label" for="sourceContentArea">Contenu</label>  
                         <div class="col-md-8">
-                            <textarea class="form-control autogrow" id="sourceContentArea" name="sourceContent" rows="5" style="max-height: 200px;"></textarea>
+                            <textarea class="form-control autogrow" id="sourceContentArea" name="sourceContent" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5" style="max-height: 200px;"></textarea>
                         </div>
                     </div>
 

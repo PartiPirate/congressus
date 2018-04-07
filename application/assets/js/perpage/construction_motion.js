@@ -68,6 +68,8 @@ function renewChats(types, successHandler) {
 			
 			var counter = mainPanel.find("." + type + "-counter").text().trim();
 			$("." + type + "-counter").text(counter);
+
+			$("." + type + "-chat.answer-chat textarea[data-provide=markdown]").markdown();
 		}
 
 		var motionEntry = mainPanel.find(".motion-entry");

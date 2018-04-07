@@ -283,6 +283,8 @@ function addButtonsListeners() {
 		
 		/* mediawiki markdown transformation to normalized markdown titles */
 		var source = $("#destination").val();
+		source = emojione.shortnameToImage(source);
+
 		const regex = /^(=+)( .* )(=+)$/gm;
 		
 		let m;
@@ -302,7 +304,6 @@ function addButtonsListeners() {
 		}
 
 		source = converter.makeHtml(source);
-		source = emojione.shortnameToImage(source);
 
 		$("#markdown-area").html(source);
 
@@ -464,6 +465,21 @@ $(function() {
 	addUpdateMotion();
 	addDivResizeListeners();
 	addChatAdviceListeners();
+
+	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
+		//console.log(event)	
+		if (event.key == ":") {
+			var position = $(event.target).offset();
+			position.top += 20;
+			position.left += 10;
+			position.caller = this;
+			position.removeChar = true;
+			$("body").emojioneHelper("show", position);
+		}
+	});
+
+
+	$("body").emojioneHelper();
 
 	previousMotionText = $("#destination").val();
 });

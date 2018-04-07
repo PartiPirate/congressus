@@ -23,6 +23,8 @@
 <?php
 			$previousMotionId = null;
 
+			usort($motions , array("MotionBo", "orderPinFirst"));
+
 			foreach($motions as $motion) {
 //				echo $motion["mot_title"] . "<br>";
 				
@@ -84,7 +86,7 @@
 				}
 
 ?>
-					<li class="list-group-item">
+					<li class="list-group-item <?php echo $motion["mot_pinned"] ? "pinned" : ""; ?>">
 						<div class="pull-right" style="width: 36px; height: 36px; font-size: smaller;" id="mini-voting-panel-<?php echo $motion["mot_id"]; ?>">
 
 <?php	
@@ -100,6 +102,11 @@ include("construction/pieChart.php");
 						</div>
 						<div style="font-size: larger;">
 							<div>
+								<?php	if($motion["mot_pinned"]) { ?>
+								<p class="text-primary" style="display: inline-block;">
+									<span class="glyphicon glyphicon-pushpin"></span>
+								</p>
+								<?php	} ?>
 								<p class="text-info" style="display: inline-block;"><a href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?></a></p>
 								<?php	if ($hasVoted) { ?>
 									<p class="text-success" style="display: inline-block;"><span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="right" title="<?php echo lang("motion_already_voted"); ?>"></span></p>

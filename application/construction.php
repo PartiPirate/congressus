@@ -129,6 +129,14 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 
 ?>
 
+<style>
+
+.pinned {
+    background-color: #eee;
+}
+
+</style>
+
 <div class=" theme-showcase meeting" role="main"
 	style="margin-left: 32px; margin-right: 32px; "
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"

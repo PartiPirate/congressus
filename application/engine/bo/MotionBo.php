@@ -215,4 +215,11 @@ class MotionBo {
 		$statement->execute($args);
 	}
 
+	static function orderPinFirst($motionA, $motionB) {
+		$diff = $motionA["mot_pinned"] - $motionB["mot_pinned"];
+		
+		if ($diff) return -$diff;
+		
+		return $motionA["mot_id"] - $motionB["mot_id"];
+	}
 }

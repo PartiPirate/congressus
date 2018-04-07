@@ -319,7 +319,7 @@ function addButtonsListeners() {
 		$(".btn-type-group button").removeClass("active");
 		$(this).addClass("active");
 
-		$(".btn_authoring-group").hide();
+		$(".btn-authoring-group").hide();
 	});
 
 	$("#show-motion-btn").click(function() {
@@ -339,7 +339,7 @@ function addButtonsListeners() {
 		$(".btn-type-group button").removeClass("active");
 		$(this).addClass("active");
 
-		$(".btn_authoring-group").hide();
+		$(".btn-authoring-group").hide();
 	});
 
 	$("#show-diff-btn").click(function() {
@@ -358,7 +358,7 @@ function addButtonsListeners() {
 		$(".btn-type-group button").removeClass("active");
 		$(this).addClass("active");
 
-		$(".btn_authoring-group").hide();
+		$(".btn-authoring-group").hide();
 	});
 
 	$("#show-motion-authoring-btn").click(function() {
@@ -379,14 +379,14 @@ function addButtonsListeners() {
 		$(".btn-type-group button").removeClass("active");
 		$(this).addClass("active");
 
-		$(".btn_authoring-group").show();
+		$(".btn-authoring-group").show();
 	});
 
 	$("#show-both-panels-btn").click(function() {
 		$("#source").show();
 		$("#destination").addClass("col-md-6").removeClass("col-md-12").show();
 
-		$(".btn_authoring-group button").removeClass("active");
+		$(".btn-authoring-group button").removeClass("active");
 		$(this).addClass("active");
 	});
 
@@ -394,7 +394,7 @@ function addButtonsListeners() {
 		$("#source").hide();
 		$("#destination").removeClass("col-md-6").addClass("col-md-12").show();
 
-		$(".btn_authoring-group button").removeClass("active");
+		$(".btn-authoring-group button").removeClass("active");
 		$(this).addClass("active");
 	});
 
@@ -412,6 +412,26 @@ function addButtonsListeners() {
 	});
 
 	$("#show-motion-btn").click();
+
+	$(".btn-admin-group").on("click", "#btn-pin", function() {
+		var button = $(this);
+
+		var motionId = $(".motion-entry").data("id");
+		var property = "mot_pinned";
+		var propositionId = 0;
+		var value = button.hasClass("active") ? 0 : 1;
+
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: value}, function(data) {
+			if (value) {
+				button.addClass("active");
+			}
+			else {
+				button.removeClass("active");
+			}
+			button.blur();
+		}, "json");
+	});
+	
 }
 
 function addUpdateMotion() {

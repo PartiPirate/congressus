@@ -291,6 +291,10 @@ $mainColumn = 12;
     background-color: #f8f8f8;
 }
 
+.pinned {
+    background-color: #eee;
+}
+
 .help-tip{
     text-align: center;
 /*
@@ -528,11 +532,16 @@ include("construction/pieChart.php");
 						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<?php	} ?>
 					</div>
-						<?php if ($motion["mot_author_id"] == $userId) { ?>
-					<div class="btn-group btn_authoring-group" style="display: none;" role="group">
+						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
+					<div class="btn-group btn-authoring-group" style="display: none;" role="group">
 						<button id="show-both-panels-btn" type="button" class="btn btn-default active"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
 						<button id="show-right-panel-btn" type="button" class="btn btn-default"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+					</div>
+						<?php	} ?>
+						<?php 	if ($hasWritingRights) { ?>
+					<div class="btn-group btn-admin-group" role="group">
+						<button id="btn-pin" type="button" class="btn btn-primary <?php echo $motion["mot_pinned"] ? "active" : ""; ?>" ><span class="glyphicon glyphicon-pushpin"></span></button>
 					</div>
 						<?php	} ?>
 				</div>

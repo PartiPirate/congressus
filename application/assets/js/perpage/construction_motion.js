@@ -480,7 +480,6 @@ $(function() {
 		}
 	});
 
-
 	$("body").emojioneHelper();
 
 	previousMotionText = $("#destination").val();

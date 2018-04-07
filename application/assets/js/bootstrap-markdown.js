@@ -1428,6 +1428,34 @@
             // Set the cursor
             e.setSelection(cursor, cursor + chunk.length);
           }
+        },{
+          name: 'cmdEmoji',
+          toggle: true,
+          hotkey: 'Ctrl+:',
+          title: 'Emoji',
+          btnText: '',
+          btnClass: 'btn btn-default btn-sm btn-emoji',
+          icon: {
+            glyph: 'fa fa-smile-o fnt-emoji',
+            fa: 'fa fa-smile-o fnt-emoji',
+            'fa-3': 'icon-search fnt-emoji',
+            octicons: 'octicon octicon-smiley fnt-emoji'
+          },
+          callback: function(e) {
+            // Get the textarea
+//            debugger;
+//            console.log(e);
+
+            $(e.$element).focus();
+            
+      			var position = $(e.$element).offset();
+      			position.top += 20;
+      			position.left += 10;
+      			position.caller = e.$element;
+      			position.removeChar = false;
+      			$("body").emojioneHelper("show", position);
+
+          }
         }]
       }, {
         name: 'groupUtil',

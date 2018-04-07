@@ -93,7 +93,7 @@
 			$( document ).on( "click", "."  + emojiContainer +  " section .emojione",
 				function()
 				{		
-					var caretPos = activeEl.selectionStart;
+					var caretPos = activeEl.selectionStart ? activeEl.selectionStart : 0;
 					var textAreaTxt = $( activeEl ).val();
 					var txtToAdd;
 //					if( settings.type=="shortcode" )
@@ -223,7 +223,7 @@
 			$( document ).on( "click",
 				function( e )
 				{
-					if( $( "."  + emojiContainer ).is( ":visible")==false || $( e.target ).is( ".emojionepicker-picker, .emojione" ) )
+					if( $( "."  + emojiContainer ).is( ":visible")==false || $( e.target ).is( ".emojionepicker-picker, .emojione, .btn-emoji, .fnt-emoji" ) )
 					{
 						return;
 					}

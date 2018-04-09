@@ -412,7 +412,6 @@ $(function() {
 			<button class="btn btn-default btn-add-point" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" style="width: 100%;">Point <span class="fa fa-list-alt"></span></button>
 <?php	} ?>
 
-			
 		</div>
 		<?php	if ($hasChat) { ?>
 		<div class="col-md-<?php echo $rightColumn; ?>">

@@ -28,12 +28,14 @@ class GaletteUserSource {
         }
 
 		$queryBuilder->addSelect(($as ? $as : "galette_adherents") . ".*");
+//		$queryBuilder->addSelect("gp" . ".picture");
 
 		$queryBuilder->join($galetteDatabase . "galette_adherents", ($as ? $as . "." : "")."id_adh = $joinField", $as, "left");
 		
 
 		$queryBuilder->addSelect(($as ? "diaf_$as" : "diaf") . ".field_val as discord_id_adh");
 		$queryBuilder->join($galetteDatabase . "galette_dynamic_fields", ($as ? "diaf_$as" : "diaf").".item_id = $joinField AND ".($as ? "diaf_$as" : "diaf").".field_id = 2 AND ".($as ? "diaf_$as" : "diaf").".field_form = 'adh'", ($as ? "diaf_$as" : "diaf"), "left");
+//		$queryBuilder->join($galetteDatabase . "galette_pictures", ($as ? "gp_$as" : "gp").".id_adh = " . ($as ? $as . "." : "galette_adherents.") . "id_adh", ($as ? "gp_$as" : "gp"), "left");
     }
 
     function selectQuery(&$queryBuilder, $config) {
@@ -45,10 +47,12 @@ class GaletteUserSource {
         }
 
 		$queryBuilder->addSelect("galette_adherents" . ".*");
+//		$queryBuilder->addSelect("gp" . ".picture");
 		$queryBuilder->select($galetteDatabase . "galette_adherents");
 
 		$queryBuilder->addSelect("diaf.field_val as discord_id_adh");
-		$queryBuilder->join($galetteDatabase . "galette_dynamic_fields", "diaf.item_id = id_adh AND diaf.field_id = 2 AND diaf.field_form = 'adh'", "diaf", "left");
+		$queryBuilder->join($galetteDatabase . "galette_dynamic_fields", "diaf.item_id = galette_adherents.id_adh AND diaf.field_id = 2 AND diaf.field_form = 'adh'", "diaf", "left");
+//		$queryBuilder->join($galetteDatabase . "galette_pictures", "gp.id_adh = galette_adherents.id_adh", "gp", "left");
     }
 
     function whereId(&$queryBuilder, $config, $value) {

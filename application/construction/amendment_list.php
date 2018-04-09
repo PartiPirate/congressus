@@ -90,13 +90,17 @@
 
 ?>
 					<li class="list-group-item <?php echo $motion["mot_pinned"] ? "pinned" : ""; ?>">
-						<div class="pull-right" style="width: 36px; height: 36px; font-size: smaller;" id="mini-voting-panel-<?php echo $motion["mot_id"]; ?>">
+						<div class="pull-left" style="padding: 0px 16px 0px 0; width: 80px; text-align: center;">
+							<img src="getAvatar.php?userId=<?php echo $author["id_adh"]; ?>" class="img-circle" style="max-width: 64px; max-height: 64px;" 
+								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($author); ?>">
+						</div>
+						<div class="pull-right" style="width: 64px; height: 64px; font-size: smaller;" id="mini-voting-panel-<?php echo $motion["mot_id"]; ?>">
 
 <?php	
 
 $chartId = "mini-voting-panel-" . $motion["mot_id"];
-$width = 36;
-$height = 36;
+$width = 64;
+$height = 64;
 
 include("construction/pieChart.php"); 
 

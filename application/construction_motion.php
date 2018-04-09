@@ -488,7 +488,7 @@ $mainColumn = 12;
 
 						$memberName = GaletteBo::showIdentity($vote);
 
-						$votingMembers[$memberName] = $memberName;
+						$votingMembers[$memberName] = $vote;
 
 						if ($vote["mpr_label"] == "pro" || strtolower($vote["mpr_label"]) == "oui" || strtolower($vote["mpr_label"]) == "pour") $voteCounters[1] += $vote["vot_power"];
 						else if ($vote["mpr_label"] == "doubtful") $voteCounters[2] += $vote["vot_power"];
@@ -570,13 +570,13 @@ include("construction/pieChart.php");
 
 					<hr>
 					<div>
-						<div class="pull-right" style="width: 72px; height: 72px; font-size: smaller;" id="voting-panel">
+						<div class="pull-right" style="width: 144px; height: 144px; font-size: smaller;" id="voting-panel">
 
 <?php	
 
 $chartId = "voting-panel";
-$width = 72;
-$height = 72;
+$width = 144;
+$height = 144;
 
 include("construction/pieChart.php"); 
 
@@ -614,7 +614,12 @@ include("construction/pieChart.php");
 								<?php	} ?>
 							</div>
 							<div class="help-tip">
-							    <p>Donnez votre avis, dispersez votre pouvoir</p>
+							    <p>Donnez votre avis, dispersez votre pouvoir 
+							    	<?php 
+							    		if ($votingPower > 1) {
+							    			echo "($votingPower points)";
+							    		}
+							    	?></p>
 							</div>
 							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
@@ -629,7 +634,17 @@ include("construction/pieChart.php");
 						<br>
 <?php	} ?>						
 						<div id="voting-members-panel">
-							<?php echo implode(", ", $votingMembers); ?>
+							
+							<?php 	$separator = "";
+									foreach($votingMembers as $member) { 
+										echo $separator; 
+										$separator = " "; 
+							?>
+								<img src="getAvatar.php?userId=<?php echo $member["id_adh"]; ?>" class="img-circle" style="max-width: 48px; max-height: 48px;" 
+								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($member); ?>">
+							<?php	} ?>
+							
+							<?php //echo implode(", ", $votingMembers); ?>
 						</div>
 					</div>
 				</div>

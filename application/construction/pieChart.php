@@ -56,6 +56,11 @@ $(function() {
 					<?php echo $voteCounters[1]; ?>,
 					<?php echo $voteCounters[2]; ?>,
 					<?php echo $voteCounters[3]; ?>,
+/*					
+					{ value: <?php echo $voteCounters[1]; ?>, color: "#5cb85c", label: '<?php echo $voteCounters[1]; ?>', labelColor: 'blac', labelFontSize: '16' },
+					{ value: <?php echo $voteCounters[2]; ?>, color: "#f0ad4e", label: '<?php echo $voteCounters[2]; ?>', labelColor: 'white', labelFontSize: '16' },
+					{ value: <?php echo $voteCounters[3]; ?>, color: "#d9534f", label: '<?php echo $voteCounters[3]; ?>', labelColor: 'white', labelFontSize: '16' },
+*/					
 				],
 				backgroundColor: [
 	                "#5cb85c",
@@ -67,7 +72,7 @@ $(function() {
 					0,
 					0,
 				],
-				label: 'Dataset 1'
+				label: 'Soutiens'
 			}],
 			labels: [
 				<?php echo json_encode(lang("advice_pro", false)); ?>,
@@ -89,15 +94,18 @@ $(function() {
 	                    var label = data.labels[tooltipItem.index] || '';
 	
 	                    if (label) {
+	                    	label += " (";
+	                    	label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+	                    	label += ") "
 	                        label += ': ';
 	                    }
 	                    
+	                    // Compute total
 						var total = 0;
 						for(var index = 0; index < data.datasets[tooltipItem.datasetIndex].data.length; ++index) {
 							total += data.datasets[tooltipItem.datasetIndex].data[index];
 						}
-	                    
-	                    
+
 	                    label += Math.round(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] * 10000 / total) / 100 + "%";
 	                    return label;
 	                }

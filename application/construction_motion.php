@@ -300,6 +300,10 @@ $mainColumn = 12;
 					}
 
 ?>
+					<div class="pull-left" style="padding: 0px 16px 0px 0; width: 80px; text-align: center;">
+						<img src="getAvatar.php?userId=<?php echo $author["id_adh"]; ?>" class="img-circle" style="max-width: 64px; max-height: 64px;" 
+							 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($author); ?>">
+					</div>
 					<div class="pull-right" style="width: 64px; height: 64px; font-size: smaller;" id="mini-voting-panel">
 
 <?php	

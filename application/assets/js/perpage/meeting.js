@@ -452,6 +452,7 @@ function setAgendaChat(id, chats) {
 
 	chatContainer.removeClass("to-delete");
 
+	var avatar = chatContainer.find(".avatar");
 	var nickname = chatContainer.find(".chat-nickname");
 	var text = chatContainer.find(".chat-text");
 
@@ -463,6 +464,15 @@ function setAgendaChat(id, chats) {
 
 		if (nickname.text() != chat.mem_nickname) {
 			nickname.text(chat.mem_nickname);
+		}
+
+		if (avatar.attr("title") != chat.mem_nickname) {
+			avatar.attr("title", chat.mem_nickname);
+		}
+
+		var url = "getAvatar.php?userId=" + chat.cha_member_id;
+		if (avatar.attr("src") != url) {
+			avatar.attr("src", url);
 		}
 
 		if (text.data("text") != chat.cha_text) {

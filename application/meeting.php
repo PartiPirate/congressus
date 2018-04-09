@@ -335,9 +335,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						</div>
 					</div>
 					<div>
+						<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
 						<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
 						<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
-						<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
 						<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
 					</div>
 				</div>
@@ -515,7 +515,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
 			<span class="fa fa-comment"></span>
-			<span class="chat-member"><span class="chat-nickname"></span><select class="chat-select-member" style="display: none; width: 100%;">
+			<span class="chat-member"><img src="getAvatar.php?userId=${mem_id}" class="img-circle avatar" style="max-width: 16px; max-height: 16px; position: relative; top: -2px; margin-right: 2px;" 
+							 data-toggle="tooltip" data-placement="top" title="${mem_nickname}"><span class="chat-nickname" style="width: none;"></span><select class="chat-select-member" style="display: none;">
 				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
 				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
 				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
@@ -667,6 +668,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			class="template list-group-item member"
 			style="padding-top: 2px; padding-bottom: 2px;"
 			id="member-${mem_id}" data-id="${mem_id}">
+
+			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px;" 
+							 data-toggle="tooltip" data-placement="top" title="${mem_nickname}">
+							 
 			<span class="member-nickname" style="margin-right: 5px;"></span>
 			<span class="glyphicon glyphicon-pencil"
 				title="<?php echo lang("meeting_clicEdit"); ?>"
@@ -702,6 +707,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			class="template list-group-item member"
 			style="padding-top: 2px; padding-bottom: 2px;"
 			id="member-${mem_id}" data-id="${mem_id}">
+
+			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px;" 
+				 data-toggle="tooltip" data-placement="top" title="${mem_nickname}">
+
 			<span class="member-nickname" style="margin-right: 5px;"></span>
 			<span class="glyphicon glyphicon-pencil"
 				title="<?php echo lang("meeting_clicEdit"); ?>"

@@ -86,7 +86,12 @@ $source = array();
 $source["sou_title"] = $_REQUEST["sourceTitle"];
 $source["sou_is_default_source"] = 0;
 $source["sou_url"] = $_REQUEST["sourceUrl"];
-$source["sou_articles"] = json_encode($_REQUEST["sourceArticles"]);
+if (isset($_REQUEST["sourceArticles"])) {
+    $source["sou_articles"] = json_encode($_REQUEST["sourceArticles"]);
+}
+else {
+    $source["sou_articles"] = "[]";
+}
 $source["sou_content"] = $_REQUEST["sourceContent"];
 $source["sou_type"] = $_REQUEST["sourceType"];
 $source["sou_motion_id"] = $motion["mot_id"];

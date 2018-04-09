@@ -230,7 +230,7 @@ $lang["motion_majorityJudgment_6"] = "Très bien";
 
 $lang["motion_already_voted"] = "Vous avez déjà voté";
 $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
-$lang["motion_add_source"] = "Ajouter une sources"; 
+$lang["motion_add_source"] = "Ajouter une source"; 
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
@@ -304,6 +304,8 @@ $lang["construction_sources"] = "Sources";
 $lang["source_icon_wiki_text"] = '<i class="fa fa-wikipedia-w" aria-hidden="true"></i>';
 $lang["source_icon_leg_text"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
 $lang["source_icon_leg_article"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
+$lang["source_icon_congressus_motion"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
+$lang["source_icon_forum"] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 
 $lang["amendments_vote"] = "{vote} vote";
 $lang["amendments_votes"] = "{vote} votes";

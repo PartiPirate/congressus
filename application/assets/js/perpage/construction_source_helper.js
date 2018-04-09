@@ -30,6 +30,12 @@ function sourceSelectHandler(container, $this) {
 			container.find("#sourceUrlDiv").show();
 
 			break;
+		case "forum":
+			container.find("#sourceUrlDiv").show();
+			container.find("#sourceTitleDiv input").val();
+			container.find("#sourceTitleDiv").show();
+
+			break;
 		default: 
 		container.find("#sourceUrlDiv").hide();
 	}

@@ -40,6 +40,7 @@
                                 <option value="leg_article">Legifrance - Article</option>
                                 <option value="wiki_text">Wiki - Texte</option>
                                 <option value="congressus_motion">Congressus - Motion</option>
+                                <option value="forum">Débat</option>
                             </select>
                         </div>
                     </div>

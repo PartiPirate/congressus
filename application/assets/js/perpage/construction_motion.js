@@ -415,7 +415,8 @@ function addButtonsListeners() {
 		$("#diff-group .scroll-zone").css({top: ($("#diff").get(0).scrollTop / $("#diff").get(0).scrollHeight * $("#diff").height()) + "px"});
 	});
 
-	$("#show-motion-btn").click();
+//	$("#show-motion-btn").click();
+	$("#show-markdown-btn").click();
 
 	$(".btn-admin-group").on("click", "#btn-pin", function() {
 		var button = $(this);
@@ -452,9 +453,37 @@ function addUpdateMotion() {
 	});
 }
 
+/*
 function addDivResizeListeners() {
 	$("#motion-description,#diff").resize(function(event) {
 		console.log(event);
+	});
+}
+*/
+
+function addGoToTabListeners() {
+	$("body").on("click", ".go-to-tab", function(event) {
+		event.preventDefault();
+		
+		var href = $(this).attr("href");
+
+		$('.nav-tabs li a[href='+href+']').one('shown.bs.tab', function (e) {
+		    $('html, body').animate({
+		        scrollTop: $(href).offset().top
+		    }, 400);
+		});
+		$('.nav-tabs li a[href='+href+']').tab('show');
+		
+	});
+
+	$("body").on("click", ".go-to", function(event) {
+		event.preventDefault();
+		
+		var href = $(this).attr("href");
+
+	    $('html, body').animate({
+	        scrollTop: $(href).offset().top
+	    }, 400);
 	});
 }
 
@@ -466,8 +495,9 @@ $(function() {
 	addDiffListeners();
 	addButtonsListeners();
 	addUpdateMotion();
-	addDivResizeListeners();
+//	addDivResizeListeners();
 	addChatAdviceListeners();
+	addGoToTabListeners();
 
 	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
 		//console.log(event)	

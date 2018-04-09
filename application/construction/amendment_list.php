@@ -10,16 +10,29 @@
 ?>			
 			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 <?php			if ($showTitle) { ?>
-				<div class="panel-heading">
+				<div class="panel-heading no-caret">
 					<a href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 				</div>
 <?php				if ($agenda["age_description"]) { ?>
 				<div class="panel-body">
-					<?php echo $agenda["age_description"]; ?>
+					<?php echo $emojiClient->shortnameToImage($Parsedown->text($agenda["age_description"])); ?>
 				</div>
 <?php				} 
 				} ?>
 				<ul class="list-group objects">
+					
+<?php
+			if(!count($motions)) {
+?>
+					<li class="list-group-item text-center">
+						<i class="fa fa-archive" style="font-size: larger;"></i>
+						<br>
+						<?php echo lang("amendments_no_amendment"); ?>
+					</li>
+<?php 		} ?>			
+					
+					
+					
 <?php
 			$previousMotionId = null;
 

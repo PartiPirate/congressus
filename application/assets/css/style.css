@@ -388,3 +388,105 @@ a[disabled] {
 .padding-top-5 {
 	padding-top: 5px;
 }
+
+#diff del, #motion-description del {
+	color: #a94442;
+	background-color: #f2dfde;
+}
+
+#diff ins, #motion-description ins {
+	color: #3c763d;
+	background-color: #ddeedd;
+	text-decoration: none;
+}
+
+#diff, #motion-description, #source, #destination {
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+#diff, #motion-description {
+	width: calc(100% - 20px);
+/*	background: #d0d0ff;	*/
+}
+
+.change-scroll {
+	border: #ccc 1px solid;
+	width: 18px;
+/*	margin-top:-1px;*/
+/*	margin-bottom:-1px;*/
+	margin-right: 2px;
+/*	background: #ffd0d0;	*/
+	float: left;
+	position: relative;
+}
+
+.scroll-zone {
+	position: relative;
+	width: 16px;
+	background: #eee;
+	float: left;
+}
+
+.inserted {
+	border-radius: 4px;
+	border: #3c763d 1px solid;
+	background-color: #ddeedd;
+	height: 8px;
+	width: 8px;
+	margin: 0 -8px -8px 0;
+	cursor: zoom-in;
+}
+
+.deleted {
+	border-radius: 4px;
+	border: #a94442 1px solid;;
+	background-color: #f2dfde;
+	height: 8px;
+	width: 8px;
+	margin: 0 -8px -8px 0;
+	cursor: zoom-in;
+}
+
+#markdown-area h1 {
+	padding-left: calc(1 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h2 {
+	padding-left: calc(2 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h3 {
+	padding-left: calc(3 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h4 {
+	padding-left: calc(4 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h5 {
+	padding-left: calc(5 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h6 {
+	padding-left: calc(6 * 5px);
+	text-decoration: underline;
+}
+
+#markdown-area h7 {
+	padding-left: calc(7 * 5px);
+}
+
+.children-chat {
+    margin-left: 50px;
+    background-color: #f8f8f8;
+}
+
+.pinned {
+    background-color: #eee;
+}

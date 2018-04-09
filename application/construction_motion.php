@@ -193,202 +193,6 @@ $mainColumn = 12;
 
 ?>
 
-<style>
-
-#diff del, #motion-description del {
-	color: #a94442;
-	background-color: #f2dfde;
-}
-
-#diff ins, #motion-description ins {
-	color: #3c763d;
-	background-color: #ddeedd;
-	text-decoration: none;
-}
-
-#diff, #motion-description, #source, #destination {
-	max-height: 300px;
-	overflow-y: scroll;
-}
-
-#diff, #motion-description {
-	width: calc(100% - 20px);
-/*	background: #d0d0ff;	*/
-}
-
-.change-scroll {
-	border: #ccc 1px solid;
-	width: 18px;
-/*	margin-top:-1px;*/
-/*	margin-bottom:-1px;*/
-	margin-right: 2px;
-/*	background: #ffd0d0;	*/
-	float: left;
-	position: relative;
-}
-
-.scroll-zone {
-	position: relative;
-	width: 16px;
-	background: #eee;
-	float: left;
-}
-
-.inserted {
-	border-radius: 4px;
-	border: #3c763d 1px solid;
-	background-color: #ddeedd;
-	height: 8px;
-	width: 8px;
-	margin: 0 -8px -8px 0;
-	cursor: zoom-in;
-}
-
-.deleted {
-	border-radius: 4px;
-	border: #a94442 1px solid;;
-	background-color: #f2dfde;
-	height: 8px;
-	width: 8px;
-	margin: 0 -8px -8px 0;
-	cursor: zoom-in;
-}
-
-#markdown-area h1 {
-	padding-left: calc(1 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h2 {
-	padding-left: calc(2 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h3 {
-	padding-left: calc(3 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h4 {
-	padding-left: calc(4 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h5 {
-	padding-left: calc(5 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h6 {
-	padding-left: calc(6 * 5px);
-	text-decoration: underline;
-}
-
-#markdown-area h7 {
-	padding-left: calc(7 * 5px);
-}
-
-.children-chat {
-    margin-left: 50px;
-    background-color: #f8f8f8;
-}
-
-.pinned {
-    background-color: #eee;
-}
-
-.help-tip{
-    text-align: center;
-/*
-    background-color: #1f1f1f;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-*/    
-    font-size: 14px;
-    line-height: 26px;
-    cursor: default;
-    display: inline-block;
-    position: relative;
-    font-family: 'Glyphicons Halflings';
-}
-
-.help-tip:before{
-	content: "\e086";
-/*
-	content:'i';
-    font-weight: bold;
-    color:#fff;
-*/    
-}
-
-.help-tip:hover p{
-    display:block;
-    transform-origin: 100% 0%;
-
-    -webkit-animation: fadeIn 0.3s ease-in-out;
-    animation: fadeIn 0.3s ease-in-out;
-
-}
-
-.help-tip p{    /* The tooltip */
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    display: none;
-    text-align: left;
-    background-color: #1f1f1f;
-    padding: 20px;
-    width: 300px;
-    position: absolute;
-    border-radius: 3px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    right: -4px;
-    color: #FFF;
-    font-size: 13px;
-    line-height: 1.4;
-	left: -277px;
-    top: 27px; 
-}
-
-.help-tip p:before{ /* The pointer of the tooltip */
-    position: absolute;
-    content: '';
-    width:0;
-    height: 0;
-    border:6px solid transparent;
-    border-bottom-color:#1E2021;
-    right:10px;
-    top:-12px;
-}
-
-.help-tip p:after{ /* Prevents the tooltip from being hidden */
-    width:100%;
-    height:40px;
-    content:'';
-    position: absolute;
-    top:-40px;
-    left:0;
-}
-
-/* CSS animation */
-
-@-webkit-keyframes fadeIn {
-    0% { 
-        opacity:0; 
-        transform: scale(0.6);
-    }
-
-    100% {
-        opacity:100%;
-        transform: scale(1);
-    }
-}
-
-@keyframes fadeIn {
-    0% { opacity:0; }
-    100% { opacity:100%; }
-}
-</style>
-
 <div class=" theme-showcase construction-motion" role="main"
 	style="margin-left: 32px; margin-right: 32px; "
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
@@ -458,7 +262,7 @@ $mainColumn = 12;
 			$votes = $voteBo->getByFilters(array("mot_id" => $motionId, "mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 ?>			
 			<div class="panel panel-default motion-entry" data-id="<?php echo $motion["mot_id"]; ?>">
-				<div class="panel-heading">
+				<div class="panel-heading no-caret">
 <?php
 
 					$voteCounters = array(0, 0, 0, 0);
@@ -496,13 +300,13 @@ $mainColumn = 12;
 					}
 
 ?>
-					<div class="pull-right" style="width: 36px; height: 36px; font-size: smaller;" id="mini-voting-panel">
+					<div class="pull-right" style="width: 64px; height: 64px; font-size: smaller;" id="mini-voting-panel">
 
 <?php	
 
 $chartId = "mini-voting-panel";
-$width = 36;
-$height = 36;
+$width = 64;
+$height = 64;
 
 include("construction/pieChart.php"); 
 
@@ -518,19 +322,19 @@ include("construction/pieChart.php");
 						<?php 	}	?>
 					</div>
 					<div class="counters" style="font-size: smaller;">
-						<?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?> -
-						<?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?> -
-						<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?> -
-						<?php echo langFormat($numberOfsources < 2, "amendments_source", "amendments_sources", array("source" => $numberOfsources)); ?>
+						<a href="#voting-members-panel" class="go-to"><?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?></a> -
+						<a href="#arguments" class="go-to-tab"><?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?></a> -
+						<a href="#amendments" class="go-to-tab"><?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?></a> -
+						<a href="#sources" class="go-to-tab"><?php echo langFormat($numberOfsources < 2, "amendments_source", "amendments_sources", array("source" => $numberOfsources)); ?></a>
 					</div>
 <?php 		
 //		} ?>			
 				</div>
 				<div class="btn-toolbar panel-body" role="toolbar">
 					<div class="btn-group btn-type-group " role="group">
-						<button id="show-motion-btn" type="button" class="btn btn-default active"><i class="fa fa-archive" aria-hidden="true"></i></button>
+						<button id="show-markdown-btn" type="button" class="btn btn-default active"><i class="fa fa-file-text" aria-hidden="true"></i></button>
+						<button id="show-motion-btn" type="button" class="btn btn-default"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
-						<button id="show-markdown-btn" type="button" class="btn btn-default"><i class="fa fa-file-text" aria-hidden="true"></i></button>
 						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
 						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<?php	} ?>
@@ -613,14 +417,11 @@ include("construction/pieChart.php");
 									<input type='hidden' name="against" value="<?php echo $hasAgainst; ?>">
 								<?php	} ?>
 							</div>
-							<div class="help-tip">
-							    <p>Donnez votre avis, dispersez votre pouvoir 
-							    	<?php 
+							<span data-toggle="tooltip" data-placement="top" title="Donnez votre avis, dispersez votre pouvoir <?php 
 							    		if ($votingPower > 1) {
 							    			echo "($votingPower points)";
 							    		}
-							    	?></p>
-							</div>
+							    	?>"><i class="fa fa-info-circle"></i></span>
 							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
 								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
@@ -732,7 +533,16 @@ include("construction/pieChart.php");
 
 	?>
 							<li class="list-group-item pro-chat">
-								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div>
+									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
+										<img src="getAvatar.php?userId=<?php echo $chat["id_adh"]; ?>" class="img-circle pull-left" style="max-width: 32px; max-height: 32px;" 
+											 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($chat); ?>">
+									</div>
+									<?php echo GaletteBo::showIdentity($chat); ?> 
+									<br>
+									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
+								</div>
+								<div class="clearfix"></div>
 								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
@@ -776,7 +586,16 @@ include("construction/pieChart.php");
 
 	?>
 							<li class="list-group-item pro-chat children-chat">
-								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div>
+									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
+										<img src="getAvatar.php?userId=<?php echo $childrenChat["id_adh"]; ?>" class="img-circle pull-left" style="max-width: 32px; max-height: 32px;" 
+											 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($childrenChat); ?>">
+									</div>
+									<?php echo GaletteBo::showIdentity($childrenChat); ?> 
+									<br>
+									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
+								</div>
+								<div class="clearfix"></div>
 								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
@@ -898,7 +717,16 @@ include("construction/pieChart.php");
 
 	?>
 							<li class="list-group-item against-chat">
-								<div><?php echo GaletteBo::showIdentity($chat); ?> <span class="pull-right"><?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div>
+									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
+										<img src="getAvatar.php?userId=<?php echo $chat["id_adh"]; ?>" class="img-circle pull-left" style="max-width: 32px; max-height: 32px;" 
+											 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($chat); ?>">
+									</div>
+									<?php echo GaletteBo::showIdentity($chat); ?> 
+									<br>
+									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
+								</div>
+								<div class="clearfix"></div>
 								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
@@ -943,7 +771,16 @@ include("construction/pieChart.php");
 
 	?>
 							<li class="list-group-item against-chat children-chat">
-								<div><?php echo GaletteBo::showIdentity($childrenChat); ?> <span class="pull-right"><?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?></span></div>
+								<div>
+									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
+										<img src="getAvatar.php?userId=<?php echo $childrenChat["id_adh"]; ?>" class="img-circle pull-left" style="max-width: 32px; max-height: 32px;" 
+											 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($childrenChat); ?>">
+									</div>
+									<?php echo GaletteBo::showIdentity($childrenChat); ?> 
+									<br>
+									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
+								</div>
+								<div class="clearfix"></div>
 								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
@@ -1036,12 +873,23 @@ include("construction/pieChart.php");
 				<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 					<ul class="list-group objects">
 	<?php
-	foreach($sources as $src) {
+				foreach($sources as $src) {
 	?>
 						<li class="list-group-item" data-id="<?php echo $src["sou_id"]; ?>">
 							<?php echo lang("source_icon_" . $src["sou_type"]); ?> <a href="<?php echo $src["sou_url"]; ?>"><?php echo $src["sou_title"]; ?></a> <a href="<?php echo $src["sou_url"]; ?>" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a>
 						</li>
 	<?php 		} ?>			
+
+	<?php
+				if(!count($sources)) {
+	?>
+						<li class="list-group-item text-center">
+							<i class="fa fa-rss" style="font-size: larger;"></i>
+							<br>
+							<?php echo lang("amendments_no_source"); ?>
+						</li>
+	<?php 		} ?>			
+
 					</ul>
 					<div class="panel-footer">
 	<?php				if ($hasWritingRights && ($meeting["mee_status"] != "closed")) { ?>

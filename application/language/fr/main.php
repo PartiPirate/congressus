@@ -309,10 +309,13 @@ $lang["source_icon_forum"] = '<i class="fa fa-comments" aria-hidden="true"></i>'
 
 $lang["amendments_vote"] = "{vote} vote";
 $lang["amendments_votes"] = "{vote} votes";
+$lang["amendments_no_argument"] = "Aucun argument proposé";
 $lang["amendments_argument"] = "{argument} argument";
 $lang["amendments_arguments"] = "{argument} arguments";
+$lang["amendments_no_amendment"] = "Aucun amendement proposé";
 $lang["amendments_amendment"] = "{amendment} amendement";
 $lang["amendments_amendments"] = "{amendment} amendements";
+$lang["amendments_no_source"] = "Aucune source proposée";
 $lang["amendments_source"] = "{source} source";
 $lang["amendments_sources"] = "{source} sources";
 $lang["amendments_add_amendment"] = "Ajouter un amendement";

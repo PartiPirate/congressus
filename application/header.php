@@ -23,6 +23,7 @@ error_reporting(E_ALL);
 
 include_once("config/database.php");
 include_once("language/language.php");
+require_once("engine/bo/GaletteBo.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
@@ -294,7 +295,8 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 
 					<?php 	if ($isConnected || $isAdministrator) {?>
 					<?php 	if ($isConnected) {?>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $sessionUser["pseudo_adh"]; ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="getAvatar.php" class="img-circle" style="max-width: 32px; max-height: 32px; margin: -20px 0 -20px 0;" 
+								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($sessionUser); ?>"><?php echo GaletteBo::showIdentity($sessionUser); ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>

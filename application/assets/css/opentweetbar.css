@@ -43,6 +43,11 @@ html,body {
 	content: "\e080";
 }
 
+
+.panel-heading.no-caret a:after {
+	content: "" !important;
+}
+
 .mailForm {
 	display: none;
 }

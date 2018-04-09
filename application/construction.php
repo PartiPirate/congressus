@@ -27,6 +27,11 @@ require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserBo.php");
+require_once("engine/utils/Parsedown.php");
+require_once("engine/emojione/autoload.php");
+
+$Parsedown = new Parsedown();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 $noticeBo = NoticeBo::newInstance($connection, $config);
 

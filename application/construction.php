@@ -22,6 +22,7 @@ require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/NoticeBo.php");
+require_once("engine/bo/SourceBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/GaletteBo.php");
@@ -114,6 +115,7 @@ $motionBo = MotionBo::newInstance($connection, $config);
 $voteBo   = VoteBo::newInstance($connection, $config);
 $chatBo   = ChatBo::newInstance($connection, $config);
 $userBo   = UserBo::newInstance($connection, $config);
+$sourceBo = SourceBo::newInstance($connection, $config);
 
 $agendaFilters = array("age_meeting_id" => $meeting["mee_id"]);
 $oneAgenda = false;
@@ -406,7 +408,7 @@ $(function() {
 			
 	 	} ?>			
 			
-<?php	if ($hasWritingRights && !$oneAgenda) { ?>
+<?php	if ($hasWritingRights && !$oneAgenda && ($meeting["mee_status"] != "closed")) { ?>
 			<button class="btn btn-default btn-add-point" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" style="width: 100%;">Point <span class="fa fa-list-alt"></span></button>
 <?php	} ?>
 
@@ -455,6 +457,7 @@ $(function() {
 <script>
 </script>
 <?php include("footer.php");?>
+<script src="assets/js/perpage/construction_source_helper.js"></script>
 <script src="assets/js/perpage/construction_motion_save.js"></script>
 <script src="assets/js/perpage/meeting_events.js"></script>
 <script>

@@ -31,6 +31,9 @@
 				if ($previousMotionId == $motion["mot_id"]) continue;
 				$previousMotionId = $motion["mot_id"];
 
+				$sources = $sourceBo->getByFilters(array("sou_motion_id" => $motion["mot_id"]));
+				$numberOfsources = count($sources);
+
 				$amendmentAgenda = $agendaBo->getByFilters(array("age_parent_id" => $motion["mot_agenda_id"], "age_label" => "amendments-" . $motion["mot_id"]));
 				$numberOfAmendments = 0;
 
@@ -125,14 +128,15 @@ include("construction/pieChart.php");
 
 							<?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?> -
 							<?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?> -
-							<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?>
+							<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?> -
+							<?php echo langFormat($numberOfsources < 2, "amendments_source", "amendments_sources", array("source" => $numberOfsources)); ?>
 							
 						</div>
 					</li>
 <?php 		} ?>			
 				</ul>
 				<div class="panel-footer">
-<?php				if ($hasWritingRights) { ?>
+<?php				if ($hasWritingRights && ($meeting["mee_status"] != "closed")) { ?>
 						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>"><?php echo lang("amendments_add_amendment"); ?> <span class="fa fa-archive"></span></button>
 <?php				} ?>
 				</div>

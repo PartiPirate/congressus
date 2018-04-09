@@ -230,6 +230,7 @@ $lang["motion_majorityJudgment_6"] = "Très bien";
 
 $lang["motion_already_voted"] = "Vous avez déjà voté";
 $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
+$lang["motion_add_source"] = "Ajouter une sources"; 
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
@@ -282,6 +283,7 @@ $lang["mee_synchro_vote_1"] = "Votes synchronisés";
 
 $lang["save_amendment_title"] = "Ajouter un amendement";
 $lang["save_agenda_title"] = "Ajouter un groupe d'amendement";
+$lang["save_source_title"] = "Ajouter une source";
 
 $lang["advice_pro"] = "D'accord";
 $lang["advice_doubtful"] = "Mitigé";
@@ -297,6 +299,11 @@ $lang["loc_type_unknown"] = "à un endroit inconnu";
 $lang["construction_arguments"] = "Arguments";
 $lang["construction_amendments"] = "Amendements";
 $lang["construction_argument_send"] = "Envoyer";
+$lang["construction_sources"] = "Sources";
+
+$lang["source_icon_wiki_text"] = '<i class="fa fa-wikipedia-w" aria-hidden="true"></i>';
+$lang["source_icon_leg_text"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
+$lang["source_icon_leg_article"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
 
 $lang["amendments_vote"] = "{vote} vote";
 $lang["amendments_votes"] = "{vote} votes";
@@ -304,6 +311,8 @@ $lang["amendments_argument"] = "{argument} argument";
 $lang["amendments_arguments"] = "{argument} arguments";
 $lang["amendments_amendment"] = "{amendment} amendement";
 $lang["amendments_amendments"] = "{amendment} amendements";
+$lang["amendments_source"] = "{source} source";
+$lang["amendments_sources"] = "{source} sources";
 $lang["amendments_add_amendment"] = "Ajouter un amendement";
 $lang["amendments_pro_argument"] = "{argument} argument pour";
 $lang["amendments_pro_arguments"] = "{argument} arguments pour";

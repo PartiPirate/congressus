@@ -62,6 +62,13 @@ function addButtonListeners() {
         var status = $(this).data("status");
         changeStatus(meetingId, status, "open");
     });
+
+    $(".meeting-container").on("click", ".btn-close-meeting", function() {
+        $(this).attr("disabled", "disabled");
+        var meetingId = $(this).data("meetingId");
+        var status = $(this).data("status");
+        changeStatus(meetingId, status, "closed");
+    });
 }
 
 $(function() {

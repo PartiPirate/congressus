@@ -287,11 +287,11 @@ function addButtonsListeners() {
 		var source = $("#destination").val();
 		source = emojione.shortnameToImage(source);
 
-		const regex = /^(=+)( .* )(=+)$/gm;
+		const regex = /^(=+)([^=]*)(=*)$/gm;
 		
 		let m;
 
-		var dashes = ["", "#", "##", "###", "####", "#####", "######", "#######"];
+		var dashes = ["", "#", "##", "###", "####", "#####", "######"];
 
 		while ((m = regex.exec(source)) !== null) {
 		    // This is necessary to avoid infinite loops with zero-width matches
@@ -301,6 +301,7 @@ function addButtonsListeners() {
 
 		    var search = m[1] + m[2] + m[3];
 		    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
+//		    var replace = dashes[m[1].length] + m[2];
 
 			source = source.replace(search, replace);
 		}

@@ -157,6 +157,9 @@ if ($config["server"]["timezone"]) {
 <?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
 						<button class="btn btn-success btn-open-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
 <?php				} ?>
+<?php				if ($status == "open" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
+						<button class="btn btn-danger btn-close-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_close"); ?></button>
+<?php				} ?>
 						</td>
 					</tr>
 <?php 			}?>

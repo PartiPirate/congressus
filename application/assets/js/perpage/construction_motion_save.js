@@ -20,6 +20,10 @@
 /* global $ */
 /* global testBadges */
 
+/* global sourceSelectHandler */
+/* global sourceUrlHandler */
+/* global sourceArticlesHandler */
+
 var sourceEnabled = true
 
 function renewPropositions(agendaId, successHandler) {
@@ -61,13 +65,14 @@ function showAddMotion(event) {
 	$("#sourceTitleDiv").hide();
 	$("#sourceContentDiv").hide();
 
-
 	if (sourceEnabled) {
 		$("#sourceSelectDiv").show();
 	}
 	else {
 		$("#sourceSelectDiv").hide();
 	}
+
+	$("#save-amendment-modal #sourceArticlesDiv").hide();
 
 	$('#save-amendment-modal').one('shown.bs.modal', function () {
 		$("#save-amendment-modal #descriptionArea").keyup();
@@ -93,156 +98,12 @@ function saveMotion(event) {
 	}, "json");
 }
 
-function sourceSelectHandler() {
-	var source = $(this).val();
-
-	switch(source) {
-		case "leg_text":
-		case "leg_article":
-		case "wiki_text":
-			$("#sourceUrlDiv").show();
-
-			break;
-		default: 
-		$("#sourceUrlDiv").hide();
-	}
-}
-
-function sourceUrlHandler() {
-	var source = $("#sourceSelect").val();
-	var url = $(this).val();
-
-	if (source == "leg_article") {
-		legifranceArticleRequester(url);
-	}
-	else if (source == "leg_text") {
-		legifranceTextRequester(url);
-	}
-	else if (source == "wiki_text") {
-		wikiTextRequester(url);
-	}
-}
-
-var articles = null;
-
-function legifranceTextRequester(url) {
-	$.get("construction/getLegifranceText.php", {"url":url}, function(data) {
-		if (data.status = "ok") {
-			$("#sourceTitleDiv").show();
-			$("#sourceTitleInput").val(data.title);
-			$("#sourceContentDiv").show();
-			$("#sourceContentArea").val("");
-			$("#sourceContentArea").keyup();
-//			$("#sourceContentArea").val(data.content);
-
-			articles = data.articles;
-
-			var sourceArticlesSelect = $("#sourceArticlesSelect");
-			sourceArticlesSelect.children().remove();
-
-			for(var index = 0; index < articles.length; ++index) {
-				var option = $("<option></option>").val(index).text(articles[index].title);
-				sourceArticlesSelect.append(option);
-			}
-
-			$("#sourceArticlesDiv").show();
-		}
-		else {
-			$("#sourceTitleDiv").hide();
-			$("#sourceContentDiv").hide();
-			$("#sourceArticlesDiv").hide();
-		}
-	}, "json");
-}
-
-function wikiTextRequester(url) {
-	$.get("construction/getWikiText.php", {"url":url}, function(data) {
-		if (data.status = "ok") {
-			$("#sourceTitleDiv").show();
-			$("#sourceTitleInput").val(data.title);
-			$("#sourceContentDiv").show();
-			$("#sourceContentArea").val("");
-			$("#sourceContentArea").keyup();
-
-//			$("#sourceContentArea").val(data.content);
-
-			articles = data.articles;
-
-			var sourceArticlesSelect = $("#sourceArticlesSelect");
-			sourceArticlesSelect.children().remove();
-
-			for(var index = 0; index < articles.length; ++index) {
-				var option = $("<option></option>").val(index).text(articles[index].title);
-				sourceArticlesSelect.append(option);
-			}
-
-			$("#sourceArticlesDiv").show();
-		}
-		else {
-			$("#sourceTitleDiv").hide();
-			$("#sourceContentDiv").hide();
-			$("#sourceArticlesDiv").hide();
-		}
-	}, "json");
-}
-
-function legifranceArticleRequester(url) {
-	$.get("construction/getLegifranceArticle.php", {"url":url}, function(data) {
-		if (data.status == "ok") {
-			$("#sourceTitleDiv").show();
-			$("#sourceTitleInput").val(data.title);
-			$("#sourceContentDiv").show();
-			$("#sourceContentArea").val(data.content);
-			$("#sourceContentArea").keyup();
-		}
-		else {
-			$("#sourceTitleDiv").hide();
-			$("#sourceContentDiv").hide();
-			$("#sourceArticlesDiv").hide();
-		}
-	}, "json");
-}
-
-function sourceArticlesHandler() {
-	var content = "";
-	var contentSeparator = "";
-	
-	$("#sourceArticlesSelect option:selected").each(function() {
-		var index = $(this).val();
-		var article = articles[index];
-		
-		content += contentSeparator;
-		if (article.level) {
-			for(var lindex = 0; lindex < article.level; ++lindex) {
-				content += "=";
-			}
-			content += " ";
-		}
-		content += article.title;
-		if (article.level) {
-			content += " ";
-			for(var lindex = 0; lindex < article.level; ++lindex) {
-				content += "=";
-			}
-		}
-		
-		if (article.content.trim()) {
-			content += "\n\n" + article.content.trim();
-		}
-		
-		contentSeparator = "\n\n";
-	});
-	
-	$("#sourceContentArea").val(content);
-	$("#sourceContentArea").keyup();
-}
-
 function addAmendmentListeners() {
 	$("body").on("click", ".btn-add-motion", showAddMotion);
 	$("body").on("click", ".btn-save-motion", saveMotion);
-	$("body").on("change", "#sourceSelect", sourceSelectHandler);
-	$("body").on("change", "#sourceUrlInput", sourceUrlHandler);
-	$("body").on("change", "#sourceArticlesSelect", sourceArticlesHandler)
+	$("body").on("change", "#save-amendment-modal #sourceSelect", function () { sourceSelectHandler($("#save-amendment-modal"), $(this)); });
+	$("body").on("change", "#save-amendment-modal #sourceUrlInput", function () { sourceUrlHandler($("#save-amendment-modal"), $(this)); });
+	$("body").on("change", "#save-amendment-modal #sourceArticlesSelect", function () { sourceArticlesHandler($("#save-amendment-modal")); });
 
 	$("body").on("keyup", "#save-agenda-modal #titleInput", function() {
 		if ($("#save-agenda-modal #titleInput").val()) {

@@ -268,6 +268,7 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 <script>
 </script>
 <?php include("footer.php");?>
+<script src="assets/js/perpage/order_list_helper.js"></script>
 <script src="assets/js/perpage/construction_source_helper.js"></script>
 <script src="assets/js/perpage/construction_motion_save.js"></script>
 <script src="assets/js/perpage/meeting_events.js"></script>

@@ -11,6 +11,16 @@
 			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 <?php			if ($showTitle) { ?>
 				<div class="panel-heading no-caret">
+					<select class="pull-right select-order order-motions form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
+						<option value="older"><?php echo lang("amendments_order_older"); ?></option>
+						<option value="newer"><?php echo lang("amendments_order_newer"); ?></option>
+						<option value="participation"><?php echo lang("amendments_order_participation"); ?></option>
+						<option value="arguments"><?php echo lang("amendments_order_arguments"); ?></option>
+						<option value="absolute-pro"><?php echo lang("amendments_order_absolute_pro"); ?></option>
+						<option value="relative-pro"><?php echo lang("amendments_order_relative_pro"); ?></option>
+						<option value="absolute-against"><?php echo lang("amendments_order_absolute_against"); ?></option>
+						<option value="relative-against"><?php echo lang("amendments_order_relative_against"); ?></option>
+					</select>
 					<a href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 				</div>
 <?php				if ($agenda["age_description"]) { ?>
@@ -24,7 +34,7 @@
 <?php
 			if(!count($motions)) {
 ?>
-					<li class="list-group-item text-center">
+					<li class="list-group-item text-center unsortable">
 						<i class="fa fa-archive" style="font-size: larger;"></i>
 						<br>
 						<?php echo lang("amendments_no_amendment"); ?>
@@ -83,6 +93,7 @@
 				}
 
 				$voteCounters = array(0, 0, 0, 0);
+				$voteCounters[-1] = 0;
 				$voters = array();
 				$hasVoted = false;
 				foreach($votes as $vote) {
@@ -96,13 +107,26 @@
 						$voters[$vote["vot_member_id"]] = $vote["vot_member_id"];
 					}
 
+					$voteCounters[-1] += $vote["vot_power"];
+
 					if ($vote["mpr_label"] == "pro" || strtolower($vote["mpr_label"]) == "oui" || strtolower($vote["mpr_label"]) == "pour") $voteCounters[1] += $vote["vot_power"];
 					else if ($vote["mpr_label"] == "doubtful") $voteCounters[2] += $vote["vot_power"];
 					else if ($vote["mpr_label"] == "against" || strtolower($vote["mpr_label"]) == "non" || strtolower($vote["mpr_label"]) == "contre") $voteCounters[3] += $vote["vot_power"];
 				}
 
 ?>
-					<li class="list-group-item <?php echo $motion["mot_pinned"] ? "pinned" : ""; ?>">
+					<li class="list-group-item <?php echo $motion["mot_pinned"] ? "pinned" : ""; ?>"
+						data-pinned="<?php echo $motion["mot_pinned"] ? "1" : "0"; ?>"
+						data-motion-id="<?php echo $motion["mot_id"]; ?>"
+						data-older="-<?php echo $motion["mot_id"]; ?>"
+						data-newer="<?php echo $motion["mot_id"]; ?>"
+						data-arguments="<?php echo $numberOfChats[0]; ?>"
+						data-participation="<?php echo $voteCounters[0]; ?>"
+						data-absolute-pro="<?php echo $voteCounters[1]; ?>"
+						data-relative-pro="<?php echo $voteCounters[1] / $voteCounters[-1]; ?>"
+						data-absolute-against="<?php echo $voteCounters[3]; ?>"
+						data-relative-against="<?php echo $voteCounters[3] / $voteCounters[-1];  ?>"
+					>
 						<div class="pull-left" style="padding: 0px 16px 0px 0; width: 80px; text-align: center;">
 							<img src="getAvatar.php?userId=<?php echo $author["id_adh"]; ?>" class="img-circle" style="max-width: 64px; max-height: 64px;" 
 								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($author); ?>">

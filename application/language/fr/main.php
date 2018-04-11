@@ -327,6 +327,16 @@ $lang["amendments_argument_pro"] = "Un argument pour...";
 $lang["amendments_argument_against"] = "Un argument contre...";
 $lang["amendments_argument_answer"] = "Une réponse...";
 
+$lang["amendments_order_older"] = "Les plus anciens en premier";
+$lang["amendments_order_newer"] = "Les nouveaux en premier";
+$lang["amendments_order_participation"] = "Les plus votés en premier";
+$lang["amendments_order_arguments"] = "Les plus argumentés en premier";
+$lang["amendments_order_absolute_pro"] = "Les plus en accord en premier (en valeur absolue)";
+$lang["amendments_order_relative_pro"] = "Les plus en accord en premier (en valeur relative)";
+$lang["amendments_order_absolute_against"] = "Les plus en désaccord en premier (en valeur absolue)";
+$lang["amendments_order_relative_against"] = "Les plus en désaccord en premier (en valeur relative)";
+
+
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";
 $lang["notice_mail_content"] = "Bonjour,
 

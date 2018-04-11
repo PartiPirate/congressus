@@ -96,6 +96,11 @@ class ChatBo {
 			$queryBuilder->where("cha_parent_id = :cha_parent_id");
 		}
 
+		if (!isset($filters["with_deleted"])) {
+			$args["cha_deleted"] = 0;
+			$queryBuilder->where("cha_deleted = :cha_deleted");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

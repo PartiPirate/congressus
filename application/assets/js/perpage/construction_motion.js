@@ -461,18 +461,27 @@ function addDivResizeListeners() {
 }
 */
 
+function animateScrollTo(element) {
+    $('html, body').animate({
+        scrollTop: element.offset().top
+    }, 400);
+}
+
 function addGoToTabListeners() {
 	$("body").on("click", ".go-to-tab", function(event) {
 		event.preventDefault();
 		
 		var href = $(this).attr("href");
 
-		$('.nav-tabs li a[href='+href+']').one('shown.bs.tab', function (e) {
-		    $('html, body').animate({
-		        scrollTop: $(href).offset().top
-		    }, 400);
-		});
-		$('.nav-tabs li a[href='+href+']').tab('show');
+		var scrollToCallback = function() { animateScrollTo($(href)); };
+
+		if ($('.nav-tabs li.active a[href='+href+']').length) {
+			scrollToCallback();
+		}
+		else {
+			$('.nav-tabs li a[href='+href+']').one('shown.bs.tab', scrollToCallback);
+			$('.nav-tabs li a[href='+href+']').tab('show');
+		}
 		
 	});
 

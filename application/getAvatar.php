@@ -70,7 +70,73 @@ if (!count($results) || !$results[0]["format"]) {
 
 $user = $results[0];
 
-//print_r($user);
+function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, $forceDimensions){
+    $size = getimagesize($srcFilePath);
+    $width = $size[0];
+    $height = $size[1];
 
-header('Content-type: image/' . $user["format"]);
-echo $user["picture"];
+    $xRatio = $maxWidth / $width;
+    $yRatio = $maxHeight / $height;
+    
+    $offsetLeft = 0;
+    $offsetTop = 0;
+
+    if( ($width <= $maxWidth) && ($height <= $maxHeight)) {
+        $thumbWidth = $width;
+        $thumbHeight = $height;
+        $offsetTop = $forceDimensions ? ceil(($maxHeight - $thumbHeight) / 2) : 0;
+        $offsetLeft = $forceDimensions ? ceil(($maxWidth - $thumbWidth) / 2) : 0;
+    }
+    elseif (($xRatio * $height) < $maxHeight) {
+        $thumbHeight = ceil($xRatio * $height);
+        $thumbWidth = $maxWidth;
+        $offsetTop = $forceDimensions ? ceil(($maxHeight - $thumbHeight) / 2) : 0;
+    }
+    else {
+        $thumbWidth = ceil($yRatio * $width);
+        $thumbHeight = $maxHeight;
+        $offsetLeft = $forceDimensions ? ceil(($maxWidth - $thumbWidth) / 2) : 0;
+    }
+
+    if($size['mime'] == "image/jpeg"){
+        $src = ImageCreateFromJpeg($srcFilePath);
+        $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
+        imagesavealpha($dst, true);
+        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $trans_colour);
+        imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+//        imageinterlace( $dst, true);
+//        ImageJpeg($dst, $dstFilePath, 100);
+        Imagepng($dst, $dstFilePath);
+    } 
+    else if ($size['mime'] == "image/png"){
+        $src = ImageCreateFrompng($srcFilePath);
+        $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
+        imagesavealpha($dst, true);
+        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $trans_colour);
+        imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+        Imagepng($dst, $dstFilePath);
+    } 
+    else {
+        $src = ImageCreateFromGif($srcFilePath);
+        $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
+        imagesavealpha($dst, true);
+        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $trans_colour);
+        imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+//        imagegif($dst, $dstFilePath);
+        Imagepng($dst, $dstFilePath);
+    }
+}
+
+$srcfname = tempnam(sys_get_temp_dir(), 'SRC');
+$dstfname = tempnam(sys_get_temp_dir(), 'DST');
+
+file_put_contents($srcfname, $user["picture"]);
+createThumbFromFile($srcfname, $dstfname, 64, 64, true);
+
+$content = file_get_contents($dstfname);
+
+header('Content-type: image/png');
+echo $content;

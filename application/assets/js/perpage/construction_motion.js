@@ -109,6 +109,14 @@ function addChatAdviceListeners() {
 		}, "json");
 		
 	});
+
+	$("body").on("mouseenter", ".advice-progress-bar .progress", function () {
+		$(this).css({height: "inherit"});
+	})
+
+	$("body").on("mouseleave", ".advice-progress-bar .progress", function () {
+		$(this).css({height: "3px"});
+	})
 }
 
 function addChatListeners() {

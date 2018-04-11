@@ -558,14 +558,14 @@ include("construction/pieChart.php");
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
-										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										<div class="progress-bar progress-bar-success" style="<?php echo $chatAdviceCounters["thumb_up"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-up pull-left" style="margin: 2px;"></span><span class="pull-left"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										<div class="progress-bar progress-bar-warning" style="<?php echo $chatAdviceCounters["thumb_middle"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-hand-left" style="margin: 2px;"></span><span><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										<div class="progress-bar progress-bar-danger" style="<?php echo $chatAdviceCounters["thumb_down"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-down pull-right" style="margin: 2px;"></span><span class="pull-right"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
 										</div>
 									</div>
 								</div>
@@ -610,14 +610,14 @@ include("construction/pieChart.php");
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
-										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										<div class="progress-bar progress-bar-success" style="<?php echo $chatAdviceCounters["thumb_up"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-up pull-left" style="margin: 2px;"></span><span class="pull-left"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										<div class="progress-bar progress-bar-warning" style="<?php echo $chatAdviceCounters["thumb_middle"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-hand-left" style="margin: 2px;"></span><span><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										<div class="progress-bar progress-bar-danger" style="<?php echo $chatAdviceCounters["thumb_down"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-down pull-right" style="margin: 2px;"></span><span class="pull-right"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
 										</div>
 									</div>
 								</div>
@@ -742,14 +742,14 @@ include("construction/pieChart.php");
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
-										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										<div class="progress-bar progress-bar-success" style="<?php echo $chatAdviceCounters["thumb_up"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-up pull-left" style="margin: 2px;"></span><span class="pull-left"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										<div class="progress-bar progress-bar-warning" style="<?php echo $chatAdviceCounters["thumb_middle"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-hand-left" style="margin: 2px;"></span><span><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										<div class="progress-bar progress-bar-danger" style="<?php echo $chatAdviceCounters["thumb_down"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-down pull-right" style="margin: 2px;"></span><span class="pull-right"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
 										</div>
 									</div>
 								</div>
@@ -795,14 +795,14 @@ include("construction/pieChart.php");
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
-										<div class="progress-bar progress-bar-success" style="width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
+										<div class="progress-bar progress-bar-success" style="<?php echo $chatAdviceCounters["thumb_up"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-up pull-left" style="margin: 2px;"></span><span class="pull-left"><?php echo $chatAdviceCounters["thumb_up"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-warning" style="width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
+										<div class="progress-bar progress-bar-warning" style="<?php echo $chatAdviceCounters["thumb_middle"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_middle"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-hand-left" style="margin: 2px;"></span><span><?php echo $chatAdviceCounters["thumb_middle"]; ?></span>
 										</div>
-										<div class="progress-bar progress-bar-danger" style="width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
-											<span class="sr-only"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
+										<div class="progress-bar progress-bar-danger" style="<?php echo $chatAdviceCounters["thumb_down"] == 0 ? "display: none; " : ""; ?> width: <?php echo $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] * 100; ?>%">
+											<span class="glyphicon glyphicon-thumbs-down pull-right" style="margin: 2px;"></span><span class="pull-right"><?php echo $chatAdviceCounters["thumb_down"]; ?></span>
 										</div>
 									</div>
 								</div>

@@ -34,18 +34,24 @@ function changeListOrderHandler(event) {
         var bPinned = b.data("pinned") ? b.data("pinned") : 0;
 
         var diffPinned = bPinned - aPinned;
-        
+
         // Pinned always first
         if (diffPinned != 0) return diffPinned;
 
         var aValue = a.data(newOrder);
         var bValue = b.data(newOrder);
-        
+
         var diffValue = bValue - aValue;
-        
-        return diffValue;
+
+        if (diffValue != 0) return diffValue;
+
+        // If no difference respect internal order, maybe there is a structure to keep
+        var aInternalOrder = a.data("internal-order") ? a.data("internal-order") : 0;
+        var bInternalOrder = b.data("internal-order") ? b.data("internal-order") : 0;
+
+        return aInternalOrder - bInternalOrder;
     });
-    
+
     for(var index = 0; index < lis.length; ++index) {
         var li = lis[index];
         

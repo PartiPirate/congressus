@@ -531,7 +531,9 @@ include("construction/pieChart.php");
 								<option value="relative-against"><?php echo lang("chats_order_relative_against"); ?></option>
 							</select>
 
+							<span class="counter">
 							<?php echo langFormat($numberOfChats[1] < 2, "amendments_pro_argument", "amendments_pro_arguments", array("argument" => $numberOfChats[1])); ?>
+							</span>
 						</p></div>
 						<ul class="list-group objects">
 	<?php	foreach($chats as $chat) {
@@ -748,7 +750,9 @@ include("construction/pieChart.php");
 								<option value="relative-against"><?php echo lang("chats_order_relative_against"); ?></option>
 							</select>
 
+							<span class="counter">
 							<?php echo langFormat($numberOfChats[2] < 2, "amendments_against_argument", "amendments_against_arguments", array("argument" => $numberOfChats[2])); ?>
+							</span>
 						</p></div>
 						<ul class="list-group objects">
 	<?php	foreach($chats as $chat) {

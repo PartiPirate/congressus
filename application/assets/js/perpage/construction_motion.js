@@ -66,10 +66,13 @@ function renewChats(types, successHandler) {
 			$("." + type + "-chats ul").children().remove();
 			$("." + type + "-chats ul").append(content);
 			
-			var counter = mainPanel.find("." + type + "-counter").text().trim();
-			$("." + type + "-counter").text(counter);
+			var counter = mainPanel.find("." + type + "-counter .counter").text().trim();
+			$("." + type + "-counter .counter").text(counter);
 
 			$("." + type + "-chat.answer-chat textarea[data-provide=markdown]").markdown();
+			
+			var orderSelect = $("." + type + "-chats .select-order");
+			if (orderSelect.length) orderSelect.change();
 		}
 
 		var motionEntry = mainPanel.find(".motion-entry");

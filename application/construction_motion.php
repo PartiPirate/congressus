@@ -357,6 +357,22 @@ include("construction/pieChart.php");
 						<?php	} ?>
 				</div>
 				<div class="panel-body">
+
+					<div id="explanation-div">
+						<label for="explanation"><?php echo lang("amendment_explanation"); ?></label>
+						<br>
+						<div id="explanation-textarea-div" style="display: none;">
+							<textarea class="form-control autogrow" name="explanation" id="explanation" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></textarea>
+						</div>
+						<div id="explanation-content-div" style="display: block;">
+							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_explanation"])); ?>
+						</div>
+						<hr>
+					</div>
+
+					<label for="explanation"><?php echo lang("amendment_description"); ?> </label>
+					<br>
+
 					<div id="motion-description-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
 						<div id="motion-description" class="scroller" style="position: relative; "><?php echo str_replace("\n", "<br>", $motion["mot_description"]); ?></div>

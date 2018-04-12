@@ -307,6 +307,8 @@ $lang["source_icon_leg_article"] = '<i class="fa fa-balance-scale" aria-hidden="
 $lang["source_icon_congressus_motion"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
 $lang["source_icon_forum"] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 
+$lang["amendment_explanation"] = "Exposé des motif : ";
+$lang["amendment_description"] = "Contenu de la proposition : ";
 $lang["amendments_vote"] = "{vote} vote";
 $lang["amendments_votes"] = "{vote} votes";
 $lang["amendments_no_argument"] = "Aucun argument proposé";

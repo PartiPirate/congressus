@@ -48,7 +48,6 @@ function renewVotes(successHandler) {
 		if (successHandler) successHandler();
 
 	}, "text");
-	
 }
 
 function renewChats(types, successHandler) {
@@ -255,6 +254,7 @@ function constructChangeScroll(scrollGroup) {
 function createDiff() {
 	var sourceText = $("#source").val();
 	var motionText = $("#destination").val();
+	var explanationText = $("#explanation").val();
 	
 	$("#diff").html(htmlDiff(sourceText, motionText).replace(/[\n\r]/g, '<br>'));
 	$("#motion-description").html(htmlDiff(sourceText, motionText, {not_del_shown: true}).replace(/[\n\r]/g, '<br>'));
@@ -262,7 +262,7 @@ function createDiff() {
 	constructChangeScroll($("#motion-description-group"));
 	constructChangeScroll($("#diff-group"));
 
-	if (motionText != previousMotionText) {
+	if (motionText != previousMotionText || explanationText != previousExplanation) {
 		$("#save-motion-btn").removeAttr("disabled");
 	}
 	else {
@@ -282,47 +282,69 @@ function addDiffListeners() {
 		
 		setTimeoutId = setTimeout(createDiff, 500);
 	});
-	createDiff();
 
+	$("#explanation").on("keyup", function(event) {
+		var motionText = $("#destination").val();
+		var explanationText = $("#explanation").val();
+
+		if (motionText != previousMotionText || explanationText != previousExplanation) {
+			$("#save-motion-btn").removeAttr("disabled");
+		}
+		else {
+			$("#save-motion-btn").attr("disabled", "disabled");
+		}
+	});
+
+	createDiff();
 	$("#save-motion-btn").attr("disabled", "disabled");
+}
+
+function toMarkdownWithEmoji(source) {
+	source = emojione.shortnameToImage(source);
+
+	const regex = /^(=+)([^=]*)(=*)$/gm;
+	
+	let m;
+
+	var dashes = ["", "#", "##", "###", "####", "#####", "######"];
+
+	while ((m = regex.exec(source)) !== null) {
+	    // This is necessary to avoid infinite loops with zero-width matches
+	    if (m.index === regex.lastIndex) {
+	        regex.lastIndex++;
+	    }
+
+	    var search = m[1] + m[2] + m[3];
+	    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
+//		var replace = dashes[m[1].length] + m[2];
+
+		source = source.replace(search, replace);
+	}
+
+	var converter = new showdown.Converter();
+	source = converter.makeHtml(source);
+
+	return source;
 }
 
 function addButtonsListeners() {
 	var globalScrollTop = 0;
 
 	$("#show-markdown-btn").click(function() {
-		var converter = new showdown.Converter();
 		$("#markdown-area").html("");
 		
 		/* mediawiki markdown transformation to normalized markdown titles */
 		var source = $("#destination").val();
-		source = emojione.shortnameToImage(source);
-
-		const regex = /^(=+)([^=]*)(=*)$/gm;
-		
-		let m;
-
-		var dashes = ["", "#", "##", "###", "####", "#####", "######"];
-
-		while ((m = regex.exec(source)) !== null) {
-		    // This is necessary to avoid infinite loops with zero-width matches
-		    if (m.index === regex.lastIndex) {
-		        regex.lastIndex++;
-		    }
-
-		    var search = m[1] + m[2] + m[3];
-		    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
-//		    var replace = dashes[m[1].length] + m[2];
-
-			source = source.replace(search, replace);
-		}
-
-		source = converter.makeHtml(source);
+		source = toMarkdownWithEmoji(source);
 
 		$("#markdown-area").html(source);
 
 		$("#markdown-area").show();
 		$("#markdown-group").show();
+
+		$("#explanation-div #explanation-textarea-div").hide();
+		$("#explanation-div #explanation-content-div").show();
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
 
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();
@@ -342,6 +364,10 @@ function addButtonsListeners() {
 		$("#motion-description-group").show();
 		constructChangeScroll($("#motion-description-group"));
 
+		$("#explanation-div #explanation-textarea-div").hide();
+		$("#explanation-div #explanation-content-div").show();
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
+
 		$("#diff").hide();
 		$("#diff-group").hide();
 		$("#source").hide();
@@ -360,6 +386,10 @@ function addButtonsListeners() {
 	$("#show-diff-btn").click(function() {
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();
+		$("#explanation-div #explanation-textarea-div").hide();
+		$("#explanation-div #explanation-content-div").show();
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
+
 		$("#diff").show();
 		$("#diff-group").show();
 		constructChangeScroll($("#diff-group"));
@@ -377,13 +407,17 @@ function addButtonsListeners() {
 	});
 
 	$("#show-motion-authoring-btn").click(function() {
+		$("#explanation-div #explanation-content-div").hide();
+		$("#explanation-div #explanation-textarea-div").show();
+		$("#explanation-div textarea").keyup();
+
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();
 		$("#diff").show();
 		$("#diff-group").show();
 		constructChangeScroll($("#diff-group"));
-		$("#source").show();
-		$("#destination").show();
+		$("#source").show().keyup();
+		$("#destination").show().keyup();
 		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
@@ -455,22 +489,18 @@ function addUpdateMotion() {
 		var motionId = $(".motion-entry").data("id");
 		var property = "mot_description";
 		var propositionId = 0;
-
 		previousMotionText = $("#destination").val();
 
 		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousMotionText}, function(data) {
-			$("#save-motion-btn").attr("disabled", "disabled");
+			var property = "mot_explanation";
+			previousExplanation = $("#explanation").val();
+
+			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
+				$("#save-motion-btn").attr("disabled", "disabled");
+			}, "json");
 		}, "json");
 	});
 }
-
-/*
-function addDivResizeListeners() {
-	$("#motion-description,#diff").resize(function(event) {
-		console.log(event);
-	});
-}
-*/
 
 function animateScrollTo(element) {
     $('html, body').animate({
@@ -508,6 +538,7 @@ function addGoToTabListeners() {
 }
 
 var previousMotionText = "";
+var previousExplanation = "";
 
 $(function() {
 	addChatListeners();
@@ -515,7 +546,6 @@ $(function() {
 	addDiffListeners();
 	addButtonsListeners();
 	addUpdateMotion();
-//	addDivResizeListeners();
 	addChatAdviceListeners();
 	addGoToTabListeners();
 
@@ -534,4 +564,5 @@ $(function() {
 	$("body").emojioneHelper();
 
 	previousMotionText = $("#destination").val();
+	previousExplanation = $("#explanation").val();
 });

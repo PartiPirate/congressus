@@ -151,7 +151,9 @@ include("construction/pieChart.php");
 									<span class="glyphicon glyphicon-pushpin"></span>
 								</p>
 								<?php	} ?>
-								<p class="text-info" style="display: inline-block;"><a href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?></a></p>
+								<p class="text-info" style="display: inline-block;"><a 
+									href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>" data-toggle="tooltip" data-placement="top" 
+									title="<?php echo str_replace("\"", "&quot;", $emojiClient->shortnameToUnicode($motion["mot_explanation"])); ?>"><?php echo $motion["mot_title"]; ?></a></p>
 								<?php	if ($hasVoted) { ?>
 									<p class="text-success" style="display: inline-block;"><span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="right" title="<?php echo lang("motion_already_voted"); ?>"></span></p>
 								<?php	} ?>

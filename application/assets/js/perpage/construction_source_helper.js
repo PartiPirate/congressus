@@ -31,6 +31,7 @@ function sourceSelectHandler(container, $this) {
 
 			break;
 		case "forum":
+		case "pdf":
 			container.find("#sourceUrlDiv").show();
 			container.find("#sourceTitleDiv input").val();
 			container.find("#sourceTitleDiv").show();

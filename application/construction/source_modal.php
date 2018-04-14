@@ -41,6 +41,7 @@
                                 <option value="wiki_text">Wiki - Texte</option>
                                 <option value="congressus_motion">Congressus - Motion</option>
                                 <option value="forum">Débat</option>
+                                <option value="pdf">Lien vers un PDF</option>
                             </select>
                         </div>
                     </div>

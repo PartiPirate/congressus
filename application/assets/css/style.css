@@ -72,7 +72,7 @@ h2, h3 {
 
 .president select, .secretary select {
 	display: inline-block;
-	width: 98px;
+	width: 50%;
     padding-left: 6px;
     padding-right: 6px;
 }

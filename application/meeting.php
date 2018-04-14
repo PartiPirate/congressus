@@ -76,121 +76,190 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
 	</ol>
 
-	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-4" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
-			<span class="mee_start datetime-control">
-				<?php echo lang("meeting_the"); ?>
-				<span class="date-control">
-					<span class="span-date"><?php echo @$start->format(lang("date_format"))?></span>
-					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
-				</span>
-				<?php echo lang("meeting_at"); ?>
-				<span class="time-control">
-					<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
-					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
-				</span>
-			</span>
-		</div>
-		<div class="col-md-4" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
-			<span class="mee_finish datetime-control">
-				<?php echo lang("meeting_the"); ?>
-				<span class="date-control">
-					<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
-					<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
-				</span>
-				<?php echo lang("meeting_at"); ?>
-				<span class="time-control">
-					<span class="span-time"><?php echo @$end->format(lang("time_format"))?></span>
-					<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
-				</span>
-			</span>
-		</div>
-		<div class="col-md-4 synchro-vote" style="/*padding-top: 7px; padding-bottom: 7px;*/">
-			<span class="fa fa-archive"></span> 
-				<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
-				<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"></div>
+				<div class="panel-body">
 
-			<select class="form-control" data-type="mee_synchro_vote" style="margin-top: -7px;">
-				<option value="0"><?php echo lang("mee_synchro_vote_0"); ?></option>
-				<option value="1"><?php echo lang("mee_synchro_vote_1"); ?></option>
-			</select>
-		</div>
-	</div>
-	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-4 president">
-			<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
-			<span class="mee_president_member_id read-data" data-id="0"></span>
-			<select class="form-control" data-type="president" style="margin-top: -7px;">
-				<option value="0"></option>
-				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
-			</select>
-		</div>
-		<div class="col-md-4 secretary">
-			<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
-			<span class="mee_secretary_member_id read-data" data-id="0"></span>
-			<select class="form-control" data-type="secretary" style="margin-top: -7px;">
-				<option value="0"></option>
-				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
-			</select>
-		</div>
-		<div class="col-md-4 meeting-type">
-			<span class="glyphicon glyphicon-flag" style=""></span> <?php //echo lang("createMeeting_base_type"); ?>
-			<?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?>
-		</div>
-	</div>
-	<div class="row" style="margin-bottom: 5px; height: 30px; ">
-		<div class="col-md-4">
-			<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
-			<?php echo $meeting["loc_type"];?>
-		</div>
-		<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
-			<div class="col-md-4" >
-				<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
-				<?php
-				include("config/mumble.structure.php");
-				$mumble_channel = $meeting["loc_channel"];
-				$mumble_link = "mumble://" . $mumble_server . "/" . $mumble[$mumble_channel] . "?title=" . $mumble_title . "&version=" . $mumble_version;
-				echo "<a href='$mumble_link' target='_blank'>$mumble_channel</a>";
-				?>
+					<!-- Start time -->
+					<div>
+						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
+						<span class="mee_start datetime-control">
+							<?php echo lang("meeting_the"); ?>
+							<span class="date-control">
+								<span class="span-date"><?php echo @$start->format(lang("date_format"))?></span>
+								<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
+							</span>
+							<?php echo lang("meeting_at"); ?>
+							<span class="time-control">
+								<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
+								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
+							</span>
+						</span>
+					</div>
+
+					<!-- End time -->
+					<div>
+						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
+						<span class="mee_finish datetime-control">
+							<?php echo lang("meeting_the"); ?>
+							<span class="date-control">
+								<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
+								<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
+							</span>
+							<?php echo lang("meeting_at"); ?>
+							<span class="time-control">
+								<span class="span-time"><?php echo @$end->format(lang("time_format"))?></span>
+								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
+							</span>
+						</span>
+					</div>
+
+				</div>
 			</div>
-		<?php }
-			  else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {?>
-			<div class="col-md-4" >
-				<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
-				<?php
-				include("config/discord.structure.php");
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"></div>
+				<div class="panel-body">
 
-				list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
-				
-				$discord_text_link = @$discord_text_channels[$discord_text_channel];
-				$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
-				
-				echo "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
-				echo "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
-				
-				?>
+					<!-- President -->
+					<div class="president">
+						<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
+						<span class="mee_president_member_id read-data" data-id="0"></span>
+						<select class="form-control" data-type="president" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+							<option value="0"></option>
+							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+							<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
+						</select>
+					</div>
+
+					<!-- Secretary -->
+					<div class="secretary">
+						<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
+						<span class="mee_secretary_member_id read-data" data-id="0"></span>
+						<select class="form-control" data-type="secretary" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+							<option value="0"></option>
+							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+							<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
+						</select>
+					</div>
+					
+				</div>
 			</div>
-		<?php }?>
-		<div class="col-md-4">
-			<span class="glyphicon glyphicon-list-alt"></span> <?php echo lang("meeting_number_of_presents"); ?>
-			<span class="number-of-presents">0</span>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"></div>
+				<div class="panel-body">
+
+					<!-- Location -->
+					<div>
+						<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
+						<?php echo $meeting["loc_type"];?>
+					</div>
+
+					<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
+						<!-- Mumble -->
+						<div >
+							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
+							<?php
+							include("config/mumble.structure.php");
+							$mumble_channel = $meeting["loc_channel"];
+							$mumble_link = "mumble://" . $mumble_server . "/" . $mumble[$mumble_channel] . "?title=" . $mumble_title . "&version=" . $mumble_version;
+							echo "<a href='$mumble_link' target='_blank'>$mumble_channel</a>";
+							?>
+						</div>
+					<?php }
+						  else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {?>
+						<!-- Discord -->
+						<div>
+							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
+							<?php
+							include("config/discord.structure.php");
+			
+							list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
+							
+							$discord_text_link = @$discord_text_channels[$discord_text_channel];
+							$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
+							
+							echo "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
+							echo "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
+							
+							?>
+						</div>
+					<?php }?>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<?php 
+				$panelClass = "panel-default";
+				switch ($meeting["mee_status"]) {
+					case "construction":
+						$panelClass = "panel-info";
+						break;
+					case "waiting":
+						$panelClass = "panel-primary";
+						break;
+					case "open":
+						$panelClass = "panel-success";
+						break;
+					case "closed":
+						$panelClass = "panel-warning";
+						break;
+					case "deleted":
+						$panelClass = "panel-danger";
+						break;
+				}
+			?>
+			<div class="panel <?php echo $panelClass;?>" id="meeting-state-panel">
+				<div class="panel-heading"></div>
+				<div class="panel-body">
+					<!-- End time -->
+					<div class="meeting-type">
+						<span class="glyphicon glyphicon-flag" style=""></span> <?php //echo lang("createMeeting_base_type"); ?>
+						<?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?>
+					</div>
+
+					<!-- Synchro vote -->
+					<div class="synchro-vote" style="/*padding-top: 7px; padding-bottom: 7px;*/">
+						<span class="fa fa-archive"></span> 
+							<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
+							<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
+			
+						<select class="form-control" data-type="mee_synchro_vote" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+							<option value="0"><?php echo lang("mee_synchro_vote_0"); ?></option>
+							<option value="1"><?php echo lang("mee_synchro_vote_1"); ?></option>
+						</select>
+						
+						<a		class="btn btn-primary btn-xs btn-vote-meeting" style="margin-top: -3px;" 
+							href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window" style="font-size: 10px;"></span></a>
+						<button class="btn btn-default btn-local-anonymous btn-xs" style="margin-top: -3px; margin-left: -2px;" data-toggle="tooltip" data-placement="bottom"
+							title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
+						</button>
+					</div>
+
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<div style="clear: both;"></div>
 
 	<div class="row president-panels" style="margin-bottom: 5px; ">
 		<div class="col-md-8">
 			<div id="speaking-panel" class="panel panel-default">
 				<div class="panel-heading">
+					<button class="btn btn-default request-speaking pull-right" style="margin-top: -7px;"><?php echo lang("meeting_speakingAsk"); ?>
+						<span class="fa fa-hand-paper-o"></span>
+						<span class="badge" style="display: none;"></span>
+					</button>
+
 					<?php echo lang("meeting_talkManagement"); ?>
 				</div>
 				<div class="panel-body">
@@ -217,6 +286,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						</div>
 					</div>
 				</div>
+				<div class="panel-footer text-right">
+					<span class="glyphicon glyphicon-list-alt"></span> <?php echo lang("meeting_number_of_presents"); ?>
+					<span class="number-of-presents">0</span>
+				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -231,28 +304,17 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						<button class="margin-top-5 btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
 						<button class="margin-top-5 btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
 						<button class="margin-top-5 btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
-						
-						<a		class="margin-top-5 btn btn-primary btn-vote-meeting" href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window"></span></a>
-						<button class="margin-top-5 btn btn-default request-speaking"><?php echo lang("meeting_speakingAsk"); ?>
-							<span class="fa fa-hand-paper-o"></span>
-							<span class="badge" style="display: none;"></span>
-						</button>
 					</div>
-
-					<button class="btn btn-default btn-local-anonymous" style="margin-top:5px;" data-toggle="tooltip" data-placement="bottom"
-						title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
-					</button>
-					<br />
 
 					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
 
 					<br class="export-br simply-hidden">
 
 					<div class="row">
-						<button data-template="html"		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_html"); ?></button>
-						<button data-template="pdf" 		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_pdf"); ?></button>
-						<button data-template="markdown"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_wiki"); ?></button>
-						<button data-template="discourse"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success"><?php echo lang("export_discourse"); ?></button>
+						<button data-template="html"		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_html"); ?></button>
+						<button data-template="pdf" 		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_pdf"); ?></button>
+						<button data-template="markdown"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_wiki"); ?></button>
+						<button data-template="discourse"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_discourse"); ?></button>
 					</div>
 
 				</div>

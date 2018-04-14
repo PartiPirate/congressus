@@ -214,22 +214,29 @@ function updateMeeting(meeting) {
 	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
 	switch (meeting.mee_status) {
 		case "construction":
+			$("meeting-state-panel").addClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").removeClass("panel-danger");
 			$("#meeting-status-panel button.btn-delete-meeting").show();
 			$("#meeting-status-panel button.btn-waiting-meeting").show();
 			break;
 		case "waiting":
+			$("meeting-state-panel").removeClass("panel-info").addClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").removeClass("panel-danger");
 			$("#meeting-status-panel button.btn-open-meeting").show();
 			$("#meeting-status-panel button.btn-delete-meeting").show();
 			break;
 		case "open":
+			$("meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").addClass("panel-success").removeClass("panel-warning").removeClass("panel-danger");
 			$("#meeting-status-panel button.btn-close-meeting").show();
 			break;
 		case "closed":
+			$("meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").removeClass("panel-success").addClass("panel-warning").removeClass("panel-danger");
 			$("#meeting-status-panel span.closed-meeting").show();
 			$("#meeting-status-panel a.export-link").show();
 			$("#meeting-status-panel button.export-link").show();
 			$("#meeting-status-panel br.export-br").show();
 			break;
+		case "deleted":
+			$("meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").addClass("panel-danger");
+			break;			
 	}
 
 	$("#meeting-status-panel .btn-vote-meeting").show();

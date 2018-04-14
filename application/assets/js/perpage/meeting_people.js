@@ -201,7 +201,7 @@ function updateMemberLi(member, people) {
 	if (people.mem_id == userId) {
 		var buttons = [];
 		buttons[buttons.length] = member.children("button.request-speaking");
-		buttons[buttons.length] = $("#meeting-status-panel button.request-speaking");
+		buttons[buttons.length] = $("#meeting-status-panel button.request-speaking, #speaking-panel button.request-speaking");
 
 		for(var bIndex = 0; bIndex < buttons.length; ++bIndex) {
 			var button = buttons[bIndex];
@@ -236,8 +236,8 @@ function updateMemberLi(member, people) {
 	if (people.mem_speaking_request && people.mem_speaking_request != "0") {
 		var speakerButton = $("#speaking-panel .speaking-requesters button#requester-" + people.mem_id);
 		if (!speakerButton.length) {
-			speakerButton = $("<button />", {"class": "btn btn-default",
-				style: "margin-right: 5px;",
+			speakerButton = $("<button />", {"class": "btn btn-default btn-sm",
+				style: "margin-right: 5px; padding: 3px 10px; font-size: 13px;",
 				id: "requester-" + people.mem_id,
 				"data-id": people.mem_id}).text(people.mem_nickname);
 			speakerButton.append($("<span />", {"class": "fa fa-hand-paper-o", style: ""}));

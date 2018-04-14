@@ -76,6 +76,15 @@ class MotionBo {
 
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->join("motion_propositions", "mpr_motion_id = mot_id", null, "left");
+
+		if (isset($filters["with_total_votes"]) && $filters["with_total_votes"]) {
+			$queryBuilder->addSelect("(SELECT COUNT(DISTINCT vv.vot_member_id) FROM votes vv JOIN motion_propositions vmp ON vmp.mpr_id = vv.vot_motion_proposition_id WHERE vmp.mpr_motion_id = mot_id AND vv.vot_power <> 0)", "mot_total_votes");
+			$queryBuilder->addSelect("(SELECT COUNT(DISTINCT vv.vot_member_id) FROM votes vv WHERE vv.vot_motion_proposition_id = mpr_id AND vv.vot_power <> 0)", "mpr_total_votes");
+			$queryBuilder->addSelect("(SELECT COUNT(DISTINCT vv.vot_member_id) FROM votes vv WHERE vv.vot_motion_proposition_id = mpr_id AND vv.vot_power <> 0) / (SELECT COUNT(DISTINCT vv.vot_member_id) FROM votes vv JOIN motion_propositions vmp ON vmp.mpr_id = vv.vot_motion_proposition_id WHERE vmp.mpr_motion_id = mot_id AND vv.vot_power <> 0)", "mpr_proportion_votes");
+			$queryBuilder->addSelect("(SELECT SUM(vv.vot_power) FROM votes vv WHERE vv.vot_motion_proposition_id = mpr_id AND vv.vot_power <> 0)", "mpr_total_power");
+			$queryBuilder->addSelect("(SELECT SUM(vv.vot_power) FROM votes vv WHERE vv.vot_motion_proposition_id = mpr_id AND vv.vot_power <> 0) / (SELECT SUM(vv.vot_power) FROM votes vv JOIN motion_propositions vmp ON vmp.mpr_id = vv.vot_motion_proposition_id WHERE vmp.mpr_motion_id = mot_id AND vv.vot_power <> 0)", "mpr_proportion_power");
+		}
+
 		$queryBuilder->addSelect($this->TABLE . ".*")->addSelect("motion_propositions.*");
 
 		if (isset($filters["vot_member_id"]) && $filters["vot_member_id"]) {
@@ -91,6 +100,16 @@ class MotionBo {
 			$queryBuilder->addSelect("agendas.*")->addSelect("meetings.*");
 			$queryBuilder->join("agendas", "age_id = mot_agenda_id");
 			$queryBuilder->join("meetings", "mee_id = age_meeting_id AND mee_deleted = 0 AND mee_status != 'deleted'");
+
+			if (isset($filters["mee_type"]) && $filters["mee_type"]) {
+				$args["mee_type"] = $filters["mee_type"];
+				$queryBuilder->where("mee_type = :mee_type");
+			}
+
+			if (isset($filters["mee_status"]) && $filters["mee_status"]) {
+				$args["mee_status"] = $filters["mee_status"];
+				$queryBuilder->where("mee_status = :mee_status");
+			}
 		}
 
 		if (isset($filters["with_notice"]) && $filters["with_notice"]) {
@@ -139,6 +158,11 @@ class MotionBo {
 			$queryBuilder->where("mot_agenda_id = :mot_agenda_id");
 		}
 
+		if (isset($filters["mpr_label"])) {
+			$args["mpr_label"] = $filters["mpr_label"];
+			$queryBuilder->where("mpr_label = :mpr_label");
+		}
+
 		if (isset($filters["with_meeting"]) && $filters["with_meeting"] && isset($filters["age_id"])) {
 			$args["age_id"] = $filters["age_id"];
 			$queryBuilder->where("age_id = :age_id");
@@ -157,10 +181,21 @@ class MotionBo {
 		if (!isset($filters["with_deleted"])) {
 			$queryBuilder->where("mot_deleted = 0");
 		}
+		
+		if (isset($filters["with_total_votes"]) && $filters["with_total_votes"]) {
+			$queryBuilder->orderDESCBy("mpr_total_power");
+			$queryBuilder->orderDESCBy("mpr_proportion_power");
+		}
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
-//		echo showQuery($query, $args);
+
+/*
+		if (isset($filters["with_total_votes"])) {
+			echo showQuery($query, $args);	
+		}
+*/
+
 //		exit();
 //		error_log(showQuery($query, $args));
 //		echo showQuery($queryBuilder->constructRequest(), $args);

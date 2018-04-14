@@ -19,12 +19,39 @@
 include_once("header.php");
 
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/MotionBo.php");
+require_once("engine/utils/Parsedown.php");
+require_once("engine/emojione/autoload.php");
+
+$Parsedown = new Parsedown();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
+$motionBo  =  MotionBo::newInstance($connection, $config);
 $filters = array();
 $filters["with_status"] = array("open");
 
 $meetings = $meetingBo->getByFilters($filters);
+
+$motions = $motionBo->getByFilters(array("with_meeting" => true, "mee_type" => "construction", "with_total_votes" => true, "mee_status" => "open", "mpr_label" => "pro"));
+$trendingMotions = array();
+
+$alreadyDoneMeetingIds = array();
+foreach($motions as $motion) {
+	
+	if (isset($alreadyDoneMeetingIds[$motion["mee_id"]])) continue;
+
+	$trendingMotions[] = $motion;
+	$alreadyDoneMeetingIds[$motion["mee_id"]] = $motion["mee_id"];
+
+	if (count($trendingMotions) == 4) break;
+}
+
+$headingColMd = "col-md-" . (12 / count($trendingMotions));
+
+echo "<!-- \n";
+print_r($trendingMotions);
+echo "\n -->";
 
 //print_r($meetings);
 
@@ -70,6 +97,45 @@ $meetings = $meetingBo->getByFilters($filters);
 					$separator = ", ";
 				} ?>
 	</div>
+	<?php	} ?>
+
+	<?php	if (count($trendingMotions)) { ?>
+	
+	<div class="row">
+	<?php		foreach($trendingMotions as $motion) { ?>
+		<div class="<?php echo $headingColMd; ?>">
+			<div class="panel panel-default">
+				<div class="panel-heading no-caret" style="height: 61px;">
+					<p class="text-info" style="display: inline-block;"><a 
+						href="construction_motion.php?motionId=<?php echo $motion["mot_id"]; ?>" data-toggle="tooltip" data-placement="top" 
+						title="<?php echo str_replace("\"", "&quot;", $emojiClient->shortnameToUnicode($motion["mot_explanation"])); ?>"><?php echo $motion["mot_title"]; ?></a></p>
+				</div>
+				<div class="panel-body" style="height: 100px; overflow-x: hidden;">
+					<?php 
+						$text = $motion["mot_explanation"];
+						
+//						if ($text) $text .= "<br><br>";
+						if (!$text) {
+							$text .= $motion["mot_description"];
+	
+							if (strlen($text) > 200) {
+								$text = substr($text, 0, 200);
+							}
+						}
+
+						echo $emojiClient->shortnameToImage($Parsedown->text($text)); 
+					?>
+				</div>
+				<div class="panel-footer text-right" style="height: 61px;">
+					<a href="construction.php?id=<?php echo $motion["mee_id"]; ?>"><?php echo $motion["mee_label"]; ?></a>
+					/ 
+					<a href="construction.php?id=<?php echo $motion["mee_id"]; ?>&agendaId=<?php echo $motion["age_id"]; ?>"><?php echo $motion["age_label"]; ?></a>
+				</div>
+			</div>
+		</div>
+	<?php		} ?>
+	</div>
+	
 	<?php	} ?>
 
 	<div class="calendar-nav clearfix">

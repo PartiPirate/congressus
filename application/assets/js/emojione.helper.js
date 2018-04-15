@@ -215,26 +215,28 @@
 		        show($el[0], options2);
 		        return;
 		    }
-		    
+
 			createContainer( $el[0] );
 			emojioneHelpers[$el[0]] = this;
 
 			// HIDE EMOJI CONTAINER ON CLICK ANYWHERE OUTSIDE THE ELEMENT
-			$( document ).on( "click",
-				function( e )
-				{
-					if( $( "."  + emojiContainer ).is( ":visible")==false || $( e.target ).is( ".emojionepicker-picker, .emojione, .btn-emoji, .fnt-emoji" ) )
-					{
-						return;
-					}
-					
-					$( "."  + emojiContainer ).fadeOut();
+			$(document).on("click",
+				function(e) {
+					if( $( "."  + emojiContainer ).is(":visible") == false || $(e.target).is(".emojionepicker-picker, .emojione, .btn-emoji, .fnt-emoji")) return;
+
+					$("."  + emojiContainer ).fadeOut();
 				}
 			);
-				
+
+			$(document).on("keyup",
+				function(e) { 
+					if( $( "."  + emojiContainer ).is(":visible") == false || (e.key != " " && e.key != "Enter" && e.key != "Tab")) return;
+
+					$("."  + emojiContainer ).fadeOut();
+				}
+			);
+
 		})();
-
-
 
 		return this;
     };

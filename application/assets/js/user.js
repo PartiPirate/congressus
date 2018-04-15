@@ -22,6 +22,7 @@
 function testBadges(user) {
 //	console.log(user);
 
+	if (typeof user == "undefined") return;
 	if (typeof user["badges"] == "undefined") return;
 
 //	console.log(user.badges);

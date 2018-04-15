@@ -26,6 +26,7 @@
 
 /* global meeting_vote */
 /* global meeting_motionVote2 */
+/* global emojione */
 
 keyupTimeoutId = null;
 
@@ -476,7 +477,8 @@ function setAgendaChat(id, chats) {
 		}
 
 		if (text.data("text") != chat.cha_text) {
-			text.html(chat.cha_text.replace(/\n/g, "<br>"));
+//			text.html(chat.cha_text.replace(/\n/g, "<br>"));
+			text.html(toMarkdownWithEmoji(chat.cha_text));
 			text.data("text", chat.cha_text);
 		}
 
@@ -498,6 +500,14 @@ function setAgendaChat(id, chats) {
 					chatContainer.find(".btn-advice").each(function() {
 						if ($(this).data("advice") == advice.cad_advice) {
 							$(this).addClass("disabled").prop("disabled", true);
+							/* TODO find a better way */
+							var ttid = $(this).attr("aria-describedby");
+							if (ttid) {
+								$(this).removeAttr("aria-describedby");
+								var title = $("#" + ttid).text();
+								$("#" + ttid).remove();
+								$(this).attr("title", title);
+							}
 						}
 						else {
 							$(this).removeClass("disabled").prop("disabled", false);
@@ -559,6 +569,8 @@ function setAgendaTask(id, tasks) {
 
 		if (text.data("text") != task.tas_label) {
 			text.html(task.tas_label.replace(/\n/g, "<br>"));
+
+			text.html(toMarkdownWithEmoji(task.tas_label));
 			text.data("text", task.tas_label);
 		}
 
@@ -594,8 +606,9 @@ function setAgendaConclusion(id, conclusions) {
 		var conclusion = conclusions[index];
 		if (conclusion.con_id != id) continue;
 
-		if (text.text() != conclusion.con_text) {
-			text.text(conclusion.con_text);
+		if (text.data("text") != conclusion.con_text) {
+			text.data("text", conclusion.con_text)
+			text.html(toMarkdownWithEmoji(conclusion.con_text));
 		}
 
 		break;
@@ -1164,7 +1177,7 @@ function addTaskHandlers() {
 			return;
 		}
 
-		var textarea = $("<textarea />", {"style": "width: 100%;", "class": "autogrow"});
+		var textarea = $("<textarea />", {"style": "width: 100%; max-height: 200px;", "class": "autogrow"});
 		var taskText = $(this).find(".task-label");
 		var taskId = $(this).data("id");
 
@@ -1176,12 +1189,16 @@ function addTaskHandlers() {
 
 			$.post("meeting_api.php?method=do_changeTask", {taskId: taskId, property: "tas_label", text: newText}, function(data) {
 				taskText.data("text", newText);
-				taskText.html(newText.replace(/\n/g, "<br>"));
+				taskText.html(toMarkdownWithEmoji(newText));
 				taskText.show();
 				textarea.remove();
 			}, "json");
 		});
 
+		taskText.after(textarea);
+		taskText.hide();
+
+		textarea.keyup();
 		textarea.keyup(function() {
 			clearKeyup();
 			keyupTimeoutId = setTimeout(function() {
@@ -1191,9 +1208,6 @@ function addTaskHandlers() {
 				}, "json");
 			}, 1500);
 		});
-
-		taskText.after(textarea);
-		taskText.hide();
 
 		textarea.focus();
 	});
@@ -1307,7 +1321,7 @@ function addChatHandlers() {
 			return;
 		}
 
-		var textarea = $("<textarea />", {"style": "width: 100%;", "class": "autogrow"});
+		var textarea = $("<textarea />", {"style": "width: 100%; max-height: 200px;", "class": "autogrow"});
 		var chatText = $(this).find(".chat-text");
 		var chatId = $(this).data("id");
 
@@ -1325,6 +1339,10 @@ function addChatHandlers() {
 			}, "json");
 		});
 
+		chatText.after(textarea);
+		chatText.hide();
+
+		textarea.keyup();
 		textarea.keyup(function() {
 			clearKeyup();
 			keyupTimeoutId = setTimeout(function() {
@@ -1334,9 +1352,6 @@ function addChatHandlers() {
 				}, "json");
 			}, 1500);
 		});
-
-		chatText.after(textarea);
-		chatText.hide();
 
 		textarea.focus();
 	});
@@ -1383,23 +1398,28 @@ function addConclusionHandlers() {
 			return;
 		}
 
-		var textarea = $("<textarea />", {"style": "width: 100%;"});
+		var textarea = $("<textarea />", {"style": "width: 100%; max-height: 200px;", "class": "autogrow"});
 		var conclusionText = $(this).find(".conclusion-text");
 		var conclusionId = $(this).data("id");
 
-		textarea.text(conclusionText.text());
+		textarea.text(conclusionText.data("text"));
 		textarea.blur(function() {
 			clearKeyup();
 			// update the text into the server
 			var newText = textarea.val();
 
 			$.post("meeting_api.php?method=do_changeConclusion", {conclusionId: conclusionId, text: newText}, function(data) {
-				conclusionText.text(newText);
+				conclusionText.html(toMarkdownWithEmoji(newText));
+				conclusionText.data("text", newText);
 				conclusionText.show();
 				textarea.remove();
 			}, "json");
 		});
 
+		conclusionText.after(textarea);
+		conclusionText.hide();
+
+		textarea.keyup();
 		textarea.keyup(function() {
 			clearKeyup();
 			keyupTimeoutId = setTimeout(function() {
@@ -1409,9 +1429,6 @@ function addConclusionHandlers() {
 				}, "json");
 			}, 1500);
 		});
-
-		conclusionText.after(textarea);
-		conclusionText.hide();
 
 		textarea.focus();
 	});
@@ -1621,7 +1638,7 @@ function updateTasks() {
 
 				taskLi.removeClass("to-remove");
 
-				taskLi.find(".task-label").html(task.tas_label.replace(/\n/g, "<br>"));
+				taskLi.find(".task-label").html(toMarkdownWithEmoji(task.tas_label));
 			}
 
 			$("#tasks-list li.to-remove").remove();
@@ -1773,8 +1790,53 @@ function meetingAutogrowEvent() {
 	this.scrollTop = currentScroll;
 }
 
+function addEmojiHelper() {
+	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
+		//console.log(event)	
+		if (event.key == ":") {
+			var position = $(event.target).offset();
+			position.top += 20;
+			position.left += 10;
+			position.caller = this;
+			position.removeChar = true;
+			$("body").emojioneHelper("show", position);
+		}
+	});
+
+	$("body").emojioneHelper();
+}
+
+function toMarkdownWithEmoji(source) {
+	source = emojione.shortnameToImage(source);
+
+	const regex = /^(=+)([^=]*)(=*)$/gm;
+	
+	let m;
+
+	var dashes = ["", "#", "##", "###", "####", "#####", "######"];
+
+	while ((m = regex.exec(source)) !== null) {
+	    // This is necessary to avoid infinite loops with zero-width matches
+	    if (m.index === regex.lastIndex) {
+	        regex.lastIndex++;
+	    }
+
+	    var search = m[1] + m[2] + m[3];
+	    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
+//		var replace = dashes[m[1].length] + m[2];
+
+		source = source.replace(search, replace);
+	}
+
+	var converter = new showdown.Converter();
+	source = converter.makeHtml(source);
+
+	return source;
+}
+
 $(function() {
 	setFramatalkPosition("left");
+	addEmojiHelper();
 /*	
 	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);
 	$("body").on("focus", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);

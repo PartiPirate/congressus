@@ -393,7 +393,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-footer">
 					<div class="form-group">
 					  	<div class="col-md-12">                     
-					    	<textarea class="form-control" id="starting-text" rows="3"></textarea>
+					    	<textarea class="form-control" id="starting-text" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"></textarea>
 						</div>
 					</div>
 					<div>
@@ -518,7 +518,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				target="_blank"
 				href="meeting.php?id=${tas_meeting_id}#agenda-${tas_agenda_id}|task-${tas_id}"><span class="glyphicon glyphicon-eye-open"></span></a>
 
-			<span class="fa fa-tasks"></span>
+			<span class="fa fa-tasks pull-left"></span>
 			<span class="task-label"></span>
 		</li>
 
@@ -540,7 +540,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="glyphicon glyphicon-pencil pull-right"
 				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
-			<span class="fa fa-tasks"></span>
+			<span class="fa fa-tasks pull-left"></span>
 			<span class="task-label"></span>
 		</li>
 
@@ -576,7 +576,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="glyphicon glyphicon-pencil pull-right"
 				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
-			<span class="fa fa-comment"></span>
+			<span class="fa fa-comment pull-left"></span>
 			<span class="chat-member"><img src="getAvatar.php?userId=${mem_id}" class="img-circle avatar" style="max-width: 16px; max-height: 16px; position: relative; top: -2px; margin-right: 2px;" 
 							 data-toggle="tooltip" data-placement="top" title="${mem_nickname}"><span class="chat-nickname" style="width: none;"></span><select class="chat-select-member" style="display: none;">
 				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
@@ -623,7 +623,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="glyphicon glyphicon-pencil pull-right"
 				title="<?php echo lang("meeting_clicEdit"); ?>"
 				style="margin-right: 5px; display: none;"></span>
-			<span class="fa fa-lightbulb-o"></span>
+			<span class="fa fa-lightbulb-o pull-left"></span>
 			<span class="conclusion-text"></span>
 		</li>
 

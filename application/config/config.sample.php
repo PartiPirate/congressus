@@ -28,8 +28,9 @@ $config["server"]["base"] = "https://congressus.host/";
 $config["server"]["line"] = "";
 $config["server"]["timezone"] = "Europe/Paris";
 
-$config["congressus"]["ballot_majorities"] = array(0, 50, 66, 80, -1);
+$config["congressus"]["ballot_majorities"] = array(0, 50, 66, 80, -1, -2);
 $config["congressus"]["ballot_majority_judgment"] = array(1, 2, 3, 4, 5, 6);
+$config["congressus"]["ballot_majority_judgment_force"] = true; // If ALL vote are mandatory in a single judgment motion
 /*
 $config["gamifier"]["url"] = "http://gamifier.url/gamifier_api.php";
 $config["gamifier"]["user_secret"] = "asecret";

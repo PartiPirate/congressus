@@ -182,6 +182,10 @@ function sortPropositions($a, $b) {
 <script>
 </script>
 <?php include("footer.php");?>
+<script>
+/* global judgmentVoteIsMandatory */
 
+judgmentVoteIsMandatory = <?php echo json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
+</script>
 </body>
 </html>

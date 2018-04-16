@@ -865,6 +865,9 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
+/* global judgmentVoteIsMandatory */
+
+judgmentVoteIsMandatory = <?php echo json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
 
 var common_edit = "<?php echo lang("common_edit"); ?>";
 var common_close = "<?php echo lang("common_close"); ?>";

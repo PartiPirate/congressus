@@ -28,6 +28,8 @@
 /* global meeting_motionVote2 */
 /* global emojione */
 
+var judgmentVoteIsMandatory = false;
+
 keyupTimeoutId = null;
 
 function clearKeyup() {
@@ -840,19 +842,24 @@ function retrieveJMPreviousVotes(motion, propositionsHolder) {
 	var userId = $(".meeting").data("user-id");
 	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
 
-	if (!votes.length) return;
-
 	votes.each(function() {
 		var proposition = propositionsHolder.find(".proposition[data-id="+$(this).data("proposition-id")+"]");
-		
+
 		var votePower = $(this).data("power");
-		
+
 		var jmProposition = proposition.find("*[data-power="+votePower+"]");
 		jmProposition.addClass("active");
 
 		proposition.data("power", jmProposition.data("power"));
 		proposition.css({background: $(jmProposition).css("background-color")});
 	});
+	
+	if (judgmentVoteIsMandatory) {
+		propositionsHolder.find(".proposition").each(function() {
+			if ($(this).find(".judgement.active").length > 0) return;
+			$(this).find(".judgement").eq(0).click();
+		});
+	}
 }
 
 function vote(event) {

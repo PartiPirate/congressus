@@ -18,6 +18,8 @@
 */
 /* global $ */
 
+var judgmentVoteIsMandatory = false;
+
 function addLog(log) {
 	$("#log").append($("<span>" + log + "</span><br>"));
 }
@@ -296,14 +298,22 @@ function addMajorityJudgmentHandlers(motion) {
 
 			proposition.data("power", $(this).data("power"));
 			proposition.css({background: $(this).css("background-color")});
+			setMotionDirty(motion, true);
 		});
 
+		// Init class
+		var foundAlreadyVoted = false;
 		proposition.find(".judgement").each(function() {
 			if ($(this).data("power") == proposition.data("power")) {
 				$(this).addClass("active");
 				proposition.css({background: $(this).css("background-color")});
-			}	
+				foundAlreadyVoted = true;
+			}
 		});
+		
+		if (!foundAlreadyVoted && judgmentVoteIsMandatory) {
+			proposition.find(".judgement").eq(0).click();
+		}
 	});
 
 	motion.find(".btn-vote").click(function() {

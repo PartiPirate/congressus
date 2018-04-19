@@ -563,18 +563,18 @@ include("construction/pieChart.php");
 					$chatAdviceCounters["total"]++;
 					if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
 				}
-				$chatAdviceCounters['ratio_thumb_up'] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters['ratio_thumb_down'] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters['ratio_thumb_down_is_major'] = $chatAdviceCounters['ratio_thumb_down'] > 0.5 ? 'ratio-thumb-down-is-major' : '';
+				$chatAdviceCounters["ratio_thumb_up"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
+				$chatAdviceCounters["ratio_thumb_down"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
+				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5;
 	?>
-							<li class="list-group-item pro-chat"
+							<li class="list-group-item pro-chat <?php echo $chatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $chatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php echo $chatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php echo $chatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $chatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php echo $chatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php echo $chatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 								<div>
 									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
@@ -586,7 +586,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div class="<?php echo $chatAdviceCounters['ratio_thumb_down_is_major'];?>"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -626,18 +626,18 @@ include("construction/pieChart.php");
 						$childrenChatAdviceCounters["total"]++;
 						if ($chatAdvice["cad_user_id"] == $userId) $childrenChatAdviceCounters["me"] = $chatAdvice["cad_advice"];
 					}
-					$childrenChatAdviceCounters['ratio_thumb_up'] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters['ratio_thumb_down'] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters['ratio_thumb_down_is_major'] = $childrenChatAdviceCounters['ratio_thumb_down'] > 0.5 ? 'ratio-thumb-down-is-major' : '';
+					$childrenChatAdviceCounters["ratio_thumb_up"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
+					$childrenChatAdviceCounters["ratio_thumb_down"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
+					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5;
 	?>
-							<li class="list-group-item pro-chat children-chat"
+							<li class="list-group-item pro-chat children-chat <?php echo $childrenChatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $childrenChatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php echo $childrenChatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php echo $childrenChatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $childrenChatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php echo $childrenChatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php echo $childrenChatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 								<div>
 									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
@@ -649,7 +649,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div class="<?php echo $childrenChatAdviceCounters['ratio_thumb_down_is_major'];?>"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -684,9 +684,9 @@ include("construction/pieChart.php");
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $chatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php echo $chatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php echo $chatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $chatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php echo $chatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php echo $chatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 
 								<form class="form-horizontal" data-chat-type="pro">
@@ -786,19 +786,19 @@ include("construction/pieChart.php");
 					$chatAdviceCounters["total"]++;
 					if ($chatAdvice["cad_user_id"] == $userId) $chatAdviceCounters["me"] = $chatAdvice["cad_advice"];
 				}
-				$chatAdviceCounters['ratio_thumb_up'] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters['ratio_thumb_down'] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters['ratio_thumb_down_is_major'] = $chatAdviceCounters['ratio_thumb_down'] > 0.5 ? 'ratio-thumb-down-is-major' : '';
+				$chatAdviceCounters["ratio_thumb_up"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
+				$chatAdviceCounters["ratio_thumb_down"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
+				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5;
 
 	?>
-							<li class="list-group-item against-chat"
+							<li class="list-group-item against-chat <?php echo $chatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $chatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php $chatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php $chatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $chatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php $chatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php $chatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 								<div>
 									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
@@ -810,7 +810,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div class="<?php echo $chatAdviceCounters['ratio_thumb_down_is_major'];?>"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -851,18 +851,18 @@ include("construction/pieChart.php");
 						$childrenChatAdviceCounters["total"]++;
 						if ($chatAdvice["cad_user_id"] == $userId) $childrenChatAdviceCounters["me"] = $chatAdvice["cad_advice"];
 					}
-					$childrenChatAdviceCounters['ratio_thumb_up'] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters['ratio_thumb_down'] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters['ratio_thumb_down_is_major'] = $childrenChatAdviceCounters['ratio_thumb_down'] > 0.5 ? 'ratio-thumb-down-is-major' : '';
+					$childrenChatAdviceCounters["ratio_thumb_up"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
+					$childrenChatAdviceCounters["ratio_thumb_down"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
+					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5;
 	?>
-							<li class="list-group-item against-chat children-chat"
+							<li class="list-group-item against-chat children-chat <?php echo $childrenChatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $childrenChatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php echo $childrenChatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php echo $childrenChatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $childrenChatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php echo $childrenChatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php echo $childrenChatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 								<div>
 									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
@@ -874,7 +874,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div class="<?php echo $childrenChatAdviceCounters['ratio_thumb_down_is_major'];?>"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
+								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -909,9 +909,9 @@ include("construction/pieChart.php");
 								data-older="-<?php echo $chat["cha_id"]; ?>"
 								data-newer="<?php echo $chat["cha_id"]; ?>"
 								data-absolute-pro="<?php echo $chatAdviceCounters["thumb_up"]; ?>"
-								data-relative-pro="<?php echo $chatAdviceCounters['ratio_thumb_up']; ?>"
+								data-relative-pro="<?php echo $chatAdviceCounters["ratio_thumb_up"]; ?>"
 								data-absolute-against="<?php echo $chatAdviceCounters["thumb_down"]; ?>"
-								data-relative-against="<?php echo $chatAdviceCounters['ratio_thumb_down']; ?>"
+								data-relative-against="<?php echo $chatAdviceCounters["ratio_thumb_down"]; ?>"
 							>
 
 								<form class="form-horizontal" data-chat-type="against">

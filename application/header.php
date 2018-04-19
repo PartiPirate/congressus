@@ -195,14 +195,14 @@ if (isset($motion)) {
 <meta property="og:url" content="<?php echo $current_url; ?>" />
 <meta property="og:title" content="Parti Pirate <?php echo $page_title;?>" />
 <meta property="og:description" content="<?php echo $page_description;?>" />
-<meta property="og:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
+<meta property="og:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="fb:page_id" content="partipiratefr" />
 <!-- Google +1 -->
 <meta itemprop="name" content="Parti Pirate <?php echo $page_title;?>" />
 <meta itemprop="description" content="<?php echo $page_description;?>" />
-<meta itemprop="image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
+<meta itemprop="image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
 <meta itemprop="author" content="farlistener" />
 <!-- Twitter -->
 <meta name="twitter:site" content="@partipirate" />
@@ -211,7 +211,7 @@ if (isset($motion)) {
 <meta name="twitter:url" content="<?php echo $current_url; ?>" />
 <meta name="twitter:title" content="Parti Pirate <?php echo $page_title;?>" />
 <meta name="twitter:description" content="<?php echo $page_description;?>" />
-<meta name="twitter:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo.png" />
+<meta name="twitter:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
 <meta name="twitter:image:alt" content="Logo de Congressus" />
 
 <!-- Bootstrap -->
@@ -258,9 +258,9 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#otb-navbar-collapse">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php"><img src="assets/images/logo.svg"
+				<a class="navbar-brand" href="index.php"><img src="assets/images/logo_voile_fond.svg"
 					alt="Logo Congressus"
-					style="position: relative; top: -14px; width: 48px; height: 48px; background-color: #ffffff;"
+					style="position: relative; top: -14px; width: 48px; height: 48px; "
 					data-toggle="tooltip" data-placement="bottom"
 					title="Congressus" /> </a>
 			</div>

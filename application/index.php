@@ -38,7 +38,6 @@ $trendingMotions = array();
 
 $alreadyDoneMeetingIds = array();
 foreach($motions as $motion) {
-	
 	if (isset($alreadyDoneMeetingIds[$motion["mee_id"]])) continue;
 
 	$trendingMotions[] = $motion;

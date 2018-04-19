@@ -190,6 +190,7 @@ foreach($sources as $src) {
 }
 
 $mainColumn = 12;
+$jsonMotion = $motion;
 
 ?>
 
@@ -370,7 +371,7 @@ include("construction/pieChart.php");
 						<hr>
 					</div>
 
-					<label for="explanation"><?php echo lang("amendment_description"); ?> </label>
+					<label for="markdown-group"><?php echo lang("amendment_description"); ?> </label>
 					<br>
 
 					<div id="motion-description-group" class="with-scroll" style="display: none;">
@@ -385,11 +386,10 @@ include("construction/pieChart.php");
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
 						<div id="diff" class="scroller" style="position: relative; display: none;" ></div>
 					</div>
-					<div id="markdown-group" class="with-scroll" style="display: none;">
-						<!--
-						<div class="change-scroll"><div class="scroll-zone"></div></div>
-						-->
-						<div id="markdown-area" class="scroller" style="position: relative; display: none;" ></div>
+					<div id="markdown-group">
+						<div id="markdown-area">
+							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?>
+						</div>
 					</div>
 
 					<hr>
@@ -1005,8 +1005,8 @@ include("construction/pieChart.php");
 <div class="container otbHidden">
 </div>
 
-<templates>
-	<ul>
+<templates style="display: none;">
+	<ul style="display: none;">
 		<li data-template-id="echat" id="echat-${message_id}"
 				class="template list-group-item echat" data-id="${message_id}">
 			<img src="${mem_avatar_url}" style="max-height: 20px; max-width: 20px; border-radius: 10px; ">
@@ -1089,8 +1089,10 @@ var majority_judgement_translations = <?php echo json_encode($translatons); ?>
 </script>
 
 <div id="motion-json" class="hidden"><?php 
-	$motion["mot_description"] = str_replace("<", "#lt;", $motion["mot_description"]);
-	echo json_encode($motion); 
+	$jsonMotion["mot_description"] = str_replace("<", "#lt;", $jsonMotion["mot_description"]);
+	$jsonMotion["mot_explanation"] = str_replace("<", "#lt;", $jsonMotion["mot_explanation"]);
+
+	echo json_encode($jsonMotion); 
 ?></div>
 </body>
 </html>

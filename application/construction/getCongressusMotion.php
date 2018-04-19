@@ -12,6 +12,8 @@
     
     $destinationArea = $doc->getElementById("motion-json");
 
+//    print_r($destinationArea);
+
 /*
     if ($motionTitle) {
         $data["title"] = trim($motionTitle->textContent);
@@ -21,9 +23,8 @@
     if ($destinationArea) {
         $motion = json_decode(trim($destinationArea->textContent), true);
         
-/*
-        $data["motion"] = $motion;
-*/        
+//        $data["motion"] = $motion;
+        
         $motion["mot_description"] = str_replace("#lt;", "<", $motion["mot_description"]);
 
         $data["content"] = $motion["mot_description"];

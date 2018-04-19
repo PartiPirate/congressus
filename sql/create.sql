@@ -30,10 +30,13 @@ CREATE TABLE `agendas` (
 CREATE TABLE `chats` (
   `cha_id` bigint(20) NOT NULL,
   `cha_agenda_id` bigint(20) NOT NULL,
+  `cha_motion_id` bigint(20) DEFAULT NULL COMMENT 'A chat can be attached to a motion',
+  `cha_parent_id` bigint(20) DEFAULT NULL,
   `cha_member_id` bigint(20) DEFAULT NULL,
   `cha_guest_id` bigint(20) DEFAULT NULL,
   `cha_deleted` tinyint(4) NOT NULL DEFAULT '0',
-  `cha_text` varchar(2048) NOT NULL,
+  `cha_type` enum('neutral','pro','against') NOT NULL DEFAULT 'neutral' COMMENT 'a chat can be neutral (default mode), pro or against',
+  `cha_text` text NOT NULL,
   `cha_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -47,7 +50,7 @@ CREATE TABLE `chat_advices` (
   `cad_id` bigint(20) NOT NULL,
   `cad_chat_id` bigint(20) DEFAULT NULL,
   `cad_user_id` bigint(20) DEFAULT NULL,
-  `cad_advice` enum('thumb_up','thumb_down') DEFAULT NULL
+  `cad_advice` enum('thumb_up','thumb_down','thumb_middle') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -83,7 +86,7 @@ CREATE TABLE `locations` (
   `loc_id` bigint(20) NOT NULL,
   `loc_meeting_id` bigint(20) NOT NULL,
   `loc_principal` tinyint(1) NOT NULL DEFAULT '0',
-  `loc_type` enum('mumble','irc','afk','framatalk') NOT NULL,
+  `loc_type` enum('mumble','irc','afk','framatalk','discord') NOT NULL,
   `loc_channel` varchar(255) NOT NULL,
   `loc_extra` varchar(2048) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -112,9 +115,11 @@ CREATE TABLE `logs` (
 CREATE TABLE `meetings` (
   `mee_id` bigint(20) NOT NULL,
   `mee_label` varchar(255) NOT NULL,
+  `mee_type` enum('meeting','construction') NOT NULL DEFAULT 'meeting',
   `mee_class` enum('event-important','event-success','event-warning','event-info','event-inverse','event-special') NOT NULL,
   `mee_deleted` tinyint(4) NOT NULL DEFAULT '0',
   `mee_status` enum('construction','open','closed','waiting','deleted') NOT NULL DEFAULT 'construction',
+  `mee_synchro_vote` tinyint(4) NOT NULL DEFAULT '1',
   `mee_president_member_id` bigint(20) DEFAULT NULL,
   `mee_secretary_member_id` bigint(20) DEFAULT NULL,
   `mee_secretary_agenda_id` bigint(20) DEFAULT NULL COMMENT 'Current agenda id viewed by the secretary',
@@ -157,14 +162,17 @@ CREATE TABLE `meeting_types` (
 
 CREATE TABLE `motions` (
   `mot_id` bigint(20) NOT NULL,
+  `mot_author_id` bigint(20) DEFAULT NULL,
   `mot_agenda_id` bigint(20) NOT NULL,
   `mot_deleted` tinyint(4) NOT NULL DEFAULT '0',
   `mot_status` enum('construction','voting','resolved') NOT NULL DEFAULT 'construction',
+  `mot_pinned` tinyint(4) NOT NULL DEFAULT '0',
   `mot_anonymous` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'set to 1 for forcing the anymous mode during the vote',
   `mot_type` enum('yes_no','a_b_c') NOT NULL,
   `mot_win_limit` int(11) NOT NULL DEFAULT '50' COMMENT 'The percent need by a proposition for winning',
   `mot_title` varchar(255) NOT NULL,
-  `mot_description` text NOT NULL
+  `mot_description` text NOT NULL,
+  `mot_explanation` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -221,6 +229,24 @@ CREATE TABLE `pings` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `sources`
+--
+
+CREATE TABLE `sources` (
+  `sou_id` bigint(20) NOT NULL,
+  `sou_deleted` tinyint(4) NOT NULL DEFAULT '0',
+  `sou_motion_id` bigint(20) DEFAULT NULL,
+  `sou_is_default_source` tinyint(4) NOT NULL DEFAULT '0',
+  `sou_type` enum('leg_text','leg_article','wiki_text','congressus_motion','forum','pdf','free') NOT NULL DEFAULT 'free',
+  `sou_url` varchar(2048) DEFAULT NULL,
+  `sou_title` varchar(2048) DEFAULT NULL,
+  `sou_articles` varchar(2048) NOT NULL DEFAULT '[]',
+  `sou_content` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `tasks`
 --
 
@@ -269,7 +295,10 @@ ALTER TABLE `chats`
   ADD KEY `cha_agenda_id` (`cha_agenda_id`),
   ADD KEY `cha_member_id` (`cha_member_id`),
   ADD KEY `cha_deleted` (`cha_deleted`),
-  ADD KEY `cha_ghost_id` (`cha_guest_id`);
+  ADD KEY `cha_ghost_id` (`cha_guest_id`),
+  ADD KEY `cha_type` (`cha_type`),
+  ADD KEY `cha_motion_id` (`cha_motion_id`),
+  ADD KEY `chat_parent_id` (`cha_parent_id`);
 
 --
 -- Index pour la table `chat_advices`
@@ -313,7 +342,11 @@ ALTER TABLE `meetings`
   ADD KEY `mee_meeting_type_id` (`mee_meeting_type_id`),
   ADD KEY `mee_deleted` (`mee_deleted`),
   ADD KEY `mee_president_member_id` (`mee_president_member_id`),
-  ADD KEY `mee_secretary_member_id` (`mee_secretary_member_id`);
+  ADD KEY `mee_secretary_member_id` (`mee_secretary_member_id`),
+  ADD KEY `mee_synchro_vote` (`mee_synchro_vote`),
+  ADD KEY `mee_type` (`mee_type`),
+  ADD KEY `mee_datetime` (`mee_datetime`),
+  ADD KEY `mee_expected_duration` (`mee_expected_duration`);
 
 --
 -- Index pour la table `meeting_rights`
@@ -333,7 +366,9 @@ ALTER TABLE `meeting_types`
 ALTER TABLE `motions`
   ADD PRIMARY KEY (`mot_id`),
   ADD KEY `mot_agenda_id` (`mot_agenda_id`),
-  ADD KEY `mot_deleted` (`mot_deleted`);
+  ADD KEY `mot_deleted` (`mot_deleted`),
+  ADD KEY `mot_author_id` (`mot_author_id`),
+  ADD KEY `mot_pinned` (`mot_pinned`);
 
 --
 -- Index pour la table `motion_propositions`
@@ -359,6 +394,15 @@ ALTER TABLE `pings`
   ADD KEY `pin_member_id` (`pin_member_id`),
   ADD KEY `pin_first_presence` (`pin_first_presence_datetime`),
   ADD KEY `pin_noticed` (`pin_noticed`);
+
+--
+-- Index pour la table `sources`
+--
+ALTER TABLE `sources`
+  ADD PRIMARY KEY (`sou_id`),
+  ADD KEY `sou_type` (`sou_type`),
+  ADD KEY `sou_title` (`sou_title`(767)),
+  ADD KEY `sou_deleted` (`sou_deleted`);
 
 --
 -- Index pour la table `tasks`
@@ -450,6 +494,11 @@ ALTER TABLE `notices`
 --
 ALTER TABLE `pings`
   MODIFY `pin_id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `sources`
+--
+ALTER TABLE `sources`
+  MODIFY `sou_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `tasks`
 --

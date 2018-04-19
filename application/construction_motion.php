@@ -586,7 +586,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
+								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -649,7 +649,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
+								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -810,7 +810,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($chat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
+								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
@@ -874,7 +874,7 @@ include("construction/pieChart.php");
 									<?php $date = new DateTime($childrenChat["cha_datetime"]); echo showDate($date); ?>
 								</div>
 								<div class="clearfix"></div>
-								<div><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
+								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
 									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>

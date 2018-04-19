@@ -392,6 +392,7 @@ a[disabled] {
 #diff del, #motion-description del {
 	color: #a94442;
 	background-color: #f2dfde;
+	text-decoration: line-through;
 }
 
 #diff ins, #motion-description ins {
@@ -446,6 +447,11 @@ a[disabled] {
 	width: 8px;
 	margin: 0 -8px -8px 0;
 	cursor: zoom-in;
+}
+
+.ratio-thumb-down-is-major .chat-body {
+	background-color: #f2dfde;
+	text-decoration: line-through;
 }
 
 #markdown-area h1 {

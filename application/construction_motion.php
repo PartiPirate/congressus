@@ -1101,7 +1101,7 @@ var majority_judgement_translations = <?php echo json_encode($translatons); ?>
 	$jsonMotion["mot_description"] = str_replace("<", "#lt;", $jsonMotion["mot_description"]);
 	$jsonMotion["mot_explanation"] = str_replace("<", "#lt;", $jsonMotion["mot_explanation"]);
 	
-	echo json_encode($motion); 
+	echo json_encode($jsonMotion); 
 ?></div>
 </body>
 </html>

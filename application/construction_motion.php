@@ -1014,8 +1014,8 @@ include("construction/pieChart.php");
 <div class="container otbHidden">
 </div>
 
-<templates>
-	<ul>
+<templates style="display: none;">
+	<ul style="display: none;">
 		<li data-template-id="echat" id="echat-${message_id}"
 				class="template list-group-item echat" data-id="${message_id}">
 			<img src="${mem_avatar_url}" style="max-height: 20px; max-width: 20px; border-radius: 10px; ">
@@ -1098,7 +1098,9 @@ var majority_judgement_translations = <?php echo json_encode($translatons); ?>
 </script>
 
 <div id="motion-json" class="hidden"><?php 
-	$motion["mot_description"] = str_replace("<", "#lt;", $motion["mot_description"]);
+	$jsonMotion["mot_description"] = str_replace("<", "#lt;", $jsonMotion["mot_description"]);
+	$jsonMotion["mot_explanation"] = str_replace("<", "#lt;", $jsonMotion["mot_explanation"]);
+	
 	echo json_encode($motion); 
 ?></div>
 </body>

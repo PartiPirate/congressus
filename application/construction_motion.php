@@ -190,6 +190,7 @@ foreach($sources as $src) {
 }
 
 $mainColumn = 12;
+$jsonMotion = $motion;
 
 ?>
 
@@ -369,7 +370,7 @@ include("construction/pieChart.php");
 						<hr>
 					</div>
 
-					<label for="explanation"><?php echo lang("amendment_description"); ?> </label>
+					<label for="markdown-group"><?php echo lang("amendment_description"); ?> </label>
 					<br>
 
 					<div id="motion-description-group" class="with-scroll" style="display: none;">

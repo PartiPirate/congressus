@@ -258,7 +258,8 @@ $jsonMotion = $motion;
 	<div class="row">
 		<div class="col-md-<?php echo $mainColumn; ?>" id="main-panel">
 			
-<?php 
+<?php
+			
 			$votes = $voteBo->getByFilters(array("mot_id" => $motionId, "mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 ?>			
 			<div class="panel panel-default motion-entry" data-id="<?php echo $motion["mot_id"]; ?>">
@@ -385,11 +386,10 @@ include("construction/pieChart.php");
 						<div class="change-scroll"><div class="scroll-zone"></div></div>
 						<div id="diff" class="scroller" style="position: relative; display: none;" ></div>
 					</div>
-					<div id="markdown-group" class="with-scroll" style="display: none;">
-						<!--
-						<div class="change-scroll"><div class="scroll-zone"></div></div>
-						-->
-						<div id="markdown-area" class="scroller" style="position: relative; display: none;" ></div>
+					<div id="markdown-group">
+						<div id="markdown-area">
+							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?>
+						</div>
 					</div>
 
 					<hr>

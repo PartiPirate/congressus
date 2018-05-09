@@ -500,3 +500,8 @@ a[disabled] {
 .member .power {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+
+.btn-comment {
+    height: 19px;
+}

@@ -57,7 +57,18 @@ function showAddMotion(event) {
 
 	$("#save-amendment-modal #titleInput").val("");
 	$("#save-amendment-modal #descriptionArea").val("");
-	
+
+	$("#save-amendment-modal #explanationArea").val("");
+
+	if ($("#motion-title").text()) {
+		$("#save-amendment-modal #titleInput").val("Amendement pour " + $("#motion-title").text());
+		$("#save-amendment-modal #explanationArea").val("Amendement pour " + $("#motion-title").text());
+	}
+
+	if ($("textarea#destination").val()) {
+		$("#save-amendment-modal #descriptionArea").val($("textarea#destination").val());
+	}
+
 	$("#sourceSelect").val("");
 	$("#sourceUrlInput").val("");
 
@@ -76,6 +87,7 @@ function showAddMotion(event) {
 
 	$('#save-amendment-modal').one('shown.bs.modal', function () {
 		$("#save-amendment-modal #descriptionArea").keyup();
+		$("#save-amendment-modal #explanationArea").keyup();
 	});
 
 	$("#save-amendment-modal #titleInput").keyup();

@@ -36,14 +36,22 @@
                             <input id="titleInput" name="title" type="text" placeholder="" class="form-control input-md">
                         </div>
                     </div>
-                    
+
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="explanationArea"><?php echo lang("amendment_explanation"); ?></label>
+                        <div class="col-md-8">
+                            <textarea class="form-control autogrow" id="explanationArea" name="explanation" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5" style="max-height: 200px;"></textarea>
+                        </div>
+                    </div>
+
                     <!-- Textarea -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="descriptionArea">Description</label>
                         <div class="col-md-8">
                             <textarea class="form-control autogrow" id="descriptionArea" name="description" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5" style="max-height: 200px;"></textarea>
                         </div>
-                        </div>
+                    </div>
                 </fieldset>
                     
                 <fieldset>

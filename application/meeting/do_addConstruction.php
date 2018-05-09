@@ -81,6 +81,7 @@ $motion = array();
 $motion["mot_agenda_id"] = $agenda[$agendaBo->ID_FIELD];
 $motion["mot_title"] = isset($_REQUEST["title"]) ? $_REQUEST["title"] : "Titre de la motion";
 $motion["mot_description"] = isset($_REQUEST["description"]) ? $_REQUEST["description"] : "";
+$motion["mot_explanation"] = isset($_REQUEST["explanation"]) ? $_REQUEST["explanation"] : "";
 $motion["mot_type"] = "yes_no";
 $motion["mot_status"] = "voting";
 $motion["mot_deleted"] = "0";

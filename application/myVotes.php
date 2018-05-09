@@ -27,6 +27,7 @@ if (!$userId) $userId = -1;
 
 $filters = array();
 $filters["mot_status"] = MotionBo::VOTING;
+$filters["mee_type"] = "meeting";
 $filters["vot_member_id"] = $userId;
 $filters["with_meeting"] = true;
 $filters["with_notice"] = true;

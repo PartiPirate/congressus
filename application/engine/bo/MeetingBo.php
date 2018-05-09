@@ -25,6 +25,9 @@ class MeetingBo {
 	var $TABLE = "meetings";
 	var $ID_FIELD = "mee_id";
 
+	const TYPE_MEETING = "meeting";
+	const TYPE_CONSTRUCTION = "construction";
+
 	function __construct($pdo, $config) {
 		$this->config = $config;
 		$this->pdo = $pdo;

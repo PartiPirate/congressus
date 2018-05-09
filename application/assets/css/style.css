@@ -496,3 +496,7 @@ a[disabled] {
 .pinned {
     background-color: #eee;
 }
+
+.member .power {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}

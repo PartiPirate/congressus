@@ -57,6 +57,7 @@ class SearchBo {
 
 	function meetingSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
+		$args = array("likeQuery" => $likeQuery);
 
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 		$queryBuilder->select("meetings");
@@ -66,8 +67,8 @@ class SearchBo {
 		$queryBuilder->where("mee_label LIKE :likeQuery");
 
 		$query = $queryBuilder->constructRequest();
+//		echo showQuery($query, $args);
 
-		$args = array("likeQuery" => $likeQuery);
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 		$queryResults = $statement->fetchAll();
@@ -202,6 +203,7 @@ class SearchBo {
 	
 	function motionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
+		$args = array("likeQuery" => $likeQuery);
 
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 		$queryBuilder->select("meetings");
@@ -218,11 +220,20 @@ class SearchBo {
 								'{\"type\":\"motion\",\"id\":\"', mot_id, '\"}', ']')", "object");
 		$queryBuilder->where("(mot_title LIKE :likeQuery OR mot_description LIKE :likeQuery)");
 
+		if (isset($filters["mot_status"])) {
+			$args["mot_status"] = $filters["mot_status"];
+			$queryBuilder->where("mot_status = :mot_status");
+		}
+
+		if (isset($filters["mee_type"])) {
+			$args["mee_type"] = $filters["mee_type"];
+			$queryBuilder->where("mee_type = :mee_type");
+		}
+
 		$query = $queryBuilder->constructRequest();
 
-		//		echo showQuery($query, $args);
+//				echo showQuery($query, $args);
 
-		$args = array("likeQuery" => $likeQuery);
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 		$queryResults = $statement->fetchAll();
@@ -232,6 +243,7 @@ class SearchBo {
 
 	function propositionSearch($filters) {
 		$likeQuery = "%" . $filters["query"] . "%";
+		$args = array("likeQuery" => $likeQuery);
 
 		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
 		$queryBuilder->select("meetings");
@@ -252,9 +264,18 @@ class SearchBo {
 								'{\"type\":\"proposition\",\"id\":\"', mpr_id, '\"}', ']')", "object");
 		$queryBuilder->where("mpr_label LIKE :likeQuery");
 
+		if (isset($filters["mot_status"])) {
+			$args["mot_status"] = $filters["mot_status"];
+			$queryBuilder->where("mot_status = :mot_status");
+		}
+
+		if (isset($filters["mee_type"])) {
+			$args["mee_type"] = $filters["mee_type"];
+			$queryBuilder->where("mee_type = :mee_type");
+		}
+
 		$query = $queryBuilder->constructRequest();
 
-		$args = array("likeQuery" => $likeQuery);
 //				echo showQuery($query, $args);
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);

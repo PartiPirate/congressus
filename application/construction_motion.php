@@ -335,8 +335,8 @@ include("construction/pieChart.php");
 <?php 		
 //		} ?>			
 				</div>
-				<div class="btn-toolbar panel-body" role="toolbar">
-					<div class="btn-group btn-type-group " role="group">
+				<div class="btn-toolbar panel-body" role="toolbar" style="margin-left: 0px;">
+					<div class="btn-group btn-type-group" role="group">
 						<button id="show-markdown-btn" type="button" class="btn btn-default active"><i class="fa fa-file-text" aria-hidden="true"></i></button>
 						<button id="show-motion-btn" type="button" class="btn btn-default"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>

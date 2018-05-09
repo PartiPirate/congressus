@@ -48,9 +48,9 @@ foreach($motions as $motion) {
 
 $headingColMd = "col-md-" . (12 / count($trendingMotions));
 
-echo "<!-- \n";
-print_r($trendingMotions);
-echo "\n -->";
+//echo "<!-- \n";
+//print_r($trendingMotions);
+//echo "\n -->";
 
 //print_r($meetings);
 

@@ -38,7 +38,7 @@ if (isset($_REQUEST["id"])) {
 
 $searchBo = SearchBo::newInstance($connection, $config);
 $conclusions = $searchBo->conclusionSearch(array("query" => ""));
-$propositions = $searchBo->propositionSearch(array("query" => ""));
+$propositions = $searchBo->propositionSearch(array("query" => "", "mot_status" => "resolved", "mee_type" => "meeting"));
 
 $userId = SessionUtils::getUserId($_SESSION);
 

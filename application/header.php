@@ -24,6 +24,7 @@ error_reporting(E_ALL);
 include_once("config/database.php");
 include_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/UserPropertyBo.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
@@ -89,6 +90,24 @@ if ($page == "administration" && !$isAdministrator) {
 }
 
 $connection = openConnection();
+
+$userProperties = array();
+if ($sessionUserId) {
+	$userPropertyBo = UserPropertyBo::newInstance($connection, $config);
+	$userProperties = $userPropertyBo->getByFilters(array("upr_user_id" => $sessionUserId));
+}
+
+function getUserPropertyValue($property) {
+	global $userProperties;
+	
+	foreach($userProperties as $userProperty) {
+		if ($userProperty["upr_property"] == $property) {
+			return $userProperty["upr_value"];
+		}
+	}
+	
+	return null;
+}
 
 if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
 	require_once("engine/bo/MeetingBo.php");
@@ -214,6 +233,8 @@ if (isset($motion)) {
 <meta name="twitter:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
 <meta name="twitter:image:alt" content="Logo de Congressus" />
 
+<link href="favicon.ico" rel="shortcut icon"/>
+
 <!-- Bootstrap -->
 
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -241,6 +262,15 @@ if (isset($motion)) {
 <link href="assets/css/bootstrap-toggle.css" rel="stylesheet">
 <link href="assets/css/bootstrap-markdown.min.css" rel="stylesheet">
 <link href="assets/css/emojione.helper.css" rel="stylesheet">
+
+<?php
+$themeProperty = getUserPropertyValue("theme");
+
+if ($themeProperty) {	?>
+<link href="themes/<?php echo $themeProperty; ?>/css/style.css" rel="stylesheet">
+<?php
+}
+?>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -301,7 +331,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
 <?php 	if ($gamifierClient) { ?>
-							<li id="mybadgesLi"class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
+							<li id="mybadgesLi" class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
 <?php	} ?>
 							<li class="divider"></li>
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>

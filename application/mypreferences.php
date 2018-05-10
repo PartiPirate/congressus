@@ -36,6 +36,24 @@ require_once("engine/utils/SessionUtils.php");
 		<fieldset>
 
 			<!-- Form Name -->
+			<legend><?php echo lang("mypreferences_style_legend"); ?></legend>
+
+			<!-- Password input-->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="themeSelect"><?php echo lang("mypreferences_style_themeSelect"); ?></label>
+				<div class="col-md-6">
+					<select id="themeSelect" name="themeSelect" class="form-control input-md">
+						<option><?php echo lang("mypreferences_style_themeDefault"); ?></option>
+						<option value="slate" <?php echo ("slate" == $themeProperty) ? 'selected=selected' : ""; ?>><?php echo lang("mypreferences_style_themeSlate"); ?></option>
+					</select>
+				</div>
+			</div>
+
+		</fieldset>
+
+		<fieldset>
+
+			<!-- Form Name -->
 			<legend><?php echo lang("mypreferences_form_legend"); ?></legend>
 
 			<!-- Password input-->

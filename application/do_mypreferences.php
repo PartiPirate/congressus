@@ -21,6 +21,8 @@ include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserBo.php");
+require_once("engine/bo/UserPropertyBo.php");
+
 //require_once("engine/authenticators/GaletteAuthenticator.php");
 
 $user = SessionUtils::getUser($_SESSION);
@@ -32,29 +34,62 @@ $connection = openConnection();
 //$galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 //$galetteAuthenticator = GaletteAuthenticator::newInstance($connection, $config["galette"]["db"]);
 $userBo = UserBo::newInstance($connection, $config);
+$userPropertyBo = UserPropertyBo::newInstance($connection, $config);
+
+function getUserProperty($property) {
+	global $userProperties;
+	
+	foreach($userProperties as $userProperty) {
+		if ($userProperty["upr_property"] == $property) {
+			return $userProperty;
+		}
+	}
+	
+	return array("upr_id" => 0, "upr_user_id" => 0, "upr_property" => $property);
+}
+
 $authenticator = AuthenticatorFactory::getInstance($connection, $config, $config["modules"]["authenticator"]);
 
-$user = $userBo->getById(SessionUtils::getUserId($_SESSION));
+$sessionUserId = SessionUtils::getUserId($_SESSION);
+$user = $userBo->getById($sessionUserId);
 
 if (!$user) {
 	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
 	exit();
 }
 
-if ($password != $confirmation) {
-	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
-	exit();
-}
-
-if (!password_verify($old, $user["mdp_adh"])) {
-	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
-	exit();
-}
+$userProperties = $userPropertyBo->getByFilters(array("upr_user_id" => $sessionUserId));
 
 $data = array();
 
-if ($password) {
-	$authenticator->forgotten($user["email_adh"], $password);
+if ($old) {
+    if ($password != $confirmation) {
+    	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
+    	exit();
+    }
+    
+    if (!password_verify($old, $user["mdp_adh"])) {
+    	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
+    	exit();
+    }
+    
+    if ($password) {
+    	$authenticator->forgotten($user["email_adh"], $password);
+    }
+}
+
+$data["theme"] = "unchanged";
+if (isset($_REQUEST["theme"])) {
+    $themeUserProperty = getUserProperty("theme");
+    
+    if ($themeUserProperty["upr_value"] != $_REQUEST["theme"]) {
+        $themeUserProperty["upr_value"] = $_REQUEST["theme"];
+        $themeUserProperty["upr_user_id"] = $sessionUserId;
+        
+        $userPropertyBo->save($themeUserProperty);
+        
+        $data["theme"] = "changed";
+    }
 }
 
 $data["ok"] = "ok";

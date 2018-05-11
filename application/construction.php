@@ -210,6 +210,7 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 			if ($agenda["age_parent_id"]) continue;
 
 			$showTitle = true;
+			$isTrash = false;
 
 			$phasWritingRights = $hasWritingRights;
 			$hasWritingRights = $votingPower || $hasWritingRights;
@@ -222,7 +223,24 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 			
 <?php	if ($hasWritingRights && !$oneAgenda && ($meeting["mee_status"] != "closed")) { ?>
 			<button class="btn btn-default btn-add-point" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" style="width: 100%;">Point <span class="fa fa-list-alt"></span></button>
+			<br>
+			<br>
 <?php	} ?>
+
+<?php
+		$showTitle = true;
+		$isTrash = true;
+
+		$phasWritingRights = $hasWritingRights;
+		$hasWritingRights = false;
+
+		$agenda = array("age_id" => -1, "age_description" => lang("trash_description"), "age_label" => lang("trash_title"));
+		$agenda["age_motions"] = $motionBo->getByFilters(array("with_meeting" => true, "mee_id" => $meeting["mee_id"], "mot_trashed" => 1));;
+
+		include("construction/amendment_list.php");
+
+		$hasWritingRights = $phasWritingRights;
+?>
 
 		</div>
 		<?php	if ($hasChat) { ?>

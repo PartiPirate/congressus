@@ -4,13 +4,15 @@
 				$motions = $agenda["age_motions"];
 			}
 			else {
-	            $motions = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+	            $motions = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD], "mot_trashed" => 0));
 			}
 			$votes = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 ?>			
 			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 <?php			if ($showTitle) { ?>
-				<div class="panel-heading no-caret">
+				<div class="panel-heading <?php	 if (!$isTrash) { echo "no-caret"; } ?>">
+
+<?php				if (!$isTrash) { ?>
 					<select class="pull-right select-order order-motions form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
 						<option value="older"><?php echo lang("amendments_order_older"); ?></option>
 						<option value="newer"><?php echo lang("amendments_order_newer"); ?></option>
@@ -21,7 +23,17 @@
 						<option value="absolute-against"><?php echo lang("amendments_order_absolute_against"); ?></option>
 						<option value="relative-against"><?php echo lang("amendments_order_relative_against"); ?></option>
 					</select>
-					<a href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+<?php				} ?>
+					
+					<a 
+						data-toggle="collapse" 
+						data-target="#list-<?php echo $agenda["age_id"]; ?>"
+<?php				if (!$isTrash) { ?>		
+						href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+<?php				} else { ?>		
+						class="collapsed"
+						href="#"><?php echo $agenda["age_label"]; ?></a>
+<?php				} ?>
 				</div>
 <?php				if ($agenda["age_description"]) { ?>
 				<div class="panel-body">
@@ -29,20 +41,16 @@
 				</div>
 <?php				} 
 				} ?>
-				<ul class="list-group objects">
+				<ul class="list-group objects panel-collapse collapse <?php	 if (!$isTrash) { echo "in"; } ?>" id="list-<?php echo $agenda["age_id"]; ?>">
 					
-<?php
-			if(!count($motions)) {
-?>
+<?php		if(!count($motions)) { ?>
 					<li class="list-group-item text-center unsortable">
 						<i class="fa fa-archive" style="font-size: larger;"></i>
 						<br>
-						<?php echo lang("amendments_no_amendment"); ?>
+						<?php echo lang($isTrash ? "trash_no_amendment" : "amendments_no_amendment"); ?>
 					</li>
 <?php 		} ?>			
-					
-					
-					
+
 <?php
 			$previousMotionId = null;
 
@@ -168,12 +176,15 @@ include("construction/pieChart.php");
 							<?php 	}	?>
 						</div>
 						<div style="font-size: smaller;">
-
+<?php			if ($isTrash) { ?>
+					<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_trash_explanation"])); ?>
+<?php			}
+				else { ?>
 							<?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?> -
 							<?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?> -
 							<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?> -
 							<?php echo langFormat($numberOfsources < 2, "amendments_source", "amendments_sources", array("source" => $numberOfsources)); ?>
-							
+<?php			}	?>
 						</div>
 					</li>
 <?php 		} ?>			

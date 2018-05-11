@@ -255,7 +255,9 @@ function createDiff() {
 	var sourceText = $("#source").val();
 	var motionText = $("#destination").val();
 	var explanationText = $("#explanation").val();
-	
+
+//	$("#diff").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText)).replace(/[\n\r]/g, '<br>'));
+//	$("#motion-description").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText), {not_del_shown: true}).replace(/[\n\r]/g, '<br>'));
 	$("#diff").html(htmlDiff(sourceText, motionText).replace(/[\n\r]/g, '<br>'));
 	$("#motion-description").html(htmlDiff(sourceText, motionText, {not_del_shown: true}).replace(/[\n\r]/g, '<br>'));
 
@@ -537,10 +539,44 @@ function addGoToTabListeners() {
 	});
 }
 
+function showTrashDialog(event) {
+
+	$("#save-trash-modal #explanationArea").val("");
+	$('#save-trash-modal').one('shown.bs.modal', function () {
+		$("#save-trash-modal #explanationArea").keyup();
+	});
+//	$("#save-trash-modal .modal-title span").html("TOTO");
+
+	$("#save-trash-modal").modal('show');
+}
+
+function saveTrash(event) {
+	
+	var form = $("#save-trash-modal form");
+	var meetingId = form.find("#meetingIdInput").val();
+
+	$("#save-trash-modal button").attr("disabled", "disabled");
+
+	$.post("meeting_api.php?method=do_trashMotion", form.serialize(), function(data) {
+		$("#save-trash-modal button").removeAttr("disabled");
+		$("#save-trash-modal").modal('hide');
+
+//		window.location.href = "construction.php?id=" + meetingId;
+	}, "json");
+
+}
+
+function addTrashListeners() {
+	$("body").on("click", "#motion-buttons-bar .btn-trash-motion", showTrashDialog);
+	$("body").on("click", "#save-trash-modal .btn-trash-motion", saveTrash);
+}
+
 var previousMotionText = "";
 var previousExplanation = "";
 
+
 $(function() {
+	addTrashListeners();
 	addChatListeners();
 	addMotionListeners();
 	addDiffListeners();

@@ -231,6 +231,11 @@ $lang["motion_majorityJudgment_6"] = "Très bien";
 $lang["motion_already_voted"] = "Vous avez déjà voté";
 $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
 $lang["motion_add_source"] = "Ajouter une source"; 
+$lang["motion_trash"] = "Envoyer à la &laquo; corbeille &raquo;";
+
+$lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";
+$lang["trash_description"] = "La corbeille garantit la transparence du processus de la construction. Elle contient les motions qui ne respectent pas ce processus.";
+$lang["trash_no_amendment"] = "Aucun amendement dans la corbeille";
 
 $lang["calendar_prev"] = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
@@ -284,6 +289,8 @@ $lang["mee_synchro_vote_1"] = "Votes synchronisés";
 $lang["save_amendment_title"] = "Ajouter un amendement";
 $lang["save_agenda_title"] = "Ajouter un groupe d'amendement";
 $lang["save_source_title"] = "Ajouter une source";
+$lang["save_trash_title"] = "Mettre à la &laquo; corbeille &raquo; la motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
+$lang["trash_explanation"] = "Explication";
 
 $lang["advice_pro"] = "D'accord";
 $lang["advice_doubtful"] = "Mitigé";

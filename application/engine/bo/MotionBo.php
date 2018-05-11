@@ -178,10 +178,15 @@ class MotionBo {
 			$queryBuilder->where("mot_status = :mot_status");
 		}
 
+		if (isset($filters["mot_trashed"])) {
+			$args["mot_trashed"] = $filters["mot_trashed"];
+			$queryBuilder->where("mot_trashed = :mot_trashed");
+		}
+
 		if (!isset($filters["with_deleted"])) {
 			$queryBuilder->where("mot_deleted = 0");
 		}
-		
+
 		if (isset($filters["with_total_votes"]) && $filters["with_total_votes"]) {
 			$queryBuilder->orderDESCBy("mpr_total_power");
 			$queryBuilder->orderDESCBy("mpr_proportion_power");

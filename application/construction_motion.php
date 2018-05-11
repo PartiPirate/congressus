@@ -147,7 +147,7 @@ else {
 	$agendaBo->save($amendmentAgenda);
 }
 
-$amendments = $motionBo->getByFilters(array("mot_agenda_id" => $amendmentAgenda[$agendaBo->ID_FIELD]));
+$amendments = $motionBo->getByFilters(array("mot_agenda_id" => $amendmentAgenda[$agendaBo->ID_FIELD], "mot_trashed" => 0));
 
 $previousAmendmentId = null;
 $numberOfAmendments = 0;
@@ -446,6 +446,12 @@ include("construction/pieChart.php");
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
 								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
 								<span class="glyphicon glyphicon-remove"></span> <?php echo lang("common_delete"); ?> &nbsp;
+							</div>
+							<?php		} ?>
+							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
+							<div class="btn btn-warning btn-trash-motion" type="button" style="height: 36px;"
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								<span class="glyphicon glyphicon-trash"></span> <?php echo lang("motion_trash"); ?> &nbsp;
 							</div>
 							<?php		} ?>
 
@@ -959,6 +965,7 @@ include("construction/pieChart.php");
 		$agenda = $amendmentAgenda;
 		$hasWritingRights = $hasWritingRights || $votingPower > 0;
 		$showTitle = false;
+		$isTrash = false;
 ?>
 			<div role="tabpanel" class="tab-pane" id="amendments" style="padding-top: 15px;">
 <?php	
@@ -1031,6 +1038,7 @@ include("construction/pieChart.php");
 <?php
 	include("construction/amendment_modal.php");
 	include("construction/source_modal.php");
+	include("construction/trash_modal.php");
 ?>
 
 <script>

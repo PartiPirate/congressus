@@ -175,9 +175,7 @@ var stringDiff = function(before, after) {
     }
     
     return diff(beforeArray, afterArray);
-  
-  
-    
+
 //    return diff(before.split(/[ ]+/), after.split(/[ ]+/));
 };
 
@@ -223,7 +221,7 @@ var htmlDiff = function(before, after, options) {
         results.push(con[chunk[0]](chunk[1].join('')));
     }
 
-    return results.join(' ');
+    return results.join('');
 };
 
 var checkDiff = function(before, after) {

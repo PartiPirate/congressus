@@ -241,7 +241,12 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 		$hasWritingRights = false;
 
 		$agenda = array("age_id" => -1, "age_description" => lang("trash_description"), "age_label" => lang("trash_title"));
-		$agenda["age_motions"] = $motionBo->getByFilters(array("with_meeting" => true, "mee_id" => $meeting["mee_id"], "mot_trashed" => 1));;
+		$filters = array("with_meeting" => true, "mee_id" => $meeting["mee_id"], "mot_trashed" => 1);
+		if ($oneAgenda) {
+			$filters["age_id"] = intval($_REQUEST["agendaId"]);
+		}
+
+		$agenda["age_motions"] = $motionBo->getByFilters($filters);
 
 		include("construction/amendment_list.php");
 
@@ -300,7 +305,6 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 sourceEnabled = true;
 var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 
-
 var getEventsTimer;
 var getEventsTimerInterval = 1500;
 
@@ -350,7 +354,6 @@ foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
 ?>
 
 var majority_judgement_translations = <?php echo json_encode($translatons); ?>
-
 
 </script>
 

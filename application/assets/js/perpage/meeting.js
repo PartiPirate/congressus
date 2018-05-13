@@ -1650,7 +1650,7 @@ function updateTasks() {
 
 			$("#tasks-list li.to-remove").remove();
 
-			$("#tasks .tasks-counter").text($("#tasks-list li").length);
+			$("#tasks .tasks-counter").text($("#tasks-list > li").length);
 		}
 	}, "json");
 }

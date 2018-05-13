@@ -505,3 +505,35 @@ a[disabled] {
 .btn-comment {
     height: 19px;
 }
+
+
+/* Share */
+
+.share-container .dropdown-menu {
+    min-width: 0 !important;
+    padding: 5px 10px;
+}
+
+
+.share-container .dropdown-menu .dropdown-item {
+	white-space: nowrap;
+}
+
+.share-container .dropdown-menu .dropdown-item .fa, .share-container .dropdown-menu .dropdown-item .fa:hover {
+	width: 18px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 4px;
+}
+
+.share-container .dropdown-menu .dropdown-item .fa-facebook {
+	color: #3b5998;
+}
+
+.share-container .dropdown-menu .dropdown-item .fa-twitter {
+	color: #00aced;
+}
+
+.share-container .dropdown-menu .dropdown-item .fa-google-plus {
+	color: #d34836;
+}

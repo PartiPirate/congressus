@@ -35,6 +35,7 @@ $lang["common_save"] = "Save";
 $lang["common_text"] = "Text";
 $lang["common_type"] = "Type";
 $lang["common_validate"] = "Validate";
+$lang["common_share"] = "Share";
 $lang["common_edit"] = "Edit";
 
 $lang["language_fr"] = "French";

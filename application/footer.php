@@ -60,6 +60,7 @@
 <script src="assets/js/autogrow.js"></script>
 <script src="assets/js/emojione.min.js"></script>
 <script src="assets/js/emojione.helper.js"></script>
+<script src="assets/js/social.js"></script>
 
 <!--
 <script src="assets/js/pagination.js"></script>

@@ -180,7 +180,7 @@ $page_description = lang("index_description");
 
 if (isset($meeting)) {
 	$page_title .= " : " . $meeting['mee_label'];
-	
+
 	$start = new DateTime($meeting["mee_datetime"]);
 
 	$date = lang("datetime_format");
@@ -193,9 +193,24 @@ if (isset($meeting)) {
 
 if (isset($motion)) {
 	$page_description = "Motion &quot;" . str_replace("\"", "&quot;", $motion["mot_title"]) . "&quot;";
-	
+
 	if (isset($parentMotion)) {
 		$page_description .= ", amendement de &quot;" . str_replace("\"", "&quot;", $parentMotion["mot_title"]) . "&quot;";
+	}
+
+	if (isset($_REQUEST["chatId"])) {
+		require_once("engine/bo/ChatBo.php");
+		$chatBo = ChatBo::newInstance($connection, $config);
+
+		$chats = $chatBo->getByFilters(array("cha_id" => intval($_REQUEST["chatId"]), "cha_motion_id" => $motion["mot_id"]));
+
+		if (count($chats)) {
+			$descriptionChat = $chats[0];
+			$page_description .= "\n";
+			$page_description .= "&laquo;&nbsp;";
+			$page_description .= str_replace("\"", "&quot;", mb_strlen($descriptionChat["cha_text"]) < 60 ? $descriptionChat["cha_text"] : mb_substr($descriptionChat["cha_text"], 0, 60));
+			$page_description .= "&nbsp;&raquo;";
+		}
 	}
 }
 

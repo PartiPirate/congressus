@@ -19,6 +19,7 @@
 include_once("header.php");
 
 require_once("engine/bo/GuestBo.php");
+require_once("engine/utils/bootstrap_forms.php");
 
 if (!$meeting) {
 	// Ask for creation
@@ -73,7 +74,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	>
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
+		<li class="active">
+			<?php echo $meeting["mee_label"]; ?>
+		</li>
+		<li class="pull-right no-crumb">
+			<?php addShareButton("dropdownMeetingShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."meeting.php?id=" . $meeting["mee_id"], $meeting["mee_label"], "congressus"); ?>
+		</li>
 	</ol>
 
 	<div class="row">

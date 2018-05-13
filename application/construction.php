@@ -156,8 +156,14 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 		<?php	if ($oneAgenda) { ?>
 		<li><a href="?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
 		<li class="active"><?php echo $agendas[0]["age_label"]; ?></li>
+		<li class="pull-right no-crumb">
+			<?php addShareButton("dropdownConstructionAgendaShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."construction.php?id=" . $meeting["mee_id"] . "&agendaId=" .  $agendas[0]["age_id"], $meeting["mee_label"] . ", " . $agendas[0]["age_label"], "congressus"); ?>
+		</li>
 		<?php	} else { ?>
 		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
+		<li class="pull-right no-crumb">
+			<?php addShareButton("dropdownConstructionShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."construction.php?id=" . $meeting["mee_id"], $meeting["mee_label"], "congressus"); ?>
+		</li>
 		<?php	} ?>
 	</ol>
 

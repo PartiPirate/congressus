@@ -444,7 +444,7 @@ include("construction/pieChart.php");
 							    		}
 							    	?>"><i class="fa fa-info-circle"></i></span>
 
-							<?php addShareButton("dropdownMotionShareButton", "btn-primary", $config["server"]["base"] ."construction_motion.php?id=" . $motion["mot_id"], $motion["mot_title"], "congressus"); ?>
+							<?php addShareButton("dropdownMotionShareButton", "btn-primary btn-share-motion", "height: 36px;", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"], $motion["mot_title"], "congressus"); ?>
 
 							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
@@ -604,6 +604,8 @@ include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 									<button type="button"                            data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary btn-comment"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
+								<?php addShareButton("dropdownMotionShareButton-" . $chat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $chat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($chat["cha_text"]) < 60 ? $chat["cha_text"] : mb_substr($chat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
+								
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
@@ -666,6 +668,8 @@ include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 								</div>
+								<?php addShareButton("dropdownMotionShareButton-" . $childrenChat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $childrenChat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($childrenChat["cha_text"]) < 60 ? $childrenChat["cha_text"] : mb_substr($childrenChat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
+
 								<?php	if ($childrenChatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
@@ -828,6 +832,8 @@ include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 									<button type="button" style=""  				 data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
+								<?php addShareButton("dropdownMotionShareButton-" . $chat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $chat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($chat["cha_text"]) < 60 ? $chat["cha_text"] : mb_substr($chat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
+
 								<?php	if ($chatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">
@@ -891,6 +897,8 @@ include("construction/pieChart.php");
 									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
 									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 								</div>
+								<?php addShareButton("dropdownMotionShareButton-" . $childrenChat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $childrenChat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($childrenChat["cha_text"]) < 60 ? $childrenChat["cha_text"] : mb_substr($childrenChat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
+
 								<?php	if ($childrenChatAdviceCounters["total"]) { ?>
 								<div class="advice-progress-bar" style="padding-top: 2px;">
 									<div class="progress" style="height: 3px;">

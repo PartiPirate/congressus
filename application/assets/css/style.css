@@ -537,3 +537,14 @@ a[disabled] {
 .share-container .dropdown-menu .dropdown-item .fa-google-plus {
 	color: #d34836;
 }
+
+.btn-share-chat {
+	position: relative;
+	height: 19px;
+}
+
+.breadcrumb>li+li.no-crumb:before {
+    content: "" !important;
+    padding: 0 0 !important;
+    color: #cccccc;
+}

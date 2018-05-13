@@ -50,14 +50,14 @@ function addPagination($numberOfElements, $numberOfElementsPerPage, $currentPage
 	return $formElement;
 }
 
-function addShareButton($id, $btnClass, $url, $text, $hashtags) {
+function addShareButton($id, $btnClass, $btnStyle, $url, $text, $hashtags) {
 	$twitterUrl = "https://twitter.com/intent/tweet/?text=" . urlencode($text) . "&url=" . urlencode($url) . "&hashtags=" . urlencode($hashtags);
 	$facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" . urlencode($url);
 	$googlePlusUrl = "https://plus.google.com/share?url=" . urlencode($url);
 	$emailUrl = "mailto:?subject=".urlencode($text)."&body=" . urlencode($url);
 ?>
 	<div class="dropdown share-container" style="display: inline-block;">
-		<div class="btn <?php echo $btnClass; ?> btn-share-motion dropdown-toggle" data-toggle="dropdown" type="button" style="height: 36px;" id="<?php echo $id; ?>">
+		<div class="btn <?php echo $btnClass; ?> dropdown-toggle" data-toggle="dropdown" type="button" style="<?php echo $btnStyle; ?>" id="<?php echo $id; ?>">
 			<i class="fa fa-share-alt" aria-hidden="true"></i> <?php echo lang("common_share"); ?> <span class="caret"></span>
 		</div>
 		<div class="dropdown-menu" aria-labelledby="<?php echo $id; ?>">

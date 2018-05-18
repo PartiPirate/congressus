@@ -68,3 +68,21 @@ body {
     height: 24px;
     top: -1px;
 }
+
+#speaking-panel .request-speaking {
+    margin-top: -6px;
+    padding: 5px 12px;
+}
+
+.navbar {
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0px;
+}
+
+.navbar.navbar-bottom {
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    border-radius: 0px;
+}

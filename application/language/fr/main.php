@@ -58,6 +58,8 @@ $lang["menu_mybadges"] = "Mes badges";
 $lang["menu_myMeetings"] = "Mes réunions";
 $lang["menu_mypreferences"] = "Mes préférences";
 $lang["menu_myVotes"] = "Mes votes";
+$lang["menu_meetings"] = "Réunions";
+$lang["menu_openMeetings"] = "Réunions en cours";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";

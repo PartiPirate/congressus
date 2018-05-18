@@ -18,7 +18,6 @@
 */
 include_once("header.php");
 
-require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/utils/Parsedown.php");
 require_once("engine/emojione/autoload.php");
@@ -26,12 +25,7 @@ require_once("engine/emojione/autoload.php");
 $Parsedown = new Parsedown();
 $emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
-$meetingBo = MeetingBo::newInstance($connection, $config);
-$motionBo  =  MotionBo::newInstance($connection, $config);
-$filters = array();
-$filters["with_status"] = array("open");
-
-$meetings = $meetingBo->getByFilters($filters);
+$motionBo = MotionBo::newInstance($connection, $config);
 
 $motions = $motionBo->getByFilters(array("with_meeting" => true, "mee_type" => "construction", "with_total_votes" => true, "mee_status" => "open", "mpr_label" => "pro"));
 $trendingMotions = array();

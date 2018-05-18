@@ -43,7 +43,7 @@ require_once("engine/utils/SessionUtils.php");
 				<label class="col-md-4 control-label" for="themeSelect"><?php echo lang("mypreferences_style_themeSelect"); ?></label>
 				<div class="col-md-6">
 					<select id="themeSelect" name="themeSelect" class="form-control input-md">
-						<option><?php echo lang("mypreferences_style_themeDefault"); ?></option>
+						<option value=""><?php echo lang("mypreferences_style_themeDefault"); ?></option>
 						<option value="slate" <?php echo ("slate" == $themeProperty) ? 'selected=selected' : ""; ?>><?php echo lang("mypreferences_style_themeSlate"); ?></option>
 					</select>
 				</div>

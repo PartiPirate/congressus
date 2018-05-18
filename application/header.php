@@ -25,6 +25,8 @@ include_once("config/database.php");
 include_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserPropertyBo.php");
+require_once("engine/bo/MeetingBo.php");
+
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
@@ -32,7 +34,6 @@ include_once("engine/utils/LogUtils.php");
 include_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
-
 
 $gamifierClient = null;
 if (isset($config["gamifier"]["url"])) {
@@ -214,6 +215,14 @@ if (isset($motion)) {
 	}
 }
 
+$meetingBo = MeetingBo::newInstance($connection, $config);
+
+$filters = array();
+$filters["with_status"] = array("open");
+
+$meetings = $meetingBo->getByFilters($filters);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
@@ -284,8 +293,7 @@ $themeProperty = getUserPropertyValue("theme");
 if ($themeProperty) {	?>
 <link href="themes/<?php echo $themeProperty; ?>/css/style.css" rel="stylesheet">
 <?php
-}
-?>
+} ?>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -315,18 +323,40 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 				<ul class="nav navbar-nav">
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+
 					<?php 	if ($isConnected) {?>
 					<li <?php if ($page == "myVotes") echo 'class="active"'; ?>><a href="myVotes.php"><?php echo lang("menu_myVotes"); ?><?php if ($page == "myVotes") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<?php 	} else {?>
 					<?php 	}?>
+					
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="meetings-menu"><?php echo lang("menu_meetings"); ?> <span
+							class="caret"></span> </a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="meetings-menu">
+					<?php 	if ($isConnected) {?>
+							<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+							<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<?php 	}?>
+							<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 
+							<li role="separator" class="divider"></li>
+							
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="openMeetings-menu"><?php echo lang("menu_openMeetings"); ?> <span
+									class="caret"></span> </a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="openMeetings-menu">
+
+<?php							foreach($meetings as $openMeeting) { ?>
+									<li><a href="meeting.php?id=<?php echo $openMeeting["mee_id"]; ?>"><?php echo $openMeeting["mee_label"] ? $openMeeting["mee_label"] : "-"; ?></a></li>
+<?php							} ?>
+
+								</ul>
+							</li>
+
+						</ul>
+					</li>
+			
 					<?php 	if ($isAdministrator) {?>
 					<li <?php if ($page == "administration") echo 'class="active"'; ?>><a href="administration.php"><?php echo lang("menu_administration"); ?><?php if ($page == "administration") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<?php 	} else {?>
-					<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	}?>
+
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 

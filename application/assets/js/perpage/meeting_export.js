@@ -21,29 +21,31 @@
 /* global template */
 /* global textarea */
 
-$('.btnShowExport').click(function() {
-  template = $(this).data("template");
-  textarea = 'false';
-  
-  if (template=='markdown' || template=='discourse') {
-    textarea = 'true';
-  }
-  
-  $.get("export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
-    $("#exportModal").empty().append(data);
-  });
+$('.btnShowExport').click(function(event) {
+    event.preventDefault();
+
+    template = $(this).data("template");
+    textarea = 'false';
+    
+    if (template=='markdown' || template=='discourse') {
+        textarea = 'true';
+    }
+    
+    $.get("export.php", {template: template, id: meeting_id, textarea: textarea}, function(data){
+        $("#exportModal").empty().append(data);
+    });
 });
 
 // closed by esc
 $(window).keyup(function(e) {
-  if (e.keyCode == 27) {
-    $("#exportModal").empty();
-  }
+    if (e.keyCode == 27) {
+        $("#exportModal").empty();
+    }
 });
 
 // closed by click outside of modal
 $(document).on('click', function(event){
-  if(event.target.id.slice(0,16) == "export_container") {
-    $("#exportModal").empty();
-  }
+    if(event.target.id.slice(0,16) == "export_container") {
+        $("#exportModal").empty();
+    }
 });

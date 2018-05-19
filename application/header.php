@@ -337,6 +337,13 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<?php 	}?>
 							<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 
+							<li style="display: none;" role="separator" class="divider export-divider"></li>
+
+							<li style="display: none;" class="export-li"><a href="#" data-template="html"		class="btnShowExport export-link"><?php echo lang("export_html"); ?></a></li>
+							<li style="display: none;" class="export-li"><a href="#" data-template="pdf"		class="btnShowExport export-link"><?php echo lang("export_pdf"); ?></a></li>
+							<li style="display: none;" class="export-li"><a href="#" data-template="markdown"	class="btnShowExport export-link"><?php echo lang("export_wiki"); ?></a></li>
+							<li style="display: none;" class="export-li"><a href="#" data-template="discourse"	class="btnShowExport export-link"><?php echo lang("export_discourse"); ?></a></li>
+
 							<li role="separator" class="divider"></li>
 							
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="openMeetings-menu"><?php echo lang("menu_openMeetings"); ?> <span

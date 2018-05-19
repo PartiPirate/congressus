@@ -212,6 +212,8 @@ function updateMeeting(meeting) {
 	$(".meeting").data("json", meeting);
 
 	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
+	$(".navbar-nav li.export-divider,.navbar-nav li.export-li").hide();
+
 	switch (meeting.mee_status) {
 		case "construction":
 			$("#meeting-state-panel").addClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").removeClass("panel-danger");
@@ -233,6 +235,7 @@ function updateMeeting(meeting) {
 			$("#meeting-status-panel a.export-link").show();
 			$("#meeting-status-panel button.export-link").show();
 			$("#meeting-status-panel br.export-br").show();
+			$(".navbar-nav li.export-divider,.navbar-nav li.export-li").show();
 			break;
 		case "deleted":
 			$("#meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").addClass("panel-danger");

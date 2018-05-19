@@ -306,21 +306,21 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body text-center">
 
 					<div class="row">
-						<button class="margin-top-5 btn btn-primary btn-waiting-meeting simply-hidden"><?php echo lang("meeting_waiting"); ?></button>
-						<button class="margin-top-5 btn btn-danger btn-delete-meeting simply-hidden"><?php echo lang("meeting_delete"); ?></button>
-						<button class="margin-top-5 btn btn-success btn-open-meeting simply-hidden"><?php echo lang("meeting_open"); ?></button>
-						<button class="margin-top-5 btn btn-danger btn-close-meeting simply-hidden"><?php echo lang("meeting_close"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-primary btn-waiting-meeting"><?php echo lang("meeting_waiting"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-danger btn-delete-meeting"><?php echo lang("meeting_delete"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-success btn-open-meeting"><?php echo lang("meeting_open"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-danger btn-close-meeting"><?php echo lang("meeting_close"); ?></button>
 					</div>
 
-					<span class="closed-meeting simply-hidden"><?php echo lang("meeting_closed"); ?></span>
+					<span style="display: none;" class="closed-meeting"><?php echo lang("meeting_closed"); ?></span>
 
-					<br class="export-br simply-hidden">
+					<br style="display: none;" class="export-br">
 
 					<div class="row">
-						<button data-template="html"		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_html"); ?></button>
-						<button data-template="pdf" 		class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_pdf"); ?></button>
-						<button data-template="markdown"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_wiki"); ?></button>
-						<button data-template="discourse"	class="margin-top-5 btnShowExport export-link simply-hidden btn btn-success btn-xs"><?php echo lang("export_discourse"); ?></button>
+						<button style="display: none;" data-template="html"			class="margin-top-5 btnShowExport export-link btn btn-success btn-xs"><?php echo lang("export_html"); ?></button>
+						<button style="display: none;" data-template="pdf" 			class="margin-top-5 btnShowExport export-link btn btn-success btn-xs"><?php echo lang("export_pdf"); ?></button>
+						<button style="display: none;" data-template="markdown"		class="margin-top-5 btnShowExport export-link btn btn-success btn-xs"><?php echo lang("export_wiki"); ?></button>
+						<button style="display: none;" data-template="discourse"	class="margin-top-5 btnShowExport export-link btn btn-success btn-xs"><?php echo lang("export_discourse"); ?></button>
 					</div>
 
 				</div>

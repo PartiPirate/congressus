@@ -70,6 +70,44 @@ class MeetingBo {
 		return null;
 	}
 
+	function getNumberOfVoters($meetingId) {
+		$queryBuilder = QueryFactory::getInstance($this->config["database"]["dialect"]);
+
+		$queryBuilder->select($this->TABLE);
+		$queryBuilder->addSelect("COUNT(DISTINCT(vot_member_id)) as mee_number_of_voters");
+		$queryBuilder->join("agendas", "age_meeting_id = mee_id");
+		$queryBuilder->join("motions", "age_id = mot_agenda_id");
+		$queryBuilder->join("motion_propositions", "mpr_motion_id = mot_id");
+		$queryBuilder->join("votes", "vot_motion_proposition_id = mpr_id");
+		
+		$args = array();
+		$args[$this->ID_FIELD] = $meetingId;
+		$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
+
+		$query = $queryBuilder->constructRequest();
+		$statement = $this->pdo->prepare($query);
+//		echo showQuery($query, $args);
+//		error_log(showQuery($query, $args));
+
+		$results = array();
+
+		try {
+			$statement->execute($args);
+			$results = $statement->fetchAll();
+
+			foreach($results as $index => $line) {
+				foreach($line as $field => $value) {
+					if ($field == "mee_number_of_voters") return $value;
+				}
+			}
+		}
+		catch(Exception $e){
+			echo 'Erreur de requète : ', $e->getMessage();
+		}
+		
+		return 0;
+	}
+
 	function getByFilters($filters = null) {
 		if (!$filters) $filters = array();
 		$args = array();

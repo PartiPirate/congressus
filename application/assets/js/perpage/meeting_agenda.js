@@ -386,6 +386,12 @@ function addMeetingHandlers() {
 	});
 }
 
+function goDownPoint() {
+	var agendaObjects = $(".objects")[0];
+
+	agendaObjects.scrollTop = agendaObjects.scrollHeight;
+}
+
 function showNextPoint() {
 
 	var meetingId = $(".meeting").data("id");
@@ -439,6 +445,7 @@ $(function() {
 	$(".meeting .row").on("click", "a.agenda-link", showAgendaPoint);
 	$("body").on("click", ".btn-next-point", showNextPoint);
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);
+	$("body").on("click", ".btn-go-down", goDownPoint);
 
 	addAgendaHandlers();
 	addMeetingHandlers();

@@ -522,6 +522,11 @@ function updatePeople() {
 			numberOfPresents.text(data["numberOfPresents"]);
 		}
 
+		var numberOfVoters = $(".number-of-voters");
+		if (numberOfVoters.eq(0).text() != ("" + data["numberOfVoters"])) {
+			numberOfVoters.text(data["numberOfVoters"]);
+		}
+
 		var parent = $("#noticed-people > ul");
 //		parent.children().remove();
 		parent.find("li").addClass("to-deleted");

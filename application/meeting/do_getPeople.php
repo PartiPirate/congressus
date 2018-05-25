@@ -75,6 +75,9 @@ if (!$json) {
 	$numberOfConnected = 0;
 	$numberOfPresents = 0;
 
+	$numberOfVoters = 0;
+	$numberOfVoters = $meetingBo->getNumberOfVoters($meeting[$meetingBo->ID_FIELD]);
+
 	foreach($pings as $index => $ping) {
 		$lastPing = new DateTime($ping["pin_datetime"]);
 
@@ -109,6 +112,7 @@ if (!$json) {
 	$data = array();
 	$data["numberOfConnected"] = $numberOfConnected;
 	$data["numberOfPresents"] = $numberOfPresents;
+	$data["numberOfVoters"] = $numberOfVoters;
 	$data["notices"] = array();
 
 	$usedPings = array();

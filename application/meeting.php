@@ -295,6 +295,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-footer text-right">
 					<span class="glyphicon glyphicon-list-alt"></span> <?php echo lang("meeting_number_of_presents"); ?>
 					<span class="number-of-presents">0</span>
+					-
+					<i class="fa fa-archive"></i> <?php echo lang("meeting_number_of_voters"); ?>
+					<span class="number-of-voters">0</span>
 				</div>
 			</div>
 		</div>
@@ -387,6 +390,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<div id="agenda_point" class="panel panel-default" data-id="0" style="display: none;">
 				<div class="panel-heading">
 					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
+					<button class="btn btn-default btn-xs pull-right btn-go-down"
+						title="Descendre" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
 					<button class="btn btn-default btn-xs pull-right btn-next-point"
 						title="Point suivant" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>

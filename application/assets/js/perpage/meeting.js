@@ -666,6 +666,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 			if ($(this).data("id") == agendaId) {
 				$(".btn-previous-point").show();
 				$(".btn-next-point").show();
+				$(".btn-go-down").show();
 
 				if (index == 0) {
 					$(".btn-previous-point").addClass("disabled");

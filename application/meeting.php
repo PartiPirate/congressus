@@ -298,6 +298,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					-
 					<i class="fa fa-archive"></i> <?php echo lang("meeting_number_of_voters"); ?>
 					<span class="number-of-voters">0</span>
+					<span class="quorum-container">
+					-
+					<i class="fa fa-bell-o"></i> <span><?php echo lang("meeting_quorum"); ?></span>
+					<span class="quorum">0</span>
+					</span>
 				</div>
 			</div>
 		</div>

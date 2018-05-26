@@ -117,6 +117,9 @@ if (!$json) {
 
 	$usedPings = array();
 
+	$numberOfNoticed = 0;
+	$numberOfPowers = 0;
+
 	foreach($notices as $notice) {
 
 		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
@@ -129,7 +132,24 @@ if (!$json) {
 		}
 
 		$data["notices"][] = $notice;
+		
+		if (isset($notice["not_people"])) $numberOfNoticed += count($notice["not_people"]);
+		foreach($notice["not_people"] as $childPeople) {
+			$numberOfPowers += $childPeople["mem_power"];
+		}
+
+		if (isset($notice["no_children"])) {
+			foreach($notice["no_children"] as $childNotice) {
+				if (isset($childNotice["not_people"])) $numberOfNoticed += count($childNotice["not_people"]);
+				$numberOfPowers += $childNotice["not_power"];
+			}
+		}
 	}
+
+	$data["numberOfNoticed"] = $numberOfNoticed;
+	$data["numberOfPowers"] = $numberOfPowers;
+	$data["mee_quorum"] = $meeting["mee_quorum"];
+	$data["mee_computed_quorum"] = ceil(eval("return " . $meeting["mee_quorum"] . ";"));
 
 	$nowString = $now->format("Y-m-d H:i:s");
 

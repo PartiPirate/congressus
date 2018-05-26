@@ -517,14 +517,32 @@ function updatePeople() {
 	$.get("meeting_api.php?method=do_getPeople", {id: meetingId}, function(data) {
 //		console.log("Get people @ " + new Date());
 
-		var numberOfPresents = $(".number-of-presents");
+		var numberOfPresents = $("#speaking-panel .number-of-presents");
 		if (numberOfPresents.eq(0).text() != ("" + data["numberOfPresents"])) {
 			numberOfPresents.text(data["numberOfPresents"]);
 		}
 
-		var numberOfVoters = $(".number-of-voters");
+		var numberOfVoters = $("#speaking-panel .number-of-voters");
 		if (numberOfVoters.eq(0).text() != ("" + data["numberOfVoters"])) {
 			numberOfVoters.text(data["numberOfVoters"]);
+		}
+
+		var quorum = $("#speaking-panel .quorum");
+		if (quorum.eq(0).text() != ("" + data["mee_computed_quorum"])) {
+			if (data["mee_computed_quorum"]) {
+				$(".quorum-container").show();
+				quorum.text(data["mee_computed_quorum"]);
+				
+				if (data["mee_computed_quorum"] <= data["numberOfVoters"]) {
+					$(".quorum-container *").addClass("text-success").removeClass("text-danger");
+				}
+				else {
+					$(".quorum-container *").addClass("text-danger").removeClass("text-success");
+				}
+			}
+			else {
+				$(".quorum-container").hide();
+			}
 		}
 
 		var parent = $("#noticed-people > ul");

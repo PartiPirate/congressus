@@ -178,6 +178,7 @@ $lang["meeting_voters"] = "Votants";
 $lang["meeting_waiting"] = "Prête";
 $lang["meeting_voteExternal"] = "Interface de vote";
 $lang["meeting_external_chat"] = "Tchat";
+$lang["meeting_quorum"] = "Quorum : ";
 $lang["meeting_number_of_presents"] = "Nombre de présent-e-s : ";
 $lang["meeting_number_of_voters"] = "Nombre de votant-e-s : ";
 $lang["meeting_base_type"] = "Type de réunion";

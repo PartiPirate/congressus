@@ -20,14 +20,15 @@ include_once("header.php");
 
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/AgendaBo.php");
-require_once("engine/bo/MotionBo.php");
-require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/ChatBo.php");
 require_once("engine/bo/ChatAdviceBo.php");
+require_once("engine/bo/CoAuthorBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/NoticeBo.php");
-require_once("engine/bo/UserBo.php");
+require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/SourceBo.php");
+require_once("engine/bo/UserBo.php");
 require_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/Parsedown.php");
 require_once("engine/emojione/autoload.php");
@@ -71,14 +72,15 @@ else {
 
 $motionId = intval($_REQUEST["motionId"]);
 
-$agendaBo = AgendaBo::newInstance($connection, $config);
-$motionBo = MotionBo::newInstance($connection, $config);
-$voteBo   = VoteBo::newInstance($connection, $config);
-$chatBo   = ChatBo::newInstance($connection, $config);
+$agendaBo   = AgendaBo::newInstance($connection, $config);
+$coAuthorBo = CoAuthorBo::newInstance($connection, $config);
+$motionBo   = MotionBo::newInstance($connection, $config);
+$voteBo     = VoteBo::newInstance($connection, $config);
+$chatBo     = ChatBo::newInstance($connection, $config);
 $chatAdviceBo = ChatAdviceBo::newInstance($connection, $config);
-$noticeBo = NoticeBo::newInstance($connection, $config);
-$userBo   = UserBo::newInstance($connection, $config);
-$sourceBo = SourceBo::newInstance($connection, $config);
+$noticeBo   = NoticeBo::newInstance($connection, $config);
+$userBo     = UserBo::newInstance($connection, $config);
+$sourceBo   = SourceBo::newInstance($connection, $config);
 
 $motion = $motionBo->getByFilters(array("with_meeting" => true, "mot_id" => $motionId));
 
@@ -90,6 +92,16 @@ if (count($motion)) {
 }
 else {
 	exit();
+}
+
+$isCoAuthor = false;
+$coAuthors = $coAuthorBo->getByFilters(array("cau_object_type" => "motion", "cau_object_id" => $motionId));
+foreach($coAuthors as $coAuthor) {
+	
+	if ($coAuthor["cau_user_id"] == $userId) {
+		$isCoAuthor = true;
+		break;
+	}
 }
 
 $agendas = $agendaBo->getByFilters(array("age_id" => $motion["mot_agenda_id"]));
@@ -341,15 +353,20 @@ include("construction/pieChart.php");
 						<button id="show-markdown-btn" type="button" class="btn btn-default active"><i class="fa fa-file-text" aria-hidden="true"></i></button>
 						<button id="show-motion-btn" type="button" class="btn btn-default"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
-						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
+						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<?php	} ?>
 					</div>
-						<?php 	if ($motion["mot_author_id"] == $userId) { ?>
+						<?php	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 					<div class="btn-group btn-authoring-group" style="display: none;" role="group">
 						<button id="show-both-panels-btn" type="button" class="btn btn-default active"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
 						<button id="show-right-panel-btn" type="button" class="btn btn-default"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+					</div>
+						<?php	} ?>
+						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
+					<div class="btn-group btn-authors-group" role="group">
+						<button id="show-motion-co-authors-btn" type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 					</div>
 						<?php	} ?>
 						<?php 	if ($hasWritingRights) { ?>
@@ -1051,6 +1068,7 @@ include("construction/pieChart.php");
 	include("construction/amendment_modal.php");
 	include("construction/source_modal.php");
 	include("construction/trash_modal.php");
+	include("construction/authorship_modal.php");
 ?>
 
 <script>
@@ -1060,6 +1078,7 @@ include("construction/pieChart.php");
 <script src="assets/js/perpage/construction_source_helper.js"></script>
 <script src="assets/js/perpage/construction_source_save.js"></script>
 <script src="assets/js/perpage/construction_motion_save.js"></script>
+<script src="assets/js/perpage/construction_motion_authorship.js"></script>
 <script src="assets/js/perpage/meeting_events.js"></script>
 <script>
 sourceEnabled = false;

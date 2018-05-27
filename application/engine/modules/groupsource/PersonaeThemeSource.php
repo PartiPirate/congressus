@@ -87,7 +87,6 @@ class PersonaeThemeSource {
 		$theme = $themeBo->getTheme($notice["not_target_id"], true);
 		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
-
 		$notice["not_label"] = $theme["the_label"];
 		$notice["not_people"] = array();
 

@@ -313,6 +313,10 @@ $lang["construction_amendments"] = "Amendements";
 $lang["construction_argument_send"] = "Envoyer";
 $lang["construction_sources"] = "Sources";
 
+$lang["authorship_title"] = "Gestion des co-auteurs";
+$lang["authorship_add_co_author"] = "Ajouter un co-auteur";
+$lang["authorship_co_authors"] = "Co-auteurs";
+
 $lang["source_icon_wiki_text"] = '<i class="fa fa-wikipedia-w" aria-hidden="true"></i>';
 $lang["source_icon_leg_text"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
 $lang["source_icon_leg_article"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';

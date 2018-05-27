@@ -17,6 +17,20 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function replaceData(string, data) {
+	for(var key in data) {
+		var value = data[key];
+
+		// Simple replacement
+		var simpleKey = "\\${" + key + "}";
+		var regex = new RegExp(simpleKey, "g");
+
+		string = string.replace(regex, value);
+	}
+	
+	return string;
+}
+
 (function($) {
 	$.templates = {};
 
@@ -27,6 +41,7 @@
 
 			var html = templateInstance.prop("outerHTML");
 
+/*
 			if (options.data) {
 				for(var key in options.data) {
 					var value = options.data[key];
@@ -38,6 +53,8 @@
 					html = html.replace(regex, value);
 				}
 			}
+*/
+			html = replaceData(html, options.data);
 
 			templated[templated.length] = $(html)[0];
 		});

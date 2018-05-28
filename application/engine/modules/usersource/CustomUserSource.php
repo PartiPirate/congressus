@@ -68,6 +68,10 @@ class CustomUserSource {
     function whereEmail(&$queryBuilder, $config, $value) {
         $queryBuilder->where($config["modules"]["custom"]["fields"]["email_adh"] . " = " . $value);
     }
+
+    function wherePseudo(&$queryBuilder, $config, $value) {
+        $queryBuilder->where($config["modules"]["custom"]["fields"]["pseudo_adh"] . " = " . $value);
+    }
 }
 
 ?>

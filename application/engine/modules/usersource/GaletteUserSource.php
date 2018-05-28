@@ -62,6 +62,10 @@ class GaletteUserSource {
     function whereEmail(&$queryBuilder, $config, $value) {
         $queryBuilder->where("email_adh = " . $value);
     }
+
+    function wherePseudo(&$queryBuilder, $config, $value) {
+        $queryBuilder->where("pseudo_adh = " . $value);
+    }
 }
 
 ?>

@@ -87,8 +87,15 @@ $userData = $_REQUEST["userData"];
 
 // TODO Search by pseudo, email and id
 
-$memberId = intval($userData);
-$member = $userBo->getById($memberId);
+//$memberId = intval($userData);
+
+$member = $userBo->getByPseudo($userData);
+if (!$member) {
+    $member = $userBo->getByMail($userData);
+}
+if (!$member) {
+    $member = $userBo->getById($userData);
+}
 
 if (!$member) {
     $data["ko"] = "ko";
@@ -96,7 +103,7 @@ if (!$member) {
 }
 else {
     $coAuthor = array();
-    $coAuthor["cau_user_id"] = $memberId;
+    $coAuthor["cau_user_id"] = $member["id_adh"];
     $coAuthor["cau_object_type"] = "motion";
     $coAuthor["cau_object_id"] = $motion[$motionBo->ID_FIELD];
     

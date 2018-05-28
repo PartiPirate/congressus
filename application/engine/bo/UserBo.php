@@ -54,6 +54,18 @@ class UserBo {
 		return null;
 	}
 
+	public function getByPseudo($pseudo) {
+		$filters = array("pseudo_adh" => $pseudo);
+
+		$results = $this->getByFilters($filters);
+
+		if (count($results)) {
+			return $results[0];
+		}
+
+		return null;
+	}
+
 	public function getByFilters($filters = null) {
 		if (!$filters) $filters = array();
 		$args = array();
@@ -71,6 +83,11 @@ class UserBo {
         if (isset($filters["email_adh"])) {
     		$userSource->whereEmail($queryBuilder, $this->config, ":email_adh");
     		$args["email_adh"] = $filters["email_adh"];
+        }
+
+        if (isset($filters["pseudo_adh"])) {
+    		$userSource->wherePseudo($queryBuilder, $this->config, ":pseudo_adh");
+    		$args["pseudo_adh"] = $filters["pseudo_adh"];
         }
 
 		$query = $queryBuilder->constructRequest();

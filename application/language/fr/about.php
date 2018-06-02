@@ -41,7 +41,7 @@ Pour cela vous pouvez nous envoyez des sous sur la plateforme de don à l'adress
 Merci.";
 
 $lang["about_need_help_legend"] = "Besoin d'aide ?";
-$lang["about_need_help_content"] = "Vous voulez une installation propre d'Congressus dans votre infrastructure ?<br />
+$lang["about_need_help_content"] = "Vous voulez une installation propre de Congressus dans votre infrastructure ?<br />
 Vous avez besoin d'une fonctionnalité précise qui manque à Congressus ?<br />
 <br />
 Pas de soucis, <a href=\"#contactus\">contactez-nous</a> pour nous en parler et au besoin

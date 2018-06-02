@@ -31,10 +31,18 @@ $connection = openConnection();
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
 $filters = array("with_principal_location" => true, "with_status" => array("waiting", "open", "closed"));
+
+$timezone = null;
+if ($config["server"]["timezone"]) {
+	$timezone = new DateTimeZone($config["server"]["timezone"]);
+}
+
 if (isset($_REQUEST["from"])) {
 	$from = $_REQUEST["from"];
 	$from /= 1000;
+	$from -= 86400 * 7;  // seems too short for some requests
 	$fromDate = new DateTime();
+	$fromDate->setTimezone($timezone);
 	$fromDate->setTimestamp($from);
 	$from = $fromDate->format("Y-m-d");
 	
@@ -44,7 +52,9 @@ if (isset($_REQUEST["from"])) {
 if (isset($_REQUEST["to"])) {
 	$to = $_REQUEST["to"];
 	$to /= 1000;
+	$to += 86400 * 7;  // seems too short for some requests
 	$toDate = new DateTime();
+	$toDate->setTimezone($timezone);
 	$toDate->setTimestamp($to);
 	$to = $toDate->format("Y-m-d");
 	

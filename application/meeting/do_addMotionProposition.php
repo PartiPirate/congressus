@@ -73,7 +73,12 @@ $propositions = $motionBo->getByFilters(array($motionBo->ID_FIELD => $motion[$mo
 
 $proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD]);
 
-$proposition["mpr_label"] = "Proposition " . (count($propositions) > 1 ? count($propositions) + 1 : $propositions[0]["mpr_id"] ? 2 : 1);
+$propositionLabel = "Proposition " . (count($propositions) > 1 ? count($propositions) + 1 : $propositions[0]["mpr_id"] ? 2 : 1);
+if (isset($_REQUEST["label"]) && $_REQUEST["label"]) {
+    $propositionLabel = $_REQUEST["label"];
+}
+
+$proposition["mpr_label"] = $propositionLabel;
 
 $motionBo->saveProposition($proposition);
 

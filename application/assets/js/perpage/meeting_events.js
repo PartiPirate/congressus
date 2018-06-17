@@ -90,12 +90,43 @@ function showExternalChat(event) {
 	ul.get(0).scrollTop = ul.get(0).scrollHeight
 }
 
+function showUserOnAgendaPoint(event) {
+	var currentAgendaPointId = $("#agenda_point").data("id");
+	if (currentAgendaPointId && currentAgendaPointId == event.options.agendaPointId) {
+		var memberId = event.options.userId;
+		var agendaMemberClass = "agenda-member-" + memberId;
+		
+		var memberAvatar = $("#agenda_point ." + agendaMemberClass);
+		
+		if (!memberAvatar.length) {
+			var member = $("li[id=member-"+memberId+"]");
+			if (!member.length) return;
+			
+			memberAvatar = member.find("img").eq(0).clone();
+			
+			memberAvatar.addClass("agenda-member-" + memberId);
+			
+			$("#agenda_point #agenda-members-container").append(memberAvatar);
+		}
+		memberAvatar.data("last-timestamp", event.timestamp);
+		
+	}
+	else {
+//		console.log("ignore");
+	}
+}
+
 function showEvent(event) {
 
 	var eventClass = "success";
 
 	if (event.type == "external_chat") {
 		showExternalChat(event);
+		return;
+	}
+
+	if (event.type == "user_on_agenda_point") {
+		showUserOnAgendaPoint(event);
 		return;
 	}
 

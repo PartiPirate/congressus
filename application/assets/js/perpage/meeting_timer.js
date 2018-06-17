@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -30,6 +30,7 @@ var getEventsTimerInterval = 1500;
 /* Invariable */
 var pingTimer;
 var performanceTimer;
+var agendaMemberTimer;
 
 function tweakTimerPerformance() {
     var performanceTweak = 1 + (numberOfConnected - 1) / 10;
@@ -73,4 +74,7 @@ $(function() {
 
 	performanceTimer = $.timer(tweakTimerPerformance);
 	performanceTimer.set({ time : 10000, autostart : true });
+
+	agendaMemberTimer = $.timer(checkAgendaMembers);
+	agendaMemberTimer.set({ time : 60000, autostart : true });
 });

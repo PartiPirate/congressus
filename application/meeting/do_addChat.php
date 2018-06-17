@@ -102,7 +102,6 @@ foreach($chat as $key => $value) {
 	}
 }
 
-
 $data["ok"] = "ok";
 $data["chat"] = $chat;
 

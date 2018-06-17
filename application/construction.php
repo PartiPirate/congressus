@@ -20,6 +20,7 @@ include_once("header.php");
 
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/AgendaBo.php");
+require_once("engine/bo/CoAuthorBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/SourceBo.php");
@@ -115,12 +116,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 
 // print_r($meeting);
 
-$agendaBo = AgendaBo::newInstance($connection, $config);
-$motionBo = MotionBo::newInstance($connection, $config);
-$voteBo   = VoteBo::newInstance($connection, $config);
-$chatBo   = ChatBo::newInstance($connection, $config);
-$userBo   = UserBo::newInstance($connection, $config);
-$sourceBo = SourceBo::newInstance($connection, $config);
+$agendaBo   = AgendaBo::newInstance($connection, $config);
+$coAuthorBo = CoAuthorBo::newInstance($connection, $config);
+$motionBo   = MotionBo::newInstance($connection, $config);
+$voteBo     = VoteBo::newInstance($connection, $config);
+$chatBo     = ChatBo::newInstance($connection, $config);
+$userBo     = UserBo::newInstance($connection, $config);
+$sourceBo   = SourceBo::newInstance($connection, $config);
 
 $agendaFilters = array("age_meeting_id" => $meeting["mee_id"]);
 $oneAgenda = false;

@@ -18,125 +18,45 @@
 */
 
 /* global $ */
-/* global testBadges */
+/* global replaceData */
 
-/* global sourceSelectHandler */
-/* global sourceUrlHandler */
-/* global sourceArticlesHandler */
-
-var sourceEnabled = true
-
-function renewPropositions(agendaId, successHandler) {
-
-	$.get(window.location.href, {}, function(htmldata) {
-
-		// Replace chat
-		var mainPanel = $(htmldata).find("div#main-panel");
-
-		var motionEntry = mainPanel.find(".motion-entry");
-		var existingMotionEntry = $(".motion-entry");
-
-		// Change an amendment counter if there is one
-		existingMotionEntry.find(".counters").html(motionEntry.find(".counters").html());
-
-		var motions = mainPanel.find("#agenda-entry-" + agendaId + " ul").html();
-		$("#agenda-entry-" + agendaId + " ul").html(motions);
-
-		if (successHandler) successHandler();
-
-	}, "text");
-	
+function showAuthorship(event) {
+	$("#authorship-modal").modal('show');
 }
 
-function showAddMotion(event) {
-	var meetingId = $(this).data("meeting-id");
-	var agendaId = $(this).data("agenda-id");
-	
-	$("#save-amendment-modal #agendaIdInput").val(agendaId);
-	$("#save-amendment-modal #meetingIdInput").val(meetingId);
+function addCoAuthor() {
+	var form = $("#add-co-author-form");
 
-	$("#save-amendment-modal #titleInput").val("");
-	$("#save-amendment-modal #descriptionArea").val("");
+	$.post("meeting_api.php?method=do_addCoAuthor", form.serialize(), function(data) {
+		if (data.ok) {
+			var coAuthorSpan = '<span class="co-author co-author-${cau_id}"> <i class="fa fa-times text-danger delete-co-author-btn" data-co-author-id="${cau_id}" aria-hidden="true"></i> ${pseudo_adh}</span>';
+			coAuthorSpan = replaceData(coAuthorSpan, data.coAuthor);
 
-	$("#save-amendment-modal #explanationArea").val("");
-
-	if ($("#motion-title").text()) {
-		$("#save-amendment-modal #titleInput").val("Amendement pour " + $("#motion-title").text());
-		$("#save-amendment-modal #explanationArea").val("Amendement pour " + $("#motion-title").text());
-	}
-
-	if ($("textarea#destination").val()) {
-		$("#save-amendment-modal #descriptionArea").val($("textarea#destination").val());
-	}
-
-	$("#sourceSelect").val("");
-	$("#sourceUrlInput").val("");
-
-	$("#sourceUrlDiv").hide();
-	$("#sourceTitleDiv").hide();
-	$("#sourceContentDiv").hide();
-
-	if (sourceEnabled) {
-		$("#sourceSelectDiv").show();
-	}
-	else {
-		$("#sourceSelectDiv").hide();
-	}
-
-	$("#save-amendment-modal #sourceArticlesDiv").hide();
-
-	$('#save-amendment-modal').one('shown.bs.modal', function () {
-		$("#save-amendment-modal #descriptionArea").keyup();
-		$("#save-amendment-modal #explanationArea").keyup();
-	});
-
-	$("#save-amendment-modal #titleInput").keyup();
-
-	$("#save-amendment-modal").modal('show');
-}
-
-function saveMotion(event) {
-	var form = $("#save-amendment-modal form");
-	var agendaId = $("#save-amendment-modal #agendaIdInput").val();
-
-	$("#save-amendment-modal button").attr("disabled", "disabled");
-
-	$.post("meeting_api.php?method=do_addConstruction", form.serialize(), function(data) {
-		renewPropositions(agendaId, function() {
-			// Remove the modal
-			$("#save-amendment-modal button").removeAttr("disabled");
-			$("#save-amendment-modal").modal('hide');
-		});
+			$("#authorship-modal #co-author-container .co-authors").append($(coAuthorSpan));
+			$("#authorship-modal #co-author-container").show();
+			form.find("#userDataInput").val("");
+		}
 	}, "json");
 }
 
-function addAmendmentListeners() {
-	$("body").on("click", ".btn-add-motion", showAddMotion);
-	$("body").on("click", ".btn-save-motion", saveMotion);
-	$("body").on("change", "#save-amendment-modal #sourceSelect", function () { sourceSelectHandler($("#save-amendment-modal"), $(this)); });
-	$("body").on("change", "#save-amendment-modal #sourceUrlInput", function () { sourceUrlHandler($("#save-amendment-modal"), $(this)); });
-	$("body").on("change", "#save-amendment-modal #sourceArticlesSelect", function () { sourceArticlesHandler($("#save-amendment-modal")); });
+function deleteCoAuthor() {
+	var coAuthorId = $(this).data("co-author-id");
+	$(this).parents(".co-author").remove();
 
-	$("body").on("keyup", "#save-agenda-modal #titleInput", function() {
-		if ($("#save-agenda-modal #titleInput").val()) {
-			$(".btn-save-agenda").removeAttr("disabled");
-		}
-		else {
-			$(".btn-save-agenda").attr("disabled", "disabled");
-		}
-	});
+	if ($("#authorship-modal #co-author-container .co-author").length == 0) {
+		$("#authorship-modal #co-author-container").hide()
+	}
 
-	$("body").on("keyup", "#save-amendment-modal #titleInput", function() {
-		if ($("#save-amendment-modal #titleInput").val()) {
-			$(".btn-save-motion").removeAttr("disabled");
-		}
-		else {
-			$(".btn-save-motion").attr("disabled", "disabled");
-		}
-	});
+	$.post("meeting_api.php?method=do_removeCoAuthor", {coAuthorId: coAuthorId}, function(data) {
+	}, "json");
+}
 
+function addAuthorshipListeners() {
+	$("body").on("click", "#show-motion-co-authors-btn", showAuthorship);
+	$("body").on("click", "#authorship-modal .delete-co-author-btn", deleteCoAuthor);
+	$("body").on("click", "#authorship-modal #add-co-author-btn", addCoAuthor);
 }
 
 $(function() {
-	addAmendmentListeners();
+	addAuthorshipListeners();
 });

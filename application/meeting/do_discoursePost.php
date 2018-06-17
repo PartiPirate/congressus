@@ -64,7 +64,6 @@ else if (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $mee
 $discourse_category = $_REQUEST["discourse_category"];
 $discourse_title = $_REQUEST["discourse_title"];
 
-
 if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_category]['id'] != $discourse_category)) {
 	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_permission_description") . " ($discourse_category)</div>";
 	exit("Unauthorized discourse category ($discourse_category)");

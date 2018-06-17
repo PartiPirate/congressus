@@ -7,6 +7,7 @@
 	            $motions = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD], "mot_trashed" => 0));
 			}
 			$votes = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+
 ?>			
 			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 <?php			if ($showTitle) { ?>
@@ -61,6 +62,8 @@
 				
 				if ($previousMotionId == $motion["mot_id"]) continue;
 				$previousMotionId = $motion["mot_id"];
+
+				$amendmentCoAuthors = $coAuthorBo->getByFilters(array("cau_object_type" => "motion", "cau_object_id" => $motion["mot_id"]));
 
 				$sources = $sourceBo->getByFilters(array("sou_motion_id" => $motion["mot_id"]));
 				$numberOfsources = count($sources);
@@ -174,6 +177,14 @@ include("construction/pieChart.php");
 							<?php 	if ($author) { ?>
 								<?php echo GaletteBo::showIdentity($author); ?>
 							<?php 	}	?>
+							<?php	if (count($amendmentCoAuthors) && $author) echo " - "; ?>
+							<?php	$separator = "";
+									foreach($amendmentCoAuthors as $coAuthor) { 
+										echo $separator;
+										echo GaletteBo::showIdentity($coAuthor);
+										$separator = ", ";
+									}
+							?>
 						</div>
 						<div style="font-size: smaller;">
 <?php			if ($isTrash) { ?>

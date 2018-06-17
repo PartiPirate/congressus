@@ -21,6 +21,7 @@
 /* global bootbox */
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
+/* global showdown */
 
 /* I18N */
 
@@ -203,6 +204,8 @@ function updateDescription(description, agenda) {
 }
 
 function setAgendaPoint(point) {
+	if (point.ko) return;
+
 	var list = $("#agenda_point ul");
 
 	if ($("#agenda_point .agenda-label").text() != point.agenda.age_label) {
@@ -645,6 +648,10 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 	}
 
 	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: requestId}, function(data) {
+		if (data.ko) {
+			$("#agenda_point").hide();
+			return;
+		}
 
 		if (absoluteRequestId && data.requestId != absoluteRequestId) return;
 
@@ -740,6 +747,8 @@ function updateAgendaPoint() {
 function showAgendaPoint(event) {
 	event.preventDefault();
 	event.stopPropagation();
+
+	$("#agenda_point #agenda-members-container").children().remove();
 
 	var meetingId = $(".meeting").data("id");
 	var agendaId = $(this).data("id");
@@ -1812,6 +1821,34 @@ function addEmojiHelper() {
 	});
 
 	$("body").emojioneHelper();
+}
+
+function toMarkdownWithEmoji(source) {
+	source = emojione.shortnameToImage(source);
+
+	const regex = /^(=+)([^=]*)(=*)$/gm;
+	
+	let m;
+
+	var dashes = ["", "#", "##", "###", "####", "#####", "######"];
+
+	while ((m = regex.exec(source)) !== null) {
+	    // This is necessary to avoid infinite loops with zero-width matches
+	    if (m.index === regex.lastIndex) {
+	        regex.lastIndex++;
+	    }
+
+	    var search = m[1] + m[2] + m[3];
+	    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
+//		var replace = dashes[m[1].length] + m[2];
+
+		source = source.replace(search, replace);
+	}
+
+	var converter = new showdown.Converter();
+	source = converter.makeHtml(source);
+
+	return source;
 }
 
 function toMarkdownWithEmoji(source) {

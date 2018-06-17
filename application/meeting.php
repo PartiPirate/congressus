@@ -419,6 +419,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
 						<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
 						<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
+						
+						<span id="agenda-members-container" class="pull-right"></span>
 					</div>
 				</div>
 			</div>
@@ -736,6 +738,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				style="margin-right: 5px; display: none;">
 				<span class="glyphicon glyphicon-plus"></span>
 			</button>
+			<button class="btn btn-primary btn-xs btn-add-point-from" data-parent-id="${age_id}"
+				title="<?php echo lang("meeting_topicAddFrom"); ?>"
+				style="margin-right: 5px; display: none;">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+			</button>
 			<button class="btn btn-danger btn-xs btn-remove-point" data-id="${age_id}"
 				title="<?php echo lang("meeting_topicDelete"); ?>"
 				style="display: none;">
@@ -837,6 +844,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 
 <div id="exportModal"></div>
 
+<?php	include("meeting/addAgendaFrom_modal.php"); ?>
+
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -884,6 +893,13 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
 /* global judgmentVoteIsMandatory */
+
+var defaultPropositions = {yesno: [], proagainst: []};
+
+defaultPropositions.proagainst.push(<?php echo json_encode(lang("common_proposition_pro")); ?>);
+defaultPropositions.proagainst.push(<?php echo json_encode(lang("common_proposition_against")); ?>);
+defaultPropositions.yesno.push(<?php echo json_encode(lang("common_proposition_yes")); ?>);
+defaultPropositions.yesno.push(<?php echo json_encode(lang("common_proposition_no")); ?>);
 
 judgmentVoteIsMandatory = <?php echo json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
 

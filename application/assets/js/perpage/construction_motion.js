@@ -62,8 +62,14 @@ function renewChats(types, successHandler) {
 			var type = types[index];
 
 			var content = mainPanel.find("li." + type + "-chat");
-			$("." + type + "-chats ul").children().remove();
-			$("." + type + "-chats ul").append(content);
+			var listChats = $("." + type + "-chats ul.list-chats");
+
+			listChats.children().remove();
+			listChats.append(content);
+			
+//			content.each(function() {
+//				listChats.append($(this));
+//			});
 			
 			var counter = mainPanel.find("." + type + "-counter .counter").text().trim();
 			$("." + type + "-counter .counter").text(counter);
@@ -561,7 +567,7 @@ function saveTrash(event) {
 		$("#save-trash-modal button").removeAttr("disabled");
 		$("#save-trash-modal").modal('hide');
 
-//		window.location.href = "construction.php?id=" + meetingId;
+		window.location.href = "construction.php?id=" + meetingId;
 	}, "json");
 
 }
@@ -569,6 +575,20 @@ function saveTrash(event) {
 function addTrashListeners() {
 	$("body").on("click", "#motion-buttons-bar .btn-trash-motion", showTrashDialog);
 	$("body").on("click", "#save-trash-modal .btn-trash-motion", saveTrash);
+}
+
+function addOpenDebateListeners() {
+	$("body").on("click", "#motion-buttons-bar .btn-open-debate-motion", function() {
+		$.post("meeting_api.php?method=do_openDebate", {meetingId: $(this).data("meeting-id"), pointId: $(this).data("agenda-point-id"), motionId: $(this).data("motion-id") }, function(data) {
+			if (data.ok) {
+				renewSources(null);
+//				showAlertOK();
+			}
+			else {
+//				showAlertKO();
+			}
+		}, "json");
+	});
 }
 
 var previousMotionText = "";
@@ -584,6 +604,7 @@ $(function() {
 	addUpdateMotion();
 	addChatAdviceListeners();
 	addGoToTabListeners();
+	addOpenDebateListeners();
 
 	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
 		//console.log(event)	

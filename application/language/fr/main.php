@@ -28,6 +28,7 @@ $lang["common_connect"] = "Connecter";
 $lang["common_close"] = "Fermer";
 $lang["common_create"] = "Créer";
 $lang["common_date"] = "Date";
+$lang["common_add"] = "Ajouter";
 $lang["common_delete"] = "Supprimer";
 $lang["common_fork"] = "Copier";
 $lang["common_reject"] = "Rejeter";
@@ -39,6 +40,11 @@ $lang["common_share"] = "Partager";
 $lang["common_edit"] = "Modifier";
 $lang["common_next"] = "Suivant";
 $lang["common_previous"] = "Précédent";
+
+$lang["common_proposition_pro"] = "Pour";
+$lang["common_proposition_against"] = "Contre";
+$lang["common_proposition_yes"] = "Oui";
+$lang["common_proposition_no"] = "Non";
 
 $lang["language_fr"] = "Français";
 $lang["language_en"] = "Anglais";
@@ -166,6 +172,7 @@ $lang["meeting_taskEnded"] = "Indiquer que la tâche est finie";
 $lang["meeting_tasks"] = "Liste des tâches en cours";
 $lang["meeting_the"] = "le";
 $lang["meeting_topicAdd"] = "Ajouter un point sous ce point";
+$lang["meeting_topicAddFrom"] = "Ajouter un point sous ce point à partir d'une autre réunion";
 $lang["meeting_topicDelete"] = "Enlever ce point (ainsi que ces enfants)";
 $lang["meeting_unknown"] = "Inconnus";
 $lang["meeting_visitors"] = "Visiteurs";
@@ -182,6 +189,8 @@ $lang["meeting_quorum"] = "Quorum : ";
 $lang["meeting_number_of_presents"] = "Nombre de présent-e-s : ";
 $lang["meeting_number_of_voters"] = "Nombre de votant-e-s : ";
 $lang["meeting_base_type"] = "Type de réunion";
+
+$lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
 
 $lang["myMeetings_closed"] = "Réunions terminés";
 $lang["myMeetings_construction"] = "Réunions en construction";
@@ -237,6 +246,7 @@ $lang["motion_already_voted"] = "Vous avez déjà voté";
 $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
 $lang["motion_add_source"] = "Ajouter une source"; 
 $lang["motion_trash"] = "Envoyer à la &laquo; corbeille &raquo;";
+$lang["motion_open_debate"] = "Ouvrir le &laquo; débat &raquo;";
 
 $lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";
 $lang["trash_description"] = "La corbeille garantit la transparence du processus de la construction. Elle contient les motions qui ne respectent pas ce processus.";

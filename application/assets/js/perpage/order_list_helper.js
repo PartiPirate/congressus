@@ -22,9 +22,9 @@
 function changeListOrderHandler(event) {
     var newOrder = $(this).val();
     var lis = [];
-    var ul = $(this).parents("div").eq(1).find("ul");
+    var ul = $(this).parents("div").eq(1).find("ul.list-group");
 
-    ul.find("li").each(function() {
+    ul.children().each(function() {
         if ($(this).hasClass("unsortable")) return;
         lis.push($(this).detach());
     });

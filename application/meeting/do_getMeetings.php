@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -19,35 +19,23 @@
 
 if (!isset($api)) exit();
 
-include_once("config/config.php");
+include_once("config/database.php");
 include_once("config/memcache.php");
-require_once("engine/utils/EventStackUtils.php");
-
+require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
-require_once("engine/bo/NoticeBo.php");
-require_once("engine/bo/TaskBo.php");
+//require_once("engine/bo/MeetingRightBo.php");
+//require_once("engine/bo/AgendaBo.php");
 
-$meetingId = $arguments["meetingId"];
+$connection = openConnection();
+$meetingBo = MeetingBo::newInstance($connection, $config);
+
+$filters = array();
+$filters["with_status"] = array("open", "closed");
+$meetings = $meetingBo->getByFilters($filters);
 
 $data = array();
 $data["ok"] = "ok";
-
-$connection = openConnection();
-
-$meetingBo = MeetingBo::newInstance($connection, $config);
-$noticeBo = NoticeBo::newInstance($connection, $config);
-$taskBo = TaskBo::newInstance($connection, $config);
-
-$meeting = $meetingBo->getById($_REQUEST["meetingId"]);
-
-if (!$meeting) {
-	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
-}
-
-$notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
-$tasks = $taskBo->getByFilters(array("notices" => $notices, "only_open" => true));
-
-$data["tasks"] = $tasks;
+$data["meetings"] = $meetings;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

@@ -57,7 +57,9 @@ if (!$meeting) {
 	exit();
 }
 
-if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == $meeting["mee_secretary_member_id"]) {
+$sessionUserId = SessionUtils::getUserId($_SESSION);
+
+if ($sessionUserId && $sessionUserId == $meeting["mee_secretary_member_id"]) {
 	if ($meeting["mee_secretary_agenda_id"] != $_REQUEST["pointId"]) {
 		$meeting["mee_secretary_agenda_id"] = $_REQUEST["pointId"];
 		$meetingBo->save($meeting);
@@ -67,6 +69,9 @@ if (SessionUtils::getUserId($_SESSION) && SessionUtils::getUserId($_SESSION) == 
 		
 		addEvent($meetingId, EVENT_SECRETARY_READS_ANOTHER_POINT, "Le secrétaire de séance vient de changer de point");
 	}
+}
+if ($sessionUserId) {
+	addEvent($meetingId, EVENT_USER_ON_AGENDA_POINT, "", array("agendaPointId" => $pointId, "userId" => $sessionUserId));	
 }
 
 // TODO Compute the key // Verify the key
@@ -140,13 +145,20 @@ if (!$json) {
 
 	$data["conclusions"] = $conclusionBo->getByFilters(array("con_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 
-	$data["requestId"] = $_REQUEST["requestId"];
 	$data["ok"] = "ok";
+
+	$json = json_encode($data, JSON_NUMERIC_CHECK);
+
+	if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 5)) {
+		$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 5);
+	}
 }
 else {
 	$data = json_decode($json, true);
 	$data["cached"] = true;
 }
+
+$data["requestId"] = $_REQUEST["requestId"];
 
 //print_r($data);
 

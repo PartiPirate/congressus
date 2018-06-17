@@ -25,6 +25,7 @@
 /* global bootbox */
 /* global clearKeyup */
 /* global keyupTimeoutId */
+/* global toMarkdownWithEmoji */
 
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
@@ -413,6 +414,7 @@ function showNextPoint() {
 	});
 
 	if (nextPointId) {
+		$("#agenda_point #agenda-members-container").children().remove();
 		_updateAgendaPoint(meetingId, nextPointId, true);
 	}
 }
@@ -437,8 +439,278 @@ function showPreviousPoint() {
 	});
 
 	if (previousPointId) {
+		$("#agenda_point #agenda-members-container").children().remove();
 		_updateAgendaPoint(meetingId, previousPointId, true);
 	}
+}
+
+function checkAgendaMembers() {
+	var now = new Date().getTime();
+	$("#agenda_point #agenda-members-container").children().each(function() {
+		var lastTimestamp = $(this).data("last-timestamp");
+		
+		if ((now - lastTimestamp * 1000) > 61000) $(this).remove();
+	})
+}
+
+function showAddAgendaFromModal(event) {
+	event.stopPropagation();
+	
+	var parentAgendaId = $(this).data("parent-id");
+	var parentAgendaLabel = $(this).parent().find("a").text();
+
+	$("#add-agenda-from-modal #parentAgendaIdInput").val(parentAgendaId);
+	$("#add-agenda-from-modal #parentAgendaLabel").text(parentAgendaLabel);
+
+	$.get("meeting_api.php?method=do_getMeetings", {}, function(data) {
+		if (data.ok) {
+			var constructionGroup = $("#add-agenda-from-modal #construction-group");
+			var meetingGroup = $("#add-agenda-from-modal #meeting-group");
+
+			// clear meetings
+			constructionGroup.children().remove();
+			meetingGroup.children().remove();
+
+			for(var index = 0; index < data.meetings.length; ++index) {
+				var meeting = data.meetings[index];
+
+				var option = $("<option></option>");
+				option.val(meeting.mee_id);
+				option.text(meeting.mee_label);
+				option.data("meeting", meeting);
+
+				if (meeting.mee_type == "construction") {
+					constructionGroup.append(option);
+				}
+				else if (meeting.mee_type == "meeting") {
+					meetingGroup.append(option);
+				}
+			}
+
+			$("#add-agenda-from-modal #titleInput").val("");
+			$("#add-agenda-from-modal #descriptionArea").val("");
+			$("#add-agenda-from-modal #descriptionDiv").hide();
+			$("#add-agenda-from-modal #no-motion-btn").click();
+
+			// Then show the modal
+			$("#add-agenda-from-modal").modal();
+		}
+	}, "json");
+
+
+}
+
+function changeMeetingHandler() {
+	var meetingId = $("#add-agenda-from-modal #meetingSelect").val();
+	var agendaSelect = $("#add-agenda-from-modal #agendaSelect");
+
+	$("#add-agenda-from-modal #motionSelectDiv").hide();
+	$("#add-agenda-from-modal #agendaSelectDiv").hide();
+	agendaSelect.children().remove();
+
+	var meeting = $("#add-agenda-from-modal #meetingSelect option:selected").data("meeting");
+	$("#add-agenda-from-modal #titleInput").val(meeting.mee_label);
+	$("#add-agenda-from-modal #descriptionArea").val("").keyup();
+	$("#add-agenda-from-modal #descriptionDiv").hide();
+	$("#add-agenda-from-modal #firstChatArea").val("").keyup();
+	$("#add-agenda-from-modal #firstChatDiv").hide();
+
+	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+		var option = $("<option value=\"\" disabled=\"disabled\" selected=\"selected\"></option>");
+		option.data("agenda", agenda);
+
+		agendaSelect.append(option);
+
+		for(var index = 0; index < data.agendas.length; ++index) {
+			var agenda = data.agendas[index];
+
+			if (agenda.age_label.indexOf("amendments") == 0) continue;
+
+			var option = $("<option></option>");
+			option.val(agenda.age_id);
+			option.text(agenda.age_label);
+			option.data("agenda", agenda);
+
+			agendaSelect.append(option);
+		}
+
+		if (data.agendas.length) {
+			$("#add-agenda-from-modal #agendaSelectDiv").show();
+		}
+	}, "json")
+}
+
+function changeAgendaHandler() {
+	var meetingId = $("#add-agenda-from-modal #meetingSelect").val();
+	var agendaId = $("#add-agenda-from-modal #agendaSelect").val();
+	var motionSelect = $("#add-agenda-from-modal #motionSelect");
+
+
+	var agenda = $("#add-agenda-from-modal #agendaSelect option:selected").data("agenda");
+	$("#add-agenda-from-modal #titleInput").val(agenda.age_label);
+	$("#add-agenda-from-modal #descriptionDiv").show();
+	$("#add-agenda-from-modal #descriptionArea").val(agenda.age_description).keyup();
+	$("#add-agenda-from-modal #firstChatArea").val("").keyup();
+	$("#add-agenda-from-modal #firstChatDiv").hide();
+
+	$("#add-agenda-from-modal #motionSelectDiv").hide();
+	motionSelect.children().remove();
+	
+	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: 0}, function(data) {
+		var option = $("<option value=\"\" disabled=\"disabled\" selected=\"selected\"></option>");
+		option.data("motion", motion);
+
+		motionSelect.append(option);
+
+		var motionIds = {};
+
+		for(var index = 0; index < data.motions.length; ++index) {
+			var motion = data.motions[index];
+
+			if (motionIds[motion.mot_id]) continue;
+			
+			motionIds[motion.mot_id] = motion.mot_id;
+
+			if (motion.mot_trashed) continue;
+			
+			var option = $("<option></option>");
+			option.val(motion.mot_id);
+			option.text(motion.mot_title);
+			option.data("motion", motion);
+
+			motionSelect.append(option);
+		}
+
+		if (data.motions.length) {
+			$("#add-agenda-from-modal #motionSelectDiv").show();
+		}
+	}, "json");
+}
+
+function changeMotionHandler() {
+	var meetingId = $("#add-agenda-from-modal #meetingSelect").val();
+	var agendaId = $("#add-agenda-from-modal #agendaSelect").val();
+	var motionId = $("#add-agenda-from-modal #motionSelect").val();
+
+	var motion = $("#add-agenda-from-modal #motionSelect option:selected").data("motion");
+	$("#add-agenda-from-modal #titleInput").val(motion.mot_title);
+	$("#add-agenda-from-modal #descriptionDiv").show();
+	$("#add-agenda-from-modal #descriptionArea").val(motion.mot_description).keyup();
+	
+	if (motion.mot_explanation) {
+		$("#add-agenda-from-modal #firstChatDiv").show();
+		$("#add-agenda-from-modal #firstChatArea").val(motion.mot_explanation).keyup();
+		$("#add-agenda-from-modal #firstChatAuthorInput").val(motion.mot_author_id);
+	}
+	else {
+		$("#add-agenda-from-modal #firstChatArea").val("").keyup();
+		$("#add-agenda-from-modal #firstChatDiv").hide();
+		$("#add-agenda-from-modal #firstChatAuthorInput").val("");
+	}
+}
+
+function addAgendaFromSaveHandler() {
+	var addAgendaPointForm = {meetingId: 0, parentId: 0, title: "", description: ""};
+
+	addAgendaPointForm.meetingId = $("#add-agenda-from-modal #meetingIdInput").val();
+	addAgendaPointForm.parentId = $("#add-agenda-from-modal #parentAgendaIdInput").val();
+
+	addAgendaPointForm.title = $("#add-agenda-from-modal #titleInput").val();
+	addAgendaPointForm.description = toMarkdownWithEmoji($("#add-agenda-from-modal #descriptionArea").val()); // TODO remove that when well be in full markdown
+
+	//	console.log(addAgendaPointForm);
+	//	add agenda point
+	$.post("meeting_api.php?method=do_addAgendaPoint", addAgendaPointForm, function(data) {
+		if (data.ok) {
+			var agendaId = data.agenda.age_id;
+	
+			// add motion call
+			var addMotionCall = function() {
+				// There is a motion to create ?
+				if ($("#add-agenda-from-modal #motion-btn-group button.active").val() != "none") {
+					var addMotionForm = {meetingId: addAgendaPointForm.meetingId, pointId: agendaId, startingText: "", description: ""};
+					addMotionForm.startingText =  $("#add-agenda-from-modal #motionTitleArea").val();
+					addMotionForm.description =  $("#add-agenda-from-modal #motionDescriptionArea").val();
+
+					// add motion
+					$.post("meeting_api.php?method=do_addMotion", addMotionForm, function(data) {
+						if (data.ok) {
+							var motionId = data.motion.mot_id;
+							// Add propositions
+							var addPropositionForm = {meetingId: addAgendaPointForm.meetingId, pointId: agendaId, motionId: motionId, label: ""};
+							var propositions = defaultPropositions[$("#add-agenda-from-modal #motion-btn-group button.active").val()];
+							for(var index = 0; index < propositions.length; ++index) {
+								addPropositionForm.label = propositions[index];
+								$.post("meeting_api.php?method=do_addMotionProposition", addPropositionForm, function(data) {
+								}, "json");
+							}
+						}
+					}, "json");
+				}
+				else {
+				}
+			};
+	
+			if ($("#add-agenda-from-modal #firstChatArea").val()) {
+				var addFirstChatForm = {id: addAgendaPointForm.meetingId, pointId: agendaId, userId: 0, startingText: ""};
+				addFirstChatForm.userId =  $("#add-agenda-from-modal #firstChatAuthorInput").val();
+				addFirstChatForm.startingText =  $("#add-agenda-from-modal #firstChatArea").val();
+
+				// add first chat
+				$.post("meeting_api.php?method=do_addChat", addFirstChatForm, function(data) {
+					if (data.ok) {
+						addMotionCall();
+					}
+				}, "json");
+			}
+			else {
+				addMotionCall();
+			}
+		}
+		else {
+			// Bad request
+		}
+	}, "json");
+
+	// Then close the modal
+	$("#add-agenda-from-modal").modal("hide");
+}
+
+function addAgendaFromHandlers() {
+	$("body").on("click", ".btn-add-point-from", showAddAgendaFromModal);
+	$("body").on("change", "#add-agenda-from-modal #meetingSelect", changeMeetingHandler);
+	$("body").on("change", "#add-agenda-from-modal #agendaSelect", changeAgendaHandler);
+	$("body").on("change", "#add-agenda-from-modal #motionSelect", changeMotionHandler);
+	$("body").on("change", "#add-agenda-from-modal #motionWrapperSelect", function() {
+		var selectedOption = $("#add-agenda-from-modal #motionWrapperSelect option:selected");
+		$("#add-agenda-from-modal #motionTitleArea").val(selectedOption.data("title")).keyup();
+		$("#add-agenda-from-modal #motionDescriptionArea").val(selectedOption.data("description")).keyup();
+	});
+
+	$('#add-agenda-from-modal').one('shown.bs.modal', function () {
+		$("#add-agenda-from-modal #descriptionArea").keyup();
+	});
+
+	$("body").on("click", "#add-agenda-from-modal #motion-btn-group button", function() {
+		$("#add-agenda-from-modal #motion-btn-group button").removeClass("active").removeClass("btn-success").addClass("btn-default");
+		$(this).addClass("active").addClass("btn-success").removeClass("btn-default");
+		
+		if ($(this).val() == "none") {
+			$("#add-agenda-from-modal #motionWrapperSelectDiv").hide();
+			$("#add-agenda-from-modal #motionTitleDiv").hide();
+			$("#add-agenda-from-modal #motionDescriptionDiv").hide();
+		}
+		else {
+			$("#add-agenda-from-modal #motionWrapperSelectDiv").show();
+			$("#add-agenda-from-modal #motionTitleDiv").show();
+			$("#add-agenda-from-modal #motionDescriptionDiv").show();
+			$("#add-agenda-from-modal #motionTitleArea").keyup();
+			$("#add-agenda-from-modal #motionDescriptionArea").keyup();
+		}
+	});
+
+	$("body").on("click", "#add-agenda-from-modal .btn-add-agenda-from", addAgendaFromSaveHandler);
+	
 }
 
 $(function() {
@@ -447,6 +719,7 @@ $(function() {
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);
 	$("body").on("click", ".btn-go-down", goDownPoint);
 
+	addAgendaFromHandlers()
 	addAgendaHandlers();
 	addMeetingHandlers();
 

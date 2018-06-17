@@ -338,6 +338,14 @@ include("construction/pieChart.php");
 						<?php 	if ($author) { ?>
 							<?php echo GaletteBo::showIdentity($author); ?>
 						<?php 	}	?>
+						<?php	if (count($coAuthors) && $author) echo " - "; ?>
+						<?php	$separator = "";
+								foreach($coAuthors as $coAuthor) { 
+									echo $separator;
+									echo GaletteBo::showIdentity($coAuthor);
+									$separator = ", ";
+								}
+						?>
 					</div>
 					<div class="counters" style="font-size: smaller;">
 						<a href="#voting-members-panel" class="go-to"><?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?></a> -
@@ -475,6 +483,12 @@ include("construction/pieChart.php");
 								<span class="glyphicon glyphicon-trash"></span> <?php echo lang("motion_trash"); ?> &nbsp;
 							</div>
 							<?php		} ?>
+							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
+							<div class="btn btn-info btn-open-debate-motion" type="button" style="height: 36px;"
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								<i class="fa fa-comments"></i> <?php echo lang("motion_open_debate"); ?> &nbsp;
+							</div>
+							<?php		} ?>
 
 							<?php	} ?>
 							</form>
@@ -504,6 +518,14 @@ include("construction/pieChart.php");
 <?php 	
 //		} 
 ?>			
+
+<?php
+	include("construction/amendment_modal.php");
+	include("construction/source_modal.php");
+	include("construction/trash_modal.php");
+	include("construction/authorship_modal.php");
+?>
+
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
@@ -578,7 +600,7 @@ include("construction/pieChart.php");
 							<?php echo langFormat($numberOfChats[1] < 2, "amendments_pro_argument", "amendments_pro_arguments", array("argument" => $numberOfChats[1])); ?>
 							</span>
 						</p></div>
-						<ul class="list-group objects">
+						<ul class="list-group list-chats objects">
 	<?php	foreach($chats as $chat) {
 				if ($chat["cha_type"] != "pro") continue;
 
@@ -805,7 +827,7 @@ include("construction/pieChart.php");
 							<?php echo langFormat($numberOfChats[2] < 2, "amendments_against_argument", "amendments_against_arguments", array("argument" => $numberOfChats[2])); ?>
 							</span>
 						</p></div>
-						<ul class="list-group objects">
+						<ul class="list-group list-chats objects">
 	<?php	foreach($chats as $chat) {
 				if ($chat["cha_type"] != "against") continue;
 
@@ -1063,13 +1085,6 @@ include("construction/pieChart.php");
 
 
 <div id="exportModal"></div>
-
-<?php
-	include("construction/amendment_modal.php");
-	include("construction/source_modal.php");
-	include("construction/trash_modal.php");
-	include("construction/authorship_modal.php");
-?>
 
 <script>
 </script>

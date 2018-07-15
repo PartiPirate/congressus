@@ -44,7 +44,7 @@
                     <label class="col-md-4 control-label" for="meetingSelect">Réunion</label>
                     <div class="col-md-8">
                         <select id="meetingSelect" name="meetingId" class="form-control">
-                            <option value="" disabled="disabled" selected="selected"></option>
+                            <option value="0" disabled="disabled" selected="selected"></option>
                             <optgroup label="Discussion et Co-construction" id="construction-group"></optgroup>
                             <optgroup label="Réunion et prise de décisions" id="meeting-group"></optgroup>
                         </select>
@@ -121,23 +121,28 @@
                             <optgroup label="Equipage" id="equipage-group">
                                 <option value="" 
                                     data-title="L'Assemblée Permanente valide la création de l'équipage &quot;Nom de l'équipage&quot;" 
-                                    data-description="Pour accéder au code de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Création d'équipage</option>
+                                    data-description="Pour accéder au code de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;équipage&quot;,&quot;equipage&quot;]}]">Création d'équipage</option>
                                 <option value="" 
                                     data-title="L'Assemblée Permanente valide la modification du code de fonctionnement de l'équipage &quot;Nom de l'équipage&quot;" 
-                                    data-description="Pour accéder à la modification du code de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Modification de code de fonctionnement d'un équipage</option>
+                                    data-description="Pour accéder à la modification du code de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;équipage&quot;,&quot;equipage&quot;]}]">Modification de code de fonctionnement d'un équipage</option>
                             </optgroup>
                             <optgroup label="Candidature" id="candidate-group">
                                 <option value="" 
                                     data-title="L'Assemblée Permanente nomme &quot;le candidat&quot; en tant que porte-parole."
-                                    data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Candidature au porte-parolat</option>
+                                    data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;le candidat&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;candidature&quot;,&quot;de&quot;,&quot;d'&quot;]}]">Candidature au porte-parolat</option>
                                 <option value="" 
-                                    data-title="L'Assemblée Permanente inscrit &quot;le candidat&quot; au sein de l'équipe &quot;nom de l'équipe&quot;."
-                                    data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Candidature à une équipe</option>
+                                    data-title="L'Assemblée Permanente inscrit &quot;le candidat&quot; au sein de l'équipe nom de l'équipe."
+                                    data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;le candidat&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;candidature&quot;,&quot;de&quot;,&quot;d'&quot;]},{&quot;src&quot;:&quot;nom de l'équipe&quot;,&quot;val&quot;:&quot;parentAgendaLabel&quot;,&quot;rmv&quot;:[&quot;candidatures&quot;,&quot;candidature&quot;,&quot;pour&quot;,&quot;l'&quot;,&quot;equipe&quot;,&quot;équipe&quot;]}]">Candidature à une équipe</option>
                             </optgroup>
                             <optgroup label="Motion simple" id="simple-motion-group">
                                 <option value="" 
                                     data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."
-                                    data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Signature de texte</option>
+                                    data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom du texte&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;signature&quot;,&quot;signer&quot;]}]">Signature de texte</option>
 <!--
                                 <option value="" 
                                     data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."

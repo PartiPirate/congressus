@@ -22,6 +22,8 @@
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
 /* global showdown */
+/* gloabl areVotesAnonymous */
+/* gloabl computeMotion */
 
 /* I18N */
 
@@ -284,6 +286,7 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-motion-limits").removeClass("active").removeClass("disabled");
 					motionActions.find(".btn-motion-anonymous").show();
 					motionActions.find(".btn-see-motion-stats").hide();
+					motionActions.find(".btn-see-motion-delegations").hide();
 					break;
 				case "voting":
 					motionActions.find(".btn-do-close").show();
@@ -292,12 +295,14 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".voters").show();
 					motionActions.find(".btn-motion-anonymous").show();
 					motionActions.find(".btn-see-motion-stats").show();
+					motionActions.find(".btn-see-motion-delegations").show();
 					break;
 				case "resolved":
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
 					motionActions.find(".btn-motion-anonymous").hide();
 					motionActions.find(".btn-see-motion-stats").show();
+					motionActions.find(".btn-see-motion-delegations").show();
 					break;
 				default:
 			}
@@ -725,6 +730,13 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 
 			addVotes(data.votes, proposition, motion);
 		});
+		
+//		console.log("Call");
+		$("#agenda_point .motion").each(function() {
+			var motion = $(this);
+			computeMotion(motion);
+		});
+//		console.log("End call");
 
 		$("#agenda_point .panel-footer button").removeClass("disabled");
 		$("templates *").removeClass("to-delete");
@@ -808,7 +820,7 @@ function addVotes(votes, proposition, motion) {
 		}
 	}
 
-	computeMotion(proposition.parents(".motion"));
+//	computeMotion(proposition.parents(".motion"));
 }
 
 function retrievePreviousVotes(motion, propositionsHolder) {
@@ -914,6 +926,7 @@ function vote(event) {
                 			if (data.ok) {
                 				addVotes([data.vote], proposition, motion);
 								testBadges(data.gamifiedUser.data);
+								computeMotion(motion);
                 			}
                 		}, "json");
                     }
@@ -979,6 +992,7 @@ function vote(event) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
 									testBadges(data.gamifiedUser.data);
+									computeMotion(motion);
 	                			}
 	                		}, "json");
 
@@ -1053,6 +1067,7 @@ function vote(event) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
 									testBadges(data.gamifiedUser.data);
+									computeMotion(motion);
 	                			}
 	                		}, "json");
 

@@ -86,7 +86,8 @@ class PersonaeGroupSource {
 				if (!$fixationMember["id_adh"]) continue;
 				$people = array("mem_id" => $fixationMember["id_adh"]);
 				$people["mem_nickname"] = htmlspecialchars(utf8_encode($fixationMember["pseudo_adh"] ? $fixationMember["pseudo_adh"] : $fixationMember["nom_adh"] . ' ' . $fixationMember["prenom_adh"]), ENT_SUBSTITUTE);
-				$people["mem_power"] = $fixationMember["fme_power"];
+//				$people["mem_power"] = $fixationMember["fme_power"];
+    			$people["mem_power"] = $theme["the_voting_power"];
 				$people["mem_voting"] = $notice["not_voting"];
 				$people["mem_noticed"] = 1;
 				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;

@@ -40,7 +40,7 @@ foreach($motions as $motion) {
 	if (count($trendingMotions) == 4) break;
 }
 
-$headingColMd = "col-md-" . (12 / count($trendingMotions));
+$headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMotions) : 1));
 
 //echo "<!-- \n";
 //print_r($trendingMotions);

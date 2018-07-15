@@ -20,6 +20,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Add Access-Control-Allow-Origin for API requests
+header("Access-Control-Allow-Origin: *");
+ 
 require_once("config/database.php");
 include_once("config/memcache.php");
 include_once("config/mail.php");

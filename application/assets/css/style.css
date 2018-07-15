@@ -548,3 +548,26 @@ a[disabled] {
     padding: 0 0 !important;
     color: #cccccc;
 }
+
+#chartjs-tooltip {
+	border-color: #101010;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+	color: #fff;
+	background-color: #101010;
+	padding: 5px;
+	z-index: 20000;
+}
+
+#chartjs-tooltip:before {
+	position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-left-color: #1E2021;
+    right: -12px;
+    top: 9px;	
+	z-index: 20000;
+}

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -30,12 +30,28 @@ $connection = openConnection();
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
 $filters = array();
-$filters["with_status"] = array("open", "closed");
+
+if (isset($_REQUEST["status"]) && is_array($_REQUEST["status"])) {
+    $filters["with_status"] = $_REQUEST["status"];
+}
+else {
+    $filters["with_status"] = array("open", "closed");
+}
 $meetings = $meetingBo->getByFilters($filters);
 
 $data = array();
 $data["ok"] = "ok";
 $data["meetings"] = $meetings;
+
+if (isset($_REQUEST["from"])) {
+    foreach($data["meetings"] as $index => $meeting) {
+        if ($meeting["mee_status"] != "open" && $meeting["mee_datetime"] < $_REQUEST["from"]) {
+            unset($data["meetings"][$index]);
+        }
+    }
+    
+    sort($data["meetings"]);
+}
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

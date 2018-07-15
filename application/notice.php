@@ -27,7 +27,10 @@ $groupKeyLabels = array();
 
 foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 	$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
-	$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
+
+	if ($groupSource->getGroupKeyLabel()) {
+		$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
+	}
 }
 
 ?>

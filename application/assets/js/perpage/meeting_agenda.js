@@ -461,6 +461,7 @@ function showAddAgendaFromModal(event) {
 
 	$("#add-agenda-from-modal #parentAgendaIdInput").val(parentAgendaId);
 	$("#add-agenda-from-modal #parentAgendaLabel").text(parentAgendaLabel);
+//	
 
 	$.get("meeting_api.php?method=do_getMeetings", {}, function(data) {
 		if (data.ok) {
@@ -490,7 +491,14 @@ function showAddAgendaFromModal(event) {
 			$("#add-agenda-from-modal #titleInput").val("");
 			$("#add-agenda-from-modal #descriptionArea").val("");
 			$("#add-agenda-from-modal #descriptionDiv").hide();
+			$("#add-agenda-from-modal #firstChatArea").val("");
+			$("#add-agenda-from-modal #firstChatDiv").hide();
 			$("#add-agenda-from-modal #no-motion-btn").click();
+			
+			$("#add-agenda-from-modal #meetingSelect #no-meeting").removeAttr("disabled");
+			$("#add-agenda-from-modal #meetingSelect").val(0).change();
+			$("#add-agenda-from-modal #meetingSelect #no-meeting").attr("disabled", "disabled");
+			// $("#add-agenda-from-modal #meetingSelect").change();
 
 			// Then show the modal
 			$("#add-agenda-from-modal").modal();
@@ -507,6 +515,8 @@ function changeMeetingHandler() {
 	$("#add-agenda-from-modal #motionSelectDiv").hide();
 	$("#add-agenda-from-modal #agendaSelectDiv").hide();
 	agendaSelect.children().remove();
+
+	if (!meetingId) return;
 
 	var meeting = $("#add-agenda-from-modal #meetingSelect option:selected").data("meeting");
 	$("#add-agenda-from-modal #titleInput").val(meeting.mee_label);
@@ -544,7 +554,6 @@ function changeAgendaHandler() {
 	var meetingId = $("#add-agenda-from-modal #meetingSelect").val();
 	var agendaId = $("#add-agenda-from-modal #agendaSelect").val();
 	var motionSelect = $("#add-agenda-from-modal #motionSelect");
-
 
 	var agenda = $("#add-agenda-from-modal #agendaSelect option:selected").data("agenda");
 	$("#add-agenda-from-modal #titleInput").val(agenda.age_label);
@@ -683,12 +692,55 @@ function addAgendaFromHandlers() {
 	$("body").on("change", "#add-agenda-from-modal #motionSelect", changeMotionHandler);
 	$("body").on("change", "#add-agenda-from-modal #motionWrapperSelect", function() {
 		var selectedOption = $("#add-agenda-from-modal #motionWrapperSelect option:selected");
-		$("#add-agenda-from-modal #motionTitleArea").val(selectedOption.data("title")).keyup();
-		$("#add-agenda-from-modal #motionDescriptionArea").val(selectedOption.data("description")).keyup();
+
+		var motionTitle = selectedOption.data("title");
+		var motionDescription = selectedOption.data("description");
+
+		var motionReplace = selectedOption.data("replace");
+
+		if (motionReplace) {
+			for(var index = 0; index < motionReplace.length; ++index) {
+				var replace = motionReplace[index];
+				
+				var value = "";
+				switch(replace.val) {
+					case "title":
+						value = $("#add-agenda-from-modal #titleInput").val();
+						break;
+					case "parentAgendaLabel":
+						value = $("#add-agenda-from-modal #parentAgendaLabel").text();
+						break;
+				}
+
+				value = value.replace(/\"/g,"");
+
+				for(var jndex = 0; jndex < replace.rmv.length; ++jndex) {
+					var rmv = replace.rmv[jndex];
+
+					var startIndex = -1;
+					while((startIndex = value.toLocaleLowerCase().indexOf(rmv.toLocaleLowerCase())) != -1) {
+						var endIndex = startIndex + rmv.length;
+						
+						value = (startIndex == 0 ? "" : value.substring(0, startIndex)) + value.substring(endIndex);
+					}
+				}
+
+				value = value.trim();
+
+				motionTitle = motionTitle.replace(replace.src, value);
+				motionDescription = motionDescription.replace(replace.src, value);
+			}
+		}
+		
+		$("#add-agenda-from-modal #motionTitleArea").val(motionTitle).keyup();
+		$("#add-agenda-from-modal #motionDescriptionArea").val(motionDescription).keyup();
 	});
 
-	$('#add-agenda-from-modal').one('shown.bs.modal', function () {
-		$("#add-agenda-from-modal #descriptionArea").keyup();
+	$('#add-agenda-from-modal').on('shown.bs.modal', function () {
+		$("#add-agenda-from-modal #descriptionArea").val("").keyup();
+		$("#add-agenda-from-modal #descriptionDiv").hide();
+		$("#add-agenda-from-modal #firstChatArea").val("").keyup();
+		$("#add-agenda-from-modal #firstChatDiv").hide();
 	});
 
 	$("body").on("click", "#add-agenda-from-modal #motion-btn-group button", function() {

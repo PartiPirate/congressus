@@ -85,24 +85,57 @@ class PersonaeThemeSource {
         $themeBo = ThemeBo::newInstance($connection, $config);
 
 		$theme = $themeBo->getTheme($notice["not_target_id"], true);
-		$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
 		$notice["not_label"] = $theme["the_label"];
 		$notice["not_people"] = array();
+		
+		if ($theme["the_delegate_only"] == "1") {
+			// We get all eligibles, because eligible is the only persons with voting rights (if the theme as a voting power)
+			// In most cases eligibles and voters are the same
+			$members = array();
 
-		foreach($fixationMembers as $fixationMember) {
-			if (!$fixationMember["id_adh"]) continue;
-			$people = array("mem_id" => $fixationMember["id_adh"]);
-			$people["mem_nickname"] = htmlspecialchars(utf8_encode($fixationMember["pseudo_adh"] ? $fixationMember["pseudo_adh"] : $fixationMember["nom_adh"] . ' ' . $fixationMember["prenom_adh"]), ENT_SUBSTITUTE);
-			$people["mem_power"] = $fixationMember["fme_power"];
-			$people["mem_voting"] = $notice["not_voting"];
-			$people["mem_noticed"] = 1;
-			$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
-			$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
+			foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+				$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+	        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
+	
+	        	if ($groupKeyLabel["key"] != $theme["the_eligible_group_type"]) continue;
+	        	
+	        	$members = $groupSource->getNoticeMembers(array("not_target_id" => $theme["the_eligible_group_id"]));
+			}
 
-			GroupSourceFactory::fixPing($pings, $usedPings, $people, $fixationMember, $now);
+			foreach($members as $member) {
+				if (!$member["id_adh"]) continue;
+				$people = array("mem_id" => $member["id_adh"]);
+				$people["mem_nickname"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
+				$people["mem_power"] = $theme["the_voting_power"];
+				$people["mem_voting"] = $notice["not_voting"];
+				$people["mem_noticed"] = 1;
+				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
+				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
+	
+				GroupSourceFactory::fixPing($pings, $usedPings, $people, $member, $now);
+	
+				$notice["not_people"][] = $people;
+			}
+		}
+		else {
+			$fixationMembers = $fixationBo->getFixations(array("fix_id" => $theme["the_current_fixation_id"], "with_fixation_members" => true));
 
-			$notice["not_people"][] = $people;
+			foreach($fixationMembers as $fixationMember) {
+				if (!$fixationMember["id_adh"]) continue;
+				$people = array("mem_id" => $fixationMember["id_adh"]);
+				$people["mem_nickname"] = htmlspecialchars(utf8_encode($fixationMember["pseudo_adh"] ? $fixationMember["pseudo_adh"] : $fixationMember["nom_adh"] . ' ' . $fixationMember["prenom_adh"]), ENT_SUBSTITUTE);
+				$people["mem_power"] = $fixationMember["fme_power"];
+	//			$people["mem_power"] = $theme["the_voting_power"];
+				$people["mem_voting"] = $notice["not_voting"];
+				$people["mem_noticed"] = 1;
+				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
+				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
+	
+				GroupSourceFactory::fixPing($pings, $usedPings, $people, $fixationMember, $now);
+	
+				$notice["not_people"][] = $people;
+			}
 		}
 	}
 

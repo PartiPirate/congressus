@@ -36,6 +36,8 @@ $motionBo = MotionBo::newInstance($connection, $config);
 $voteBo = VoteBo::newInstance($connection, $config);
 
 $motion = $motionBo->getById($_REQUEST["motionId"]);
+$motionId = $motion[$motionBo->ID_FIELD];
+
 $proposition = array("mpr_id" => $_REQUEST["propositionId"]);
 
 $data = array();
@@ -85,6 +87,8 @@ if ($gamifierClient) {
 
 $pointId = $motion["mot_agenda_id"];
 $memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
+$memcacheKey = "do_getComputeVote_$motionId";
 $memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

@@ -700,7 +700,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					style="display: none;">
 					<?php echo lang("meeting_voteClose"); ?>&nbsp;<span class="fa fa-archive"></span>
 				</button>
-				
+
+				<button class="btn btn-info btn-xs btn-see-motion-delegations pull-right"
+					titleeee="<?php echo lang("meeting_speakingStats"); ?>"
+					style="margin-left: 5px;"><i class="fa fa-users" aria-hidden="true"></i></span>
+				</button>
+
 				<button class="btn btn-info btn-xs btn-see-motion-stats pull-right"
 					titleeee="<?php echo lang("meeting_speakingStats"); ?>"
 					style="margin-left: 5px;"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
@@ -710,7 +715,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<span class="number-of-voters">XX</span> <?php echo lang("meeting_voters"); ?>
 				</span>
 			</div>
-			<div class="motion-charts" data-status="to-init" style="display: none;">
+			<div class="motion-charts" data-status="to-init" style="display: none; padding-top: 10px;">
+				<canvas class="chart-area" style="width: 100%; height: 400px;"></canvas>
 			</div>
 		</li>
 
@@ -881,6 +887,16 @@ $("#start-meeting-modal").modal("show");
 
 var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 </script>
+
+<!-- jointjs -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/jointjs/joint.min.css"></script>
+<script src="assets/js/jointjs/lodash.js"></script>
+<script src="assets/js/jointjs/backbone.js"></script>
+<script src="assets/js/jointjs/joint.min.js"></script>
+
+<!-- meeting -->
+
 <script src="assets/js/perpage/meeting_time.js"></script>
 <script src="assets/js/perpage/meeting_agenda.js"></script>
 <script src="assets/js/perpage/meeting_people.js"></script>
@@ -926,6 +942,7 @@ var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
 
 var speakingTimesChartTitle = "Temps de parole par personne";
+var motionDelegationsTitle = "Délégations en jeu";
 
 <?php
 

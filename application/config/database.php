@@ -29,6 +29,7 @@
 
 @include_once("engine/modules/groupsource/GroupSourceFactory.php");
 @include_once("engine/modules/groupsource/GaletteGroupSource.php");
+@include_once("engine/modules/groupsource/GaletteAllMembersGroupSource.php");
 @include_once("engine/modules/groupsource/PersonaeGroupSource.php");
 @include_once("engine/modules/groupsource/PersonaeThemeSource.php");
 @include_once("engine/modules/groupsource/CustomGroupSource.php");

@@ -24,28 +24,6 @@
 
 ?>
 <canvas id="<?php echo $chartId; ?>-chart-area" style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px"></canvas>
-<style>
-#chartjs-tooltip {
-	border-color: #101010;
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 5px;
-	color: #fff;
-	background-color: #101010;
-	padding: 5px;
-}
-
-#chartjs-tooltip:before {
-	position: absolute;
-    content: '';
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
-    border-left-color: #1E2021;
-    right: -12px;
-    top: 9px;	
-}
-</style>
 <script type="text/javascript">
 $(function() {
 	var config = {
@@ -63,14 +41,19 @@ $(function() {
 */					
 				],
 				backgroundColor: [
-	                "#5cb85c",
-	                "#f0ad4e",
-	                "#d9534f",
+	                "hsla(120, 39%, 54%, 0.3)",
+	                "hsla(35, 84%, 62%, 0.3)",
+	                "hsla(2, 64%, 58%, 0.3)",
 				],
 				borderWidth: [
-					0,
-					0,
-					0,
+					2,
+					2,
+					2,
+				],
+				borderColor: [
+	                "hsla(120, 39%, 54%, 1)",
+	                "hsla(35, 84%, 62%, 1)",
+	                "hsla(2, 64%, 58%, 1)",
 				],
 				label: 'Soutiens'
 			}],
@@ -163,7 +146,7 @@ $(function() {
 
 	                    bodyLines.forEach(function(body, i) {
 	                        var colors = tooltipModel.labelColors[i];
-	                        var coloredSquare = "<span style='display: inline-block; width: 14px; height: 14px; border: 2px solid #f0f0f0; background-color: "+colors.backgroundColor+"; position: relative; top: 2px;'></span> ";
+	                        var coloredSquare = "<span style='display: inline-block; width: 14px; height: 14px; border: 2px solid #f0f0f0; background-color: "+colors.borderColor+"; position: relative; top: 2px;'></span> ";
 
 	                        innerHtml = coloredSquare + body;
 	                    });
@@ -189,50 +172,5 @@ $(function() {
 
 	var ctx = document.getElementById('<?php echo $chartId; ?>-chart-area').getContext('2d');
 	new Chart(ctx, config);
-
-	
-/*	
-	var votingData = [];
-	votingData[0] = {indexLabel: <?php echo json_encode(lang("advice_pro")); ?>, y: <?php echo $voteCounters[1]; ?>};
-	votingData[1] = {indexLabel: <?php echo json_encode(lang("advice_doubtful")); ?>, y: <?php echo $voteCounters[2]; ?>};
-	votingData[2] = {indexLabel: <?php echo json_encode(lang("advice_against")); ?>, y: <?php echo $voteCounters[3]; ?>};
-
-	var chartOptions = {
-		colorSet: "adviceColorSet",
-		theme: "theme2",
-		exportFileName: speakingTimesChartTitle,
-		exportEnabled: false,
-        animationEnabled: true,
-        height: <?php echo $width; ?>,
-        width: <?php echo $height; ?>,
-        legend: false,
-		toolTip: {
-			shared: true,
-			contentFormatter: function (e) {
-				var content = " ";
-				content += e.entries[0].dataPoint.indexLabel + " - " + "<strong>" + e.entries[0].dataPoint.y + "</strong>";
-				
-				var total = 0;	
-				for (var i = 0; i < e.entries[0].dataSeries.dataPoints.length; i++) {
-					total += e.entries[0].dataSeries.dataPoints[i].y;
-				}
-				
-				content += " (" + Math.round(e.entries[0].dataPoint.y * 10000 / total) / 100 + "%)";
-
-				return content;
-			}
-		},
-		data: [
-		{
-			type: "pie",
-			showInLegend: false,
-			legendText: "{indexLabel}",
-			dataPoints: votingData
-		}
-		]
-	};
-	var chart = new CanvasJS.Chart("<?php echo $chartId; ?>", chartOptions);
-	chart.render();	
-*/	
 });
 </script>	

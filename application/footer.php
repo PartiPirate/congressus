@@ -38,8 +38,6 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/calendar.min.js"></script>
 <script src="assets/js/Chart.min.js"></script>
-<script src="assets/js/canvasjs.min.js"></script>
-<script src="assets/js/jquery.canvasjs.min.js"></script>
 <script src="assets/js/language/fr-FR.js"></script>
 <script src="assets/js/bootbox.min.js"></script>
 <script src="assets/js/moment-with-locales.js"></script>
@@ -72,3 +70,27 @@ if (is_file("assets/js/perpage/" . $page . ".js")) {
 	echo "<script src=\"assets/js/perpage/" . $page . ".js\"></script>\n";
 }
 ?>
+
+<!--
+<style>
+.gaypride {
+    background-image: url(assets/images/gayflag.svg) !important; 
+    background-size: unset; 
+    background-repeat: repeat-x; 
+    background-attachment: fixed;
+    opacity: 0.15;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index: -1;
+}
+
+.d-header {
+    background-color: #ff00;
+}    
+</style>
+
+<div class="gaypride"></div>
+-->

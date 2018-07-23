@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -48,6 +48,8 @@ if (isset($_REQUEST["meetingId"])) {
 //print_r($filters);
 
 $motions = $motionBo->getByFilters($filters);
+
+//print_r($motions);
 
 $sortedMotions = array();
 
@@ -103,10 +105,15 @@ function sortPropositions($a, $b) {
 
 <?php	foreach($sortedMotions as $motionId => $motion) { 
 
+//	echo $motionId . "\n";
+//	echo $motion["not_target_type"] . "\n";
+
 	foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
     	if ($groupSource->getGroupKey() != $motion["not_target_type"]) continue;
+
+//		print_r($groupSource);
 
 	    $maxVotePower = $groupSource->getMaxVotePower($motion);
 	}

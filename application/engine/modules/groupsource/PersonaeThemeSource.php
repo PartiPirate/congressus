@@ -24,7 +24,7 @@ class PersonaeThemeSource {
     }
 
     function getGroupKeyLabel() {
-        return array("key" => "dlp_themes", "label" => lang("notice_themes"));
+        return array("key" => "dlp_themes", "label" => lang("notice_themes"), "selectable" => true);
     }
 
     function getGroupOptions() {
@@ -99,7 +99,7 @@ class PersonaeThemeSource {
 	        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 	
 	        	if ($groupKeyLabel["key"] != $theme["the_eligible_group_type"]) continue;
-	        	
+
 	        	$members = $groupSource->getNoticeMembers(array("not_target_id" => $theme["the_eligible_group_id"]));
 			}
 
@@ -175,7 +175,13 @@ class PersonaeThemeSource {
 			$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"tfm.fme_fixation_id = tf.fix_id",												"tfm", "left");
 		}
 
-		$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
+		if (false) {
+			$queryBuilder->addSelect("tfm.fme_power", "ta_vote_power");
+		}
+		else {
+			$queryBuilder->addSelect("t.the_voting_power", "ta_vote_power");
+		}
+		
 		$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
 
 		$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);

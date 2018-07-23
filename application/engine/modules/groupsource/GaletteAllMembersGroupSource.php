@@ -24,8 +24,8 @@ class GaletteAllMembersGroupSource {
     }
 
     function getGroupKeyLabel() {
-        return null;
-//        return array("key" => "galette_adherents", "label" => lang("notice_groupAllGalette"));
+//        return null;
+        return array("key" => "galette_adherents", "label" => lang("notice_groupAllGalette"), "selectable" => false);
     }
 
     function getGroupOptions() {
@@ -107,6 +107,7 @@ class GaletteAllMembersGroupSource {
     }
 
     function addMotionNoticeVoters($queryBuilder, $filters) {
+/*        
         global $config;
 		//  galette groups
 
@@ -130,6 +131,7 @@ class GaletteAllMembersGroupSource {
 		$queryBuilder->addSelect(2, "gga_vote_power");
 		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
 		$queryBuilder->join($galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",								    			"gga", "left");
+*/		
     }
 
     function getMaxVotepower($motion) {

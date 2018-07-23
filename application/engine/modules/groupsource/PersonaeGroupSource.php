@@ -24,7 +24,7 @@ class PersonaeGroupSource {
     }
 
     function getGroupKeyLabel() {
-        return array("key" => "dlp_groups", "label" => lang("notice_group"));
+        return array("key" => "dlp_groups", "label" => lang("notice_group"), "selectable" => true);
     }
 
     function getGroupOptions() {

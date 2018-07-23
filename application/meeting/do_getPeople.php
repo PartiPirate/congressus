@@ -38,7 +38,7 @@ $memcacheKey = "do_getPeople_$meetingId";
 $memcache = openMemcacheConnection();
 $json = $memcache->get($memcacheKey);
 
-if (!$json) {
+if (true || !$json) {
 	$connection = openConnection();
 
 	$meetingBo = MeetingBo::newInstance($connection, $config);
@@ -127,7 +127,7 @@ if (!$json) {
         	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 
         	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-        	
+
         	$groupSource->updateNotice($meeting, $notice, $pings, $usedPings);
 		}
 

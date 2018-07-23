@@ -24,7 +24,7 @@ class GaletteGroupSource {
     }
 
     function getGroupKeyLabel() {
-        return array("key" => "galette_groups", "label" => lang("notice_groupGalette"));
+        return array("key" => "galette_groups", "label" => lang("notice_groupGalette"), "selectable" => true);
     }
 
     function getGroupOptions() {

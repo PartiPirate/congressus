@@ -50,7 +50,8 @@ function showMotion($motions, $id, &$voters) {
 
 			echo "<div class=\"proposition " . ($motion["mpr_winning"] == 1 ? "winning" : "") . "\">" . $motion["mpr_label"] . "&nbsp;(";
 			if ($motion["mot_win_limit"] == -2) {
-				echo lang("motion_majorityJudgment_" . $explanation["jm_winning"], true, null, "../") . ", " . $explanation["jm_percent"] . "%";
+				$percent = round($explanation["jm_percent"], 2);
+				echo lang("motion_majorityJudgment_" . $explanation["jm_winning"], true, null, "../") . ", " . $percent . "%";
 			}
 			else {
 				echo $explanation["power"];
@@ -67,6 +68,9 @@ function showMotion($motions, $id, &$voters) {
 				echo "&nbsp;(";
 
 				if ($motion["mot_win_limit"] == -2) {
+					if (isset($vote["jmPower"])) {
+						$vote["jm_power"] = $vote["jmPower"];
+					}
 					echo $vote["votePower"] . " x " .  lang("motion_majorityJudgment_" . $vote["jm_power"], true, null, "../");
 				}
 				else {

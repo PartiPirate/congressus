@@ -22,6 +22,10 @@ session_start();
 $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
@@ -45,6 +49,8 @@ require_once("language/language.php");
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
+lang("ok", true, null, "../");
+
 $connection = openConnection();
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
@@ -62,7 +68,6 @@ $fixationBo = FixationBo::newInstance($connection, $config);
 $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
-
 
 $template = $_REQUEST["template"];
 $meeting = $meetingBo->getById($_REQUEST["id"]);
@@ -110,7 +115,6 @@ $pings = $pingBo->getByFilters(array("pin_meeting_id" => $meeting[$meetingBo->ID
 //usort($pings, "pingSpeakingRequestCompare");
 
 $order = 1;
-
 //print_r($pings);
 $now = new DateTime();
 $now->add(new DateInterval('PT2H'));
@@ -139,13 +143,14 @@ $notices = array();
 
 $usedPings = array();
 
-
 foreach($dbNotices as $notice) {
 	foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
     	if ($groupSource->getGroupKey() != $notice["not_target_type"]) continue;
-    	
+
+//		print_r($groupSource);
+
     	$groupSource->updateNotice($meeting, $notice, $pings, $usedPings);
 	}
 

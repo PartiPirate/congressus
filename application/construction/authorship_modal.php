@@ -15,7 +15,7 @@
     content: ", ";
 }
 
-.co-author .delete-co-author-btn:hover {
+.co-author .delete-co-author-btn:hover, .co-author .exchange-co-author-btn:hover {
     cursor: pointer;
 }
 
@@ -64,9 +64,11 @@
                 <div class="form-group co-authors">
                     <?php
                         foreach($coAuthors as $coAuthor) {
-                            ?><span class="co-author co-author-<?php echo $coAuthor["cau_id"]; ?>"> <i class="fa fa-times text-danger delete-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true"></i> <?php
-                            echo GaletteBo::showPseudo($coAuthor);
-                            ?></span><?php
+                            ?><span class="co-author co-author-<?php echo $coAuthor["cau_id"]; ?>"> 
+                                    <i class="fa fa-times text-danger delete-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_delete_co_author"); ?>"></i> 
+                                    <i class="fa fa-exchange text-primary exchange-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_exchange_co_author"); ?>"></i> 
+                                    <span class="nickname"><?php echo GaletteBo::showPseudo($coAuthor); ?></span>
+                                </span><?php
                         }
                     ?>
                 </div>
@@ -81,3 +83,10 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+    
+var deleteCoAuthorTitle = <?php echo json_encode(lang("amendment_delete_co_author", false)); ?>;
+var exchangeCoAuthorTitle = <?php echo json_encode(lang("amendment_exchange_co_author", false)); ?>;
+
+</script>

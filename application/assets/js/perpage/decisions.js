@@ -9,6 +9,8 @@ function loadGroup(group, div, from) {
         
         div.append(children);
         previousChildren.remove();
+        
+        children.find('[data-toggle="tooltip"]').tooltip();
     }, "html");
 }
 

@@ -23,10 +23,13 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
+include_once("config/memcache.php");
 //require_once("engine/bo/MeetingRightBo.php");
 //require_once("engine/bo/AgendaBo.php");
 
 $connection = openConnection();
+$memcache = openMemcacheConnection();
+
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
 $filters = array();
@@ -37,21 +40,38 @@ if (isset($_REQUEST["status"]) && is_array($_REQUEST["status"])) {
 else {
     $filters["with_status"] = array("open", "closed");
 }
-$meetings = $meetingBo->getByFilters($filters);
 
-$data = array();
-$data["ok"] = "ok";
-$data["meetings"] = $meetings;
+$memcacheKey = json_encode(array("with_status" => $filters["with_status"], "from" => (isset($_REQUEST["from"]) ? $_REQUEST["from"] : "0")));
+$json = $memcache->get($memcacheKey);
 
-if (isset($_REQUEST["from"])) {
-    foreach($data["meetings"] as $index => $meeting) {
-        if ($meeting["mee_status"] != "open" && $meeting["mee_datetime"] < $_REQUEST["from"]) {
-            unset($data["meetings"][$index]);
-        }
-    }
+if (!$json) {
+    $meetings = $meetingBo->getByFilters($filters);
     
-    sort($data["meetings"]);
+    $data = array();
+    $data["ok"] = "ok";
+    $data["meetings"] = $meetings;
+    
+    if (isset($_REQUEST["from"])) {
+        foreach($data["meetings"] as $index => $meeting) {
+            if ($meeting["mee_status"] != "open" && $meeting["mee_datetime"] < $_REQUEST["from"]) {
+                unset($data["meetings"][$index]);
+            }
+        }
+        
+        sort($data["meetings"]);
+    }
+
+	$json = json_encode($data, JSON_NUMERIC_CHECK);
+
+	if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 60)) {
+		$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 60);
+	}
 }
+else {
+	$data = json_decode($json, true);
+	$data["cached"] = true;
+}
+
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

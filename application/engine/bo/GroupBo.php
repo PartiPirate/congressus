@@ -266,6 +266,8 @@ class GroupBo {
 
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_id"] = $line["the_id"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"] = $line["the_label"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_power"] = $line["the_voting_power"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_method"] = $line["the_voting_method"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"] = $line["gth_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["fix_until_date"] = $line["fix_until_date"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["id_adh"] = $line["fme_member_id"];

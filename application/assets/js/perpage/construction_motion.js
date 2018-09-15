@@ -39,6 +39,8 @@ function renewVotes(successHandler) {
 		existingMotionEntry.find("#mini-voting-panel").html(motionEntry.find("#mini-voting-panel"));
 		existingMotionEntry.find("#voting-panel").html(motionEntry.find("#voting-panel"));
 
+		existingMotionEntry.find('[data-toggle="tooltip"]').tooltip();
+
 		$("#motion-buttons-bar div").removeClass("active").addClass("zero").each(function() {
 			if (($(this).find("input").val() * 2.) != 0) {
 				$(this).addClass("active").removeClass("zero");
@@ -591,9 +593,43 @@ function addOpenDebateListeners() {
 	});
 }
 
+function addTitleListeners() {
+	$("body").on("mouseenter", ".motion-title-wrapper", function() {
+		if ($("#motion-title").is(":visible")) {
+			$("#upadte-title-btn").show();
+		}	
+	});
+	$("body").on("mouseleave", ".motion-title-wrapper", function() {
+//		if ($("#motion-title").is(":visible")) {
+			$("#upadte-title-btn").hide();
+//		}	
+	});
+	$("body").on("click", "#upadte-title-btn", function() {
+		$("#motion-title, #upadte-title-btn").hide();
+		$("#motion-title-input, #save-title-btn, #cancel-title-btn").show();
+		$("#motion-title-input").val($("#motion-title").text());
+		$("#motion-title-input").css({"display": "inline-block"});
+		$("#motion-title-input").removeAttr("disabled");
+	});
+	$("body").on("click", "#save-title-btn", function() {
+		var motionId = $(".motion-entry").data("id");
+		var title = $("#motion-title-input").val();
+		
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: 0, property: "mot_title", text: title}, function(data) {
+			$("#motion-title-input").attr("disabled", "disabled");
+			$("#motion-title").text(title);
+			$("#motion-title, #upadte-title-btn").show();
+			$("#motion-title-input, #save-title-btn, #cancel-title-btn").hide();
+		});
+	});
+	$("body").on("click", "#cancel-title-btn", function() {
+		$("#motion-title, #upadte-title-btn").show();
+		$("#motion-title-input, #save-title-btn, #cancel-title-btn").hide();
+	});
+}
+
 var previousMotionText = "";
 var previousExplanation = "";
-
 
 $(function() {
 	addTrashListeners();
@@ -605,6 +641,7 @@ $(function() {
 	addChatAdviceListeners();
 	addGoToTabListeners();
 	addOpenDebateListeners();
+	addTitleListeners();
 
 	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
 		//console.log(event)	

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -17,7 +17,7 @@
     along with Congressus.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-//session_start();
+session_start();
 
 $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
@@ -53,7 +53,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (true || !$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     
     $data = array();
     
@@ -166,7 +166,11 @@ if (true || !$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true"))
                     $nbVoters++;
                 }
 
+                if ($vote["vot_power"] < 0) $vote["vot_power"] = 0;
+                if ($vote["vot_power"] > $delegations["theme"]["the_voting_power"]) $vote["vot_power"] = $delegations["theme"]["the_voting_power"]; // TODO a better patch
+
                 $propositions[$index]["votes"][$jndex]["vot_real_power"] = $vote["vot_power"] * $delegations["powers"][$vote["vot_member_id"]]["power"] / $delegations["theme"]["the_voting_power"];
+
                 $propositions[$index]["total_power"] += $propositions[$index]["votes"][$jndex]["vot_real_power"];
                 $totalPower += $propositions[$index]["votes"][$jndex]["vot_real_power"] * (1 - $propositions[$index]["mpr_neutral"]);
     

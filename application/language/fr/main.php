@@ -294,6 +294,7 @@ $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
 $lang["notice_customUsers"] = "Utilisateurs Custom";
 $lang["notice_groups"] = "Groupes convoqués";
+$lang["notice_groupAllGalette"] = "Tous les membres";
 
 $lang["agenda_lines"] = "Agenda";
 $lang["agenda_lines_help"] = "Mettez un point à l'ordre du jour par ligne, ajoutez des espaces pour indenter et créer des dépendances entre les points.";
@@ -333,6 +334,9 @@ $lang["source_icon_leg_article"] = '<i class="fa fa-balance-scale" aria-hidden="
 $lang["source_icon_congressus_motion"] = '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
 $lang["source_icon_forum"] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 $lang["source_icon_pdf"] = '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>';
+
+$lang["amendment_delete_co_author"] = "Supprime ce co-auteur";
+$lang["amendment_exchange_co_author"] = "Échange ce co-auteur avec l'auteur principal de cet amendement";
 
 $lang["amendment_explanation"] = "Exposé des motifs : ";
 $lang["amendment_description"] = "Contenu de la proposition : ";

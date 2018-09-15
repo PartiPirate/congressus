@@ -63,6 +63,9 @@ function showMotion($motions, $id, &$voters) {
 				echo " (";
 
 				if ($motion["mot_win_limit"] == -2) {
+					if (isset($vote["jmPower"])) {
+						$vote["jm_power"] = $vote["jmPower"];
+					}
 					echo $vote["votePower"] . " x " .  lang("motion_majorityJudgment_" . $vote["jm_power"], false, null, "../");
 				}
 				else {
@@ -89,7 +92,9 @@ function showMotion($motions, $id, &$voters) {
 
 		foreach($motions as $motion) {
 			if ($motion["mot_id"] == $id && $motion["mpr_winning"] == 1) {
-				echo "|result=" . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $explanation["jm_percent"] . "%" .")\n";
+				$explanation = json_decode($motion["mpr_explanation"], true);
+				$percent = round($explanation["jm_percent"], 2);
+				echo "|result=" . $motion["mpr_label"] . " (" . lang("motion_majorityJudgment_" . $explanation["jm_winning"], false, null, "../") . ", " . $percent . "%" .")\n";
 
 				break;
 			}

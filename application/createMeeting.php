@@ -215,9 +215,13 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="loc_type" name="loc_type">
+					<!--					
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
+					-->
 					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
+					<!--
 					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
+					-->
 					<option value="discord"><?php echo lang("loc_type_discord"); ?></option>
 					<!--
 					<option value="irc">IRC</option>

@@ -331,12 +331,18 @@ include("construction/pieChart.php");
 ?>
 
 					</div>
-					<div style="font-size: larger;">
-						<p class="text-info" id="motion-title"><?php echo $motion["mot_title"]; ?></p>
+					<div class="motion-title-wrapper" style="font-size: larger; height: 38px;">
+						<p class="text-info" style="display: inline-block;" id="motion-title"><?php echo $motion["mot_title"]; ?></p>
+<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>						
+						<input style="width: calc(100% - 250px); display: none;" id="motion-title-input" name="motion-title-input" type="text" class="form-control input-md">
+						<button style="display: none;" id="upadte-title-btn" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="save-title-btn" type="button" class="btn btn-xs btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+						<button style="display: none;" id="cancel-title-btn" type="button" class="btn btn-xs btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
+<?php	} ?>						
 					</div>
 					<div style="font-size: smaller;">
 						<?php 	if ($author) { ?>
-							<?php echo GaletteBo::showIdentity($author); ?>
+							<span data-author-id="<?php echo $author["id_adh"]; ?>" class="motion-author"><?php echo GaletteBo::showIdentity($author); ?></span>
 						<?php 	}	?>
 						<?php	if (count($coAuthors) && $author) echo " - "; ?>
 						<?php	$separator = "";

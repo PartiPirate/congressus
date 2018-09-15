@@ -123,6 +123,7 @@ foreach($propositions as $proposition) {
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_id"] = $proposition["mot_id"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_title"] = $proposition["mot_title"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_description"] = $proposition["mot_description"];
+        $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_win_limit"] = $proposition["mot_win_limit"];
         
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["propositions"] = array();
     }
@@ -335,14 +336,20 @@ foreach($propositions as $proposition) {
         			<span class="nickname"><?php echo $vote["memberLabel"]; ?></span>
         			<span
         				title="Pouvoir du vote"
+        				data-toggle="tooltip" data-placement="bottom" 
         				class="badge power">
-        			    <?php if ($vote["votePower"]) { ?>
-        			    <?php     echo $vote["power"]; ?>
+        			    <?php    if ($object["mot_win_limit"] == -2) { 
+        			                 echo lang("motion_majorityJudgment_" . $vote["power"]);
+        			                 echo " / ";
+        				             echo $vote["votePower"];
+        			             }
+        			             else if ($vote["votePower"]) { ?>
+        			    <?php        echo $vote["power"]; ?>
         			    
-        			    <?php    if ($vote["votePower"] != $vote["power"]) { ?>
-        				/ <?php      echo $vote["votePower"]; ?>
-        				<?php    } ?>
-        				<?php } else echo "0"; ?>
+        			    <?php        if ($vote["votePower"] != $vote["power"]) { ?>
+        				/ <?php          echo $vote["votePower"]; ?>
+        				<?php        } ?>
+        				<?php    } else echo "0"; ?>
         				
         				</span>
         		</li>

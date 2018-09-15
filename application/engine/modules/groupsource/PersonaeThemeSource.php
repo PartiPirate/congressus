@@ -88,7 +88,8 @@ class PersonaeThemeSource {
 
 		$notice["not_label"] = $theme["the_label"];
 		$notice["not_people"] = array();
-		
+		$notice["not_children"] = array();
+
 		if ($theme["the_delegate_only"] == "1") {
 			// We get all eligibles, because eligible is the only persons with voting rights (if the theme as a voting power)
 			// In most cases eligibles and voters are the same
@@ -110,6 +111,7 @@ class PersonaeThemeSource {
 				$people["mem_power"] = $theme["the_voting_power"];
 				$people["mem_voting"] = $notice["not_voting"];
 				$people["mem_noticed"] = 1;
+				$people["mem_present"] = 0;
 				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
 				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
 	
@@ -129,6 +131,7 @@ class PersonaeThemeSource {
 	//			$people["mem_power"] = $theme["the_voting_power"];
 				$people["mem_voting"] = $notice["not_voting"];
 				$people["mem_noticed"] = 1;
+				$people["mem_present"] = 0;
 				$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
 				$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
 	
@@ -137,6 +140,7 @@ class PersonaeThemeSource {
 				$notice["not_people"][] = $people;
 			}
 		}
+
 	}
 
     function getNoticeMembers($notice) {

@@ -50,6 +50,8 @@ function isLanguageKey($key, $language = null, $path = "") {
 		$language = getLanguage();
 	}
 
+//    echo("Call for $key in $language around $path");
+
 	if (!count($lang)) {
 		$directoryHandler = dir($path. "language/" . $language);
 		while(($fileEntry = $directoryHandler->read()) !== false) {

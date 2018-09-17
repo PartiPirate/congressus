@@ -287,6 +287,7 @@ $jsonMotion = $motion;
 					$hasAgainst = 0;
 
 					$voters = array();
+					$votePowers = array();
 
 					foreach($votes as $vote) {
 						if ($motion["mot_id"] != $vote["mot_id"]) continue;
@@ -294,7 +295,10 @@ $jsonMotion = $motion;
 						if (!isset($voters[$vote["vot_member_id"]])) {
 							$voteCounters[0] += 1;
 							$voters[$vote["vot_member_id"]] = $vote["vot_member_id"];
+							$votePowers[$vote["vot_member_id"]] = array();
 						}
+
+						$votePowers[$vote["vot_member_id"]][$vote["mpr_label"]] = $vote["vot_power"];
 
 //						print_r($vote);
 
@@ -507,8 +511,16 @@ include("construction/pieChart.php");
 									foreach($votingMembers as $member) { 
 										echo $separator; 
 										$separator = " "; 
+
+										$color = (0 * @$votePowers[$member["id_adh"]]["against"] + 60 * @$votePowers[$member["id_adh"]]["doubtful"] + 120 * @$votePowers[$member["id_adh"]]["pro"]);
+										$color /= @$votePowers[$member["id_adh"]]["against"] + @$votePowers[$member["id_adh"]]["doubtful"] + @$votePowers[$member["id_adh"]]["pro"];
+										
+										$glow = "";
+										if (isset($config["parameters"]["show_support"]) && $config["parameters"]["show_support"]) {
+											$glow = " border: 2px solid hsla($color, 70%, 70%, 0.7); padding: 1px;";
+										}
 							?>
-								<img src="getAvatar.php?userId=<?php echo $member["id_adh"]; ?>" class="img-circle" style="max-width: 48px; max-height: 48px;" 
+								<img src="getAvatar.php?userId=<?php echo $member["id_adh"]; ?>" class="img-circle" style="max-width: 48px; max-height: 48px; <?php echo $glow; ?>" 
 								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($member); ?>">
 							<?php	} ?>
 							

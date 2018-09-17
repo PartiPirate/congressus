@@ -56,4 +56,7 @@ $config["modules"]["custom"]["fields"]["nom_adh"]       = "nom_adh";
 $config["modules"]["custom"]["fields"]["prenom_adh"]    = "prenom_adh";
 $config["modules"]["custom"]["fields"]["email_adh"]     = "email_adh";
 
+$config["parameters"] = array();
+$config["parameters"]["show_support"] = false;
+
 ?>

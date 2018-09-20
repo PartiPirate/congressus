@@ -73,7 +73,7 @@
 
 				if (count($amendmentAgenda)) {
 					$amendmentAgenda = $amendmentAgenda[0];
-		            $amendments = $motionBo->getByFilters(array("mot_agenda_id" => $amendmentAgenda[$agendaBo->ID_FIELD]));
+		            $amendments = $motionBo->getByFilters(array("mot_agenda_id" => $amendmentAgenda[$agendaBo->ID_FIELD], "mot_trashed" => 0));
 		            
 					$previousAmendmentId = null;
 		            foreach($amendments as $amendment) {

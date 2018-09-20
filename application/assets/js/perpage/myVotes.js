@@ -180,18 +180,36 @@ function checkMaxValues(propositions, maxPower) {
 		
 		propositions.each(function() {
 			if (this != current) {
-				currentMax -= $(this).find("input").val();
+				currentMax -= $(this).find("input").val() > maxPower ? maxPower : ($(this).find("input").val() < 0 ? 0 : $(this).find("input").val());
 			}
 		});
+
+		if (currentMax < 0) currentMax = 0;
 
 		var value = $(this).find("input").val();
 		if (value > currentMax) {
 			value = currentMax;
 			$(this).find("input").val(currentMax);
 		}
+		else if (value > maxPower) {
+			value = maxPower;
+			$(this).find("input").val(maxPower);
+		}
+		else if (value < 0) {
+			value = 0;
+			$(this).find("input").val(0);
+		}
+		
 
 		$(this).data("power", value);
-		$(this).find("input").attr("max", currentMax);
+		if (($(this).data("power") ? $(this).data("power") : 0) == 0) {
+			$(this).removeClass("active");
+		}
+		else {
+			$(this).addClass("active");
+		}
+		
+//		$(this).find("input").attr("max", currentMax);
 	});
 }
 
@@ -214,6 +232,21 @@ function addPointHandlers(motion) {
 		});
 	}
 	else {
+		motion.find(".proposition").click(function(e) {
+			if (e.target == $(this).find("input").get(0)) {
+				e.stopImmediatePropagation();
+				return;
+			}
+
+			motion.find(".proposition input").each(function() {
+				$(this).val(0);	
+			});
+
+			$(this).find("input").val(maxPower);
+
+			checkMaxValues(motion.find(".proposition"), maxPower);
+			setMotionDirty(motion, true);
+		});
 		motion.find(".proposition").each(function() {
 			var proposition = $(this);
 			var input = $("<input type='number' class='pull-right text-right' style='width: 60px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
@@ -228,7 +261,7 @@ function addPointHandlers(motion) {
 					proposition.addClass("active");
 				}
 			});
-			
+
 			if (($(this).data("power") ? $(this).data("power") : 0) == 0) {
 				proposition.removeClass("active");
 			}
@@ -237,7 +270,7 @@ function addPointHandlers(motion) {
 			}
 
 			proposition.append(input);
-		})
+		});
 	}
 	
 	checkMaxValues(motion.find(".proposition"), maxPower);

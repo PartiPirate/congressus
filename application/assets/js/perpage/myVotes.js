@@ -173,6 +173,40 @@ function doBordaVote(motion) {
 	});
 }
 
+/**
+ * Proposition de correction de la fonction checkMaxValue
+ * 
+ * FIXME:
+ *   je ne sais pas à quoi correspond les lignes de l'ancienne fonction
+ * $(this).data("power", value);
+ * $(this).find("input").attr("max", currentMax);
+ */
+/*
+function messageMaxValues() {
+	alert("Vous avez dépasser votre nombre de point de vote, remise à zéro du vote");
+}
+
+function resetValues(propositions) {
+	propositions.each(function() {
+		$(this).find("input").val(0);
+	});	
+}
+
+function checkMaxValues(propositions, maxPower) {
+	var rtn = null;
+	var somme = 0;
+	propositions.each(function() {
+		somme = somme + $(this).find("input").val();
+	});
+	if (somme > maxPower) {
+		rtn = false;
+	} else {
+		// condition normale, rien à faire.
+		rtn = true;
+	}
+	return rtn;
+}
+*/
 function checkMaxValues(propositions, maxPower) {
 	propositions.each(function() {
 		var currentMax = maxPower;

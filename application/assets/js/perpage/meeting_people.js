@@ -683,14 +683,15 @@ function requestSpeaking(event) {
 	}, "json");
 }
 
-function changeOffice(event) {
-	var type = $(this).data("type");
-	var memberId = $(this).val();
+function changeOffice(select) {
+	var type = select.data("type");
+	var memberId = select.val();
 	var meetingId = $(".meeting").data("id");
 	var userId = $(".meeting").data("user-id");
 
 	if (hasWritingRight(userId)) {
 		$.post("meeting_api.php?method=do_changeOfficeMember", {meetingId: meetingId, memberId: memberId, type: type}, function(data) {
+			select.parents(".president, .secretary").find(".read-data").text(select.find("option:selected").text());
 		}, "json");
 	}
 }
@@ -698,15 +699,30 @@ function changeOffice(event) {
 function addPresidentHandlers() {
 	$(".president select, .secretary select").hide();
 	$(".president, .secretary").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id"))) {
-			$(this).find("select").show();
-			$(this).find(".read-data").hide();
+		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+			$(this).find(".update-btn").show();
 		}
 	}, function() {
-		$(this).find("select").hide();
-		$(this).find(".read-data").show();
+		$(this).find(".update-btn").hide();
 	});
-	$(".president select, .secretary select").change(changeOffice);
+	$(".president select, .secretary select").change(function(e) {
+		changeOffice($(this));
+		$(this).parents(".president, .secretary").find("select").hide();
+		$(this).parents(".president, .secretary").find(".read-data").show();
+		$(this).parents(".president, .secretary").find(".cancel-btn").hide();
+	});
+	$(".president, .secretary").find(".update-btn").click(function() {
+		$(this).parents(".president, .secretary").find(".read-data").hide();
+		$(this).parents(".president, .secretary").find(".update-btn").hide();
+		$(this).parents(".president, .secretary").find("select").show();
+		$(this).parents(".president, .secretary").find(".cancel-btn").show();
+	});
+	$(".president, .secretary").find(".cancel-btn").click(function() {
+		$(this).parents(".president, .secretary").find("select").hide();
+		$(this).parents(".president, .secretary").find(".read-data").show();
+		$(this).parents(".president, .secretary").find(".cancel-btn").hide();
+		$(this).parents(".president, .secretary").find(".update-btn").show();
+	});
 }
 
 function toggleMissingPeople() {

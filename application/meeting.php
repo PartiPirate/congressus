@@ -131,9 +131,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body">
 
 					<!-- President -->
-					<div class="president">
+					<div class="president" style="height: 21px;">
 						<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
-						<span class="mee_president_member_id read-data" data-id="0"></span>
+						<span class="mee_president_member_id read-data" data-id="0" style="display: inline-block; min-width: 1px;"></span>
 						<select class="form-control" data-type="president" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
 							<option value="0"></option>
 							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
@@ -141,12 +141,14 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
 							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 						</select>
+						<button style="display: none;" id="update-president-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="cancel-president-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 					<!-- Secretary -->
-					<div class="secretary">
+					<div class="secretary" style="height: 21px;">
 						<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
-						<span class="mee_secretary_member_id read-data" data-id="0"></span>
+						<span class="mee_secretary_member_id read-data" data-id="0" style="display: inline-block; min-width: 1px;"></span>
 						<select class="form-control" data-type="secretary" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
 							<option value="0"></option>
 							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
@@ -154,6 +156,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
 							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 						</select>
+						<button style="display: none;" id="update-secretary-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="cancel-secretary-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 					
 				</div>

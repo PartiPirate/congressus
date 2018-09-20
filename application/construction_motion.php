@@ -339,7 +339,7 @@ include("construction/pieChart.php");
 						<p class="text-info" style="display: inline-block;" id="motion-title"><?php echo $motion["mot_title"]; ?></p>
 <?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>						
 						<input style="width: calc(100% - 250px); display: none;" id="motion-title-input" name="motion-title-input" type="text" class="form-control input-md">
-						<button style="display: none;" id="upadte-title-btn" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="update-title-btn" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<button style="display: none;" id="save-title-btn" type="button" class="btn btn-xs btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
 						<button style="display: none;" id="cancel-title-btn" type="button" class="btn btn-xs btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
 <?php	} ?>						

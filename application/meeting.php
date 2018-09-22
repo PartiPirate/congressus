@@ -343,21 +343,21 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		<div class="col-md-<?php echo $leftColumn ?>" id="right-panel">
 			<div id="meeting-agenda" class="panel panel-default">
 				<div class="panel-heading">
+					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
 					<button class="btn btn-warning btn-xs pull-right btn-agenda-mode" style="display: none; margin-left: 5px;" title="<?php echo lang("meeting_agenda_mode"); ?>" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-book"></span></button>
 					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;" ><span class="glyphicon glyphicon-plus"></span></button>
-					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
 				</div>
-				<ul class="list-group panel-collapse collapse in" id="agenda-points-list">
+				<ul class="list-group panel-collapse collapse in" id="agenda-points-list" style=" min-height: 5px;" data-parent-id="null">
 				</ul>
 			</div>
 
 			<div id="noticed-people" class="panel panel-default">
 				<div class="panel-heading">
+					<a data-toggle="collapse" data-target="#noticed-people-list" href="#"><?php echo lang("meeting_noticed_people"); ?></a>
 					<button class="btn btn-warning btn-xs pull-right btn-hide-missing"
 						title="Montrer / cacher les absents" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-eye-open"></span></button>
 					<button class="btn btn-primary btn-xs pull-right btn-add-notice" style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span></button>
-					<a data-toggle="collapse" data-target="#noticed-people-list" href="#"><?php echo lang("meeting_noticed_people"); ?></a>
 				</div>
 				<ul class="list-group panel-collapse collapse in" id="noticed-people-list">
 				</ul>
@@ -735,7 +735,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</li>
 
 		<li data-template-id="agenda-point" id="agenda-${age_id}" class="template list-group-item"
-				style="padding-top: 2px; padding-bottom: 2px;" data-id="${age_id}">
+				style="padding-top: 2px; padding-bottom: 2px;" data-id="${age_id}" data-parent-id="${age_parent_id}" data-order="${age_order}" >
 			<a class="agenda-link" style="margin: 0;" href="#" id="agenda-link-${age_id}" data-id="${age_id}"></a>
 			<span class="fa fa-archive to-vote"
 				title="<?php echo lang("meeting_motionHas"); ?>"
@@ -758,7 +758,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				style="display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
-			<ul class="list-group points" style="margin: 0;"></ul>
+			<ul class="list-group points" style="margin: 0; min-height: 5px;" data-parent-id="${age_id}"></ul>
 		</li>
 
 		<li data-template-id="me-member"
@@ -877,6 +877,19 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<style>
+
+.agenda-placeholder {
+	height: 1.5em; 
+	line-height: 1.2em;
+	list-style-type: none; 
+	background: grey;
+	border: black dotted 1px;
+	margin-left: 15px;
+}
+	
+</style>
 
 <script>
 </script>

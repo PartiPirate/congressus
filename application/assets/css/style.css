@@ -618,3 +618,7 @@ a[disabled] {
 .tabs-bottom {
     padding-bottom: 0;
 }
+
+.panel-heading a:after {
+    margin-left: 5px;
+}

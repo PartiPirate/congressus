@@ -645,6 +645,13 @@ function updatePeople() {
 		isPeopleReady = true;
 		testMeetingReady();
 
+		if (!hasWritingRight(userId)) {
+			$("#meeting-agenda ul").sortable("disable");
+		}
+		else {
+			$("#meeting-agenda ul").sortable("enable");
+		}
+
 	}, "json");
 }
 

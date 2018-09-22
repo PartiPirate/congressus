@@ -119,12 +119,17 @@ if (isset($_REQUEST["age_lines"])) {
         $entries[] = $entry;
     }
 
+    $offset = 0;
+
     function createChild($parent, $entry) {
         global $entries;
         global $meeting;
         global $meetingBo;
         global $agendaBo;
+        global $offset;
         
+        $offset++;
+
         foreach($entries as $existingEntry) {
             if ($existingEntry["position"] == $entry["position"] && $existingEntry["position"] == $entry["position"]) {
                 $entry = $existingEntry;
@@ -133,7 +138,7 @@ if (isset($_REQUEST["age_lines"])) {
         }
   
         $agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
-        $agenda["age_order"] = time();
+        $agenda["age_order"] = time() + $offset * 10;
         $agenda["age_active"] = 0;
         $agenda["age_expected_duration"] = 0;
         $agenda["age_label"] = $entry["label"];

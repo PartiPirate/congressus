@@ -27,6 +27,8 @@
 /* global keyupTimeoutId */
 /* global toMarkdownWithEmoji */
 
+var preventAgendaHandling = false;
+
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
 		var button = $("#meeting-agenda button.btn-agenda-mode");
@@ -160,6 +162,40 @@ function addAgendaHandlers() {
 	});
 }
 
+function changeAgendaOrder(event, ui) {
+	if (hasWritingRight(getUserId())) {
+		preventAgendaHandling = true;
+
+		var item = {age_id: ui.item.data("id"), age_parent_id : ui.item.parent().data("parent-id")};
+		
+		var order = 0;
+		
+		if (ui.item.next().length && ui.item.prev().length) {
+			order = ui.item.next().data("order") + ui.item.prev().data("order");
+			order -= (order % 2);
+			order /= 2;
+		}
+		else if (ui.item.next().length) {
+			order = ui.item.next().data("order");
+			order -= (order % 2);
+			order /= 2;
+		}
+
+		item["age_order"] = order;
+
+		ui.item.data("order", item.age_order);
+		ui.item.data("parent-id", item.age_parent_id);
+
+//		console.log(item);
+		
+		var meetingId = $(".meeting").data("id");
+
+		$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: item.age_id, property: "order", text: JSON.stringify(item)}, function(data) {
+			preventAgendaHandling = false;
+		}, "json");
+	}
+}
+
 function getAgendaLi(agenda) {
 	var agendaLi = $("li[data-template-id=agenda-point]").template("use", {data: agenda});
 	agendaLi.find("*").tooltip({placement: "left"});
@@ -168,6 +204,8 @@ function getAgendaLi(agenda) {
 
 	// Just in case
 	title.text(agenda.age_label);
+
+	agendaLi.find("ul").sortable({connectWith: "#meeting-agenda ul", placeholder: "agenda-placeholder", start: function() { preventAgendaHandling = true; }, stop: function() { preventAgendaHandling = false;}, update: changeAgendaOrder });
 
 	return agendaLi;
 }
@@ -178,6 +216,13 @@ function addAgenda(agendas, parent, parentId) {
 		if (agenda.age_parent_id != parentId) continue;
 
 		var agendaLi = parent.children("#agenda-" + agenda.age_id);
+
+		if (agendaLi.length) {
+			if (agendaLi.data("parent-id") != agenda.age_parent_id || agendaLi.data("order") != agenda.age_order) {
+				agendaLi.remove();
+				agendaLi = parent.children("#agenda-" + agenda.age_id);
+			}
+		}
 
 		if (!agendaLi.length) {
 			agendaLi = getAgendaLi(agenda);
@@ -308,6 +353,11 @@ function updateMeeting(meeting) {
 }
 
 function updateAgenda() {
+	if (preventAgendaHandling) {
+//		console.log("I won't do that, cause sorting is occuring");
+		return;
+	}
+	
 	var meetingId = $(".meeting").data("id");
 	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
 		var parent = $("#meeting-agenda>ul");
@@ -770,6 +820,8 @@ $(function() {
 	$("body").on("click", ".btn-next-point", showNextPoint);
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);
 	$("body").on("click", ".btn-go-down", goDownPoint);
+
+	$("#agenda-points-list").sortable({connectWith: "#meeting-agenda ul", placeholder: "agenda-placeholder", start: function() { preventAgendaHandling = true; }, stop: function() { preventAgendaHandling = false;}, update: changeAgendaOrder });
 
 	addAgendaFromHandlers()
 	addAgendaHandlers();

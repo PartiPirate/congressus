@@ -64,7 +64,21 @@ if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 	exit();
 }
 
-$agenda[$_REQUEST["property"]] = $_REQUEST["text"];
+//print_r($agenda);
+
+if ($_REQUEST["property"] == "order") {
+    $object = json_decode($_REQUEST["text"], true);
+    $agenda["age_order"] = $object["age_order"];
+    $agenda["age_parent_id"] = $object["age_parent_id"];
+    
+    if (!$agenda["age_order"]) $agenda["age_order"] = time();
+    if (!$agenda["age_parent_id"] || $agenda["age_parent_id"] == "null") $agenda["age_parent_id"] = null;
+}
+else {
+    $agenda[$_REQUEST["property"]] = $_REQUEST["text"];
+}
+
+//print_r($agenda);
 
 $agendaBo->save($agenda);
 

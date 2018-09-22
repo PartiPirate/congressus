@@ -347,7 +347,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<button class="btn btn-warning btn-xs pull-right btn-agenda-mode" style="display: none; margin-left: 5px;" title="<?php echo lang("meeting_agenda_mode"); ?>" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-book"></span></button>
 					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;" ><span class="glyphicon glyphicon-plus"></span></button>
 				</div>
-				<ul class="list-group panel-collapse collapse in" id="agenda-points-list" style=" min-height: 5px;" data-parent-id="null">
+				<ul class="list-group panel-collapse collapse in" id="agenda-points-list" style=" min-height: 0px; padding-bottom: 3px" data-parent-id="null">
 				</ul>
 			</div>
 
@@ -758,7 +758,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				style="display: none;">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
-			<ul class="list-group points" style="margin: 0; min-height: 5px;" data-parent-id="${age_id}"></ul>
+			<ul class="list-group points" style="margin: 0; min-height: 0px; padding-bottom: 3px;" data-parent-id="${age_id}"></ul>
 		</li>
 
 		<li data-template-id="me-member"

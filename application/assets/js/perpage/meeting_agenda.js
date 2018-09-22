@@ -252,6 +252,11 @@ function addAgenda(agendas, parent, parentId) {
 		var addPointLi = ul.children("li.add-point-li").detach();
 		ul.append(addPointLi);
 	}
+
+	var sortLi = function(a, b) {
+	    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
+	};
+	parent.children().sort(sortLi).appendTo(parent);
 }
 
 function updateMeeting(meeting) {

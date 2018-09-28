@@ -19,12 +19,12 @@
 
 session_start();
 
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/qr/phpqrcode.php");
 require_once("language/language.php");
-include_once("mpdf/mpdf.php");
+require_once("mpdf/mpdf.php");
 
 $connection = openConnection();
 

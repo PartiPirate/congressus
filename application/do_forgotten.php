@@ -17,9 +17,9 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
-include_once("config/database.php");
-include_once("config/mail.php");
-include_once("language/language.php");
+require_once("config/database.php");
+require_once("config/mail.php");
+require_once("language/language.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
 

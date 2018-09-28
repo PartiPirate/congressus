@@ -26,7 +26,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/AgendaBo.php");
@@ -230,7 +230,7 @@ foreach($pings as $ping) {
 
 ob_start();
 
-include_once("meeting/export_templates/$template.php");
+require_once("meeting/export_templates/$template.php");
 
 $content = ob_get_contents();
 
@@ -239,7 +239,7 @@ ob_end_clean();
 // Post-process the computation
 
 if (file_exists("export_templates/" . $template . "_post.php")) {
-	include_once("meeting/export_templates/" . $template . "_post.php");
+	require_once("meeting/export_templates/" . $template . "_post.php");
 }
 
 echo $content;

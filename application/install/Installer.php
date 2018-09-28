@@ -23,7 +23,7 @@ if (!file_exists("config/config.php")) {
     // Create config files
     $_SESSION["administrator"] = true;
     $_REQUEST["api"] = false;
-    include_once("do_updateAdministration.php");
+    require_once("do_updateAdministration.php");
 
     // switch to administration mode
 	header('Location: administration.php');

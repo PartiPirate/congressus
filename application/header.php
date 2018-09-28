@@ -22,19 +22,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once("install/Installer.php");
+require_once("install/Installer.php");
 
-include_once("config/database.php");
-include_once("language/language.php");
+require_once("config/database.php");
+require_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserPropertyBo.php");
 require_once("engine/bo/MeetingBo.php");
 
-include_once("engine/utils/bootstrap_forms.php");
+require_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
-include_once("engine/utils/LogUtils.php");
-include_once("engine/utils/DateTimeUtils.php");
+require_once("engine/utils/LogUtils.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
 

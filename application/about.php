@@ -17,7 +17,7 @@
     along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
 */
 $page = "about";
-include_once("header.php");
+require_once("header.php");
 ?>
 <div class="container theme-showcase" role="main">
 	<ol class="breadcrumb">

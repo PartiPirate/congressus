@@ -19,7 +19,7 @@
 
 if (!isset($api)) exit();
 
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");

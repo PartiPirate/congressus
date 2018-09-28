@@ -18,11 +18,11 @@
 */
 session_start();
 
-include_once("config/database.php");
-@include_once("config/mediawiki.config.php");
-@include_once("config/discourse.config.php");
-include_once("config/database.php");
-include_once("language/language.php");
+require_once("config/database.php");
+require_once("config/mediawiki.config.php");
+require_once("config/discourse.config.php");
+require_once("config/database.php");
+require_once("language/language.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("config/config.php");
@@ -84,8 +84,8 @@ else {
 	<?php 	} ?>
 
 	<?php if ($template == "discourse") {
-			include_once("config/discourse.structure.php");
-			include_once("config/discourse.config.php");
+			require_once("config/discourse.structure.php");
+			require_once("config/discourse.config.php");
 	?>
 	    <div id="discourse_post" class="simply-hidden">
 	      <?php				if (!isset($userId)) {?>
@@ -141,7 +141,7 @@ else {
 	    </div>
 	<?php }?>
 	<?php if ($template == "markdown") {
-			include_once("config/mediawiki.config.php");
+			require_once("config/mediawiki.config.php");
 	?>
 	    <div id="wiki_post" class="simply-hidden">
 	      <?php				if (!isset($userId)) {?>

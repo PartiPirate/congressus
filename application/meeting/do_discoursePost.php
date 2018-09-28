@@ -19,8 +19,8 @@
 
 if (!isset($api)) exit();
 
-include_once("config/discourse.config.php");
-include_once("config/discourse.structure.php");
+require_once("config/discourse.config.php");
+require_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
 $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 

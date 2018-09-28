@@ -24,9 +24,9 @@ error_reporting(E_ALL);
 header("Access-Control-Allow-Origin: *");
  
 require_once("config/database.php");
-include_once("config/memcache.php");
-include_once("config/mail.php");
-include_once("language/language.php");
+require_once("config/memcache.php");
+require_once("config/mail.php");
+require_once("language/language.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/GamifierClient.php");

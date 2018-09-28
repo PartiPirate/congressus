@@ -56,7 +56,7 @@ function isLanguageKey($key, $language = null, $path = "") {
 		$directoryHandler = dir($path. "language/" . $language);
 		while(($fileEntry = $directoryHandler->read()) !== false) {
 			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
-				include_once("language/" . $language . "/" . $fileEntry);
+				require_once("language/" . $language . "/" . $fileEntry);
 			}
 		}
 		$directoryHandler->close();

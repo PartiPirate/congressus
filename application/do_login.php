@@ -41,7 +41,7 @@ if ($login == $config["administrator"]["login"] && $password == $config["adminis
 	$data["ok"] = "ok";
 
 	addLog($_SERVER, $_SESSION, null, array("result" => "administrator"));
-	
+
 	header('Location: administration.php');
 	exit();
 }

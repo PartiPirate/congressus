@@ -7,6 +7,9 @@ function addLog($server, $session, $action = null, $data = null) {
 	
 	global $config;
 	$pdo = openConnection();
+	
+	if (!$pdo) return false;
+	
 	$logBo = LogBo::newInstance($pdo, $config);
 	
 	// if no action is given, the page name is used

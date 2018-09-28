@@ -33,6 +33,8 @@ function discourseApi($url, $api_key, $protocol) {
     return $discourseApi;
 }
 
+$categories_all = array();
+
 try {
     $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
@@ -72,7 +74,7 @@ try {
 }
 catch (Exception $e) {
     $error_message = ('Exception : ' .  $e->getMessage() . "\n");
-    echo "<h1 class='alert alert-danger'>" . $error_message . "</h1>";
+    echo "<div class='alert alert-danger'>" . $error_message . "</div>";
     $categories[1]['id'] = $error_message;
     $categories[1]['slug'] = $error_message;
     $categories[1]['name'] = $error_message;

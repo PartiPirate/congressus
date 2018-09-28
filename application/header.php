@@ -17,9 +17,12 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+include_once("install/Installer.php");
 
 include_once("config/database.php");
 include_once("language/language.php");
@@ -220,8 +223,12 @@ $meetingBo = MeetingBo::newInstance($connection, $config);
 $filters = array();
 $filters["with_status"] = array("open");
 
-$meetings = $meetingBo->getByFilters($filters);
-
+if ($connection) {
+	$meetings = $meetingBo->getByFilters($filters);
+}
+else {
+	$meetings = array();
+}
 
 ?>
 <!DOCTYPE html>

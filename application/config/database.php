@@ -58,7 +58,8 @@ function openConnection($dbname = null) {
 		$pdo = new PDO($dns, $user, $password );
 	}
 	catch(Exception $e){
-		echo 'Erreur de requète : ', $e->getMessage();
+//		echo 'Erreur de requète : ', $e->getMessage();
+		return null;
 	}
 
 	return $pdo;

@@ -22,7 +22,7 @@
 $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");

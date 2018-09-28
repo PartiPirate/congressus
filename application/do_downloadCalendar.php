@@ -17,7 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 session_start();
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/utils/IcsFormatter.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
@@ -59,7 +59,7 @@ foreach($meetings as $meeting) {
 			$summary .= " (" . $meeting["loc_extra"] . ")";
 		}
 		else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
-			include_once("config/discord.structure.php");
+			require_once("config/discord.structure.php");
 
 			list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
 			

@@ -1,7 +1,7 @@
 <?php
 
-@include_once("engine/bo/LogBo.php");
-@include_once("engine/utils/DateTimeUtils.php");
+require_once("engine/bo/LogBo.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 function addLog($server, $session, $action = null, $data = null) {
 	

@@ -19,7 +19,7 @@
 
 require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
-include_once("language/language.php");
+require_once("language/language.php");
 
 $connection = openConnection();
 

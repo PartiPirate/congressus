@@ -19,8 +19,8 @@
 
 if (!isset($api)) exit();
 
-include_once("config/discourse.config.php");
-include_once("config/discourse.structure.php");
+require_once("config/discourse.config.php");
+require_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
 
 require_once("engine/bo/GaletteBo.php");

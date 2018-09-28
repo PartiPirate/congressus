@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-include_once("header.php");
+require_once("header.php");
 require_once("engine/utils/SessionUtils.php");
 
 ?>

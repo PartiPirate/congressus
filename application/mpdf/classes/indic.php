@@ -11,7 +11,7 @@ function substituteIndic($earr, $lang, $font) {
 	global $voltdata;
 
 	if (!isset($voltdata[$font])) {
-		include_once(_MPDF_PATH.'includes/'.$font.'.volt.php');
+		require_once(_MPDF_PATH.'includes/'.$font.'.volt.php');
 		$voltdata[$font] = $volt;
 	}
 

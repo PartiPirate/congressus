@@ -21,15 +21,15 @@ $JpgUseSVGFormat = true;
 //==============================================================================================================
 // LOAD GRAPHS
 
-	include_once(_JPGRAPH_PATH.'jpgraph.php'); 
-	include_once(_JPGRAPH_PATH.'jpgraph_line.php' ); 
-	include_once(_JPGRAPH_PATH.'jpgraph_log.php' ); 
-	include_once(_JPGRAPH_PATH.'jpgraph_scatter.php' ); 
-	include_once(_JPGRAPH_PATH.'jpgraph_regstat.php' ); 
-	include_once(_JPGRAPH_PATH.'jpgraph_pie.php'); 
-	include_once(_JPGRAPH_PATH.'jpgraph_pie3d.php'); 
-	include_once(_JPGRAPH_PATH.'jpgraph_bar.php'); 
-	include_once(_JPGRAPH_PATH.'jpgraph_radar.php'); 
+	require_once(_JPGRAPH_PATH.'jpgraph.php'); 
+	require_once(_JPGRAPH_PATH.'jpgraph_line.php' ); 
+	require_once(_JPGRAPH_PATH.'jpgraph_log.php' ); 
+	require_once(_JPGRAPH_PATH.'jpgraph_scatter.php' ); 
+	require_once(_JPGRAPH_PATH.'jpgraph_regstat.php' ); 
+	require_once(_JPGRAPH_PATH.'jpgraph_pie.php'); 
+	require_once(_JPGRAPH_PATH.'jpgraph_pie3d.php'); 
+	require_once(_JPGRAPH_PATH.'jpgraph_bar.php'); 
+	require_once(_JPGRAPH_PATH.'jpgraph_radar.php'); 
 
 
 //======================================================================================================

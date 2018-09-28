@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-include_once("header.php");
+require_once("header.php");
 
 $badges = $gamifierClient->getBadges($config["gamifier"]["service_uuid"], $config["gamifier"]["service_secret"]);
 $notices = array();

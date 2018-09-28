@@ -16,27 +16,27 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-@include_once("config/config.php");
-@include_once("config/modules.config.php");
-@include_once("config/salt.php");
-@include_once("engine/bo/BoHelper.php");
-@include_once("engine/requests/sql/QueryFactory.php");
-@include_once("engine/requests/sql/MySQLQuery.php");
+require_once("config/config.php");
+require_once("config/modules.config.php");
+require_once("config/salt.php");
+require_once("engine/bo/BoHelper.php");
+require_once("engine/requests/sql/QueryFactory.php");
+require_once("engine/requests/sql/MySQLQuery.php");
 
-@include_once("engine/modules/usersource/UserSourceFactory.php");
-@include_once("engine/modules/usersource/GaletteUserSource.php");
-@include_once("engine/modules/usersource/CustomUserSource.php");
+require_once("engine/modules/usersource/UserSourceFactory.php");
+require_once("engine/modules/usersource/GaletteUserSource.php");
+require_once("engine/modules/usersource/CustomUserSource.php");
 
-@include_once("engine/modules/groupsource/GroupSourceFactory.php");
-@include_once("engine/modules/groupsource/GaletteGroupSource.php");
-@include_once("engine/modules/groupsource/GaletteAllMembersGroupSource.php");
-@include_once("engine/modules/groupsource/PersonaeGroupSource.php");
-@include_once("engine/modules/groupsource/PersonaeThemeSource.php");
-@include_once("engine/modules/groupsource/CustomGroupSource.php");
+require_once("engine/modules/groupsource/GroupSourceFactory.php");
+require_once("engine/modules/groupsource/GaletteGroupSource.php");
+require_once("engine/modules/groupsource/GaletteAllMembersGroupSource.php");
+require_once("engine/modules/groupsource/PersonaeGroupSource.php");
+require_once("engine/modules/groupsource/PersonaeThemeSource.php");
+require_once("engine/modules/groupsource/CustomGroupSource.php");
 
-@require_once("engine/authenticators/AuthenticatorFactory.php");
-@require_once("engine/authenticators/GaletteAuthenticator.php");
-@require_once("engine/authenticators/CustomAuthenticator.php");
+require_once("engine/authenticators/AuthenticatorFactory.php");
+require_once("engine/authenticators/GaletteAuthenticator.php");
+require_once("engine/authenticators/CustomAuthenticator.php");
 
 function openConnection($dbname = null) {
 	global $config;

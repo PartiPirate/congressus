@@ -22,8 +22,8 @@ if (!isset($api)) exit();
 define("CONNECTED_TIME", 60);
 define("DISCONNECTED_TIME", 65);
 
-include_once("config/database.php");
-include_once("config/memcache.php");
+require_once("config/database.php");
+require_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/EventStackUtils.php");
 require_once("engine/utils/DateTimeUtils.php");

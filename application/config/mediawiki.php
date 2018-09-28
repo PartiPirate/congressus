@@ -17,8 +17,8 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@include_once("config/mediawiki.config.php");
-@include_once("engine/mediawiki/autoload.php");
+require_once("config/mediawiki.config.php");
+require_once("engine/mediawiki/autoload.php");
 
 function openWikiSession() {
     global $config;

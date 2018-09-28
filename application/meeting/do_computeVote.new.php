@@ -22,8 +22,8 @@ session_start();
 $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
-include_once("config/database.php");
-include_once("config/memcache.php");
+require_once("config/database.php");
+require_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/MeetingBo.php");

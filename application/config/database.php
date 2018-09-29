@@ -23,16 +23,16 @@
 @include_once("engine/requests/sql/QueryFactory.php");
 @include_once("engine/requests/sql/MySQLQuery.php");
 
-@include_once("engine/modules/usersource/UserSourceFactory.php");
-@include_once("engine/modules/usersource/GaletteUserSource.php");
-@include_once("engine/modules/usersource/CustomUserSource.php");
+require_once("engine/modules/usersource/UserSourceFactory.php");
+require_once("engine/modules/usersource/GaletteUserSource.php");
+require_once("engine/modules/usersource/CustomUserSource.php");
 
-@include_once("engine/modules/groupsource/GroupSourceFactory.php");
-@include_once("engine/modules/groupsource/GaletteGroupSource.php");
-@include_once("engine/modules/groupsource/GaletteAllMembersGroupSource.php");
-@include_once("engine/modules/groupsource/PersonaeGroupSource.php");
-@include_once("engine/modules/groupsource/PersonaeThemeSource.php");
-@include_once("engine/modules/groupsource/CustomGroupSource.php");
+require_once("engine/modules/groupsource/GroupSourceFactory.php");
+require_once("engine/modules/groupsource/GaletteGroupSource.php");
+require_once("engine/modules/groupsource/GaletteAllMembersGroupSource.php");
+require_once("engine/modules/groupsource/PersonaeGroupSource.php");
+require_once("engine/modules/groupsource/PersonaeThemeSource.php");
+require_once("engine/modules/groupsource/CustomGroupSource.php");
 
 @require_once("engine/authenticators/AuthenticatorFactory.php");
 @require_once("engine/authenticators/GaletteAuthenticator.php");

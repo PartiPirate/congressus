@@ -74,4 +74,6 @@ $(function() {
 	
 	$("#btn-ping-database").prop("disabled", false);
 	$("#btn-administration-save").prop("disabled", false);
+	
+	$(".alert:visible").delay(5000).fadeOut(1000);
 })

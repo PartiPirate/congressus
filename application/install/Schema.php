@@ -64,6 +64,15 @@ $schema["tables"]["chat_advices"]["fields"]["cad_advice"] = array("type" => "enu
 $schema["tables"]["chat_advices"]["indexes"]["cad_chat_id"] = array("cad_chat_id");
 $schema["tables"]["chat_advices"]["indexes"]["cad_user_id"] = array("cad_user_id");
 
+$schema["tables"]["co_authors"] = array("fields" => array(), "indexes" => array());
+$schema["tables"]["co_authors"]["fields"]["con_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["co_authors"]["fields"]["cad_user_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["co_authors"]["fields"]["cau_object_type"] = array("type" => "enum", "size" => "'motion'", "null" => true);
+$schema["tables"]["co_authors"]["fields"]["cau_object_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["co_authors"]["indexes"]["cau_user_id"] = array("cau_user_id");
+$schema["tables"]["co_authors"]["indexes"]["cau_object_type"] = array("cau_object_type");
+$schema["tables"]["co_authors"]["indexes"]["cau_object_id"] = array("cau_object_id");
+
 $schema["tables"]["conclusions"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["conclusions"]["fields"]["con_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["conclusions"]["fields"]["con_agenda_id"] = array("type" => "bigint", "size" => 20, "null" => true);
@@ -212,6 +221,13 @@ $schema["tables"]["tasks"]["indexes"]["tas_agenda_id"] = array("tas_agenda_id");
 $schema["tables"]["tasks"]["indexes"]["tas_deleted"] = array("tas_deleted");
 $schema["tables"]["tasks"]["indexes"]["tas_target_type"] = array("tas_target_type");
 $schema["tables"]["tasks"]["indexes"]["tas_target_id"] = array("tas_target_id");
+
+$schema["tables"]["user_properties"] = array("fields" => array(), "indexes" => array());
+$schema["tables"]["user_properties"]["fields"]["upr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["user_properties"]["fields"]["upr_user_id"] = array("type" => "bigint", "size" => 20, "null" => false);
+$schema["tables"]["user_properties"]["fields"]["upr_property"] = array("type" => "varchar", "size" => 255, "null" => false);
+$schema["tables"]["user_properties"]["fields"]["upr_value"] = array("type" => "varchar", "size" => 255, "null" => false);
+$schema["tables"]["user_properties"]["uniques"]["upr_user_id_property_unique"] = array("upr_user_id", "upr_property");
 
 $schema["tables"]["votes"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["votes"]["fields"]["vot_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);

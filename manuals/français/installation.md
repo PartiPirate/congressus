@@ -22,8 +22,16 @@
   - L'host, 
   - le port, 
   - la nom de votre base, 
-  - l'identifiant et mot de passe du compte qui va faire les transactions
+  - l'identifiant et mot de passe du compte qui va faire les transactions.
 - Testez votre connexion
   - Corrigez les erreurs éventuellement remontées
   - Si votre base de données n'existe pas, l'option de création de base est proposée 
   - Si la base de données existe, ou dans juste après l'avoir créée, vous pouvez déployer les tables nécessaires au bon fonctionnement de l'application (utile aussi pour la mise à jour du schéma de base)
+
+### Memcached ###
+
+- Entrez les deux informations pertinentes pour faire le lien avec le serveur memcached :
+  - L'host, 
+  - le port.
+- Testez votre connexion
+  - Corrigez les erreurs éventuellement remontées

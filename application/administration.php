@@ -82,7 +82,7 @@ include_once("config/discourse.structure.php");
 					<label class="col-md-2 control-label" for="congressus_ballot_majorities_input"><?php echo lang("administration_congressus_ballot_majorities"); ?></label>
 					<div class="col-md-10">
 						<input id="congressus_ballot_majorities_input" name="congressus_ballot_majorities_input" type="text" value="<?php echo implode(", ", $config["congressus"]["ballot_majorities"]); ?>"  class="form-control input-md">
-						<!-- <span class="help-block">help</span> -->
+						<span class="help-block">-2 pour le jugement majoritaire, -1 pour borda, 0 pour la meilleure, 50 , 66, 80 pour différents pourcentages de validation, à séparer par des virgules</span>
 					</div>
 				</div>
 
@@ -103,7 +103,7 @@ include_once("config/discourse.structure.php");
 					</div>
 					<label class="col-md-2 control-label" for="database_port_input"><?php echo lang("administration_database_port"); ?></label>
 					<div class="col-md-4">
-						<input id="database_port_input" name="database_port_input" type="text" value="<?php echo $config["database"]["port"]; ?>"  class="form-control input-md">
+						<input id="database_port_input" name="database_port_input" type="numeric" value="<?php echo $config["database"]["port"]; ?>"  class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
@@ -146,9 +146,9 @@ include_once("config/discourse.structure.php");
 				</div>
 
 				<div class="row text-center">
-					<button id="btn-ping-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
-					<button id="btn-create-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
-					<button id="btn-deploy-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
+					<button id="btn-ping-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
+					<button id="btn-create-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
+					<button id="btn-deploy-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
 				</div>
 
 			</div>
@@ -168,9 +168,13 @@ include_once("config/discourse.structure.php");
 					</div>
 					<label class="col-md-2 control-label" for="memcached_port_input"><?php echo lang("administration_memcached_port"); ?></label>
 					<div class="col-md-4">
-						<input id="memcached_port_input" name="memcached_port_input" type="text" value="<?php echo $config["memcached"]["port"]; ?>"  class="form-control input-md">
+						<input id="memcached_port_input" name="memcached_port_input" type="numeric" value="<?php echo $config["memcached"]["port"]; ?>"  class="form-control input-md">
 						<!-- <span class="help-block">help</span> -->
 					</div>
+				</div>
+
+				<div class="row text-center">
+					<button id="btn-ping-memcached" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_memcached"); ?></button>
 				</div>
 
 			</div>
@@ -388,6 +392,9 @@ include_once("config/discourse.structure.php");
 
 	<?php echo addAlertDialog("administration_create_successAlert", 		lang("administration_alert_create_ok"), "success"); ?>
 	<?php echo addAlertDialog("administration_deploy_successAlert", 		lang("administration_alert_deploy_ok"), "success"); ?>
+
+	<?php echo addAlertDialog("administration_memcached_successAlert", 		lang("administration_alert_memcached_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_memcached_no_hostAlert", 		lang("administration_alert_memcached_no_host"), "danger"); ?>
 
 </div>
 

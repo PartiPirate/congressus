@@ -97,7 +97,7 @@ if(!isset(\$config)) {
 }
 
 \$config[\"discourse\"] = array();
-\$config[\"discourse\"][\"exportable\"] = " . (@$_REQUEST["discourse_exportable_input"] ? "1" : "0") . ";
+\$config[\"discourse\"][\"exportable\"] = " . (@$_REQUEST["discourse_exportable_input"] ? $_REQUEST["discourse_exportable_input"] : "false") . ";
 \$config[\"discourse\"][\"api_key\"] = \"" . @$_REQUEST["discourse_api_key_input"] . "\";
 \$config[\"discourse\"][\"url\"] = \"" . @$_REQUEST["discourse_url_input"] . "\";
 \$config[\"discourse\"][\"protocol\"] = \"" . @$_REQUEST["discourse_protocol_input"] . "\";
@@ -127,7 +127,7 @@ if(!isset(\$config)) {
 }
 
 \$config[\"mediawiki\"] = array();
-\$config[\"mediawiki\"][\"exportable\"] = " . (@$_REQUEST["mediawiki_exportable_input"] ? "1" : "0") . ";
+\$config[\"mediawiki\"][\"exportable\"] = " . (@$_REQUEST["mediawiki_exportable_input"] ? $_REQUEST["mediawiki_exportable_input"] : "false") . ";
 \$config[\"mediawiki\"][\"url\"] = \"" . @$_REQUEST["mediawiki_url_input"] . "\";
 \$config[\"mediawiki\"][\"login\"] = \"" . @$_REQUEST["mediawiki_user_login"] . "\";
 \$config[\"mediawiki\"][\"password\"] = \"" . @$_REQUEST["mediawiki_user_password"] . "\";

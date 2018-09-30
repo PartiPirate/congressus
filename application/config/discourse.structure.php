@@ -36,41 +36,42 @@ function discourseApi($url, $api_key, $protocol) {
 $categories_all = array();
 
 try {
-    $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
-
-    $categories = $discourseApi->getSite()->apiresult->categories;
-
-    foreach ($categories as $category) {
-        if (isset($category->parent_category_id)){
-            $categories_all[$category->parent_category_id]['subcategory'][$category->id]['id'] = $category->id;
-            $categories_all[$category->parent_category_id]['subcategory'][$category->id]['slug'] = $category->slug;
-            $categories_all[$category->parent_category_id]['subcategory'][$category->id]['name'] = $category->name;
+    if ($config["discourse"]["exportable"]) {
+        $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+    
+        $categories = $discourseApi->getSite()->apiresult->categories;
+    
+        foreach ($categories as $category) {
+            if (isset($category->parent_category_id)){
+                $categories_all[$category->parent_category_id]['subcategory'][$category->id]['id'] = $category->id;
+                $categories_all[$category->parent_category_id]['subcategory'][$category->id]['slug'] = $category->slug;
+                $categories_all[$category->parent_category_id]['subcategory'][$category->id]['name'] = $category->name;
+            }
+            else {
+                $categories_all[$category->id]['id'] = $category->id;
+                $categories_all[$category->id]['slug'] = $category->slug;
+                $categories_all[$category->id]['name'] = $category->name;
+            }
         }
-        else {
-            $categories_all[$category->id]['id'] = $category->id;
-            $categories_all[$category->id]['slug'] = $category->slug;
-            $categories_all[$category->id]['name'] = $category->name;
-        }
-    }
-
-    unset($categories);
-    foreach ($categories_all as $category) {
-        if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($category['id'], $config["discourse"]["allowed_categories"])) {
-            $categories[$category['id']]['id'] = $category['id'];
-            $categories[$category['id']]['slug'] = $category['slug'];
-            $categories[$category['id']]['name'] = $category['name'];
-        }
-        if (isset($category['subcategory'])) {
-            foreach ($category['subcategory'] as $subcategory) {
-                if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($subcategory['id'], $config["discourse"]["allowed_categories"])) {
-                    $categories[$subcategory['id']]['id'] = $subcategory['id'];
-                    $categories[$subcategory['id']]['slug'] = $subcategory['slug'];
-                    $categories[$subcategory['id']]['name'] = $category['name'] . " : " . $subcategory['name'];
+    
+        unset($categories);
+        foreach ($categories_all as $category) {
+            if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($category['id'], $config["discourse"]["allowed_categories"])) {
+                $categories[$category['id']]['id'] = $category['id'];
+                $categories[$category['id']]['slug'] = $category['slug'];
+                $categories[$category['id']]['name'] = $category['name'];
+            }
+            if (isset($category['subcategory'])) {
+                foreach ($category['subcategory'] as $subcategory) {
+                    if (!isset($config["discourse"]["allowed_categories"]) || count($config["discourse"]["allowed_categories"]) == 0 || in_array($subcategory['id'], $config["discourse"]["allowed_categories"])) {
+                        $categories[$subcategory['id']]['id'] = $subcategory['id'];
+                        $categories[$subcategory['id']]['slug'] = $subcategory['slug'];
+                        $categories[$subcategory['id']]['name'] = $category['name'] . " : " . $subcategory['name'];
+                    }
                 }
             }
         }
     }
-
 }
 catch (Exception $e) {
     $error_message = ('Exception : ' .  $e->getMessage() . "\n");

@@ -18,6 +18,30 @@
 */
 /* global $ */
 
+function checkBasicConfiguration() {
+
+	if (	!$("#server_base_input").val()
+		||	!$("#congressus_ballot_majorities_input").val()) {
+		$("#server-panel").removeClass("panel-default").addClass("panel-danger");
+	}
+	else {
+		$("#server-panel").removeClass("panel-default").removeClass("panel-danger").addClass("panel-success");
+	}
+}
+
+function checkMemcachedConfiguration() {
+
+	if (	!$("#memcached_host_input").val()
+		||	!$("#memcached_port_input").val()) {
+		$("#memcached-panel").removeClass("panel-default").addClass("panel-danger");
+		$("#btn-ping-memcached").prop("disabled", true);
+	}
+	else {
+		$("#memcached-panel").removeClass("panel-default").removeClass("panel-danger").addClass("panel-success");
+		$("#btn-ping-memcached").prop("disabled", false);
+	}
+}
+
 function checkDatabaseConfiguration() {
 
 	if (	!$("#database_host_input").val()
@@ -46,7 +70,24 @@ $(function() {
 	$("#discourse_exportable_button").change(function() {
 		$("#discourse_exportable_input").val($(this).prop('checked') ? "true" : "false");
 	});
-	
+
+	var pingMemcached = function() {
+		$("#btn-ping-memcached").prop("disabled", true);
+
+		$.post("administration_api.php?method=do_pingMemcached", $("#administration-form").serialize(), function(data) {
+
+			if (data.ok) {
+				$("#administration_memcached_successAlert").show().delay(2000).fadeOut(1000);
+			}
+			else {
+				$("#administration_memcached_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+			}
+
+			$("#btn-ping-memcached").prop("disabled", false);
+			
+		}, "json");
+	}
+
 	var pingDatabase = function() {
 		$("#btn-ping-database").prop("disabled", true);
 		
@@ -122,6 +163,11 @@ $(function() {
 		submitAdministrationForm();
 	})
 
+	$("#btn-ping-memcached").click(function(event) {
+		event.preventDefault();
+		pingMemcached();
+	});
+
 	$("#btn-ping-database").click(function(event) {
 		event.preventDefault();
 		pingDatabase();
@@ -143,6 +189,7 @@ $(function() {
 	});
 
 	checkMailSecure();
+
 	checkDatabaseConfiguration();
 
 	$("#database_host_input").change(checkDatabaseConfiguration);
@@ -150,10 +197,20 @@ $(function() {
 	$("#database_login_input").change(checkDatabaseConfiguration);
 	$("#database_password_input").change(checkDatabaseConfiguration);
 
+	checkMemcachedConfiguration();
+
+	$("#memcached_host_input").change(checkMemcachedConfiguration);
+	$("#memcached_port_input").change(checkMemcachedConfiguration);
+
 	checkAdministratorConfiguration();
 
 	$("#administrator_login_input").change(checkAdministratorConfiguration);
 	$("#administrator_password_input").change(checkAdministratorConfiguration);
+
+	checkBasicConfiguration();
+
+	$("#server_base_input").change(checkBasicConfiguration);
+	$("#congressus_ballot_majorities_input").change(checkBasicConfiguration);
 
 	$("#btn-ping-database").prop("disabled", false);
 	$("#btn-administration-save").prop("disabled", false);

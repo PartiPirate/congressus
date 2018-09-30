@@ -512,7 +512,7 @@ function showAddAgendaFromModal(event) {
 	event.stopPropagation();
 	
 	var parentAgendaId = $(this).data("parent-id");
-	var parentAgendaLabel = $(this).parent().find("a").text();
+	var parentAgendaLabel = $(this).parent().children("a").text();
 
 	$("#add-agenda-from-modal #parentAgendaIdInput").val(parentAgendaId);
 	$("#add-agenda-from-modal #parentAgendaLabel").text(parentAgendaLabel);

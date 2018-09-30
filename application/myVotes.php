@@ -19,6 +19,11 @@
 include_once("header.php");
 
 require_once("engine/bo/MotionBo.php");
+require_once("engine/utils/Parsedown.php");
+require_once("engine/emojione/autoload.php");
+
+$Parsedown = new Parsedown();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 $motionBo = MotionBo::newInstance($connection, $config);
 
@@ -133,7 +138,7 @@ function sortPropositions($a, $b) {
 		</a></h3>
 	</div>
 	<div class="panel-body">
-		<h4><?php echo $motion["mot_description"]; ?></h4>
+		<h4><?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?></h4>
 		<h4><?php echo str_replace("{value}", $maxVotePower, lang("myVotes_maxPower")); ?></h4>
 		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?></h4>
 
@@ -144,8 +149,8 @@ function sortPropositions($a, $b) {
 				if ($motion["mot_win_limit"] == -2) {
 					if ($index != 0) echo "<br>";
 				?>
-			<div class="proposition" style="width: 100%; border-radius: 4px;" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
-				<?php echo $proposition["mpr_label"]; ?>
+			<?php echo $proposition["mpr_label"]; ?><br>
+			<div class="proposition" style="width: 100%; border-radius: 4px; padding: 2px;" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
 				<div class="btn-group" style="width: 100%; margin: 2px;">
 					<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 							foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>

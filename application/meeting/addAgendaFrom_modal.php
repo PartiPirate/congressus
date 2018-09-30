@@ -149,6 +149,17 @@
                                     data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Signature de texte</option>
 -->                                    
                             </optgroup>
+                            <optgroup label="Motion statutaire" id="simple-motion-group">
+                                <option value="" 
+                                    data-title="L'Assemblée Statutaire valide la modification des statuts avec l'amendement &quot;Nom du texte&quot;"
+                                    data-description="Pour accéder à l'amendement, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom du texte&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[]}]">Amendement statutaire</option>
+<!--
+                                <option value="" 
+                                    data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."
+                                    data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Signature de texte</option>
+-->                                    
+                            </optgroup>
                             <option value="" data-title="" data-description="">Autre...</option>
                         </select>
                     </div>

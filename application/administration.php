@@ -147,6 +147,8 @@ include_once("config/discourse.structure.php");
 
 				<div class="row text-center">
 					<button id="btn-ping-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
+					<button id="btn-create-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
+					<button id="btn-deploy-database" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
 				</div>
 
 			</div>
@@ -377,12 +379,15 @@ include_once("config/discourse.structure.php");
 
 	</form>
 
-	<?php echo addAlertDialog("administration_save_successAlert", lang("administration_alert_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_save_successAlert", 			lang("administration_alert_ok"), "success"); ?>
 
 	<?php echo addAlertDialog("administration_ping_successAlert", 			lang("administration_alert_ping_ok"), "success"); ?>
 	<?php echo addAlertDialog("administration_ping_no_hostAlert", 			lang("administration_alert_ping_no_host"), "danger"); ?>
 	<?php echo addAlertDialog("administration_ping_bad_credentialsAlert", 	lang("administration_alert_ping_bad_credentials"), "danger"); ?>
 	<?php echo addAlertDialog("administration_ping_no_databaseAlert", 		lang("administration_alert_ping_no_database"), "warning"); ?>
+
+	<?php echo addAlertDialog("administration_create_successAlert", 		lang("administration_alert_create_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_deploy_successAlert", 		lang("administration_alert_deploy_ok"), "success"); ?>
 
 </div>
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -27,13 +27,19 @@ $login = $arguments["database_login_input"];
 $password = $arguments["database_password_input"];
 $database = $arguments["database_database_input"];
 
-$dns = 'mysql:host='.$host.';dbname=' . $database;
+$dns = 'mysql:host='.$host;
+//$dns = 'mysql:host='.$host.';dbname=' . $database;
 if (isset($config["database"]["port"])) {
 	$dns .= ";port=" . $config["database"]["port"];
 }
 
 try {
 	$pdo = new PDO($dns, $login, $password);
+
+	$createDatabaseQuery = "CREATE DATABASE $database";
+	$statement = $pdo->prepare($createDatabaseQuery);
+	$statement->execute();
+
 	$data["ok"] = "ok";
 }
 catch(Exception $e){

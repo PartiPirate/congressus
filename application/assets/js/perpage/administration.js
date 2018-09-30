@@ -18,6 +18,30 @@
 */
 /* global $ */
 
+function checkDatabaseConfiguration() {
+
+	if (	!$("#database_host_input").val()
+		||	!$("#database_database_input").val()
+		||	!$("#database_login_input").val()
+		||	!$("#database_password_input").val()) {
+		$("#database-panel").removeClass("panel-default").addClass("panel-danger");
+	}
+	else {
+		$("#database-panel").removeClass("panel-default").removeClass("panel-danger").addClass("panel-success");
+	}
+}
+
+function checkAdministratorConfiguration() {
+
+	if (	!$("#administrator_login_input").val()
+		||	!$("#administrator_password_input").val()) {
+		$("#account-panel").removeClass("panel-default").addClass("panel-danger");
+	}
+	else {
+		$("#account-panel").removeClass("panel-default").removeClass("panel-danger").addClass("panel-success");
+	}
+}
+
 $(function() {
 	$("#discourse_exportable_button").change(function() {
 		$("#discourse_exportable_input").val($(this).prop('checked') ? "true" : "false");
@@ -27,18 +51,56 @@ $(function() {
 		$("#btn-ping-database").prop("disabled", true);
 		
 		$.post("administration_api.php?method=do_pingDatabase", $("#administration-form").serialize(), function(data) {
-//			$("#administration_save_successAlert").show().delay(2000).fadeOut(1000);
 
 			if (data.ok) {
 				$("#administration_ping_successAlert").show().delay(2000).fadeOut(1000);
+				$("#btn-deploy-database").prop("disabled", false);
 			}
 			else {
 				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+				
+				if (data.error == "no_database") {
+					$("#btn-create-database").prop("disabled", false);
+				}
 			}
 
-//			alert(data);
 			$("#btn-ping-database").prop("disabled", false);
 			
+		}, "json");
+	}
+	
+	var createDatabase = function() {
+		$("#btn-create-database").prop("disabled", true);
+		
+		$.post("administration_api.php?method=do_createDatabase", $("#administration-form").serialize(), function(data) {
+
+			if (data.ok) {
+				$("#administration_create_successAlert").show().delay(2000).fadeOut(1000);
+				$("#btn-deploy-database").prop("disabled", false);
+				$("#btn-create-database").prop("disabled", true);
+			}
+			else {
+				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+				$("#btn-create-database").prop("disabled", false);
+			}
+
+		}, "json");
+	}
+	
+	var deployDatabase = function() {
+		$("#btn-deploy-database").prop("disabled", true);
+		
+		$.post("administration_api.php?method=do_deployDatabase", $("#administration-form").serialize(), function(data) {
+
+			if (data.ok) {
+				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);
+//				$("#btn-deploy-database").prop("disabled", true);
+			}
+			else {
+				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+				$("#btn-deploy-database").prop("disabled", false);
+			}
+
 		}, "json");
 	}
 	
@@ -65,15 +127,37 @@ $(function() {
 		pingDatabase();
 	});
 
+	$("#btn-create-database").click(function(event) {
+		event.preventDefault();
+		createDatabase();
+	});
+
+	$("#btn-deploy-database").click(function(event) {
+		event.preventDefault();
+		deployDatabase();
+	});
+
 	$("#btn-administration-save").click(function(event) {
 		event.preventDefault();
 		submitAdministrationForm();
 	});
 
 	checkMailSecure();
-	
+	checkDatabaseConfiguration();
+
+	$("#database_host_input").change(checkDatabaseConfiguration);
+	$("#database_database_input").change(checkDatabaseConfiguration);
+	$("#database_login_input").change(checkDatabaseConfiguration);
+	$("#database_password_input").change(checkDatabaseConfiguration);
+
+	checkAdministratorConfiguration();
+
+	$("#administrator_login_input").change(checkAdministratorConfiguration);
+	$("#administrator_password_input").change(checkAdministratorConfiguration);
+
 	$("#btn-ping-database").prop("disabled", false);
 	$("#btn-administration-save").prop("disabled", false);
 	
+	// hide starting visible alerts
 	$(".alert:visible").delay(5000).fadeOut(1000);
 })

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Installer.
 

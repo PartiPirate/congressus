@@ -54,11 +54,15 @@ $lang["administration_account"] = "Identifiant de l'administrateur";
 $lang["administration_account_login"] = "Login Administrateur";
 $lang["administration_account_password"] = "Password Administrateur";
 $lang["administration_ping_database"] = "Tester";
+$lang["administration_create_database"] = "Créer";
+$lang["administration_deploy_database"] = "Déployer";
 $lang["administration_alert_ok"] = "La configuration a été mise à jour avec succès";
 $lang["administration_alert_ping_ok"] = "La configuration base de données est bonne";
 $lang["administration_alert_ping_no_host"] = "Hôte inconnu";
 $lang["administration_alert_ping_bad_credentials"] = "Mauvais compte";
 $lang["administration_alert_ping_no_database"] = "Base de données inexistante";
+$lang["administration_alert_create_ok"] = "Création de la base de données effectuée avec succès";
+$lang["administration_alert_deploy_ok"] = "Déploiement de la base de données effectuée avec succès";
 $lang["administration_congressus_ballot_majorities"] = "Modalité de vote";
 
 $lang["administration_discourse"] = "Discourse";

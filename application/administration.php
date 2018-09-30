@@ -146,9 +146,9 @@ include_once("config/discourse.structure.php");
 				</div>
 
 				<div class="row text-center">
-					<button id="btn-ping-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
-					<button id="btn-create-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
-					<button id="btn-deploy-database" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
+					<button id="btn-ping-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
+					<button id="btn-create-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
+					<button id="btn-deploy-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
 				</div>
 
 			</div>
@@ -174,7 +174,7 @@ include_once("config/discourse.structure.php");
 				</div>
 
 				<div class="row text-center">
-					<button id="btn-ping-memcached" class="btn btn-primary btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_memcached"); ?></button>
+					<button id="btn-ping-memcached" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_memcached"); ?></button>
 				</div>
 
 			</div>
@@ -240,6 +240,23 @@ include_once("config/discourse.structure.php");
 						<!-- <span class="help-block">help</span> -->
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-8">
+					    <div class="input-group">
+					    	<span class="input-group-addon"><?php echo lang("administration_mail_test_adress"); ?></span>
+					    	<input id="smtp_test_address_input" name="smtp_test_address_input" class="form-control" type="text">
+							<div class="input-group-btn">
+								<button id="btn-mail-test" type="button" class="btn btn-primary"><?php echo lang("administration_mail_test"); ?></button>
+						    </div>
+					    </div>
+					</div>
+					<div class="col-md-2">
+					</div>
+				</div>
+
 
 			</div>
 		</div>
@@ -378,23 +395,26 @@ include_once("config/discourse.structure.php");
 		</div>
 
 		<div class="row text-center">
-			<button id="btn-administration-save" class="btn btn-primary btn-primary" disabled="disabled"><?php echo lang("common_save"); ?></button>
+			<button id="btn-administration-save" class="btn btn-primary" disabled="disabled"><?php echo lang("common_save"); ?></button>
 		</div>
 
 	</form>
 
-	<?php echo addAlertDialog("administration_save_successAlert", 			lang("administration_alert_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_save_successAlert", 				lang("administration_alert_ok"), "success"); ?>
 
-	<?php echo addAlertDialog("administration_ping_successAlert", 			lang("administration_alert_ping_ok"), "success"); ?>
-	<?php echo addAlertDialog("administration_ping_no_hostAlert", 			lang("administration_alert_ping_no_host"), "danger"); ?>
-	<?php echo addAlertDialog("administration_ping_bad_credentialsAlert", 	lang("administration_alert_ping_bad_credentials"), "danger"); ?>
-	<?php echo addAlertDialog("administration_ping_no_databaseAlert", 		lang("administration_alert_ping_no_database"), "warning"); ?>
+	<?php echo addAlertDialog("administration_ping_successAlert", 				lang("administration_alert_ping_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_ping_no_hostAlert", 				lang("administration_alert_ping_no_host"), "danger"); ?>
+	<?php echo addAlertDialog("administration_ping_bad_credentialsAlert", 		lang("administration_alert_ping_bad_credentials"), "danger"); ?>
+	<?php echo addAlertDialog("administration_ping_no_databaseAlert", 			lang("administration_alert_ping_no_database"), "warning"); ?>
 
-	<?php echo addAlertDialog("administration_create_successAlert", 		lang("administration_alert_create_ok"), "success"); ?>
-	<?php echo addAlertDialog("administration_deploy_successAlert", 		lang("administration_alert_deploy_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_create_successAlert", 			lang("administration_alert_create_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_deploy_successAlert", 			lang("administration_alert_deploy_ok"), "success"); ?>
 
-	<?php echo addAlertDialog("administration_memcached_successAlert", 		lang("administration_alert_memcached_ok"), "success"); ?>
-	<?php echo addAlertDialog("administration_memcached_no_hostAlert", 		lang("administration_alert_memcached_no_host"), "danger"); ?>
+	<?php echo addAlertDialog("administration_memcached_successAlert", 			lang("administration_alert_memcached_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_memcached_no_hostAlert", 			lang("administration_alert_memcached_no_host"), "danger"); ?>
+
+	<?php echo addAlertDialog("administration_mail_successAlert", 				lang("administration_alert_mail_ok"), "success"); ?>
+	<?php echo addAlertDialog("administration_mail_bad_credentialsAlert", 		lang("administration_alert_mail_no_host"), "danger"); ?>
 
 </div>
 

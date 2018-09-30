@@ -57,6 +57,10 @@ $lang["administration_ping_memcached"] = "Tester";
 $lang["administration_ping_database"] = "Tester";
 $lang["administration_create_database"] = "Créer";
 $lang["administration_deploy_database"] = "Déployer";
+$lang["administration_mail_test_adress"] = "Adresse où envoyer un mail de test : ";
+$lang["administration_mail_test"] = "Envoyer";
+$lang["administration_congressus_ballot_majorities"] = "Modalité de vote";
+
 $lang["administration_alert_ok"] = "La configuration a été mise à jour avec succès";
 $lang["administration_alert_memcached_ok"] = "La configuration memcached est bonne";
 $lang["administration_alert_memcached_no_host"] = "Hôte inconnu";
@@ -66,7 +70,8 @@ $lang["administration_alert_ping_bad_credentials"] = "Mauvais compte";
 $lang["administration_alert_ping_no_database"] = "Base de données inexistante";
 $lang["administration_alert_create_ok"] = "Création de la base de données effectuée avec succès";
 $lang["administration_alert_deploy_ok"] = "Déploiement de la base de données effectuée avec succès";
-$lang["administration_congressus_ballot_majorities"] = "Modalité de vote";
+$lang["administration_alert_mail_ok"] = "La configuration mail est bonne";
+$lang["administration_alert_mail_bad_credentials"] = "Mauvais compte";
 
 $lang["administration_discourse"] = "Discourse";
 $lang["administration_discourse_api_key"] = "Clef API";

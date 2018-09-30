@@ -71,6 +71,23 @@ $(function() {
 		$("#discourse_exportable_input").val($(this).prop('checked') ? "true" : "false");
 	});
 
+	var testMail = function() {
+		$("#btn-mail-test").prop("disabled", true);
+
+		$.post("administration_api.php?method=do_testMail", $("#administration-form").serialize(), function(data) {
+
+			if (data.ok) {
+				$("#administration_mail_successAlert").show().delay(2000).fadeOut(1000);
+			}
+			else {
+				$("#administration_mail_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+			}
+
+			$("#btn-mail-test").prop("disabled", false);
+			
+		}, "json");
+	}
+
 	var pingMemcached = function() {
 		$("#btn-ping-memcached").prop("disabled", true);
 
@@ -162,6 +179,11 @@ $(function() {
 		event.preventDefault();
 		submitAdministrationForm();
 	})
+
+	$("#btn-mail-test").click(function(event) {
+		event.preventDefault();
+		testMail();
+	});
 
 	$("#btn-ping-memcached").click(function(event) {
 		event.preventDefault();

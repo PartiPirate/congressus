@@ -35,3 +35,9 @@
   - le port.
 - Testez votre connexion
   - Corrigez les erreurs éventuellement remontées
+
+### SMTP ###
+
+- Entrez les informations pertinentes pour faire le lien avec serveur de mail : 
+- Testez votre connexion
+  - Corrigez les erreurs éventuellement remontées

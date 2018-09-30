@@ -167,9 +167,9 @@ CREATE TABLE `motions` (
   `mot_deleted` tinyint(4) NOT NULL DEFAULT '0',
   `mot_status` enum('construction','voting','resolved') NOT NULL DEFAULT 'construction',
   `mot_pinned` tinyint(4) NOT NULL DEFAULT '0',
-  `mot_anonymous` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'set to 1 for forcing the anymous mode during the vote',
+  `mot_anonymous` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'set to 1 to force the anymous mode during the vote',
   `mot_type` enum('yes_no','a_b_c') NOT NULL,
-  `mot_win_limit` int(11) NOT NULL DEFAULT '50' COMMENT 'The percent need by a proposition for winning',
+  `mot_win_limit` int(11) NOT NULL DEFAULT '50' COMMENT 'The percent needed by a proposition to win',
   `mot_title` varchar(255) NOT NULL,
   `mot_description` text NOT NULL,
   `mot_explanation` text NOT NULL

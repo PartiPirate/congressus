@@ -26,7 +26,7 @@
 - Testez votre connexion
   - Corrigez les erreurs éventuellement remontées
   - Si votre base de données n'existe pas, l'option de création de base est proposée 
-  - Si la base de données existe, ou dans juste après l'avoir créée, vous pouvez déployer les tables nécessaires au bon fonctionnement de l'application (utile aussi pour la mise à jour du schéma de base)
+  - Si la base de données existe, ou juste après l'avoir créée, vous pouvez déployer les tables nécessaires au bon fonctionnement de l'application (utile aussi pour la mise à jour du schéma de base)
 
 ### Memcached ###
 

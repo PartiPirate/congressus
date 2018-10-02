@@ -18,6 +18,21 @@
 */
 /* global $ */
 
+function checkModuleGroups() {
+	var authenticator = $("#modules_authenticator_input").val();
+	
+	switch(authenticator) {
+		case "Galette":
+			$("#module_groups_boxes_PersonaeGroups, #module_groups_boxes_PersonaeThemes, #module_groups_boxes_GaletteGroups, #module_groups_boxes_GaletteAllMembersGroups").prop("disabled", false);
+			$("#module_groups_boxes_CustomGroups").prop("disabled", true).prop("checked", false);
+			break;
+		case "Custom":
+			$("#module_groups_boxes_PersonaeGroups, #module_groups_boxes_PersonaeThemes, #module_groups_boxes_GaletteGroups, #module_groups_boxes_GaletteAllMembersGroups").prop("disabled", true).prop("checked", false);
+			$("#module_groups_boxes_CustomGroups").prop("disabled", false);
+			break;
+	}
+}
+
 function checkBasicConfiguration() {
 
 	if (	!$("#server_base_input").val()
@@ -209,6 +224,9 @@ $(function() {
 		event.preventDefault();
 		submitAdministrationForm();
 	});
+
+	$("#modules_authenticator_input").change(checkModuleGroups);
+	checkModuleGroups();
 
 	checkMailSecure();
 

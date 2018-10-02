@@ -131,7 +131,7 @@ if(!isset(\$config)) {
 \$config[\"mediawiki\"][\"url\"] = \"" . @$_REQUEST["mediawiki_url_input"] . "\";
 \$config[\"mediawiki\"][\"login\"] = \"" . @$_REQUEST["mediawiki_user_login"] . "\";
 \$config[\"mediawiki\"][\"password\"] = \"" . @$_REQUEST["mediawiki_user_password"] . "\";
-\$config[\"mediawiki\"][\"base\"] = \"" . @$_REQUEST["discourse_base_input"] . "\";
+\$config[\"mediawiki\"][\"base\"] = \"" . @$_REQUEST["mediawiki_url_input"] . "\";
 \$config[\"mediawiki\"][\"categories\"] = array(";
 $separator = "";
 foreach (explode("\n", @$_REQUEST["mediawiki_categories_input"]) as $category) {
@@ -147,6 +147,38 @@ foreach (explode("\n", @$_REQUEST["mediawiki_categories_input"]) as $category) {
 }
 
 $mediawikiConfigDotPhp .= ");
+
+?>";
+
+// module.config.php
+$moduleConfigDotPhp = "<?php
+if(!isset(\$config)) {
+	\$config = array();
+}
+
+\$config[\"modules\"] = array();
+\$config[\"modules\"][\"authenticator\"] = \"" . @$_REQUEST["modules_authenticator_input"] . "\";
+\$config[\"modules\"][\"groupsources\"] = array(";
+$separator = "";
+
+if (!isset($_REQUEST["module_groups_boxes"])) {
+	$_REQUEST["module_groups_boxes"] = array();
+}
+
+foreach (@$_REQUEST["module_groups_boxes"] as $moduleGroup) {
+
+	$moduleGroup = str_replace("\"", "\\\"", trim($moduleGroup));
+	if (!$moduleGroup) continue;
+
+	$moduleConfigDotPhp .= $separator;
+	$moduleConfigDotPhp .= "\"";
+	$moduleConfigDotPhp .= $moduleGroup;
+	$moduleConfigDotPhp .= "\"";
+
+	$separator = ",\n\t";
+}
+
+$moduleConfigDotPhp .= ");
 
 ?>";
 
@@ -181,6 +213,14 @@ if (file_exists("config/mediawiki.config.php")) {
 	rename("config/mediawiki.config.php", "config/mediawiki.config.php~");
 }
 file_put_contents("config/mediawiki.config.php", $mediawikiConfigDotPhp);
+
+if (file_exists("config/modules.config.php")) {
+	if (file_exists("config/modules.config.php~")) {
+		unlink("config/modules.config.php~");
+	}
+	rename("config/modules.config.php", "config/modules.config.php~");
+}
+file_put_contents("config/modules.config.php", $moduleConfigDotPhp);
 
 if (!isset($_REQUEST["api"]) || $_REQUEST["api"]) {
 	echo json_encode($data, JSON_NUMERIC_CHECK);

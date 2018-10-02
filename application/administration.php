@@ -372,6 +372,56 @@ include_once("config/discourse.structure.php");
 			</div>
 		</div>
 
+		<div id="modules-panel" class="panel panel-default">
+			<div class="panel-heading">
+				<a data-toggle="collapse" data-target="#modules-panel-body" class="collapsed" href="#"><?php echo lang("administration_modules"); ?></a>
+			</div>
+			<div class="panel-body panel-collapse collapse " id="modules-panel-body">
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="modules_authenticator_input"><?php echo lang("administration_modules_authenticator"); ?></label>
+					<div class="col-md-4">
+						<select id="modules_authenticator_input" name="modules_authenticator_input" class="form-control">
+							<option value="Galette"  <?php if ("Galette"  == @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_galette"); ?></option>
+							<option value="Custom"   <?php if ("Custom"   == @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_custom"); ?></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="module_groups_boxes"><?php echo lang("administration_modules_groups"); ?></label>
+					<div class="col-md-10">
+						<label class="checkbox-inline" for="module_groups_boxes_PersonaeGroups">
+						<input type="checkbox" name="module_groups_boxes[]" id="module_groups_boxes_PersonaeGroups" 
+							value="PersonaeGroups" <?php if (in_array("PersonaeGroups", @$config["modules"]["groupsources"])) echo "checked='checked'";?> >
+						<?php echo lang("administration_modules_groups_personaegroups"); ?>
+						</label>
+						<label class="checkbox-inline" for="module_groups_boxes_PersonaeThemes">
+						<input type="checkbox" name="module_groups_boxes[]" id="module_groups_boxes_PersonaeThemes" 
+							value="PersonaeThemes" <?php if (in_array("PersonaeThemes", @$config["modules"]["groupsources"])) echo "checked='checked'";?> >
+						<?php echo lang("administration_modules_groups_personaethemes"); ?>
+						</label>
+						<label class="checkbox-inline" for="module_groups_boxes_GaletteGroups">
+						<input type="checkbox" name="module_groups_boxes[]" id="module_groups_boxes_GaletteGroups" 
+							value="GaletteGroups" <?php if (in_array("GaletteGroups", @$config["modules"]["groupsources"])) echo "checked='checked'";?> >
+						<?php echo lang("administration_modules_groups_galettegroups"); ?>
+						</label>
+						<label class="checkbox-inline" for="module_groups_boxes_GaletteAllMembersGroups">
+						<input type="checkbox" name="module_groups_boxes[]" id="module_groups_boxes_GaletteAllMembersGroups" 
+							value="GaletteAllMembersGroups" <?php if (in_array("GaletteAllMembersGroups", @$config["modules"]["groupsources"])) echo "checked='checked'";?> >
+						<?php echo lang("administration_modules_groups_galetteallmembers"); ?>
+						</label>
+						<label class="checkbox-inline" for="module_groups_boxes_CustomGroups">
+						<input type="checkbox" name="module_groups_boxes[]" id="module_groups_boxes_CustomGroups" 
+							value="CustomGroups" <?php if (in_array("CustomGroups", @$config["modules"]["groupsources"])) echo "checked='checked'";?> >
+						<?php echo lang("administration_modules_groups_customgroups"); ?>
+						</label>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
 		<div id="account-panel" class="panel panel-default">
 			<div class="panel-heading">
 				<a data-toggle="collapse" data-target="#account-panel-body" class="collapsed" href="#"><?php echo lang("administration_account"); ?></a>

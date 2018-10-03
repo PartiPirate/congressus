@@ -123,6 +123,8 @@ function addAgendaHandlers() {
 
 		if (!hasRight(getUserId(), "handle_agenda")) return;
 
+		if (!$(".btn-agenda-mode").hasClass("btn-success")) return;
+
 		var input = $("<input />", {"class": "form-control", "style": "display: inline-block;"});
 		var propertyText = $(this).children("a");
 
@@ -253,10 +255,12 @@ function addAgenda(agendas, parent, parentId) {
 		ul.append(addPointLi);
 	}
 
-	var sortLi = function(a, b) {
-	    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
-	};
-	parent.children().sort(sortLi).appendTo(parent);
+	if ($("#meeting-agenda input").length == 0) {
+		var sortLi = function(a, b) {
+		    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
+		};
+		parent.children().sort(sortLi).appendTo(parent);
+	}
 }
 
 function updateMeeting(meeting) {

@@ -90,6 +90,7 @@ $lang["administration_mediawiki_categories"] = "Catégories connues";
 
 $lang["administration_modules"] = "Modules utilisateurs";
 $lang["administration_modules_authenticator"] = "Authentification";
+$lang["administration_modules_authenticator_internal"] = "Interne";
 $lang["administration_modules_authenticator_galette"] = "Galette";
 $lang["administration_modules_authenticator_custom"] = "Custom";
 $lang["administration_modules_groups"] = "Sources des groupes";

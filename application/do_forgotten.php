@@ -16,6 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 include_once("config/database.php");
 include_once("config/mail.php");
@@ -31,7 +35,6 @@ xssCleanArray($_GET);
 xssCleanArray($_POST);
 
 $connection = openConnection();
-
 $userBo = UserBo::newInstance($connection, $config);
 $authenticator = AuthenticatorFactory::getInstance($connection, $config, $config["modules"]["authenticator"]);
 

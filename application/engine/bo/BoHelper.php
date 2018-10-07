@@ -25,7 +25,7 @@ class BoHelper {
 		$query = $queryBuilder->constructRequest();
 
 		$statement = $pdo->prepare($query);
-//		echo showQuery($query, $args);
+//		echo showQuery($query, array());
 
 		try {
 			$statement->execute();

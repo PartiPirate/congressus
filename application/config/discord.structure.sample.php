@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2017 Parti Pirate
+	Copyright 2017-2018 Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,6 +16,8 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$config["discord"]["usable"] = false; // set to true to enable discord chat room
 
 $discord_vocal_channels = array(
 );

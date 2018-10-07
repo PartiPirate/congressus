@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2018 Cédric Levieux, Parti Pirate
     
     This file is part of Congressus.
     
@@ -17,7 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class GaletteUserSource {
+class InternalUserSource {
     
     function upgradeQuery(&$queryBuilder, $config, $joinField, $as = null) {
         $galetteDatabase = "";
@@ -32,9 +32,12 @@ class GaletteUserSource {
 
 		$queryBuilder->join($galetteDatabase . "galette_adherents", ($as ? $as . "." : "")."id_adh = $joinField", $as, "left");
 		
-
+/*
+        // For discord purpose
 		$queryBuilder->addSelect(($as ? "diaf_$as" : "diaf") . ".field_val as discord_id_adh");
 		$queryBuilder->join($galetteDatabase . "galette_dynamic_fields", ($as ? "diaf_$as" : "diaf").".item_id = $joinField AND ".($as ? "diaf_$as" : "diaf").".field_id = 2 AND ".($as ? "diaf_$as" : "diaf").".field_form = 'adh'", ($as ? "diaf_$as" : "diaf"), "left");
+*/
+
 //		$queryBuilder->join($galetteDatabase . "galette_pictures", ($as ? "gp_$as" : "gp").".id_adh = " . ($as ? $as . "." : "galette_adherents.") . "id_adh", ($as ? "gp_$as" : "gp"), "left");
     }
 
@@ -50,8 +53,12 @@ class GaletteUserSource {
 //		$queryBuilder->addSelect("gp" . ".picture");
 		$queryBuilder->select($galetteDatabase . "galette_adherents");
 
+/*
+        // For discord purpose
 		$queryBuilder->addSelect("diaf.field_val as discord_id_adh");
 		$queryBuilder->join($galetteDatabase . "galette_dynamic_fields", "diaf.item_id = galette_adherents.id_adh AND diaf.field_id = 2 AND diaf.field_form = 'adh'", "diaf", "left");
+*/
+
 //		$queryBuilder->join($galetteDatabase . "galette_pictures", "gp.id_adh = galette_adherents.id_adh", "gp", "left");
     }
 

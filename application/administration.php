@@ -42,6 +42,7 @@ include_once("config/discourse.structure.php");
 	<br />
 
 	<form id="administration-form" class="form-horizontal">
+		<input id="salt_input" name="salt_input" type="hidden" value="<?php echo @$config["salt"]; ?>"  class="form-control input-md">
 
 		<div id="server-panel" class="panel panel-default">
 			<div class="panel-heading">
@@ -382,8 +383,9 @@ include_once("config/discourse.structure.php");
 					<label class="col-md-2 control-label" for="modules_authenticator_input"><?php echo lang("administration_modules_authenticator"); ?></label>
 					<div class="col-md-4">
 						<select id="modules_authenticator_input" name="modules_authenticator_input" class="form-control">
-							<option value="Galette"  <?php if ("Galette"  == @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_galette"); ?></option>
-							<option value="Custom"   <?php if ("Custom"   == @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_custom"); ?></option>
+							<option value="Internal"	<?php if ("Internal"  	== @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_internal"); ?></option>
+							<option value="Galette" 	<?php if ("Galette"  	== @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_galette"); ?></option>
+							<option value="Custom"  	<?php if ("Custom"   	== @$config["modules"]["authenticator"]) echo "selected"; ?>><?php echo lang("administration_modules_authenticator_custom"); ?></option>
 						</select>
 					</div>
 				</div>

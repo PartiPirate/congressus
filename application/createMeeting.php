@@ -17,8 +17,14 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
-include("config/mumble.structure.php");
-include("config/discord.structure.php");
+
+if (isset($config["mumble"]["usable"]) && $config["mumble"]["usable"]) {
+	include("config/mumble.structure.php");
+}
+
+if (isset($config["discord"]["usable"]) && $config["discord"]["usable"]) {
+	include("config/discord.structure.php");
+}
 
 $groupKeyLabels = array();
 
@@ -215,14 +221,16 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="loc_type" name="loc_type">
-					<!--					
+<?php 	if (isset($config["mumble"]["usable"]) && $config["mumble"]["usable"]) { ?>
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
-					-->
+<?php	} ?>
 					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
 					<!--
 					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
 					-->
+<?php 	if (isset($config["discord"]["usable"]) && $config["discord"]["usable"]) { ?>
 					<option value="discord"><?php echo lang("loc_type_discord"); ?></option>
+<?php	} ?>
 					<!--
 					<option value="irc">IRC</option>
 					 -->

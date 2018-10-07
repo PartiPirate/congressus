@@ -69,21 +69,16 @@ class GaletteAllMembersGroupSource {
 
         $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
-		$groups = $galetteBo->getGroups(array("id_group" => $notice["not_target_id"]));
+//		$members = $galetteBo->getMembers(array("adh_only" => true));
+		$members = $galetteBo->getMembers(array());
 
-		$group = array("group_name" => "");
-		if (count($groups)) {
-			$group = $groups[0];
-		}
-		$members = $galetteBo->getMembers(array("adh_group_ids" => array($notice["not_target_id"]), "adh_only" => true));
-
-		$notice["not_label"] = htmlspecialchars(utf8_encode($group["group_name"]), ENT_SUBSTITUTE);
+		$notice["not_label"] = lang("notice_groupAllGalette");
 		$notice["not_people"] = array();
 
 		foreach($members as $member) {
 			$people = array("mem_id" => $member["id_adh"]);
 			$people["mem_nickname"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
-			$people["mem_power"] = 2;
+			$people["mem_power"] = 1;
 			$people["mem_noticed"] = 1;
 			$people["mem_voting"] = $notice["not_voting"];
 			$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;

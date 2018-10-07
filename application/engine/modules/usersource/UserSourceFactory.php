@@ -1,7 +1,5 @@
-<?php
-
-/*
- Copyright 2015-2017 Cédric Levieux, Parti Pirate
+<?php /*
+Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 This file is part of Congressus.
 
@@ -23,6 +21,7 @@ class UserSourceFactory {
     
     static function getInstance($source) {
         if (strtolower($source) == "galette") return new GaletteUserSource();
+        if (strtolower($source) == "internal") return new InternalUserSource(); // use galette minimal structure
         if (strtolower($source) == "custom") return new CustomUserSource();
         
         return null;

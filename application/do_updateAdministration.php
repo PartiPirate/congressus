@@ -30,6 +30,26 @@ if (!$_SESSION["administrator"]) {
 
 $data["ok"] = "ok";
 
+function computeSalt() {
+	$chars = array();
+	for($index = 0; $index < 26; $index++) {
+		if ($index < 10) {
+			$chars[] = $index;
+		}
+		$chars[] = chr(65 + $index);
+		$chars[] = chr(97 + $index);
+	}
+
+	$nbChars = count($chars);
+
+	$salt = "";
+	for($index = 0; $index < 32; $index++) {
+		$salt .= $chars[rand(0, $nbChars - 1)];
+	}
+
+	return $salt;	
+}
+
 // config.php
 
 $ballot_majorities = explode(",", @$_REQUEST["congressus_ballot_majorities_input"]);
@@ -47,6 +67,8 @@ if(!isset(\$config)) {
 \$config[\"administrator\"] = array();
 \$config[\"administrator\"][\"login\"] = \"" . @$_REQUEST["administrator_login_input"] . "\";
 \$config[\"administrator\"][\"password\"] = \"" . @$_REQUEST["administrator_password_input"] . "\";
+
+\$config[\"salt\"] = \"" . (@$_REQUEST["salt_input"] ? $_REQUEST["salt_input"] : computeSalt()) . "\";
 
 \$config[\"database\"] = array();
 \$config[\"database\"][\"dialect\"] = \"mysql\";
@@ -158,6 +180,7 @@ if(!isset(\$config)) {
 
 \$config[\"modules\"] = array();
 \$config[\"modules\"][\"authenticator\"] = \"" . @$_REQUEST["modules_authenticator_input"] . "\";
+\$config[\"modules\"][\"usersource\"] = \"" . @$_REQUEST["modules_authenticator_input"] . "\";
 \$config[\"modules\"][\"groupsources\"] = array(";
 $separator = "";
 

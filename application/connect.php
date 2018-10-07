@@ -56,6 +56,7 @@ require_once("engine/utils/SessionUtils.php");
 if (isset($_GET["error"])) {
 ?><div class="text-danger text-center"><?php
 	echo lang($_GET["error"]);
+	if (isset($config["modules"]["authenticator"]) && $config["modules"]["authenticator"] == "Internal" && $_GET["error"] == "error_login_bad") echo " " . lang("error_login_bad_internal");
 ?></div><?php
 }
 ?>

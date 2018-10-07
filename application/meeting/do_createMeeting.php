@@ -56,6 +56,8 @@ $meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
 
 $meetingBo->save($meeting);
 
+print_r($meeting);
+
 if (isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"] && isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) {
     $noticeBo = NoticeBo::newInstance($connection, $config);
 

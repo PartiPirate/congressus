@@ -414,6 +414,7 @@ Please change it as soon as you are connected.
 The @Congressus Team";
 
 $lang["error_cant_change_password"] = "The password change failed";
+$lang["error_cant_find_user"] = "Your user can't be found";
 $lang["ok_operation_success"] = "Succeeded operation";
 $lang["error_passwords_not_equal"] = "Your password and its confirmation are different";
 $lang["error_cant_send_mail"] = "Congressus can not send mail to your mail address";
@@ -422,9 +423,6 @@ $lang["error_cant_delete_files"] = "Congressus can not delete delete installatio
 $lang["error_cant_connect"] = "Impossible to connect to the database";
 $lang["error_database_already_exists"] = "The database already exists";
 $lang["error_database_dont_exist"] = "The database does not exist";
-$lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
-$lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
-
 
 $lang["install_guide"] = "Welcome on the installation page of Congressus.";
 $lang["install_tabs_database"] = "Database";

@@ -53,8 +53,10 @@ $authenticator = AuthenticatorFactory::getInstance($connection, $config, $config
 $sessionUserId = SessionUtils::getUserId($_SESSION);
 $user = $userBo->getById($sessionUserId);
 
+$data["userId"] = $sessionUserId;
+
 if (!$user) {
-	echo json_encode(array("ko" => "ko", "message" => "error_cant_change_password"));
+	echo json_encode(array("ko" => "ko", "message" => "error_cant_find_user", "userId" => $sessionUserId));
 	exit();
 }
 

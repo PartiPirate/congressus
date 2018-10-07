@@ -69,6 +69,8 @@ $previousPings = $pingBo->getByFilters($ping);
 
 //error_log("Number of pings : " . count($previousPings));
 
+print_r($previousPings);
+
 if (count($previousPings)) {
 	$previousPing = $previousPings[0];
 	$ping[$pingBo->ID_FIELD] = $previousPing[$pingBo->ID_FIELD];

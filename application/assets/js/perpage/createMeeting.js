@@ -130,7 +130,7 @@ $(function() {
 		}
 	})
 
-	mumbleLink($("#loc_channel").val());
+//	mumbleLink($("#loc_channel").val());
 	$("#loc_extra_group").hide();
 	$("#loc_discord_form").hide();
 
@@ -162,4 +162,6 @@ $(function() {
 	$(document).on('change', '#loc_channel', function() {
 		mumbleLink($("#loc_channel").val());
 	});
+	
+	$("#loc_type").change();
 });

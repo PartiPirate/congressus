@@ -377,7 +377,7 @@ function setAdvice() {
 	var advice = button.data("advice");
 
 	$.post("meeting_api.php?method=do_setAdvice", {meetingId : meetingId, agendaId: agendaId, chatId: chatId, advice: advice}, function(data) {
-		if (data.ok) {
+		if (data.ok && data.gamifiedUser) {
 			testBadges(data.gamifiedUser.data);
 		}
 	}, "json");
@@ -393,7 +393,8 @@ function addOwnChat() {
 	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
 		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
-		testBadges(data.gamifiedUser.data);
+		
+		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
 	}, "json");
 }
@@ -430,7 +431,7 @@ function addMotion(event) {
 	var startingText = $("#starting-text").val();
 
 	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId, startingText: startingText}, function(data) {
-		testBadges(data.gamifiedUser.data);
+		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
@@ -925,7 +926,7 @@ function vote(event) {
                 										"power": power}, function(data) {
                 			if (data.ok) {
                 				addVotes([data.vote], proposition, motion);
-								testBadges(data.gamifiedUser.data);
+								if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 								computeMotion(motion);
                 			}
                 		}, "json");
@@ -991,7 +992,7 @@ function vote(event) {
 	                		$.post("meeting_api.php?method=do_vote", form, function(data) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
-									testBadges(data.gamifiedUser.data);
+									if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 									computeMotion(motion);
 	                			}
 	                		}, "json");
@@ -1066,7 +1067,7 @@ function vote(event) {
 	                										"power": power}, function(data) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
-									testBadges(data.gamifiedUser.data);
+									if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 									computeMotion(motion);
 	                			}
 	                		}, "json");

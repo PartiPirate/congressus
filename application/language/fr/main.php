@@ -435,14 +435,13 @@ Veuillez le changer aussitôt que vous serez connecté.
 L'équipe @Congressus";
 
 $lang["error_cant_change_password"] = "Le changement de mot de passe a échoué";
+$lang["error_cant_find_user"] = "Votre utilisateur n'a pu être trouvé";
 $lang["ok_operation_success"] = "Opération réussie";
 $lang["error_passwords_not_equal"] = "Votre mot de passe et sa confirmation sont différents";
 $lang["error_cant_delete_files"] = "Congressus n'arrive pas à supprimer les fichiers d'installation";
 $lang["error_cant_connect"] = "Impossible de se connecter à la base de données";
 $lang["error_database_already_exists"] = "La base de données existe déjà";
 $lang["error_database_dont_exist"] = "La base de données n'existe pas";
-$lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
-$lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
 
 $lang["install_guide"] = "Bienvenue sur la page d'installation de Congressus.";
 $lang["install_tabs_database"] = "Base de données";

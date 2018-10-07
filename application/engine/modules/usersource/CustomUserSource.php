@@ -65,6 +65,10 @@ class CustomUserSource {
         $queryBuilder->where($config["modules"]["custom"]["fields"]["id_adh"] . " = " . $value);
     }
 
+    function whereNotId(&$queryBuilder, $config, $value) {
+        $queryBuilder->where($config["modules"]["custom"]["fields"]["id_adh"] . " != " . $value);
+    }
+
     function whereEmail(&$queryBuilder, $config, $value) {
         $queryBuilder->where($config["modules"]["custom"]["fields"]["email_adh"] . " = " . $value);
     }

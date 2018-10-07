@@ -26,4 +26,8 @@ $lang["connect_form_loginHelp"] = "Votre identifiant Galette ou votre email";
 $lang["connect_form_passwordInput"] = "Mot de passe";
 $lang["connect_form_passwordHelp"] = "Votre mot de passe Galette";
 
+$lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
+$lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
+$lang["error_login_bad_internal"] = "Votre compte peut ne pas être activé.";
+
 ?>

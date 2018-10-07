@@ -83,4 +83,16 @@ $lang["administration_mediawiki_password"]      = "Password";
 $lang["administration_mediawiki_base"]          = "Mediawiki base URL";
 $lang["administration_mediawiki_categories"]    = "Catégories connues";
 
+$lang["administration_modules"] = "User modules";
+$lang["administration_modules_authenticator"] = "Authentication";
+$lang["administration_modules_authenticator_internal"] = "Internal";
+$lang["administration_modules_authenticator_galette"] = "Galette";
+$lang["administration_modules_authenticator_custom"] = "Custom";
+$lang["administration_modules_groups"] = "Groupe sources";
+$lang["administration_modules_groups_personaegroups"] = "Personae Groups";
+$lang["administration_modules_groups_personaethemes"] = "Personae Themes";
+$lang["administration_modules_groups_galettegroups"]  = "Galette Groupes";
+$lang["administration_modules_groups_galetteallmembers"] = "All Galette members";
+$lang["administration_modules_groups_customgroups"] = "Custom Group";
+
 ?>

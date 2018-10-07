@@ -24,6 +24,7 @@
 @include_once("engine/requests/sql/MySQLQuery.php");
 
 @include_once("engine/modules/usersource/UserSourceFactory.php");
+@include_once("engine/modules/usersource/InternalUserSource.php");
 @include_once("engine/modules/usersource/GaletteUserSource.php");
 @include_once("engine/modules/usersource/CustomUserSource.php");
 
@@ -35,6 +36,7 @@
 @include_once("engine/modules/groupsource/CustomGroupSource.php");
 
 @require_once("engine/authenticators/AuthenticatorFactory.php");
+@require_once("engine/authenticators/InternalAuthenticator.php");
 @require_once("engine/authenticators/GaletteAuthenticator.php");
 @require_once("engine/authenticators/CustomAuthenticator.php");
 

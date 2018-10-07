@@ -134,7 +134,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<div class="president" style="height: 21px;">
 						<span class="glyphicon glyphicon-education" style=""></span> <?php echo lang("meeting_president"); ?>
 						<span class="mee_president_member_id read-data" data-id="0" style="display: inline-block; min-width: 1px;"></span>
-						<select class="form-control" data-type="president" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+						<select class="form-control" data-type="president" style="margin-top: -7px; height: 20px; padding: 0px 3px; width: calc(100% - 22px - 162px);">
 							<option value="0"></option>
 							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
 							<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
@@ -149,7 +149,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<div class="secretary" style="height: 21px;">
 						<span class="glyphicon glyphicon-user" style=""></span> <?php echo lang("meeting_secretary"); ?>
 						<span class="mee_secretary_member_id read-data" data-id="0" style="display: inline-block; min-width: 1px;"></span>
-						<select class="form-control" data-type="secretary" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+						<select class="form-control" data-type="secretary" style="margin-top: -7px; height: 20px; padding: 0px 3px; width: calc(100% - 22px - 166px);">
 							<option value="0"></option>
 							<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
 							<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>

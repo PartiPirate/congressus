@@ -1,0 +1,31 @@
+# application/ballots/
+application/ballots/*.pdf
+
+# application/config/
+application/config/config.php
+application/config/discord.structure.php
+application/config/discourse.config.php
+application/config/mail.config.php
+application/config/mediawiki.config.php
+application/config/modules.config.php
+
+
+# application/engine/mediawiki/addwiki/mediawiki-datamodel/
+application/engine/mediawiki/addwiki/mediawiki-datamodel/.idea
+application/engine/mediawiki/addwiki/mediawiki-datamodel/vendor
+application/engine/mediawiki/addwiki/mediawiki-datamodel/composer.lock
+application/engine/mediawiki/addwiki/mediawiki-datamodel/test.php
+application/engine/mediawiki/addwiki/mediawiki-datamodel/docs/_build
+
+
+# application/engine/mediawiki/addwiki/mediawiki-api-base/
+application/engine/mediawiki/addwiki/mediawiki-api-base/.idea
+application/engine/mediawiki/addwiki/mediawiki-api-base/vendor
+application/engine/mediawiki/addwiki/mediawiki-api-base/composer.lock
+application/engine/mediawiki/addwiki/mediawiki-api-base/test.php
+application/engine/mediawiki/addwiki/mediawiki-api-base/docs/_build
+application/engine/mediawiki/addwiki/mediawiki-api-base/phpunit.xml
+
+
+# application/engine/mediawiki/psr/log/
+application/engine/mediawiki/psr/log/vendor

@@ -8,7 +8,7 @@
  
 ## Get the application ##
 
-- Download the source code of the application from https://github.com/PartiPirate/congressus/archive/master.zip and extract the content (outside of the user folder (Ex : */usr/share/nginx/html/congressus/)).
+- Download the source code of the application from https://github.com/PartiPirate/congressus/archive/master.zip and extract the content (outside of the user folder (Ex : */usr/share/nginx/html/congressus/*).
 - Make sure that the web server user have the write permition to the config folder (Ex: *chgrp www-data application/config/ && chmod 775 application/config/* )
 - Point the root folder of your web server to the folder **application** (Ex : */usr/share/nginx/html/congressus/application*).
 - Reload the webserver to take the chnages into account (Ex: *service nginx restart*)

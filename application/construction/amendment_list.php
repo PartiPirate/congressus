@@ -138,7 +138,7 @@
 						data-absolute-against="<?php echo $voteCounters[3]; ?>"
 						data-relative-against="<?php echo $voteCounters[-1] ? $voteCounters[3] / $voteCounters[-1] : 0; ?>"
 					>
-						<div class="pull-left" style="padding: 0px 16px 0px 0; width: 80px; text-align: center;">
+						<div class="pull-left" style="padding: 0px 16px 0px 0; width: 80px; height: 64px; text-align: center;">
 							<img src="getAvatar.php?userId=<?php echo $author["id_adh"]; ?>" class="img-circle" style="max-width: 64px; max-height: 64px;" 
 								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($author); ?>">
 						</div>

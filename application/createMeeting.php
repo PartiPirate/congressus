@@ -18,13 +18,8 @@
 */
 include_once("header.php");
 
-if (isset($config["mumble"]["usable"]) && $config["mumble"]["usable"]) {
-	include("config/mumble.structure.php");
-}
-
-if (isset($config["discord"]["usable"]) && $config["discord"]["usable"]) {
-	include("config/discord.structure.php");
-}
+@include_once("config/mumble.structure.php");
+@include_once("config/discord.structure.php");
 
 $groupKeyLabels = array();
 

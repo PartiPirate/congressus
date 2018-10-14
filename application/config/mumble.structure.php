@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+	Copyright 2017-2018 Nino Treyssat-Vincent, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,6 +16,8 @@
 	You should have received a copy of the GNU General Public License
 	along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$config["mumble"]["usable"] = false;
 
 $mumble_server = "mumble.partipirate.org";
 $mumble_version = "1.2.0";

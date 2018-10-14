@@ -76,7 +76,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
 		<li class="active">
 			<span id="meeting-label" class="read-data"><?php echo $meeting["mee_label"]; ?></span>
-			<input style="display: inline-block; width: calc(100% - 75px); height: 22px; padding: 0 3px; margin-top: -1px;" type="input" class="form-control input-md">
+			<input style="display: inline-block; width: 300px; height: 22px; padding: 0 3px; margin-top: -1px;" type="input" class="form-control input-md">
 			<button style="display: none;" id="update-meeting-label-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 			<button style="display: none;" id="save-meeting-label-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
 			<button style="display: none;" id="cancel-meeting-label-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>

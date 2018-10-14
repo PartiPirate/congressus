@@ -84,8 +84,61 @@ function addAgendaListeners() {
 	$("body").on("click", ".btn-save-agenda", saveAgenda);
 }
 
+function hasWritingRight(userId) {
+	if (userId == $(".meeting").data("secretary-id") || userId == $(".meeting").data("president-id")) return true;
+
+	return false;
+}
+
+function addMeetingLabelHandlers() {
+	$(".breadcrumb .active input").hide();
+
+	$(".breadcrumb .active").hover(function() {
+		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+			$(this).find(".update-btn").show();
+		}
+	}, function() {
+		$(this).find(".update-btn").hide();
+	});
+
+	$(".breadcrumb .active").find(".update-btn").click(function() {
+		var text = $(this).parents(".breadcrumb .active").find(".read-data").text();
+		$(this).parents(".breadcrumb .active").find("input").val(text);
+
+		$(this).parents(".breadcrumb .active").find(".read-data").hide();
+		$(this).parents(".breadcrumb .active").find(".update-btn").hide();
+		$(this).parents(".breadcrumb .active").find("input").show();
+		$(this).parents(".breadcrumb .active").find(".save-btn").show();
+		$(this).parents(".breadcrumb .active").find(".cancel-btn").show();
+	});
+	$(".breadcrumb .active").find(".cancel-btn").click(function() {
+		$(this).parents(".breadcrumb .active").find("input").hide();
+		$(this).parents(".breadcrumb .active").find(".read-data").show();
+		$(this).parents(".breadcrumb .active").find(".save-btn").hide();
+		$(this).parents(".breadcrumb .active").find(".cancel-btn").hide();
+		$(this).parents(".breadcrumb .active").find(".update-btn").show();
+	});
+	$(".breadcrumb .active").find(".save-btn").click(function() {
+		var text = $(this).parents(".breadcrumb .active").find("input").val();
+		$(this).parents(".breadcrumb .active").find(".read-data").text(text);
+
+		$(this).parents(".breadcrumb .active").find("input").hide();
+		$(this).parents(".breadcrumb .active").find(".read-data").show();
+		$(this).parents(".breadcrumb .active").find(".save-btn").hide();
+		$(this).parents(".breadcrumb .active").find(".cancel-btn").hide();
+		$(this).parents(".breadcrumb .active").find(".update-btn").show();
+
+		var meetingId = $(".meeting").data("id");
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_label", text: text},
+				function(data) {}, "json");
+
+	});
+}
+
 $(function() {
 	addAgendaListeners();
+	addMeetingLabelHandlers();
 	
 	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
 		//console.log(event)	

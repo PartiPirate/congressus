@@ -145,7 +145,7 @@ if (isset($_REQUEST["age_lines"])) {
         $agenda["age_expected_duration"] = 0;
         $agenda["age_label"] = $entry["label"];
         $agenda["age_objects"] = "[]";
-        $agenda["age_description"] = "Pas de description";
+        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "Pas de description" : "");
 
         if ($parent) {
         	$agenda["age_parent_id"] = $parent["age_id"];

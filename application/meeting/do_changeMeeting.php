@@ -28,6 +28,7 @@ require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
+$userId = SessionUtils::getUserId($_SESSION);
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
@@ -41,6 +42,11 @@ if (!$meeting) {
 // TODO Compute the key // Verify the key
 
 if (false) {
+	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
+	exit();
+}
+
+if (($userId != $meeting["mee_president_member_id"]) && ($userId != $meeting["mee_secretary_member_id"])) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
 	exit();
 }

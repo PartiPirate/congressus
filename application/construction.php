@@ -149,10 +149,12 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 <div class=" theme-showcase meeting" role="main"
 	style="margin-left: 32px; margin-right: 32px; "
 	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
+	data-president-id="<?php echo @$meeting["mee_president_member_id"]; ?>"
+	data-secretary-id="<?php echo @$meeting["mee_secretary_member_id"]; ?>"
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
 	data-speaking-id="-1"
 	>
-	<ol class="breadcrumb">
+	<ol class="breadcrumb" style="max-height: 38px;">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
 		
 		<?php	if ($oneAgenda) { ?>
@@ -162,7 +164,13 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 			<?php addShareButton("dropdownConstructionAgendaShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."construction.php?id=" . $meeting["mee_id"] . "&agendaId=" .  $agendas[0]["age_id"], $meeting["mee_label"] . ", " . $agendas[0]["age_label"], "congressus"); ?>
 		</li>
 		<?php	} else { ?>
-		<li class="active"><?php echo $meeting["mee_label"]; ?></li>
+		<li class="active">
+			<span id="meeting-label" class="read-data"><?php echo $meeting["mee_label"]; ?></span>
+			<input style="display: inline-block; width: 300px; height: 22px; padding: 0 3px; margin-top: -1px;" type="input" class="form-control input-md">
+			<button style="display: none;" id="update-meeting-label-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+			<button style="display: none;" id="save-meeting-label-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+			<button style="display: none;" id="cancel-meeting-label-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+		</li>
 		<li class="pull-right no-crumb">
 			<?php addShareButton("dropdownConstructionShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."construction.php?id=" . $meeting["mee_id"], $meeting["mee_label"], "congressus"); ?>
 		</li>

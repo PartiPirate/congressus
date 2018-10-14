@@ -81,11 +81,11 @@ if ($config["server"]["timezone"]) {
 				<thead>
 					<tr>
 						<th style="">Nom de la réunion</th>
-						<th style="width: 220px;">Type</th>
-						<th style="width: 220px;">Convocation</th>
-						<th style="width: 170px;">Date</th>
-						<th style="width: 170px;">Fin</th>
-						<th style="width: 170px;">Actions</th>
+						<th style="width: 200px;">Type</th>
+						<th style="width: 200px;">Convocation</th>
+						<th style="width: 155px;">Date</th>
+						<th style="width: 155px;">Fin</th>
+						<th style="width: 240px;">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -156,6 +156,7 @@ if ($config["server"]["timezone"]) {
 <?php				} ?>
 <?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
 						<button class="btn btn-success btn-open-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
+						<button class="btn btn-danger  btn-delete-meeting"  data-status="<?php echo $status; ?>"  data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
 <?php				} ?>
 <?php				if ($status == "open" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
 						<button class="btn btn-danger btn-close-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_close"); ?></button>

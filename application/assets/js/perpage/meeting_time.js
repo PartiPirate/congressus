@@ -36,6 +36,7 @@ function startingMeetingHandler() {
 }
 
 function addTimeHandlers() {
+/*	
 	$(".mee_start .date-control,.mee_start .time-control").hover(function(event) {
 			var meeting = $(".meeting").data("json");
 
@@ -64,6 +65,50 @@ function addTimeHandlers() {
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_datetime", text: mee_datetime},
 				function(data) {}, "json");
 	});
+*/
+	$(".start-date-time, .end-date-time").hover(function() {
+		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+			$(this).find(".update-btn").show();
+		}
+	}, function() {
+		$(this).find(".update-btn").hide();
+	});
+
+	$(".start-date-time, .end-date-time").find(".update-btn").click(function() {
+		$(this).parents(".start-date-time, .end-date-time").find(".read-data").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".update-btn").hide();
+		$(this).parents(".start-date-time, .end-date-time").find("input").show();
+		$(this).parents(".start-date-time, .end-date-time").find(".save-btn").show();
+		$(this).parents(".start-date-time, .end-date-time").find(".cancel-btn").show();
+	});
+	$(".start-date-time, .end-date-time").find(".cancel-btn").click(function() {
+		$(this).parents(".start-date-time, .end-date-time").find("input").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".read-data").show();
+		$(this).parents(".start-date-time, .end-date-time").find(".save-btn").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".cancel-btn").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".update-btn").show();
+	});
+	$(".start-date-time, .end-date-time").find(".save-btn").click(function() {
+		$(this).parents(".start-date-time, .end-date-time").find("input").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".read-data").show();
+		$(this).parents(".start-date-time, .end-date-time").find(".save-btn").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".cancel-btn").hide();
+		$(this).parents(".start-date-time, .end-date-time").find(".update-btn").show();
+
+		var meetingId = $(".meeting").data("id");
+
+		var parent = $(this).parents(".start-date-time, .end-date-time");
+
+		var date = parent.find(".date-control input").val();
+		var time = parent.find(".time-control input").val();
+
+		var mee_datetime = date + " " + time;
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_datetime", text: mee_datetime},
+				function(data) {}, "json");
+
+	});
+
 }
 
 $(function() {

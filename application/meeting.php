@@ -72,10 +72,14 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
 	data-speaking-id="-1"
 	>
-	<ol class="breadcrumb">
+	<ol class="breadcrumb" style="max-height: 38px;">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
 		<li class="active">
-			<?php echo $meeting["mee_label"]; ?>
+			<span id="meeting-label" class="read-data"><?php echo $meeting["mee_label"]; ?></span>
+			<input style="display: inline-block; width: calc(100% - 75px); height: 22px; padding: 0 3px; margin-top: -1px;" type="input" class="form-control input-md">
+			<button style="display: none;" id="update-meeting-label-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+			<button style="display: none;" id="save-meeting-label-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+			<button style="display: none;" id="cancel-meeting-label-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 		</li>
 		<li class="pull-right no-crumb">
 			<?php addShareButton("dropdownMeetingShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."meeting.php?id=" . $meeting["mee_id"], $meeting["mee_label"], "congressus"); ?>
@@ -89,37 +93,43 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body">
 
 					<!-- Start time -->
-					<div>
+					<div class="start-date-time" style="height: 21px;">
 						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
 						<span class="mee_start datetime-control">
 							<?php echo lang("meeting_the"); ?>
 							<span class="date-control">
-								<span class="span-date"><?php echo @$start->format(lang("date_format"))?></span>
-								<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
+								<span class="span-date read-data"><?php echo @$start->format(lang("date_format"))?></span>
+								<input style="display:none; height: 20px; width: 130px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
 							</span>
 							<?php echo lang("meeting_at"); ?>
 							<span class="time-control">
-								<span class="span-time"><?php echo @$start->format(lang("time_format"))?></span>
+								<span class="span-time read-data"><?php echo @$start->format(lang("time_format"))?></span>
 								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
 							</span>
 						</span>
+						<button style="display: none;" id="update-start-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="save-start-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+						<button style="display: none;" id="cancel-start-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 					<!-- End time -->
-					<div>
+					<div class="end-date-time" style="height: 21px;">
 						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
 						<span class="mee_finish datetime-control">
 							<?php echo lang("meeting_the"); ?>
 							<span class="date-control">
-								<span class="span-date"><?php echo @$end->format(lang("date_format"))?></span>
-								<input style="display:none; height: 20px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
+								<span class="span-date read-data"><?php echo @$end->format(lang("date_format"))?></span>
+								<input style="display:none; height: 20px; width: 130px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
 							</span>
 							<?php echo lang("meeting_at"); ?>
 							<span class="time-control">
-								<span class="span-time"><?php echo @$end->format(lang("time_format"))?></span>
+								<span class="span-time read-data"><?php echo @$end->format(lang("time_format"))?></span>
 								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
 							</span>
 						</span>
+						<button style="display: none;" id="update-end-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none;" id="save-end-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+						<button style="display: none;" id="cancel-end-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 				</div>

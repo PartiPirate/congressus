@@ -8,7 +8,12 @@ application/config/discourse.config.php
 application/config/mail.config.php
 application/config/mediawiki.config.php
 application/config/modules.config.php
-
+application/config/config.php~
+application/config/discord.structure.php~
+application/config/discourse.config.php~
+application/config/mail.config.php~
+application/config/mediawiki.config.php~
+application/config/modules.config.php~
 
 # application/engine/mediawiki/addwiki/mediawiki-datamodel/
 application/engine/mediawiki/addwiki/mediawiki-datamodel/.idea

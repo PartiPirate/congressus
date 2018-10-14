@@ -51,8 +51,8 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		</ul>
 
 		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active padding-top-5" id="info">
+<div class="tab-content">
+	<div role="tabpanel" class="tab-pane active padding-top-5" id="info">
 
 		<div class="form-group">
 			<label for="mee_label" class="col-md-4 control-label"><?php echo lang("meeting_name"); ?> :</label>
@@ -104,14 +104,21 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			</div>
 		</div>
 
+		<div class="well well-sm type-meeting type-explanation">
+			<p><?php echo lang("createMeeting_type_meeting_explanation"); ?></p>
+		</div>
+
+		<div class="well well-sm type-construction type-explanation">
+			<p><?php echo lang("createMeeting_type_construction_explanation"); ?></p>
+		</div>
 
 		<div class="row text-center">
 			<button class="btn btn-primary show-notice" type="button" ><?php echo lang("common_next"); ?></button>
 		</div>
 
-			</div>
+	</div>
 <!-- NOTICE -->
-			<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
+	<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
 
 		<div class="form-group">
 			<label for="not_target_type" class="col-md-4 control-label"><?php echo lang("notice_source"); ?></label>
@@ -165,10 +172,10 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			<button class="btn btn-primary show-agenda" type="button" ><?php echo lang("common_next"); ?></button>
 		</div>
 
-			</div>
+	</div>
 <!-- END NOTICE -->
 <!-- AGENDA -->
-			<div role="tabpanel" class="tab-pane padding-top-5" id="agenda">
+	<div role="tabpanel" class="tab-pane padding-top-5" id="agenda">
 
 		<div class="form-group">
 			<label for="age_lines" class="col-md-4 control-label"><?php echo lang("agenda_lines"); ?> <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("agenda_lines_help"); ?>"></span></label>
@@ -177,13 +184,13 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			</div>
 		</div>
 
-			<div class="row text-center">
-				<button class="btn btn-primary show-location" type="button" ><?php echo lang("common_next"); ?></button>
-			</div>
+		<div class="row text-center">
+			<button class="btn btn-primary show-location" type="button" ><?php echo lang("common_next"); ?></button>
+		</div>
 
-			</div>
+	</div>
 <!-- END AGENDA -->
-			<div role="tabpanel" class="tab-pane padding-top-5" id="location">
+	<div role="tabpanel" class="tab-pane padding-top-5" id="location">
 
 
 		<div class="form-group">
@@ -291,11 +298,11 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			<button class="btn btn-success" type="submit"><?php echo lang("common_create"); ?></button>
 		</div>
 
-			</div>
-		</div>
+	</div>
+</div>
 
 
-	</form>
+</form>
 
 
 </div>

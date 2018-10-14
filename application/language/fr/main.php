@@ -287,7 +287,9 @@ $lang["createMeeting_placeAddress"] = "Adresse du lieu :";
 $lang["createMeeting_base_type"] = "Type :";
 $lang["createMeeting_base_type_meeting"] = "Réunion et prises de décision";
 $lang["createMeeting_base_type_construction"] = "Discussion et co-construction";
-					
+$lang["createMeeting_type_meeting_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les réunions et prises de décision fonctionnent essentiellement en mode synchrone pour des réunions courtes mais pas seulement, le but principal étant de prendre des décisions";
+$lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les discussions et co-constructions fonctionnent essentiellement en mode asynchrone permettant de soumettre des textes à l'approbation et à l'amélioration";
+
 $lang["notice_source"] = "Source primaire";
 $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";

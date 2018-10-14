@@ -134,7 +134,7 @@ $(function() {
 	$("#loc_extra_group").hide();
 	$("#loc_discord_form").hide();
 
-	$(document).on('change', '#loc_type', function() {
+	$("body").on('change', '#loc_type', function() {
 		if($("#loc_type").val()=="mumble"){
 			$("#loc_discord_form").hide();
 			$("#loc_channel_form").show();
@@ -158,10 +158,18 @@ $(function() {
 		}
 	
 	});
+	$("#loc_type").change();
 	
-	$(document).on('change', '#loc_channel', function() {
+	$("body").on('change', '#loc_channel', function() {
 		mumbleLink($("#loc_channel").val());
 	});
 	
-	$("#loc_type").change();
+	$("body").on("change", "#mee_type", function() {
+		var type = $("#mee_type").val();
+
+		$(".type-explanation").hide();
+
+		$(".type-" + type).show();
+	});
+	$("#mee_type").change();
 });

@@ -283,6 +283,8 @@ $lang["createMeeting_placeAddress"]                 = "Place address :";
 $lang["createMeeting_base_type"]                    = "Type :";
 $lang["createMeeting_base_type_meeting"]            = "Meeting and decision making";
 $lang["createMeeting_base_type_construction"]       = "Chat and co-building";
+$lang["createMeeting_type_meeting_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Meetings and decision making are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
+$lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Chat and co-building are usually used in asynchronous mode to promote texts through approval and improvments";
 
 $lang["notice_source"]          = "Primary source";
 $lang["notice_group"]           = "Group";

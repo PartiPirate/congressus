@@ -167,7 +167,10 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
                 }
 
                 if ($vote["vot_power"] < 0) $vote["vot_power"] = 0;
-                if ($vote["vot_power"] > $delegations["theme"]["the_voting_power"]) $vote["vot_power"] = $delegations["theme"]["the_voting_power"]; // TODO a better patch
+                
+                if ($motion["mot_win_limit"] >= 0) { // Not in borda
+                    if ($vote["vot_power"] > $delegations["theme"]["the_voting_power"]) $vote["vot_power"] = $delegations["theme"]["the_voting_power"]; // TODO a better patch
+                }
 
                 $propositions[$index]["votes"][$jndex]["vot_real_power"] = $vote["vot_power"] * $delegations["powers"][$vote["vot_member_id"]]["power"] / $delegations["theme"]["the_voting_power"];
 

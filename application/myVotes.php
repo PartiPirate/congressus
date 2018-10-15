@@ -70,7 +70,18 @@ foreach($motions as $motion) {
 ksort($sortedMotions);
 
 function sortPropositions($a, $b) {
-    if ($a["vot_power"] == $b["vot_power"]) return 0;
+    if ($a["vot_power"] == $b["vot_power"]) {
+
+    	if ($a["vot_power"] == 0) {
+    		if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
+    		if (strtolower(($a["mpr_label"])) == "nspp") return 1;
+
+    		if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
+    		if (strtolower(($b["mpr_label"])) == "nspp") return -1;
+    	}
+
+    	return 0;
+    }
 
     return ($a["vot_power"] > $b["vot_power"]) ? -1 : 1;
 }
@@ -125,9 +136,9 @@ function sortPropositions($a, $b) {
 
 	$propositions = $motion["propositions"];
 
-	if ($motion["mot_win_limit"] == -1) {
+//	if ($motion["mot_win_limit"] == -1) {
 		usort($propositions, "sortPropositions");
-	}
+//	}
 
 ?>
 
@@ -154,13 +165,13 @@ function sortPropositions($a, $b) {
 				<div class="btn-group" style="width: 100%; margin: 2px;">
 					<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 							foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
-						<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
+						<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
 					<?php	} ?>
 				</div>
 			</div>
 	<?php 		} 
 				else {?>
-			<div class="btn btn-default proposition" style="width: 100%;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
+			<div class="btn btn-default proposition" style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
 	<?php 		}
 			}
 			?>

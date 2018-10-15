@@ -289,7 +289,7 @@ function setSchulzeOrderStyle(propositionsHolder) {
 	propositions.each(function(index) {
 		$(this).data("power", (propositions.length - index) * maxPower);
 		var hue = 120 - (propositions.length == 1 ? 0 : 120 * index / (propositions.length - 1));
-		$(this).css({"background" : "hsl(" + hue + ", 70%, 70%)"});
+		$(this).css({"background" : "hsl(" + hue + ", 70%, 70%)", "color" : "#111111"});
 	});
 }
 

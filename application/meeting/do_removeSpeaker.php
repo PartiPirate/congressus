@@ -77,9 +77,14 @@ foreach ($pings as $ping) {
     	exit();
     }
 
+	$now = getNow();
+    $startSpeaking = getDateTime($ping["pin_speaking_start"]);
+    $speakingTime = $now->getTimestamp() -  $startSpeaking->getTimestamp();
+
 	$myping = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
-	$myping["pin_speaking_time"] = $ping["pin_speaking_time"] + intval($_REQUEST["speakingTime"]);
+	$myping["pin_speaking_time"] = $ping["pin_speaking_time"] + $speakingTime;
 	$myping["pin_speaking"] = 0;
+	$myping["pin_speaking_start"] = null;
 
 	$pingBo->save($myping);
 }

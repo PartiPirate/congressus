@@ -75,8 +75,8 @@ if (count($previousPings)) {
 	$previousPing = $previousPings[0];
 	$ping[$pingBo->ID_FIELD] = $previousPing[$pingBo->ID_FIELD];
 	
-	$now = new DateTime();
-	$lastPing = new DateTime($previousPing["pin_datetime"]);
+	$now = getNow();
+	$lastPing = getDateTime($previousPing["pin_datetime"]);
 	
 	$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 	

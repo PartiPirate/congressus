@@ -88,6 +88,9 @@ foreach ($pings as $ping) {
 	$myping = array($pingBo->ID_FIELD => $ping[$pingBo->ID_FIELD]);
 	$myping["pin_speaking"] = 1;
 	$myping["pin_speaking_request"] = 0;
+	
+	$now = getNow();
+	$myping["pin_speaking_start"] = $now->format("Y-m-d H:i:s");
 
 	$pingBo->save($myping);
 	

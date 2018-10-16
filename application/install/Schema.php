@@ -159,7 +159,7 @@ $schema["tables"]["motions"]["indexes"]["mot_pinned"] = array("mot_pinned");
 $schema["tables"]["motion_propositions"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["motion_propositions"]["fields"]["mpr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["motion_propositions"]["fields"]["mpr_motion_id"] = array("type" => "bigint", "size" => 20, "null" => false);
-$schema["tables"]["motion_propositions"]["fields"]["mpr_label"] = array("type" => "varchar", "size" => 255, "null" => false);
+$schema["tables"]["motion_propositions"]["fields"]["mpr_label"] = array("type" => "varchar", "size" => 2048, "null" => false);
 $schema["tables"]["motion_propositions"]["fields"]["mpr_winning"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motion_propositions"]["fields"]["mpr_neutral"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motion_propositions"]["fields"]["mpr_explanation"] = array("type" => "text", "null" => false);
@@ -188,6 +188,7 @@ $schema["tables"]["pings"]["fields"]["pin_guest_id"] = array("type" => "bigint",
 $schema["tables"]["pings"]["fields"]["pin_nickname"] = array("type" => "varchar", "size" => 255, "null" => true);
 $schema["tables"]["pings"]["fields"]["pin_speaking"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["pings"]["fields"]["pin_speaking_request"] = array("type" => "int", "size" => 11, "null" => false, "default" => "0");
+$schema["tables"]["pings"]["fields"]["pin_speaking_start"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["pings"]["fields"]["pin_speaking_time"] = array("type" => "bigint", "size" => 20, "null" => false, "default" => "0");
 $schema["tables"]["pings"]["indexes"]["pin_meeting_id"] = array("pin_meeting_id");
 $schema["tables"]["pings"]["indexes"]["pin_member_id"] = array("pin_member_id");

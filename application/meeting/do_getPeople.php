@@ -79,7 +79,16 @@ if (true || !$json) {
 	$numberOfVoters = $meetingBo->getNumberOfVoters($meeting[$meetingBo->ID_FIELD]);
 
 	foreach($pings as $index => $ping) {
-		$lastPing = new DateTime($ping["pin_datetime"]);
+		if ($ping["pin_speaking"] == 1) {
+		    $startSpeaking = getDateTime($ping["pin_speaking_start"]);
+		    $speakingTime = $now->getTimestamp() -  $startSpeaking->getTimestamp();
+			$pings[$index]["pin_current_speaking_time"] = $speakingTime;
+		}
+		else {
+			$pings[$index]["pin_current_speaking_time"] = 0;
+		}
+
+		$lastPing = getDateTime($ping["pin_datetime"]);
 
 		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
@@ -167,7 +176,7 @@ if (true || !$json) {
 			}
 
 			if (!$ping["pin_first_presence_datetime"] || $ping["pin_first_presence_datetime"] == "0000-00-00 00:00:00") {
-				$lastPing = new DateTime($ping["pin_datetime"]);
+				$lastPing = getDateTime($ping["pin_datetime"]);
 
 				$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
@@ -181,7 +190,7 @@ if (true || !$json) {
 
 		foreach($pings as $ping) {
 			if (!$ping["pin_first_presence_datetime"] || $ping["pin_first_presence_datetime"] == "0000-00-00 00:00:00") {
-				$lastPing = new DateTime($ping["pin_datetime"]);
+				$lastPing = getDateTime($ping["pin_datetime"]);
 
 				$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
@@ -202,7 +211,7 @@ if (true || !$json) {
 		$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
 		$people["mem_meeting_secretary"] = ($people["mem_id"] == $meeting["mee_secretary_member_id"]) ? 1 : 0;
 
-		$lastPing = new DateTime($ping["pin_datetime"]);
+		$lastPing = getDateTime($ping["pin_datetime"]);
 
 		$diff = $now->getTimestamp() -  $lastPing->getTimestamp();
 
@@ -215,6 +224,7 @@ if (true || !$json) {
 
 		$people["mem_speaking"] = $ping["pin_speaking"];
 		$people["mem_speaking_time"] = $ping["pin_speaking_time"];
+		$people["mem_current_speaking_time"] = $ping["pin_current_speaking_time"];
 		$people["mem_speaking_request"] = $ping["pin_speaking_request"];
 
 		$data["visitors"][] = $people;

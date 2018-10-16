@@ -1113,7 +1113,7 @@ function addSpeakerHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 
-		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId, speakingTime: speakingTime}, function(data) {
+		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId}, function(data) {
 			$(".speaker").text("");
 			$(".btn-remove-speaker").hide();
 			$(".speaking-time span").hide();

@@ -46,6 +46,7 @@ class GroupSourceFactory {
 		$people["mem_speaking"] = $ping["pin_speaking"];
 		$people["mem_speaking_request"] = $ping["pin_speaking_request"];
 		$people["mem_speaking_time"] = $ping["pin_speaking_time"];
+		$people["mem_current_speaking_time"] = $ping["pin_current_speaking_time"];
     }
 
     static function fixPing(&$pings, &$usedPings, &$people, $member, $now) {

@@ -606,11 +606,16 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="fa fa-comment pull-left"></span>
 			<span class="chat-member"><img src="getAvatar.php?userId=${mem_id}" class="img-circle avatar" style="max-width: 16px; max-height: 16px; position: relative; top: -2px; margin-right: 2px;" 
 							 data-toggle="tooltip" data-placement="top" title="${mem_nickname}"><span class="chat-nickname" style="width: none;"></span><select class="chat-select-member" style="display: none;">
-				<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
-				<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
-				<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
-				<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
-			</select> </span>
+					<optgroup class="voting" label="<?php echo lang("meeting_voters"); ?>"></optgroup>
+					<optgroup class="noticed" label="<?php echo lang("meeting_attended"); ?>"></optgroup>
+					<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
+					<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
+				</select> 
+
+				<button style="display: none;" type="button" class="btn btn-xs btn-default update-chat-member-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+				<button style="display: none;" type="button" class="btn btn-xs btn-danger cancel-chat-member-btn cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+
+			</span>
 			<span> : </span>
 			<span class="chat-text"></span>
 

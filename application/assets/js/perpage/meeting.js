@@ -1313,13 +1313,39 @@ function addChatHandlers() {
 	$("#agenda_point ul.objects").on("mouseenter", "li.chat .chat-member", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
-		$(this).find(".chat-select-member").show();
-		$(this).find(".chat-nickname").hide();
+		if (!$(this).find(".chat-select-member:visible").length) {
+			$(this).find(".update-chat-member-btn").show();
+		}
 	});
 
 	$("#agenda_point ul.objects").on("mouseleave", "li.chat .chat-member", function(event) {
-		$(this).find(".chat-nickname").show();
-		$(this).find(".chat-select-member").hide();
+		$(this).find(".update-chat-member-btn").hide();
+	});
+
+	$("#agenda_point ul.objects").on("click", "li.chat .chat-member .cancel-chat-member-btn", function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+
+		var chatMemberSpan = $(this).parents(".chat-member");
+
+		chatMemberSpan.find(".update-chat-member-btn").show();
+		chatMemberSpan.find(".cancel-chat-member-btn").hide();
+		chatMemberSpan.find(".chat-nickname").show();
+		chatMemberSpan.find(".avatar").show();
+		chatMemberSpan.find(".chat-select-member").hide();
+	});
+
+	$("#agenda_point ul.objects").on("click", "li.chat .chat-member .update-chat-member-btn", function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+
+		var chatMemberSpan = $(this).parents(".chat-member");
+
+		chatMemberSpan.find(".chat-nickname").hide();
+		chatMemberSpan.find(".avatar").hide();
+		chatMemberSpan.find(".chat-select-member").show();
+		chatMemberSpan.find(".update-chat-member-btn").hide();
+		chatMemberSpan.find(".cancel-chat-member-btn").show();
 	});
 
 	$("#agenda_point ul.objects").on("change", "li.chat select.chat-select-member", function(event) {
@@ -1335,6 +1361,14 @@ function addChatHandlers() {
 			form["property"] = "cha_member_id";
 			form["text"] = userId;
 		}
+
+		var chatMemberSpan = $(this).parents(".chat-member");
+
+		chatMemberSpan.find(".update-chat-member-btn").show();
+		chatMemberSpan.find(".cancel-chat-member-btn").hide();
+		chatMemberSpan.find(".chat-nickname").show();
+		chatMemberSpan.find(".avatar").show();
+		chatMemberSpan.find(".chat-select-member").hide();
 
 		$.post("meeting_api.php?method=do_changeChat", form, function(data) {
 		}, "json");

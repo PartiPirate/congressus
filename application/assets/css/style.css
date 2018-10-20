@@ -196,6 +196,7 @@ li.chat span {
 span.chat-member {
     display: inline-block;
 /*    width: 70px;*/
+	height: 21px;
 }
 
 span.chat-nickname {

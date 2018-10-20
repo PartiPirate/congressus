@@ -57,6 +57,8 @@ $votingPower = 0;
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
 
+//print_r($notices);
+
 if ($userId) {
 	foreach($notices as $notice) {
 		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
@@ -134,7 +136,7 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 
 $agendas = $agendaBo->getByFilters($agendaFilters);
 
-// print_r($agendas);
+//print_r($agendas);
 
 ?>
 
@@ -193,11 +195,11 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 		
 		        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-		        	
+
 		//        	$members = $groupSource->getNoticeMembers($notice);
 					$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
 					
-					$groupLabels[] = $groupLabel;
+					$groupLabels[] = $groupLabel ? $groupLabel : $groupKeyLabel["label"];
 				}
 			}
 		

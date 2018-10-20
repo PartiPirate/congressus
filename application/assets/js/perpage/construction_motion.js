@@ -86,6 +86,8 @@ function renewChats(types, successHandler) {
 		var existingMotionEntry = $(".motion-entry");
 		existingMotionEntry.find(".counters").html(motionEntry.find(".counters").html());
 
+		$("textarea[name=startingText]").keyup();
+
 		if (successHandler) successHandler();
 
 	}, "text");
@@ -112,7 +114,7 @@ function addChatAdviceListeners() {
 
 		$.post("meeting_api.php?method=do_setAdvice", form, function(data) {
 
-			if (data.gamifiedUser.data) testBadges(data.gamifiedUser.data);
+			if (data.gamifiedUser && data.gamifiedUser.data) testBadges(data.gamifiedUser.data);
 
 			renewChats(["pro", "against"], function() {});
 
@@ -144,7 +146,7 @@ function addChatListeners() {
 
 		$.post("meeting_api.php?method=do_addChat", formData, function(data) {
 
-			testBadges(data.gamifiedUser.data);
+			if (data.gamifiedUser && data.gamifiedUser.data) testBadges(data.gamifiedUser.data);
 			form.find(".chat-text").val("");
 
 			renewChats([type, "all"], function() {
@@ -154,6 +156,18 @@ function addChatListeners() {
 		}, "json");
 
 	});
+
+	$(".construction-motion").on("keyup", "textarea[name=startingText]", function(event) {
+		var text = $(this).val();
+		if (text) {
+			$(this).parents("form").find(".btn-chat-send").removeAttr("disabled");
+		}
+		else {
+			$(this).parents("form").find(".btn-chat-send").attr("disabled", "disabled");
+		}
+	});
+	
+	$("textarea[name=startingText]").keyup();
 }
 
 function setVotes() {

@@ -148,21 +148,24 @@ $schema["tables"]["motions"]["fields"]["mot_pinned"] = array("type" => "tinyint"
 $schema["tables"]["motions"]["fields"]["mot_anonymous"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motions"]["fields"]["mot_type"] = array("type" => "enum", "size" => "'yes_no','a_b_c'", "null" => false, "default" => "yes_no");
 $schema["tables"]["motions"]["fields"]["mot_win_limit"] = array("type" => "int", "size" => 11, "null" => false, "default" => "50", "comment" => "The percent needed by a proposition to win");
-$schema["tables"]["motions"]["fields"]["mot_title"] = array("type" => "varchar", "size" => 255, "null" => false);
-$schema["tables"]["motions"]["fields"]["mot_description"] = array("type" => "text", "null" => false);
-$schema["tables"]["motions"]["fields"]["mot_explanation"] = array("type" => "text", "null" => false);
+$schema["tables"]["motions"]["fields"]["mot_title"] = array("type" => "varchar", "size" => 255, "null" => true);
+$schema["tables"]["motions"]["fields"]["mot_description"] = array("type" => "text", "null" => true);
+$schema["tables"]["motions"]["fields"]["mot_explanation"] = array("type" => "text", "null" => true);
+$schema["tables"]["motions"]["fields"]["mot_trashed"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
+$schema["tables"]["motions"]["fields"]["mot_trash_explanation"] = array("type" => "text", "null" => true);
 $schema["tables"]["motions"]["indexes"]["mot_author_id"] = array("mot_author_id");
 $schema["tables"]["motions"]["indexes"]["mot_deleted"] = array("mot_deleted");
 $schema["tables"]["motions"]["indexes"]["mot_agenda_id"] = array("mot_agenda_id");
 $schema["tables"]["motions"]["indexes"]["mot_pinned"] = array("mot_pinned");
+$schema["tables"]["motions"]["indexes"]["mot_trashed"] = array("mot_trashed");
 
 $schema["tables"]["motion_propositions"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["motion_propositions"]["fields"]["mpr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
-$schema["tables"]["motion_propositions"]["fields"]["mpr_motion_id"] = array("type" => "bigint", "size" => 20, "null" => false);
-$schema["tables"]["motion_propositions"]["fields"]["mpr_label"] = array("type" => "varchar", "size" => 2048, "null" => false);
+$schema["tables"]["motion_propositions"]["fields"]["mpr_motion_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["motion_propositions"]["fields"]["mpr_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["motion_propositions"]["fields"]["mpr_winning"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motion_propositions"]["fields"]["mpr_neutral"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
-$schema["tables"]["motion_propositions"]["fields"]["mpr_explanation"] = array("type" => "text", "null" => false);
+$schema["tables"]["motion_propositions"]["fields"]["mpr_explanation"] = array("type" => "text", "null" => true);
 $schema["tables"]["motion_propositions"]["indexes"]["mpr_motion_id"] = array("age_meeting_id");
 
 $schema["tables"]["notices"] = array("fields" => array(), "indexes" => array());
@@ -204,7 +207,7 @@ $schema["tables"]["sources"]["fields"]["sou_type"] = array("type" => "enum", "si
 $schema["tables"]["sources"]["fields"]["sou_url"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["sources"]["fields"]["sou_title"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["sources"]["fields"]["sou_articles"] = array("type" => "varchar", "size" => 2048, "null" => false, "default" => "[]");
-$schema["tables"]["sources"]["fields"]["sou_content"] = array("type" => "longtext", "null" => false);
+$schema["tables"]["sources"]["fields"]["sou_content"] = array("type" => "longtext", "null" => true);
 $schema["tables"]["sources"]["indexes"]["sou_deleted"] = array("sou_deleted");
 $schema["tables"]["sources"]["indexes"]["sou_motion_id"] = array("sou_motion_id");
 $schema["tables"]["sources"]["indexes"]["sou_is_default_source"] = array("sou_is_default_source");

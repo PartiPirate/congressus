@@ -1941,11 +1941,29 @@ function addMeetingLabelHandlers() {
 	});
 }
 
+function addStartingTextHandler() {
+	$("#starting-text").keyup(function() {
+		var startingText = $(this).val();
+		
+		if (startingText) {
+			$("#starting-text-buttons button").removeAttr("disabled");
+		}
+		else {
+			$("#starting-text-buttons button").attr("disabled", "disabled");
+		}
+	});
+
+	$("#starting-text").keyup();
+}
+
 $(function() {
 	setFramatalkPosition("left");
 	addEmojiHelper();
 	
 	addMeetingLabelHandlers();
+	
+	addStartingTextHandler();
+
 /*	
 	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);
 	$("body").on("focus", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);

@@ -420,7 +420,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						</div>
 					</div>
 					<div class="clearfix"></div>
-					<div style="margin-top: 5px;">
+					<div style="margin-top: 5px;" id="starting-text-buttons">
 						<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
 						<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
 						<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>

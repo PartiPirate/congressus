@@ -21,6 +21,8 @@
 /* global hasWritingRight */
 /* global hasRight */
 /* global speakingStats */
+/* global clearKeyup */
+/* gloabl keyupTimeoutId */
 
 var peoples = {};
 var numberOfConnected = 0;
@@ -1125,16 +1127,6 @@ function computeTimeString(time) {
 	return minutes + ":" + seconds;
 }
 
-/*
-function updateTime() {
-	if ($(".speaker").text()) {
-		speakingTime++;
-	}
-
-	$(".speaking-time span").text(computeTimeString(speakingTime));
-}
-*/
-
 function addSpeakerHandlers() {
 	$("body").on("click", ".btn-remove-speaker", function(event) {
 		$(this).attr("disabled", "disabled");
@@ -1145,12 +1137,6 @@ function addSpeakerHandlers() {
 		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId, speakerId : speakerId}, function(data) {
 		}, "json");
 	});
-
-/*
-	var timeTimer = $.timer(updateTime);
-	timeTimer.set({ time : 1000, autostart : true });
-*/
-
 }
 
 $(function() {

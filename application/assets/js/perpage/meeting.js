@@ -384,6 +384,21 @@ function setAdvice() {
 
 }
 
+function addSpeakerChat() {
+	var userId = $(".btn-add-speaker-chat").data("speaker-id");
+	var agendaId = $("#agenda_point").data("id");
+	var meetingId = $(".meeting").data("id");
+	var startingText = $("#starting-text").val();
+
+	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
+		setAgendaChat(data.chat.cha_id, [data.chat]);
+		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
+		
+		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+		$("#starting-text").val("");
+	}, "json");
+}
+
 function addOwnChat() {
 	var userId = $(".meeting").data("user-id");
 	var agendaId = $("#agenda_point").data("id");
@@ -1737,6 +1752,7 @@ $(function() {
 //	getAgendaPointTimer.set({ time : 1500, autostart : true });
 
 	$("#agenda_point").on("click", ".motion button.btn-vote", vote);
+	$("#agenda_point").on("click", "button.btn-add-speaker-chat", addSpeakerChat);
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);
 	$("#agenda_point").on("click", "button.btn-add-task", addOwnTask);
 	$("#agenda_point").on("click", "button.btn-add-conclusion", addConclusion);

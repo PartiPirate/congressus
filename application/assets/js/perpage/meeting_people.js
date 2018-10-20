@@ -603,6 +603,17 @@ function updatePeople() {
 
 		$("#speaking-panel .speaker-container.to-deleted").remove();
 
+		var speakers = $("#speaking-panel .speaker-container");
+
+		if (speakers.length && hasWritingRight(getUserId())) {
+			$(".btn-add-speaker-chat").show();
+			$(".btn-add-speaker-chat").data("speaker-id", speakers.eq(0).data("id"));
+			$(".btn-add-speaker-chat .speaker").text(speakers.eq(0).find(".speaker").text());
+		}
+		else {
+			$(".btn-add-speaker-chat").hide();
+		}
+
 		var speakingRequestersContainer = $(".speaking-requesters");
 		var speakingRequesters = speakingRequestersContainer.find("button");
 

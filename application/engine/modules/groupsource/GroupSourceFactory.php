@@ -49,6 +49,7 @@ class GroupSourceFactory {
 		
 		if (isset($ping["pin_current_speaking_time"])) {
 			$people["mem_current_speaking_time"] = $ping["pin_current_speaking_time"];
+			$people["mem_current_speaking_time_string"] = getDurationString($ping["pin_current_speaking_time"]);
 		}
     }
 

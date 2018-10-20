@@ -284,15 +284,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</div>
 				<div class="panel-body">
 					<div class="row form-horizontal">
-						<label class="control-label col-md-3"><?php echo lang("meeting_speaking"); ?> : </label>
-						<label class="control-label col-md-2 speaker" style="text-align: left;"></label>
-						<label class="control-label col-md-2 speaking-time"><span></span></label>
-						<label class="control-label col-md-4">
-							<button class="btn btn-danger btn-xs btn-remove-speaker pull-left"
-								title="<?php echo lang("meeting_removeSpeaking"); ?>"
-								style="display: none;"><?php echo lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
-							</button>
-						</label>
+						<label id="speaker-label" class="control-label col-md-3"><?php echo lang("meeting_speaking"); ?> : </label>
 						<label class="control-label col-md-1">
 							<button class="btn btn-info btn-xs btn-see-speaking-stats pull-left"
 								title="<?php echo lang("meeting_speakingStats"); ?>"
@@ -846,8 +838,16 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</span>
 			</span>
 		</li>
-
 	</ul>
+
+	<div data-template-id="speaker" class="col-md-8 speaker-container control-label text-left" style="text-align: left;" data-id="${mem_id}">
+		<span class="speaker" style="text-align: left;">${mem_nickname}</span>
+		<span class="speaking-time badge">${mem_current_speaking_time_string}</span>
+		<button class="btn btn-danger btn-xs btn-remove-speaker"
+			title="<?php echo lang("meeting_removeSpeaking"); ?>"
+			style="display: none;"><?php echo lang("meeting_speakingEnd"); ?> <span class="glyphicon glyphicon-remove"></span>
+		</button>
+	</div>
 
 	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
 		${mpr_label}

@@ -17,4 +17,11 @@ function getDateTime($sqlFormat = null) {
 	return $now;
 }
 
+function getDurationString($seconds) {
+	$minutes = ($seconds - $seconds % 60) / 60;
+	$seconds = $seconds % 60;
+	
+	return (($minutes < 10) ? "0" : "") . $minutes . ":" . (($seconds < 10) ? "0" : "") . $seconds;
+}
+
 ?>

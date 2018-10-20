@@ -60,10 +60,6 @@ function notSoDifferent(people, previousPeople) {
 function updateMemberLi(member, people) {
 	var userId = getUserId();
 
-	if (people.mem_speaking_time) {
-		speakingStats.speakingTimePerPerson[people.mem_nickname] = people.mem_speaking_time;
-	}
-
 	// The member is updated, do not delete it
 	member.removeClass("to-deleted");
 	var previousPeople = member.data("people");
@@ -475,6 +471,8 @@ function addNotice(notice, parent) {
 			}
 		}
 
+		updateSpeaking(people);
+
 		if (notSoDifferent(people, previousPeople) && member.length) {
 			member.removeClass("to-deleted");
 			continue;
@@ -503,6 +501,26 @@ function addNotice(notice, parent) {
 
 	noticeHtml.data("noticed", notice.not_noticed == 1);
 	noticeHtml.removeClass("to-deleted");
+}
+
+function updateSpeaking(people) {
+	if (people.mem_speaking_time || people.mem_current_speaking_time) {
+		speakingStats.speakingTimePerPerson[people.mem_nickname] = people.mem_speaking_time + people.mem_current_speaking_time;
+	}
+
+	if (people.mem_speaking) {
+		var speakerLabel = $(".speaker-container[data-id=" + people.mem_id + "]");
+		
+		if (speakerLabel.length) {
+			speakerLabel.find(".speaking-time").text(people.mem_current_speaking_time_string);
+		}
+		else {
+			speakerLabel = $("div[data-template-id=speaker]").template("use", {data: people});
+			$("#speaker-label").after(speakerLabel);
+		}
+
+		speakerLabel.removeClass("to-deleted");
+	}	
 }
 
 function getSpeakingUserId() {
@@ -545,6 +563,8 @@ function updatePeople() {
 			}
 		}
 
+		$("#speaking-panel .speaker-container").addClass("to-deleted");
+		
 		var parent = $("#noticed-people > ul");
 //		parent.children().remove();
 		parent.find("li").addClass("to-deleted");
@@ -567,6 +587,8 @@ function updatePeople() {
 
 			var member = parent.children("li#member-" + people.mem_id);
 
+			updateSpeaking(people);
+
 			if (!member.length) {
 				member = getMemberLi(people);
 				parent.append(member);
@@ -576,6 +598,8 @@ function updatePeople() {
 			member.find(".voting").hide();
 		}
 		parent.children(".to-deleted").remove();
+
+		$("#speaking-panel .speaker-container.to-deleted").remove();
 
 		var speakingRequestersContainer = $(".speaking-requesters");
 		var speakingRequesters = speakingRequestersContainer.find("button");
@@ -601,20 +625,21 @@ function updatePeople() {
 			$(".btn-add-motion, .btn-add-task").hide();
 		}
 
-		if ($(".speaker").text() && (hasWritingRight(userId) || userId == getSpeakingUserId())) {
+		if (hasWritingRight(userId) || userId == getSpeakingUserId()) {
 			$(".btn-remove-speaker").show().removeAttr("disabled");
 		}
 		else {
 			$(".btn-remove-speaker").hide().attr("disabled", "disabled");
 		}
 
-
+/*
 		if ($(".speaker").text()) {
 			$(".speaking-time span").show();
 		}
 		else {
 			$(".speaking-time span").hide();
 		}
+*/
 
 		var isPeopleNoticed = true;
 		$("#noticed-people > ul > li").each(function() {
@@ -1089,6 +1114,7 @@ function addNoticeHandlers() {
 
 var speakingTime = 0;
 
+
 function computeTimeString(time) {
 	var seconds = time % 60;
 	var minutes = (time - seconds) / 60
@@ -1099,6 +1125,7 @@ function computeTimeString(time) {
 	return minutes + ":" + seconds;
 }
 
+/*
 function updateTime() {
 	if ($(".speaker").text()) {
 		speakingTime++;
@@ -1106,24 +1133,23 @@ function updateTime() {
 
 	$(".speaking-time span").text(computeTimeString(speakingTime));
 }
+*/
 
 function addSpeakerHandlers() {
-	$(".btn-remove-speaker").click(function(event) {
-		$(".btn-remove-speaker").attr("disabled", "disabled");
+	$("body").on("click", ".btn-remove-speaker", function(event) {
+		$(this).attr("disabled", "disabled");
 
 		var meetingId = $(".meeting").data("id");
+		var speakerId = $(this).parents(".speaker-container").data("id");
 
-		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId}, function(data) {
-			$(".speaker").text("");
-			$(".btn-remove-speaker").hide();
-			$(".speaking-time span").hide();
-
-			speakingTime = 0;
+		$.post("meeting_api.php?method=do_removeSpeaker", {meetingId: meetingId, speakerId : speakerId}, function(data) {
 		}, "json");
 	});
 
+/*
 	var timeTimer = $.timer(updateTime);
 	timeTimer.set({ time : 1000, autostart : true });
+*/
 
 }
 

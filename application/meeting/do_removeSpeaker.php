@@ -77,6 +77,8 @@ foreach ($pings as $ping) {
     	exit();
     }
 
+    if (isset($_REQUEST["speakerId"]) && $ping["pin_member_id"] != $_REQUEST["speakerId"]) continue;
+
 	$now = getNow();
     $startSpeaking = getDateTime($ping["pin_speaking_start"]);
     $speakingTime = $now->getTimestamp() -  $startSpeaking->getTimestamp();

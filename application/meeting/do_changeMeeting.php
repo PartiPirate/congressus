@@ -51,7 +51,16 @@ if (($userId != $meeting["mee_president_member_id"]) && ($userId != $meeting["me
 	exit();
 }
 
-$meeting[$_REQUEST["property"]] = $_REQUEST["text"];
+if ($_REQUEST["property"] == "mee_expecting_end_time") {
+    $startTime = getDateTime($meeting["mee_datetime"]);
+    $endTime = getDateTime($_REQUEST["text"]);
+    
+    $expectedDuration = round(($endTime->getTimestamp() -  $startTime->getTimestamp()) / 60);
+    $meeting["mee_expected_duration"] = $expectedDuration;
+}
+else {
+    $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
+}
 
 $date = getNow();
 

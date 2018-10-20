@@ -326,6 +326,7 @@ function updateMeeting(meeting) {
 
 		$(".mee_start .span-date").text(moment(date).format("DD/MM/YYYY"));
 		$(".mee_start .span-time").text(moment(date).format("HH:mm"));
+
 		if (!$(".mee_start .input-date").is(":visible")) {
 			$(".mee_start .input-date").val(moment(date).format("YYYY-MM-DD"));
 		}
@@ -339,6 +340,13 @@ function updateMeeting(meeting) {
 
 		$(".mee_finish .span-date").text(moment(date).format("DD/MM/YYYY"));
 		$(".mee_finish .span-time").text(moment(date).format("HH:mm"));
+
+		if (!$(".mee_finish .input-date").is(":visible")) {
+			$(".mee_finish .input-date").val(moment(date).format("YYYY-MM-DD"));
+		}
+		if (!$(".mee_finish .input-time").is(":visible")) {
+			$(".mee_finish .input-time").val(moment(date).format("HH:mm"));
+		}
 	}
 
 	if (meeting.mee_start_time) {

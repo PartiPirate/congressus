@@ -25,6 +25,7 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MeetingRightBo.php");
 require_once("engine/bo/AgendaBo.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 $meetingId = intval($_REQUEST["id"]);
 $memcacheKey = "do_getAgenda_$meetingId";
@@ -32,7 +33,7 @@ $memcacheKey = "do_getAgenda_$meetingId";
 $memcache = openMemcacheConnection();
 $json = $memcache->get($memcacheKey);
 
-if (!$json) {
+if (!$json || true) {
 	$connection = openConnection();
 
 	$meetingBo = MeetingBo::newInstance($connection, $config);
@@ -55,7 +56,7 @@ if (!$json) {
 
 	$agendas = $agendaBo->getByFilters(array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD], "with_count_motions" => true));
 
-	$end = new DateTime($meeting["mee_datetime"]);
+	$end = getDateTime($meeting["mee_datetime"]);
 	$duration = new DateInterval("PT" . ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60) . "M");
 	$meeting["mee_end_datetime"] = $end->add($duration);
 	$meeting["mee_end_datetime"] = $meeting["mee_end_datetime"]->format("Y-m-d H:i:s");

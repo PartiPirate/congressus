@@ -104,8 +104,16 @@ function addTimeHandlers() {
 
 		var mee_datetime = date + " " + time;
 
-		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_datetime", text: mee_datetime},
-				function(data) {}, "json");
+		var property = "";
+
+		if ($(this).parents(".start-date-time").length) {
+			property = "mee_datetime";
+		}
+		else {
+			property = "mee_expecting_end_time";
+		}
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: property, text: mee_datetime},	function(data) {}, "json");
 
 	});
 

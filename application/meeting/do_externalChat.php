@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2017 Cédric Levieux, Parti Pirate
+	Copyright 2017-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -58,7 +58,7 @@ else {
 $meetingBo = MeetingBo::newInstance($connection, $config);
 $pingBo = PingBo::newInstance($connection, $config);
 
-$meetings = $meetingBo->getByFilters(array("loc_text_channel" => $channel, "with_status" => array("waiting","open")));
+$meetings = $meetingBo->getByFilters(array("loc_text_channel" => $channel, "with_status" => array("open"))); // Only open meetings
 
 //print_r($meetings);
 

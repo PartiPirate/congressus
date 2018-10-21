@@ -46,12 +46,12 @@ if (false) {
 
 $meeting_date = "inconnu";
 $meeting_time = "inconnu";
-$start = new DateTime($meeting["mee_datetime"]);
+$start = getDateTime($meeting["mee_datetime"]);
 
 $meeting_date = @$start->format(lang("date_format"));
 $meeting_time = @$start->format(lang("time_format"));
 
-$meeting_date = str_replace("{date}", $meeting_date, utf8_decode(lang("datetime_format", false)));
+$meeting_date = str_replace("{date}", $meeting_date, lang("datetime_format", false));
 $meeting_date = str_replace("{time}", $meeting_time, $meeting_date);
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
@@ -86,7 +86,8 @@ if (count($membersToNotice)) {
 		$message->addBCC($member["email_adh"], $member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . " " . $member["prenom_adh"]);
 	}
 
-	$subject = utf8_decode(lang("notice_mail_subject", false));
+//	$subject = utf8_decode(lang("notice_mail_subject", false));
+	$subject = lang("notice_mail_subject", false);
 	$subject = str_replace("{meeting_label}", $meeting["mee_label"], $subject);
 
 	$meetingLink = $config["server"]["base"] . "meeting.php?id=" . $meeting[$meetingBo->ID_FIELD];
@@ -99,7 +100,8 @@ if (count($membersToNotice)) {
 		$location = array("loc_type" => "unknown", "loc_extra" => "");
 	}
 
-	$body = utf8_decode(lang("notice_mail_content", false));
+//	$body = utf8_decode(lang("notice_mail_content", false));
+	$body = lang("notice_mail_content", false);
 	$body = str_replace("{meeting_label}", $meeting["mee_label"], $body);
 	$body = str_replace("{meeting_date}", $meeting_date, $body);
 	$body = str_replace("{location_type}", strtolower(lang("loc_type_" . $location["loc_type"])), $body);
@@ -128,12 +130,12 @@ if (count($membersToNotice)) {
 	$body = str_replace("{location_extra}", $location["loc_extra"], $body);
 	$body = str_replace("\n", "<br>\n", $body);
 
-	$message->Subject = $subject;
+	$message->Subject = utf8_decode($subject);
 
 	$message->isHTML(true); 
 
-	$message->Body = $body;
-	$message->AltBody = $altBody;
+	$message->Body = utf8_decode($body);
+	$message->AltBody = utf8_decode($altBody);
 	$message->setFrom($config["smtp"]["from.address"], $config["smtp"]["from.name"]);
 
 	$message->send();

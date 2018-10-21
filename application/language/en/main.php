@@ -186,6 +186,7 @@ $lang["meeting_quorum"]         = "Quorum : ";
 $lang["meeting_number_of_presents"] = "Number of presents : ";
 $lang["meeting_number_of_voters"] = "Voters number : ";
 $lang["meeting_base_type"]      = "Meeting type";
+$lang["meeting_change_location_title"] = "Change the location of the meeting";
 
 $lang["addAgendaFrom_title"]    = "Add a point to the agenda from a source";
 

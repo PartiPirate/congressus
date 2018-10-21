@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -18,9 +18,6 @@
 */
 include_once("header.php");
 
-@include_once("config/mumble.structure.php");
-@include_once("config/discord.structure.php");
-
 $groupKeyLabels = array();
 
 foreach($config["modules"]["groupsources"] as $groupSourceKey) {
@@ -30,7 +27,6 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
 	}
 }
-
 
 ?>
 
@@ -219,80 +215,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
-			<div class="col-md-4">
-				<select class="form-control input-md" id="loc_type" name="loc_type">
-<?php 	if (isset($config["mumble"]["usable"]) && $config["mumble"]["usable"]) { ?>
-					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
-<?php	} ?>
-					<option value="afk"><?php echo lang("loc_type_afk"); ?></option>
-					<!--
-					<option value="framatalk"><?php echo lang("loc_type_framatalk"); ?></option>
-					-->
-<?php 	if (isset($config["discord"]["usable"]) && $config["discord"]["usable"]) { ?>
-					<option value="discord"><?php echo lang("loc_type_discord"); ?></option>
-<?php	} ?>
-					<!--
-					<option value="irc">IRC</option>
-					 -->
-				</select>
-			</div>
-		</div>
-
-		<div class="form-group" id="loc_channel_form">
-			<label for="loc_channel" class="col-md-4 control-label"><?php echo lang("createMeeting_mumblePlace"); ?></label>
-			<div class="col-md-4">
-				<select class="form-control input-md" id="loc_channel" name="loc_channel">
-					<?php
-					foreach ($mumble as $channel => $channelLink) {
-						if (in_array($channel, $mumble_disabled)){
-							$disabled = "disabled";
-						} else {
-							$disabled = "";
-						}
-						echo "<option $disabled value='$channel'>$channel</option>";
-					}
-					?>
-				</select>
-			</div>
-		</div>
-
-		<div class="form-group" id="loc_discord_form">
-			<label for="loc_discord_text_channel" class="col-md-4 control-label"><?php echo lang("createMeeting_discordPlace"); ?></label>
-			<div class="col-md-4">
-				<div class="input-group">
-					<span class="input-group-addon"><i class='fa fa-hashtag' aria-hidden='true'></i></span>
-					<select class="form-control input-md" id="loc_discord_text_channel" name="loc_discord_text_channel">
-						<?php
-						foreach ($discord_text_channels as $channel => $channelLink) {
-							echo "<option value='$channel'>$channel</option>";
-						}
-						?>
-					</select>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="input-group">
-					<span class="input-group-addon"><i class='fa fa-volume-up' aria-hidden='true'></i></span>
-					<select class="form-control input-md" id="loc_discord_vocal_channel" name="loc_discord_vocal_channel">
-						<?php
-						foreach ($discord_vocal_channels as $channel => $channelLink) {
-							echo "<option value='$channel'>$channel</option>";
-						}
-						?>
-					</select>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" id="loc_extra_group">
-			<label class="col-md-4 control-label" for="loc_extra"><?php echo lang("createMeeting_placeAddress"); ?></label>
-			<div class="col-md-4">
-		    	<textarea class="form-control" rows="4"
-		    		id="loc_extra" name="loc_extra"></textarea>
-		  	</div>
-		</div>
+<?php	include("location_form.php"); ?>
 
 		<div class="row text-center">
 			<button class="btn btn-success" type="submit"><?php echo lang("common_create"); ?></button>
@@ -319,5 +242,7 @@ var mumble_title = "<?php echo $mumble_title;?>";
 var mumble_version = "<?php echo $mumble_version;?>";
 </script>
 <?php include("footer.php");?>
+<script src="assets/js/perpage/location_form.js"></script>
+
 </body>
 </html>

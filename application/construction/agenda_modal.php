@@ -1,12 +1,14 @@
 <style>
-@media (min-width: 1024px)
-#save-agenda-modal .modal-dialog {
-    width: 900px;
+@media (min-width: 1024px) {
+  #save-agenda-modal .modal-dialog {
+      width: 900px;
+  }
 }
 
-@media (min-width: 1600px)
-#save-agenda-modal .modal-dialog {
-    width: 1300px;
+@media (min-width: 1600px) {
+  #save-agenda-modal .modal-dialog {
+      width: 1300px;
+  }
 }
 </style>
 

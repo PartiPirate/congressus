@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -31,11 +31,6 @@ function isTimeValid(str) {
 	if(d == null || !d.isValid()) return false;
 
 	return true;
-}
-
-function mumbleLink(loc_channel) {
-	mumble_url ="mumble://" + mumble_server + "/" + loc_channel + "?title=" + mumble_title + "&version=" + mumble_version + " (" + loc_channel + ")";
-	$("#loc_extra").empty().append(mumble_url);
 }
 
 // Notice handling
@@ -130,40 +125,6 @@ $(function() {
 		}
 	})
 
-//	mumbleLink($("#loc_channel").val());
-	$("#loc_extra_group").hide();
-	$("#loc_discord_form").hide();
-
-	$("body").on('change', '#loc_type', function() {
-		if($("#loc_type").val()=="mumble"){
-			$("#loc_discord_form").hide();
-			$("#loc_channel_form").show();
-			$("#loc_channel").val('Accueil Taverne');
-			mumbleLink($("#loc_channel").val());
-			$('#loc_extra_group').hide();
-		}
-		else if($("#loc_type").val()=="discord"){
-			$("#loc_channel_form").hide();
-			$("#loc_discord_form").show();
-			$("#loc_text_channel").val('discussion');
-	//		discordsLink($("#loc_channel").val());
-			$('#loc_extra_group').hide();
-		}
-		else {
-			$("#loc_discord_form").hide();
-			$("#loc_channel_form").hide();
-			$("#loc_channel").val('AFK');
-			$("#loc_extra").empty();
-			$('#loc_extra_group').show();
-		}
-	
-	});
-	$("#loc_type").change();
-	
-	$("body").on('change', '#loc_channel', function() {
-		mumbleLink($("#loc_channel").val());
-	});
-	
 	$("body").on("change", "#mee_type", function() {
 		var type = $("#mee_type").val();
 

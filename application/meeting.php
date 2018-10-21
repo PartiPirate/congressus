@@ -179,9 +179,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body">
 
 					<!-- Location -->
-					<div>
+					<div id="location" style="height: 21px;">
 						<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 						<?php echo $meeting["loc_type"];?>
+						<button style="display: none;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</div>
 
 					<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
@@ -873,25 +874,52 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-<!--
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
- -->
-        <h4 class="modal-title"><?php echo lang("meeting_start"); ?>...</h4>
-      </div>
-      <div class="modal-body">
-        <p><?php echo lang("meeting_preparation"); ?></p>
-      </div>
-      <div class="modal-footer">
-<!--
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
- -->
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang("meeting_start"); ?>...</h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo lang("meeting_preparation"); ?></p>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<style>
+@media (min-width: 1024px) {
+	#change-location-modal .modal-dialog {
+	    width: 900px;
+	}
+}
+
+@media (min-width: 1600px) {
+	#change-location-modal .modal-dialog {
+	    width: 1300px;
+	}
+}
+</style>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="change-location-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="<?php echo lang("common_close"); ?>"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><?php echo lang("meeting_change_location_title"); ?>...</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+<?php	include("location_form.php");	?>					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang("common_close"); ?></button>
+				<button type="button" class="btn btn-primary btn-save-location"><?php echo lang("common_save"); ?></button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <style>
@@ -938,6 +966,14 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 <script src="assets/js/perpage/meeting_timer.js"></script>
 <script src="assets/js/perpage/meeting_export.js"></script>
 <script src="assets/js/perpage/meeting_charts.js"></script>
+<script src="assets/js/perpage/location_form.js"></script>
+
+<script>
+var mumble_count = "<?php echo count($mumble);?>";
+var mumble_server = "<?php echo $mumble_server;?>";
+var mumble_title = "<?php echo $mumble_title;?>";
+var mumble_version = "<?php echo $mumble_version;?>";
+</script>
 
 <script type="text/javascript">
 var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';

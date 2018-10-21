@@ -58,14 +58,14 @@ $meetingBo->save($meeting);
 
 print_r($meeting);
 
-if (isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"] && isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) {
+if (isset($_REQUEST["not_target_type"]) && $_REQUEST["not_target_type"] && ((isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) || $_REQUEST["not_target_type"] == "galette_adherents")) {
     $noticeBo = NoticeBo::newInstance($connection, $config);
 
     $notice = array();
 
     $notice["not_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
 	$notice["not_target_id"] = $_REQUEST["not_target_id"];
-    $notice["not_target_type"] = $_REQUEST["not_target_type"];
+    $notice["not_target_type"] = isset($_REQUEST["not_target_type"]) ? $_REQUEST["not_target_type"] : 0;
 	$notice["not_voting"] = isset($_REQUEST["not_voting"]) ? 1 : 0;
 
     $noticeBo->save($notice);
@@ -152,7 +152,7 @@ if (isset($_REQUEST["age_lines"])) {
         }
 
         $agendaBo->save($agenda);
-        
+
         $entry["age_id"] = $agenda["age_id"];
 
         foreach($entry["children"] as $child) {

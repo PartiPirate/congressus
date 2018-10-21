@@ -683,7 +683,10 @@ function updatePeople() {
 		isPeopleReady = true;
 		testMeetingReady();
 
-		if (!hasWritingRight(userId)) {
+		if (!hasWritingRight(userId)) { // The user has not the right to manage the agenda
+			$("#meeting-agenda ul").sortable("disable");
+		}
+		else if ($(".btn-agenda-mode").hasClass("btn-warning")) { // The manager mode is view only
 			$("#meeting-agenda ul").sortable("disable");
 		}
 		else {

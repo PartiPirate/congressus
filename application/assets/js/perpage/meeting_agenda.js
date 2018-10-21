@@ -88,7 +88,7 @@ function addAgendaHandlers() {
 
 				agendaLi.click();
 
-				testBadges(data.gamifiedUser.data);
+				if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 			}, "json");
 		}
 	});
@@ -101,10 +101,14 @@ function addAgendaHandlers() {
 			if (button.hasClass("btn-success")) {
 				button.removeClass("btn-success").addClass("btn-warning");
 				button.find(".glyphicon").removeClass("glyphicon-pencil").addClass("glyphicon-book");
+
+				$("#meeting-agenda ul").sortable("disable");
 			}
 			else {
 				button.addClass("btn-success").removeClass("btn-warning");
 				button.find(".glyphicon").addClass("glyphicon-pencil").removeClass("glyphicon-book");
+
+				$("#meeting-agenda ul").sortable("enable");
 			}
 		}
 	});
@@ -207,7 +211,7 @@ function getAgendaLi(agenda) {
 	// Just in case
 	title.text(agenda.age_label);
 
-	agendaLi.find("ul").sortable({connectWith: "#meeting-agenda ul", placeholder: "agenda-placeholder", start: function() { preventAgendaHandling = true; }, stop: function() { preventAgendaHandling = false;}, update: changeAgendaOrder });
+	agendaLi.find("ul").sortable(getAgendaPointListSorterOptions());
 
 	return agendaLi;
 }
@@ -832,13 +836,17 @@ function addAgendaFromHandlers() {
 	
 }
 
+function getAgendaPointListSorterOptions() {
+	return {connectWith: "#meeting-agenda ul", placeholder: "agenda-placeholder", start: function() { preventAgendaHandling = true; }, stop: function() { preventAgendaHandling = false;}, update: changeAgendaOrder };
+}
+
 $(function() {
 	$(".meeting .row").on("click", "a.agenda-link", showAgendaPoint);
 	$("body").on("click", ".btn-next-point", showNextPoint);
 	$("body").on("click", ".btn-previous-point", showPreviousPoint);
 	$("body").on("click", ".btn-go-down", goDownPoint);
 
-	$("#agenda-points-list").sortable({connectWith: "#meeting-agenda ul", placeholder: "agenda-placeholder", start: function() { preventAgendaHandling = true; }, stop: function() { preventAgendaHandling = false;}, update: changeAgendaOrder });
+	$("#agenda-points-list").sortable(getAgendaPointListSorterOptions());
 
 	addAgendaFromHandlers()
 	addAgendaHandlers();

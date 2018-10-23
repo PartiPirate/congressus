@@ -253,8 +253,12 @@ $jsonMotion = $motion;
 				<div class="dropdown-menu" style="padding: 5px">
 					<?php	foreach($allAgendas as $agendaIndex => $currentAgenda) {	
 								if ($currentAgenda["age_parent_id"]) continue;
-					?>
-					<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $currentAgenda["age_id"]; ?>" style="white-space: nowrap;"><?php 	echo $currentAgenda["age_label"]; ?></a><br>
+								if ($currentAgenda["age_id"] == $agenda["age_id"]) { ?>
+					<?php echo $currentAgenda["age_label"]; ?>
+					<?php		} else { ?>
+					<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $currentAgenda["age_id"]; ?>" style="white-space: nowrap;"><?php echo $currentAgenda["age_label"]; ?></a>
+					<?php		}	?>
+					<br>
 					<?php	}	?>
 				</div>
 				<?php	}	?>

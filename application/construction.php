@@ -183,8 +183,11 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 				<div class="dropdown-menu" style="padding: 5px">
 					<?php	foreach($allAgendas as $agendaIndex => $agenda) {	
 								if ($agenda["age_parent_id"]) continue;
-					?>
+								if ($agenda["age_id"] == $agendas[0]["age_id"]) { ?>
+					<?php echo $agenda["age_label"]; ?>
+					<?php		} else { ?>
 					<a href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>" style="white-space: nowrap;"><?php 	echo $agenda["age_label"]; ?></a><br>
+					<?php		} ?>
 					<?php	}	?>
 				</div>
 				<?php	}	?>

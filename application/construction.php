@@ -127,14 +127,28 @@ $userBo     = UserBo::newInstance($connection, $config);
 $sourceBo   = SourceBo::newInstance($connection, $config);
 
 $agendaFilters = array("age_meeting_id" => $meeting["mee_id"]);
+$agendas = $agendaBo->getByFilters($agendaFilters);
+
 $oneAgenda = false;
 
 if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
-	$agendaFilters["age_id"] = intval($_REQUEST["agendaId"]);
+
+	$reducedAgendas = array();
+
+	foreach($agendas as $agendaIndex => $agenda) {
+		if ($agenda["age_id"] == intval($_REQUEST["agendaId"])) {
+			$reducedAgendas[] = $agenda;
+			break;
+		}
+	}
+
+	$allAgendas = $agendas;
+	$agendas = $reducedAgendas;
+
 	$oneAgenda = true;
 }
 
-$agendas = $agendaBo->getByFilters($agendaFilters);
+
 
 //print_r($agendas);
 
@@ -161,7 +175,21 @@ $agendas = $agendaBo->getByFilters($agendaFilters);
 		
 		<?php	if ($oneAgenda) { ?>
 		<li><a href="?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
-		<li class="active"><?php echo $agendas[0]["age_label"]; ?></li>
+		<li class="active">
+			<div class="dropdown" style="display: inline-block;">
+				<?php echo $agendas[0]["age_label"]; ?>
+				<?php	if (count($allAgendas) > 1) { ?>
+				<span class="caret dropdown-toggle" data-toggle="dropdown"></span>
+				<div class="dropdown-menu" style="padding: 5px">
+					<?php	foreach($allAgendas as $agendaIndex => $agenda) {	
+								if ($agenda["age_parent_id"]) continue;
+					?>
+					<a href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>" style="white-space: nowrap;"><?php 	echo $agenda["age_label"]; ?></a><br>
+					<?php	}	?>
+				</div>
+				<?php	}	?>
+			</div>
+		</li>
 		<li class="pull-right no-crumb">
 			<?php addShareButton("dropdownConstructionAgendaShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."construction.php?id=" . $meeting["mee_id"] . "&agendaId=" .  $agendas[0]["age_id"], $meeting["mee_label"] . ", " . $agendas[0]["age_label"], "congressus"); ?>
 		</li>

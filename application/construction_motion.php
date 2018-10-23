@@ -114,6 +114,9 @@ else {
 }
 // print_r($agendas);
 
+$agendaFilters = array("age_meeting_id" => $agenda["age_meeting_id"]);
+$allAgendas = $agendaBo->getByFilters($agendaFilters);
+
 $author = null;
 if ($motion["mot_author_id"]) {
 	$author = $userBo->getById($motion["mot_author_id"]);
@@ -213,6 +216,7 @@ $jsonMotion = $motion;
 	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
 	data-speaking-id="-1"
 	>
+
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
 		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
@@ -222,7 +226,28 @@ $jsonMotion = $motion;
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>"><?php echo $parentMotion["mot_title"]; ?></a></li>
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>#amendments">Amendements</a></li>
 <?php	} else { ?>
-		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a></li>
+
+
+
+
+
+
+		<li>
+			<div class="dropdown" style="display: inline-block;">
+				<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+				<?php	if (count($allAgendas) > 1) { ?>
+				<span class="caret dropdown-toggle" data-toggle="dropdown"></span>
+				<div class="dropdown-menu" style="padding: 5px">
+					<?php	foreach($allAgendas as $agendaIndex => $currentAgenda) {	
+								if ($currentAgenda["age_parent_id"]) continue;
+					?>
+					<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $currentAgenda["age_id"]; ?>" style="white-space: nowrap;"><?php 	echo $currentAgenda["age_label"]; ?></a><br>
+					<?php	}	?>
+				</div>
+				<?php	}	?>
+			</div>
+
+		</li>
 <?php	} ?>
 		<li class="active"><?php echo $motion["mot_title"]; ?></li>
 	</ol>

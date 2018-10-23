@@ -114,6 +114,25 @@ else {
 }
 // print_r($agendas);
 
+$agendaObjects = json_decode($agenda["age_objects"], true);
+
+$previousMotion = null;
+$nextMotion = null;
+$foundMotion = false;
+
+foreach($agendaObjects as $agendaObject) {
+	if (isset($agendaObject["motionId"]) && $agendaObject["motionId"] == $motion["mot_id"]) {
+		$foundMotion = true;
+	}
+	else if (!$foundMotion && isset($agendaObject["motionId"])) {
+		$previousMotion = $agendaObject["motionId"];
+	}
+	else if ($foundMotion && isset($agendaObject["motionId"])) {
+		$nextMotion = $agendaObject["motionId"];
+		break;
+	}
+}
+
 $agendaFilters = array("age_meeting_id" => $agenda["age_meeting_id"]);
 $allAgendas = $agendaBo->getByFilters($agendaFilters);
 
@@ -226,12 +245,6 @@ $jsonMotion = $motion;
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>"><?php echo $parentMotion["mot_title"]; ?></a></li>
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>#amendments">Amendements</a></li>
 <?php	} else { ?>
-
-
-
-
-
-
 		<li>
 			<div class="dropdown" style="display: inline-block;">
 				<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
@@ -249,7 +262,17 @@ $jsonMotion = $motion;
 
 		</li>
 <?php	} ?>
-		<li class="active"><?php echo $motion["mot_title"]; ?></li>
+		<li class="active">
+			<?php 	if ($previousMotion) { ?>
+			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?php echo $previousMotion; ?>" role="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+			<?php	} ?>
+			
+			<?php echo $motion["mot_title"]; ?>
+			
+			<?php 	if ($nextMotion) { ?>
+			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?php echo $nextMotion; ?>" role="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+			<?php	} ?>
+		</li>
 	</ol>
 
 	<div class="row">

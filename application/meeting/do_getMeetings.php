@@ -41,8 +41,16 @@ else {
     $filters["with_status"] = array("open", "closed");
 }
 
-$memcacheKey = json_encode(array("with_status" => $filters["with_status"], "from" => (isset($_REQUEST["from"]) ? $_REQUEST["from"] : "0")));
+$memcacheKey = json_encode(array("with_status" => $filters["with_status"], "from" => (isset($_REQUEST["from"]) ? $_REQUEST["from"] : "0"), "to" => (isset($_REQUEST["to"]) ? $_REQUEST["to"] : "0")));
 $json = $memcache->get($memcacheKey);
+
+function sortMeeting($meetingA, $meetingB) {
+//    echo $meetingA["mee_datetime"] . " vs " . $meetingB["mee_datetime"];
+    
+    if ($meetingA["mee_datetime"] == $meetingB["mee_datetime"]) return 0;
+    if ($meetingA["mee_datetime"] > $meetingB["mee_datetime"]) return 1;
+    return -1;
+}
 
 if (!$json) {
     $meetings = $meetingBo->getByFilters($filters);
@@ -57,9 +65,17 @@ if (!$json) {
                 unset($data["meetings"][$index]);
             }
         }
-        
-        sort($data["meetings"]);
     }
+    
+    if (isset($_REQUEST["to"])) {
+        foreach($data["meetings"] as $index => $meeting) {
+            if ($meeting["mee_status"] != "open" && $meeting["mee_datetime"] > $_REQUEST["to"]) {
+                unset($data["meetings"][$index]);
+            }
+        }
+    }
+
+    usort($data["meetings"], "sortMeeting");
 
 	$json = json_encode($data, JSON_NUMERIC_CHECK);
 
@@ -71,7 +87,6 @@ else {
 	$data = json_decode($json, true);
 	$data["cached"] = true;
 }
-
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

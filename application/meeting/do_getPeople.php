@@ -225,6 +225,7 @@ if (true || !$json) {
 		$people["mem_speaking"] = $ping["pin_speaking"];
 		$people["mem_speaking_time"] = $ping["pin_speaking_time"];
 		$people["mem_current_speaking_time"] = $ping["pin_current_speaking_time"];
+		$people["mem_current_speaking_time_string"] = getDurationString($ping["pin_current_speaking_time"]);
 		$people["mem_speaking_request"] = $ping["pin_speaking_request"];
 
 		$data["visitors"][] = $people;

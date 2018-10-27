@@ -1567,7 +1567,7 @@ function addMotionHandlers() {
 			return;
 		}
 
-		var input = $("<input />", {"class": "form-control", "style": "width: 200px; display: inline-block;"});
+		var input = $("<input />", {"class": "form-control", "style": "width: 75%; display: inline-block;"});
 		var propertyText = $(this).find(".motion-title,.proposition-label");
 
 		var motionId = $(this).parents(".motion").data("id");

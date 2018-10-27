@@ -45,7 +45,10 @@ function computeMotion(motion) {
 
 	$.post("meeting/do_computeVote.new.php", {motionId: motionId, save: false}, function(data) {
 		motion.find(".number-of-voters").text(data.motion.mot_number_of_voters);
-		motion.data("delegation-powers", data.delegations.powers);
+		
+		if (data.delegations) {
+			motion.data("delegation-powers", data.delegations.powers);
+		}
 
 		var winLimit = motion.data("win-limit");
 
@@ -82,9 +85,14 @@ function computeMotion(motion) {
 				}
 				else if (winLimit == -2) {
 					var jmWinning = data.propositions[index].jm_median_power;
-					var percent = Math.round(data.propositions[index].jm_sum_proportion_powers[jmWinning] * 10000) / 100.;
-	
-					var jmLabel = majority_judgement_translations[jmWinning - 1];
+					
+					var percent = 0;
+					var jmLabel = majority_judgement_translations[0];
+
+					if (jmWinning) {
+						percent = Math.round(data.propositions[index].jm_sum_proportion_powers[jmWinning] * 10000) / 100.;
+						jmLabel = majority_judgement_translations[jmWinning - 1];
+					}
 	
 					var newHtml = "&nbsp;(" + jmLabel + " / " + percent + "%)";
 				}
@@ -140,6 +148,7 @@ function computeMotion(motion) {
 			for(var index = 0; index < data.propositions.length; ++index) {
 
 				if (data.propositions[index].mpr_neutral) continue;
+				if (!data.propositions[index].mpr_label) continue;
 				
 				var label = data.propositions[index].mpr_label;
 				

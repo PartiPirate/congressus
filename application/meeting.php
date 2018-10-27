@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -87,7 +87,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	</ol>
 
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-6 col-xs-12 col-sm-12 col-lg-3">
 			<div class="panel panel-default">
 				<div class="panel-heading"></div>
 				<div class="panel-body">
@@ -135,7 +135,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-6 col-xs-12 col-sm-12 col-lg-3">
 			<div class="panel panel-default">
 				<div class="panel-heading"></div>
 				<div class="panel-body">
@@ -173,7 +173,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-6 col-xs-12 col-sm-12 col-lg-3">
 			<div class="panel panel-default">
 				<div class="panel-heading"></div>
 				<div class="panel-body">
@@ -219,7 +219,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-6 col-xs-12 col-sm-12 col-lg-3">
 			<?php 
 				$panelClass = "panel-default";
 				switch ($meeting["mee_status"]) {

@@ -273,12 +273,14 @@ $lang["createMeeting_type_aperitif"]                = "Aperitif";
 $lang["createMeeting_type_generalMeeting"]          = "General Meeting";
 $lang["createMeeting_type_extraordinaryGeneralMeeting"] = "Extraordinary General Meeting";
 $lang["createMeeting_visualIndication"]             = "Visual indication :";
-$lang["createMeeting_visualIndication_info"]        = "Info";
-$lang["createMeeting_visualIndication_important"]   = "Important";
-$lang["createMeeting_visualIndication_warning"]     = "Warning";
-$lang["createMeeting_visualIndication_reversed"]    = "Reversed";
-$lang["createMeeting_visualIndication_success"]     = "Success";
-$lang["createMeeting_visualIndication_special"]     = "Special";
+
+$lang["createMeeting_visualIndication_info"]        = "Crew";
+$lang["createMeeting_visualIndication_important"]   = "Team";
+$lang["createMeeting_visualIndication_warning"]     = "Council";
+$lang["createMeeting_visualIndication_reversed"]    = "Secretariat";
+$lang["createMeeting_visualIndication_success"]     = "Permanent Assembly";
+$lang["createMeeting_visualIndication_special"]     = "Statutory Assembly";
+
 $lang["createMeeting_place"]                        = "Place's type :";
 $lang["createMeeting_placeAddress"]                 = "Place address :";
 $lang["createMeeting_base_type"]                    = "Type :";

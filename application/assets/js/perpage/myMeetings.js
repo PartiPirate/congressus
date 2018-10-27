@@ -18,6 +18,10 @@
 */
 /* global $ */
 
+function hasWritingRight(userId) {
+    return false;
+}
+
 function renewMeetings(statuses) {
     $.get(window.location.href, {}, function(htmldata) {
 //		var mainPanel = $(htmldata).find("div.meeting-container");

@@ -277,12 +277,14 @@ $lang["createMeeting_type_aperitif"] = "Apéro";
 $lang["createMeeting_type_generalMeeting"] = "Assemblée Générale Ordinaire";
 $lang["createMeeting_type_extraordinaryGeneralMeeting"] = "Assemblée Générale Extra-ordinaire";
 $lang["createMeeting_visualIndication"] = "Indication visuelle :";
-$lang["createMeeting_visualIndication_info"] = "Info";
-$lang["createMeeting_visualIndication_important"] = "Important";
-$lang["createMeeting_visualIndication_warning"] = "Avertissement";
-$lang["createMeeting_visualIndication_reversed"] = "Inversé";
-$lang["createMeeting_visualIndication_success"] = "Succès";
-$lang["createMeeting_visualIndication_special"] = "Spécial";
+
+$lang["createMeeting_visualIndication_info"] = "Équipage";
+$lang["createMeeting_visualIndication_important"] = "Équipe";
+$lang["createMeeting_visualIndication_warning"] = "Conseil";
+$lang["createMeeting_visualIndication_reversed"] = "Secrétariat";
+$lang["createMeeting_visualIndication_success"] = "Assemblée permanente";
+$lang["createMeeting_visualIndication_special"] = "Assemblée statutaire";
+
 $lang["createMeeting_place"] = "Type de lieu :";
 $lang["createMeeting_placeAddress"] = "Adresse du lieu :";
 $lang["createMeeting_base_type"] = "Type :";

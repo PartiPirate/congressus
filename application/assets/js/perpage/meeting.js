@@ -396,6 +396,7 @@ function addSpeakerChat() {
 		
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
+		$("#starting-text").keyup();
 	}, "json");
 }
 
@@ -411,6 +412,7 @@ function addOwnChat() {
 		
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
+		$("#starting-text").keyup();
 	}, "json");
 }
 
@@ -425,6 +427,7 @@ function addOwnTask() {
 		setAgendaTask(data.task.tas_id, [data.task]);
 		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
 		$("#starting-text").val("");
+		$("#starting-text").keyup();
 	}, "json");
 }
 
@@ -437,6 +440,7 @@ function addConclusion() {
 		setAgendaConclusion(data.conclusion.con_id, [data.conclusion]);
 		$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
 		$("#starting-text").val("");
+		$("#starting-text").keyup();
 	}, "json");
 }
 
@@ -451,6 +455,7 @@ function addMotion(event) {
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
 		$("#starting-text").val("");
+		$("#starting-text").keyup();
 	}, "json");
 }
 

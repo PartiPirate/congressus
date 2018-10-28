@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -26,24 +26,18 @@ groups, wich have eligibles people or electors (or both). The differents
 electors and candidats are allocating theire powers.";
 
 $lang["about_help_us_legend"] = "Help us";
-$lang["about_help_us_content"] = "Congressus is published by the 1901 law association <a href=\"https://www.armagnet.fr/\">ArmagNet</a>. You can help us by donations so that we can:
+$lang["about_help_us_content"] = "Congressus is edited by a political party <a href=\"https://www.partipirate.fr\">Parti Pirate</a>. You can
+help us with donation permitting us to :
 <ul>
-	<li>Buy / Renew a certificate for HTTPS</li>
-	<li>Pay for our domain names</li>
-	<li>Pay for our servers</li>
+	<li>Maintain our infrastructure,</li>
+	<li>Present candidates to elections,</li>
+	<li>Set up citizen projects.</li>
 </ul>
-Ie a budget for 2015 of €450.<br />
-<br />
-For this you can send us money by check to the following address :
+For this you can send us money on the donation platform to the following address&nbsp;:
 <div class=\"well well-sm\">
-	<p>
-	Association ArmagNet<br />
-	259 RD 813<br />
-	82400 Goudourville<br />
-	France
-	</p>
+	<p><a href=\"https://don.partipirate.org/\">I make a donation to the Parti Pirate</a></p>
 </div>
-or <a href=\"#contactus\">contact us</a> to make a transfer.";
+Thanksi.";
 
 $lang["about_need_help_legend"] = "Need help ?";
 $lang["about_need_help_content"] = "You want a clean install of Congressus in your infrastructure ?<br />

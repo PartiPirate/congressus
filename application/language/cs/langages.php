@@ -1,4 +1,4 @@
-/*
+<?php /*
 	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
@@ -16,41 +16,11 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
-@CHARSET "UTF-8";
 
-.flag {
-    display: inline-block;
-	background-image: url("../images/flags.png");
-    width: 16px;
-    height: 11px;
-}
-
-.en {
-    background-position: -284px -173px;
-}
-
-.fr {
-    background-position: -228px -173px;
-}
-
-.de {
-    background-position: -284px -117px;
-}
-
-.cs {
-    background-position: -256px -117px;
-}
-
-.es {
-    background-position: -4px -173px;
-}
-
-.sv {
-    background-position: -32px -481px;
-}
-
-.ca {
-    display: inline-block;
-	background-image: url("../images/catala.png");
-    background-position: 0px 0px;
-}
+$lang["language_fr"] = "Français";  // francouzský
+$lang["language_en"] = "English";   // anglicky
+$lang["language_de"] = "Deutsch";   // Německy
+$lang["language_cs"] = "český";     // český
+$lang["language_sv"] = "Svenska";   // Švédština
+$lang["language_ca"] = "Català";    // Katalánština
+$lang["language_es"] = "Español";   // španělština

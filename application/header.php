@@ -379,6 +379,11 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="do_changeLanguage.php?lang=en"><span class="flag en" title="<?php echo lang("language_en"); ?>"></span> <?php echo lang("language_en"); ?></a></li>
 							<li><a href="do_changeLanguage.php?lang=fr"><span class="flag fr" title="<?php echo lang("language_fr"); ?>"></span> <?php echo lang("language_fr"); ?></a></li>
+							<li><a href="do_changeLanguage.php?lang=de"><span class="flag de" title="<?php echo lang("language_de"); ?>"></span> <?php echo lang("language_de"); ?></a></li>
+							<li><a href="do_changeLanguage.php?lang=ca"><span class="flag ca" title="<?php echo lang("language_ca"); ?>"></span> <?php echo lang("language_ca"); ?></a></li>
+							<li><a href="do_changeLanguage.php?lang=cs"><span class="flag cs" title="<?php echo lang("language_cs"); ?>"></span> <?php echo lang("language_cs"); ?></a></li>
+							<li><a href="do_changeLanguage.php?lang=sv"><span class="flag sv" title="<?php echo lang("language_sv"); ?>"></span> <?php echo lang("language_sv"); ?></a></li>
+							<li><a href="do_changeLanguage.php?lang=es"><span class="flag es" title="<?php echo lang("language_es"); ?>"></span> <?php echo lang("language_es"); ?></a></li>
 						</ul>
 					</li>
 
@@ -408,7 +413,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 				<?php 	} else {?>
 				<form action="search.php" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						<input type="text" class="form-control" name="query" placeholder="Rechercher">
+						<input type="text" class="form-control" name="query" placeholder="<?php echo lang("common_search"); ?>">
 					</div>
 					<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
 				</form>

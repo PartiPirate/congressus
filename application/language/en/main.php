@@ -37,6 +37,7 @@ $lang["common_text"]    = "Text";
 $lang["common_type"]    = "Type";
 $lang["common_validate"] = "Validate";
 $lang["common_share"]   = "Share";
+$lang["common_search"]   = "Search";
 $lang["common_edit"]    = "Edit";
 $lang["common_next"]    = "Next";
 $lang["common_previous"] = "Previous";
@@ -45,10 +46,6 @@ $lang["common_proposition_pro"]     = "Pro";
 $lang["common_proposition_against"] = "Against";
 $lang["common_proposition_yes"]     = "Yes";
 $lang["common_proposition_no"]      = "No";
-
-$lang["language_fr"] = "French";
-$lang["language_en"] = "English";
-$lang["language_de"] = "German";
 
 $lang["congressus_title"] = "Congressus";
 
@@ -101,7 +98,7 @@ $lang["mybadges_guide"] = "The badge you have earn or the ones you can get";
 
 $lang["meeting_action"]         = "Action on the meeting";
 $lang["meeting_agenda_point"]   = "Ongoing topics : ";
-$lang["meeting_agenda"]         = "Ordrer of the day";
+$lang["meeting_agenda"]         = "Agenda";
 $lang["meeting_agenda_mode"]    = "Activate / Deactivate the agenda authoring mode";
 $lang["meeting_arrival"]        = "just came to the meeting";
 $lang["meeting_at"]             = "at";
@@ -395,7 +392,7 @@ $lang["mypreferences_form_notification_none"] = "None";
 $lang["mypreferences_form_notification_simpledm"] = "By simple DM";
 $lang["mypreferences_form_notificationInput"] = "Validation notification";
 $lang["mypreferences_form_oldInput"] = "Your current password";
-$lang["mypreferences_form_oldPlaceholder"] = "Your current connexion’s passwordl";
+$lang["mypreferences_form_oldPlaceholder"] = "Your current connexion’s password";
 $lang["mypreferences_form_passwordInput"] = "Password";
 $lang["mypreferences_form_passwordPlaceholder"] = "the password of your connection";
 $lang["mypreferences_guide"] = "Change my preferences.";
@@ -403,6 +400,15 @@ $lang["mypreferences_save"] = "Save my preferences";
 $lang["mypreferences_validation_mail_already_taken"] = "This mail is already taken";
 $lang["mypreferences_validation_mail_empty"] = "The mail field can't be empty";
 $lang["mypreferences_validation_mail_not_valid"] = "This mail is not a valid mail";
+$lang["mypreferences_style_legend"] = "Interface";
+$lang["mypreferences_style_themeSelect"] = "Theme";
+$lang["mypreferences_style_themeDefault"] = "Default theme";
+$lang["mypreferences_style_themeSlate"] = "Slate";
+
+$lang["myVotes_numberOfMotions"] = "Number of motions : {value}";
+$lang["myVotes_maxPower"] = "Points to distribute : {value}";
+$lang["myVotes_voteMethod"] = "Method : {value}";
+$lang["myVotes_no_motion"] = "There is no motion to vote, either because you do not have the right to vote, or because the meeting are not open.";
 
 $lang["forgotten_guide"] = "You forgot your password, welcome on the page that will let you recover your access";
 $lang["forgotten_form_legend"] = "Access retrieving";
@@ -483,5 +489,5 @@ $lang["install_autodestruct_guide"] = "You have tested everything, everything co
 $lang["install_autodestruct"] = "Autodestruction";
 
 $lang["about_footer"] = "About";
-$lang["congressus_footer"] = "<a href=\"https://www.congressus.net/\" target=\"_blank\">Congressus</a> is an application provided by <a href=\"https://www.partipirate.org\" target=\"_blank\">Parti Pirate</a>";
+$lang["congressus_footer"] = "<a href=\"https://github.com/PartiPirate/congressus\" target=\"_blank\">Congressus</a> is an application provided by <a href=\"https://www.partipirate.org\" target=\"_blank\">Parti Pirate</a>";
 ?>

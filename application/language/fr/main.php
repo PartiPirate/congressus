@@ -37,6 +37,7 @@ $lang["common_text"] = "Texte";
 $lang["common_type"] = "Type";
 $lang["common_validate"] = "Valider";
 $lang["common_share"] = "Partager";
+$lang["common_search"] = "Rechercher";
 $lang["common_edit"] = "Modifier";
 $lang["common_next"] = "Suivant";
 $lang["common_previous"] = "Précédent";
@@ -45,10 +46,6 @@ $lang["common_proposition_pro"] = "Pour";
 $lang["common_proposition_against"] = "Contre";
 $lang["common_proposition_yes"] = "Oui";
 $lang["common_proposition_no"] = "Non";
-
-$lang["language_fr"] = "Français";
-$lang["language_en"] = "Anglais";
-$lang["language_de"] = "Allemand";
 
 $lang["congressus_title"] = "Congressus";
 
@@ -423,7 +420,7 @@ $lang["mypreferences_style_themeSlate"] = "Slate";
 $lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
 $lang["myVotes_maxPower"] = "Points à distribuer : {value}";
 $lang["myVotes_voteMethod"] = "Méthode : {value}";
-$lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce qu'elles ne sont pas ouvertes.";
+$lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce que les réunions ne sont pas ouvertes.";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";
@@ -502,5 +499,5 @@ $lang["install_autodestruct_guide"] = "Vous avez tout testé, tout configuré ? 
 $lang["install_autodestruct"] = "Autodestruction";
 
 $lang["about_footer"] = "À Propos";
-$lang["congressus_footer"] = "<a href=\"https://www.congressus.net/\" target=\"_blank\">Congressus</a> est une application fournie par <a href=\"https://www.partipirate.org\" target=\"_blank\">le Parti Pirate</a>";
+$lang["congressus_footer"] = "<a href=\"https://github.com/PartiPirate/congressus\" target=\"_blank\">Congressus</a> est une application fournie par <a href=\"https://www.partipirate.org\" target=\"_blank\">le Parti Pirate</a>";
 ?>

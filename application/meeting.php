@@ -856,12 +856,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</button>
 	</div>
 
-	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
+	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; color: #111111; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
 		${mpr_label}
-		<div class="btn-group" style="width: 100%; margin: 2px;">
+		<div class="btn-group" style="width: 100%; margin: 2px; ">
 			<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 					foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
-				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>
+				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>
 			<?php	} ?>
 		</div>
 	</div>

@@ -683,6 +683,17 @@ function updatePeople() {
 		isPeopleReady = true;
 		testMeetingReady();
 
+		// Order person boxes
+		$("select .voting, select .unknown, select .noticed, select .connected").each(function() {
+			var optGroup = $(this);
+			
+			var options = optGroup.children();
+			
+			optGroup.html(options.sort(function (a, b) {
+			    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
+			}));
+		});
+
 		if (!hasWritingRight(userId)) { // The user has not the right to manage the agenda
 			$("#meeting-agenda ul").sortable("disable");
 		}

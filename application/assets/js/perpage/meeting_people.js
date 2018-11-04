@@ -690,8 +690,8 @@ function updatePeople() {
 			var options = optGroup.children();
 
 			optGroup.html(options.sort(function (a, b) {
-				var aText = a.text().removeAccent().toLowerCase();
-				var bText = b.text().removeAccent().toLowerCase();
+				var aText = a.text.removeAccent().toLowerCase();
+				var bText = b.text.removeAccent().toLowerCase();
 				
 			    return aText == bText ? 0 : aText < bText ? -1 : 1;
 			}));

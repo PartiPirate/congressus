@@ -236,9 +236,9 @@ $schema["tables"]["user_properties"]["uniques"]["upr_user_id_property_unique"] =
 
 $schema["tables"]["votes"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["votes"]["fields"]["vot_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
-$schema["tables"]["votes"]["fields"]["vot_member_id"] = array("type" => "bigint", "size" => 20, "null" => false);
-$schema["tables"]["votes"]["fields"]["vot_motion_proposition_id"] = array("type" => "bigint", "size" => 20, "null" => false);
-$schema["tables"]["votes"]["fields"]["vot_power"] = array("type" => "int", "size" => 11, "null" => false);
+$schema["tables"]["votes"]["fields"]["vot_member_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["votes"]["fields"]["vot_motion_proposition_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["votes"]["fields"]["vot_power"] = array("type" => "int", "size" => 11, "null" => true);
 $schema["tables"]["votes"]["indexes"]["vot_member_id"] = array("vot_member_id");
 $schema["tables"]["votes"]["indexes"]["vot_motion_proposition_id"] = array("vot_motion_proposition_id");
 

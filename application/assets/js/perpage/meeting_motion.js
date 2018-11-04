@@ -43,7 +43,7 @@ function computeMotion(motion) {
 	var motionId = motion.data("id");
 //	console.log("computeMotion " + motionId);
 
-	$.post("meeting/do_computeVote.new.php", {motionId: motionId, save: false}, function(data) {
+	$.post("meeting/do_computeVote.php", {motionId: motionId, save: false}, function(data) {
 		motion.find(".number-of-voters").text(data.motion.mot_number_of_voters);
 		
 		if (data.delegations) {
@@ -296,7 +296,7 @@ function computeMotion(motion) {
 function dumpMotion(motion) {
 	var motionId = motion.data("id");
 
-	$.post("meeting/do_computeVote.new.php", {motionId: motionId, save: true}, function(data) {
+	$.post("meeting/do_computeVote.php", {motionId: motionId, save: true}, function(data) {
 	}, "json");
 
 }

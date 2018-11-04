@@ -856,8 +856,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</button>
 	</div>
 
-	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; color: #111111; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
-		${mpr_label}
+	<div data-template-id="judgementProposition" class="proposition" style="width: 100%; background-color: #eeeeee; color: #111111; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
+		<span style="padding-left: 5px; ">${mpr_label}</span>
 		<div class="btn-group" style="width: 100%; margin: 2px; ">
 			<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 					foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>

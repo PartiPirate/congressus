@@ -686,11 +686,14 @@ function updatePeople() {
 		// Order person boxes
 		$("select .voting, select .unknown, select .noticed, select .connected").each(function() {
 			var optGroup = $(this);
-			
+
 			var options = optGroup.children();
-			
+
 			optGroup.html(options.sort(function (a, b) {
-			    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
+				var aText = a.text().removeAccent().toLowerCase();
+				var bText = b.text().removeAccent().toLowerCase();
+				
+			    return aText == bText ? 0 : aText < bText ? -1 : 1;
 			}));
 		});
 

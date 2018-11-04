@@ -19,3 +19,7 @@ String.prototype.regexLastIndexOf = function(regex, startpos) {
     }
     return lastIndexOf;
 }
+
+String.prototype.removeAccent = 			function() { return this.normalize('NFD').replace(/[\u0300-\u036f]/g, "") };
+String.prototype.isWithoutAccent =			function() { return this == this.removeAccent() };
+String.prototype.capitalizeFirstLetter =	function() { return this.charAt(0).toUpperCase() + this.slice(1); }

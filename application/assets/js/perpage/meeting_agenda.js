@@ -261,6 +261,8 @@ function addAgenda(agendas, parent, parentId) {
 
 	if ($("#meeting-agenda input").length == 0) {
 		var sortLi = function(a, b) {
+			if ($(b).data('order') == $(a).data('order')) return 0;
+			
 		    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
 		};
 		parent.children().sort(sortLi).appendTo(parent);

@@ -22,8 +22,17 @@
 
 /* global updateChart2 */
 
+/* global initBordaChart */
+/* global initPercentChart */
+/* global initJMChart */
+
 /* I18N */
 /* global meeting_votePower */
+
+/** Chart color **/
+/* global positiveColor */
+/* global negativeColor */
+/* global shortenLabel */
 
 function voteRound(value) {
 	return (Math.round(value * 100, 2) / 100);
@@ -55,11 +64,21 @@ function computeMotion(motion) {
 		for(var index = 0; index < data.propositions.length; ++index) {
 			var proposition = $("#proposition-" + data.propositions[index].mpr_id);
 
+			if (winLimit == -1) {
+				var color = "hsl(0, 70%, 70%) !important";
+				if (data.propositions.length) {
+					color = "hsl(" + (120 - 120 * data.propositions[index].mpr_position / (data.propositions.length - 1)) + ", 70%, 70%) !important";
+				}
+
+				proposition.css({"color": color});
+			}
+
 			if (data.propositions[index].mpr_winning && !areVotesAnonymous(motion)) {
 				if (proposition.hasClass("text-danger")) {
 					proposition.addClass("text-success");
 					proposition.removeClass("text-danger");
 				}
+				proposition.css({"color": ""});
 			}
 			else {
 				if (proposition.hasClass("text-success")) {
@@ -150,7 +169,7 @@ function computeMotion(motion) {
 				if (data.propositions[index].mpr_neutral) continue;
 				if (!data.propositions[index].mpr_label) continue;
 				
-				var label = data.propositions[index].mpr_label;
+				var label = shortenLabel(data.propositions[index].mpr_label, 20);
 				
 				chartData.labels.push(label);
 				chartData.datasets[0].data.push(data.propositions[index].total_power);
@@ -181,7 +200,7 @@ function computeMotion(motion) {
 				motion.data("datahash", datahash);
 			}
 		}
-		else if (winLimit == -2) {
+		else if (winLimit == -2) { // Majority Judgement
 			initJMChart(motion);
 
 			var chartData = {};
@@ -213,7 +232,7 @@ function computeMotion(motion) {
 				
 				chartData.labels.push(data.propositions[index].mpr_label);
 
-				datahash += data.propositions[index].mpr_label;
+				datahash += shortenLabel(data.propositions[index].mpr_label, 20);
 
 				for(var jndex = majority_judgement_translations.length - 1; jndex >= 0; --jndex) {
 					var percent = data.propositions[index].jm_proportion_powers[jndex + 1] * 100;
@@ -233,7 +252,7 @@ function computeMotion(motion) {
 				motion.data("datahash", datahash);
 			}
 		}
-		else if (winLimit == -1) {
+		else if (winLimit == -1) { // Borda
 			initBordaChart(motion);
 
 			var chartData = {};
@@ -258,7 +277,7 @@ function computeMotion(motion) {
 
 				if (data.propositions[index].mpr_neutral) continue;
 				
-				var label = data.propositions[index].mpr_label;
+				var label = shortenLabel(data.propositions[index].mpr_label, 20);
 				
 				chartData.labels.push(label);
 				chartData.datasets[0].data.push(data.propositions[index].total_power);

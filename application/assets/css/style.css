@@ -623,3 +623,9 @@ a[disabled] {
 .panel-heading a:after {
     margin-left: 5px;
 }
+
+.motion-description-text, #description p {
+    max-width: calc(100% - 58px);
+    display: inline-block;
+    margin-right: 2px;
+}

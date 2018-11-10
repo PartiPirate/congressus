@@ -63,6 +63,18 @@ function updateChart2(motionContainer, data) {
 	}
 }
 
+function shortenLabel(label, length) {
+	var newLabel = label;
+
+	if (label.length > length) {
+		newLabel = label.substring(0, Math.round(length / 2) - 2).trim();
+		newLabel += "...";
+		newLabel += label.substring(label.length - Math.round(length / 2) + 1).trim();
+	}
+
+	return newLabel;
+}
+
 function initPercentChart(motionContainer) {
 	var chartContainer = motionContainer.find(".motion-charts");
 	
@@ -93,7 +105,8 @@ function initPercentChart(motionContainer) {
 				callbacks: {
 	                label: function(tooltipItem, data) {
 	                    var label = data.labels[tooltipItem.index] || '';
-	
+	                    label = shortenLabel(label, 20);
+
 	                    if (label) {
 	                    	label += " (";
 	                    	label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -220,7 +233,8 @@ function initJMChart(motionContainer) {
 				callbacks: {
 	                label: function(tooltipItem, data) {
 	                    var label = data.labels[tooltipItem.index] || '';
-	
+	                    label = shortenLabel(label, 20);
+
 	                    if (label) {
 	                    	label += " - ";
 	                    	label += data.datasets[tooltipItem.datasetIndex].label;
@@ -352,7 +366,8 @@ function initBordaChart(motionContainer) {
 				callbacks: {
 	                label: function(tooltipItem, data) {
 	                    var label = data.labels[tooltipItem.index] || '';
-	
+	                    label = shortenLabel(label, 20);
+
 	                    if (label) {
 	                        label += ': ';
 	                    }

@@ -674,7 +674,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="motion-description-text"></div>
 				<span class="glyphicon glyphicon-pencil"
 					title="<?php echo lang("meeting_clicEdit"); ?>"
-					style="font-size: smaller; display: none;"></span>
+					style="font-size: smaller; display: inline-block;"></span>
 			</div>
 
 			<div class="motion-propositions">

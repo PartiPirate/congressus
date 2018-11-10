@@ -106,7 +106,7 @@ function isPresident(id) {
 
 function addAgendaPointHandlers() {
 	$("#agenda_point .objects").on("mouseenter", "li#description", function(event) {
-		if (hasRight(getUserId(), "handle_agenda")) {
+		if (hasRight(getUserId(), "handle_agenda") && !$("li#description .Editor-container:visible").length) {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
@@ -123,6 +123,8 @@ function addAgendaPointHandlers() {
 			$(this).find(".description-editor+div .Editor-editor").focus();
 			return;
 		}
+
+		$(this).find(".glyphicon-pencil").hide();
 
 		var descriptionText = $(this).find("p");
 
@@ -1526,8 +1528,10 @@ function addMotionHandlers() {
 		if (!hasRight(getUserId(), "handle_motion")) return;
 		if ($(this).parents(".motion").data("status") == "resolved") return;
 
-		$(this).find(".glyphicon-pencil").show();
-		$(this).find("button.btn-remove-proposition").show();
+		if (!$(this).find("input:visible,textarea:visible").length) {
+			$(this).find(".glyphicon-pencil").show();
+			$(this).find("button.btn-remove-proposition").show();
+		}
 	});
 
 	$("#agenda_point ul.objects").on("mouseleave", ".motion h4,.proposition,.motion-description", function(event) {
@@ -1571,6 +1575,9 @@ function addMotionHandlers() {
 			$(this).find("input").focus();
 			return;
 		}
+
+		$(this).find(".glyphicon-pencil").hide();
+		$(this).find("button.btn-remove-proposition").hide();
 
 		var input = $("<input />", {"class": "form-control", "style": "width: 75%; display: inline-block;"});
 		var propertyText = $(this).find(".motion-title,.proposition-label");
@@ -1659,6 +1666,8 @@ function addMotionHandlers() {
 			$(this).find("textarea").focus();
 			return;
 		}
+
+		$(this).find(".glyphicon-pencil").hide();
 
 		var input = $("<textarea />", {"class": "form-control", "style": "width: 100%;"});
 		var propertyText = $(this).find(".motion-description-text");

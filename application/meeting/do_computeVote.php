@@ -323,6 +323,10 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
             break;
     }
 
+    foreach($propositions as $index => $proposition) {
+        $propositions[$index]["mpr_position"] = $index;
+    }
+
     // Clean
     foreach($propositions as $index => $proposition) {
         $propositions[$index]["mpr_explanation"] = json_encode($propositions[$index]["mpr_explanation"]);

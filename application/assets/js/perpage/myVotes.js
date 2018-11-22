@@ -58,10 +58,10 @@ function setMotionDirty(motion, state) {
 	var voteButton = motion.find(".btn-vote");
 	
 	if (state) {
-		voteButton.removeClass("btn-primary").addClass("btn-special");
+		voteButton.removeClass("btn-primary").removeClass("btn-default").addClass("btn-special");
 	}
 	else {
-		voteButton.removeClass("btn-special").addClass("btn-primary");
+		voteButton.removeClass("btn-special").removeClass("btn-default").addClass("btn-primary");
 	}
 }
 

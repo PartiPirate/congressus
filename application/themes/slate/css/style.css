@@ -93,3 +93,9 @@ select {
     border-bottom-width: 0;
     border-radius: 0px;
 }
+
+.btn-special:hover, .btn-special:focus {
+    color: #fff;
+    background-color: #781B82 !important;
+    background-position: 0 -15px !important;
+}

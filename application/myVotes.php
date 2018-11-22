@@ -179,7 +179,7 @@ function sortPropositions($a, $b) {
 		</div>
 
 		<br>
-		<button class="btn btn-default btn-primary btn-vote" style="width: 100%;" type="button">Voter</button>
+		<button class="btn btn-primary btn-vote" style="width: 100%;" type="button">Voter</button>
 
 	</div>
 	<div class="panel-footer text-right">

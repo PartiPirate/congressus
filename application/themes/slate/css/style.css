@@ -94,8 +94,24 @@ select {
     border-radius: 0px;
 }
 
+.btn-special {
+    color: #fff;
+    background-color: #933BA4;
+    border-color: #75332A;
+
+    background-image: -webkit-linear-gradient(#933BA4, #832C96 60%, #79228B);
+    background-image: -o-linear-gradient(#933BA4, #832C96 60%, #79228B);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#933BA4), color-stop(60%, #7a8288), to(#79228B));
+    background-image: linear-gradient(#933BA4, #832C96 60%, #79228B);
+}
+
 .btn-special:hover, .btn-special:focus {
     color: #fff;
     background-color: #781B82 !important;
-    background-position: 0 -15px !important;
+    background-position: 0 0 !important;
+
+    background-image: -webkit-linear-gradient(#781B82, #680C74 60%, #5E0269);
+    background-image: -o-linear-gradient(#781B82, #680C74 60%, #5E0269);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#781B82), color-stop(60%, #7a8288), to(#5E0269));
+    background-image: linear-gradient(#781B82, #680C74 60%, #5E0269);
 }

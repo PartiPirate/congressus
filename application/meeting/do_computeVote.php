@@ -60,7 +60,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || false) {
     
     $data = array();
     
@@ -336,16 +336,18 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
             if (strpos($key, "mpr_") === false && strpos($key, "jm_") === false && $key != "total_power" && $key != "proportion_power") {
                 unset($propositions[$index][$key]);
             }
-            else if (strpos($key, "mpr_") !== false) {
+            else if (strpos($key, "mpr_") !== false && $key != "mpr_position") {
                 $saveProposition[$key] = $value;
                 if ($key == "mpr_explanation") {
                     $saveProposition[$key] = json_encode($value);
+                    
+//                    print($saveProposition[$key]);
                 }
             }
         }
 
         // save if needed
-        if (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") {
+        if ((isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || false) {
             $motionBo->saveProposition($saveProposition);
         }
     }

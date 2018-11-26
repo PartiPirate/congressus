@@ -33,7 +33,8 @@ $connection = openConnection();
 
 $motionBo = MotionBo::newInstance($connection, $config);
 
-$motion = $motionBo->getById($_REQUEST["motionId"]);
+$motionId = intval($_REQUEST["motionId"]);
+$motion = $motionBo->getById($motionId);
 
 if (!$motion) {
 	echo json_encode(array("ko" => "ko", "message" => "motion_not_accessible"));
@@ -66,6 +67,9 @@ else {
 $data["ok"] = "ok";
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
+
+$memcacheKey = "do_getComputeVote_$motionId";
 $memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

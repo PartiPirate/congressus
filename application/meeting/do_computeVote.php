@@ -358,7 +358,7 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     $data["propositions"] = $propositions;
     $data["delegations"] = $delegations;
     
-    if ($motion["mot_anonymous"]) {
+    if ($motion["mot_anonymous"] && $motion["mot_status"] != "resolved") {
         $data["delegations"] = array();
         
         foreach($data["propositions"] as $propositionIndex => $proposition) {

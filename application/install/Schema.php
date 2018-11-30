@@ -242,4 +242,20 @@ $schema["tables"]["votes"]["fields"]["vot_power"] = array("type" => "int", "size
 $schema["tables"]["votes"]["indexes"]["vot_member_id"] = array("vot_member_id");
 $schema["tables"]["votes"]["indexes"]["vot_motion_proposition_id"] = array("vot_motion_proposition_id");
 
+$schema["tables"]["customizers"] = array("fields" => array(), "indexes" => array());
+$schema["tables"]["customizers"]["fields"]["cus_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["customizers"]["fields"]["cus_server_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["customizers"]["fields"]["cus_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
+$schema["tables"]["customizers"]["fields"]["cus_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
+$schema["tables"]["customizers"]["indexes"]["cus_server_id"] = array("cus_server_id");
+$schema["tables"]["customizers"]["indexes"]["cus_deleted"] = array("cus_deleted");
+
+$schema["tables"]["customizer_properties"] = array("fields" => array(), "indexes" => array());
+$schema["tables"]["customizer_properties"]["fields"]["cpr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["customizer_properties"]["fields"]["cpr_customizer_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["customizer_properties"]["fields"]["cpr_key"] = array("type" => "varchar", "size" => 2048, "null" => true);
+$schema["tables"]["customizer_properties"]["fields"]["cpr_value"] = array("type" => "text", "null" => true);
+$schema["tables"]["customizer_properties"]["indexes"]["cpr_customizer_id"] = array("cpr_customizer_id");
+$schema["tables"]["customizer_properties"]["indexes"]["cpr_key"] = array("cpr_key");
+
 ?>

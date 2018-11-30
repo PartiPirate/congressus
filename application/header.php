@@ -22,19 +22,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once("install/Installer.php");
+require_once("install/Installer.php");
 
-include_once("config/database.php");
-include_once("language/language.php");
+require_once("config/database.php");
+require_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserPropertyBo.php");
 require_once("engine/bo/MeetingBo.php");
 
-include_once("engine/utils/bootstrap_forms.php");
+require_once("engine/bo/CustomizerPropertyBo.php");
+
+require_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/FormUtils.php");
-include_once("engine/utils/LogUtils.php");
-include_once("engine/utils/DateTimeUtils.php");
+require_once("engine/utils/LogUtils.php");
+require_once("engine/utils/DateTimeUtils.php");
 
 require_once("engine/utils/GamifierClient.php");
 
@@ -94,6 +96,11 @@ if ($page == "administration" && !$isAdministrator) {
 }
 
 $connection = openConnection();
+
+$customizerProperties = array();
+
+$customizerPropertyBo = CustomizerPropertyBo::newInstance($connection, $config);
+$customizerProperties = $customizerPropertyBo->getByFilters(array());
 
 $userProperties = array();
 if ($sessionUserId) {
@@ -366,6 +373,20 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 
 						</ul>
 					</li>
+
+<?php				
+//					print_r($customizerProperties);
+
+					$menuItemProperty = $customizerPropertyBo->getProperty($customizerProperties, "menu_items");
+
+//					print_r($menuItemProperty);
+
+					if ($menuItemProperty && $menuItemProperty["cpr_value"]) {
+						echo eval("return \"" . str_replace('"', '\\"', $menuItemProperty["cpr_value"]) . "\";");
+//						echo ("return " . json_encode($menuItemProperty["cpr_value"]) . ";");
+//						echo $menuItemProperty["cpr_value"];
+					}
+?>
 			
 					<?php 	if ($isAdministrator) {?>
 					<li <?php if ($page == "administration") echo 'class="active"'; ?>><a href="administration.php"><?php echo lang("menu_administration"); ?><?php if ($page == "administration") echo ' <span class="sr-only">(current)</span>'; ?></a></li>

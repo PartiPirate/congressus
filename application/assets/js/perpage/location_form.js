@@ -71,6 +71,15 @@ $(function() {
 
 	$("#location .update-btn").click(function() {
 		$("#change-location-modal").modal("show");
+		
+		var type = $("#location").data("type");
+		
+		$("#loc_type").val(type).change();
+		
+		if (type == "discord") {
+			$("#loc_discord_text_channel").val($("#location-discord .discord-text").text().trim());
+			$("#loc_discord_vocal_channel").val($("#location-discord .discord-vocal").text().trim());
+		}
 	});
 	
 	$("body").on("click", ".btn-save-location", function() {

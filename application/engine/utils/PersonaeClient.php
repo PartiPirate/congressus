@@ -73,10 +73,16 @@ class PersonaeClient {
 		//close connection
 		curl_close($ch);
 
-		//echo $result;
+/*
+		echo "---<br>\n";
+		echo $result;
+		echo "\n---<br>\n";
+*/
 
 		// json decode the result, the api has json encoded result
 		$result = json_decode($result, true);
+
+//		print_r($result);
 
 		return $result;
 	}

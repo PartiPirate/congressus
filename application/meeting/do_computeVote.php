@@ -60,7 +60,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || false) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || true) {
     
     $data = array();
     
@@ -131,7 +131,11 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || false
         if (!$notice["not_voting"]) continue;
         if ($notice["not_target_type"] == "dlp_themes") {
             $delegations = $personaeClient->getNoticePowers($notice["not_target_id"], $motion, $votes);
-    
+/*
+            echo "<!--\n";
+            print_r($delegations);
+            echo "\n-->";
+*/    
     //        $data["response"] = $delegations; // TODO compute in a better way
         }
         else if ($notice["not_target_type"] == "galette_adherents") {

@@ -314,14 +314,21 @@ function updateMeeting(meeting) {
 	$(".synchro-vote-" + meeting.mee_synchro_vote).show();
 	$(".synchro-vote select").val(meeting.mee_synchro_vote);
 
-	$("#location .location-type").text(meeting.loc_type);
+	if ($("#location .location-type").text() != meeting.loc_type) {
+		$("#location .location-type").text(meeting.loc_type);
+	}
 
 	if (meeting.loc_type == "discord") {
 		$("#location-discord").show();
 		$("#location-mumble").hide();
-		
-		$("#location-discord .discord-text a").attr("href", meeting.loc_discord_text_link).text(meeting.loc_discord_text_channel);
-		$("#location-discord .discord-vocal a").attr("href", meeting.loc_discord_vocal_link).text(meeting.loc_discord_vocal_channel);
+
+		if ($("#location-discord .discord-text a").text() != meeting.loc_discord_text_channel) {
+			$("#location-discord .discord-text a").attr("href", meeting.loc_discord_text_link).text(meeting.loc_discord_text_channel);
+		}
+
+		if ($("#location-discord .discord-vocal a").text() != meeting.loc_discord_vocal_channel) {
+			$("#location-discord .discord-vocal a").attr("href", meeting.loc_discord_vocal_link).text(meeting.loc_discord_vocal_channel);
+		}
 	}
 	else if (meeting.loc_type == "mumble") {
 		$("#location-discord").hide();

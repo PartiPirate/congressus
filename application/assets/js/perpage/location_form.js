@@ -72,5 +72,26 @@ $(function() {
 	$("#location .update-btn").click(function() {
 		$("#change-location-modal").modal("show");
 	});
+	
+	$("body").on("click", ".btn-save-location", function() {
+		var type = $("#loc_type").val();
+		var extra = $("#loc_extra").val();
+		
+		var channel = "";
+		
+		if (type == "discord") {
+			var textChannel = $("#loc_discord_text_channel").val();
+			var vocalChannel = $("#loc_discord_vocal_channel").val();
+
+			channel = textChannel + "," + vocalChannel;
+		}
+		
+		var meetingId = $(".meeting").data("id");
+		var text = JSON.stringify({type: type, extra: extra, channel: channel});
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_location", text: text}, function(data) {
+		$("#change-location-modal").modal("hide");
+		});
+	});
 
 });

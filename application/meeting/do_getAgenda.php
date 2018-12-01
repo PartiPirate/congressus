@@ -40,7 +40,7 @@ if (!$json) {
 	$meetingRightBo = MeetingRightBo::newInstance($connection, $config);
 	$agendaBo = AgendaBo::newInstance($connection, $config);
 
-	$meeting = $meetingBo->getById($meetingId);
+	$meeting = $meetingBo->getById($meetingId, true);
 
 	if (!$meeting) {
 		echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
@@ -51,6 +51,8 @@ if (!$json) {
 	if (false) {
 		echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
 	}
+
+//	print_r($meeting);
 
 	$data = array();
 
@@ -72,7 +74,21 @@ if (!$json) {
 	foreach($rights as $right) {
 		$meeting["mee_rights"][] = $right["mri_right"];
 	}
-	
+
+	if ($meeting["loc_type"] == "discord") {
+		include("config/discord.structure.php");
+
+		list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
+
+		$discord_text_link = @$discord_text_channels[$discord_text_channel];
+		$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
+
+		$meeting["loc_discord_text_channel"]	= $discord_text_channel;
+		$meeting["loc_discord_vocal_channel"]	= $discord_vocal_channel;
+		$meeting["loc_discord_text_link"]		= $discord_text_link;
+		$meeting["loc_discord_vocal_link"]		= $discord_vocal_link;
+	}
+
 	$data["meeting"] = $meeting;
 	$data["agendas"] = $agendas;
 

@@ -92,11 +92,12 @@ if (isset($_GET["error"])) {
 				<div class="col-md-12 text-center">
 					<button id="connectButton" name="connectButton" class="btn btn-primary"><?php echo lang("common_connect"); ?></button>
 					
-<?php 	if (isset($config["modules"]["authenticator"]) && $config["modules"]["authenticator"] == "Galette") { ?>					
+<?php 	if (isset($config["modules"]["authenticator"]) && $config["modules"]["authenticator"] == "Galette") { ?>
 					<p class="help-block"><a href="https://gestion.partipirate.org/lostpasswd.php"><?php echo lang("forgotten_link");?></a></p>
-<?php 	} 
-		else { ?>					
+<?php 	}
+		else { ?>
 					<p class="help-block"><a href="forgotten.php"><?php echo lang("forgotten_link");?></a></p>
+					<p class="help-block"><a href="register.php"><?php echo lang("register_link");?></a></p>
 <?php 	} ?>					
 					
 					

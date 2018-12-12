@@ -10,6 +10,8 @@ CREATE TABLE `galette_adherents` (
   `email_adh` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pseudo_adh` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `login_adh` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `use_activated` tinyint(4) NOT NULL DEFAULT '0', 
+  `use_activation_key` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mdp_adh` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `date_crea_adh` date NOT NULL DEFAULT '1901-01-01',
   `date_modif_adh` date NOT NULL DEFAULT '1901-01-01',

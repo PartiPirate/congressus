@@ -394,9 +394,12 @@ function updateMeeting(meeting) {
 		$(".mee_finish .span-time").text(moment(date).format("HH:mm"));
 	}
 
-	$(".agenda-link").removeClass("secretary-reading");
+	$(".agenda-link").removeClass("secretary-reading").removeClass("personal-reading");
 	if (meeting.mee_secretary_agenda_id) {
 		$(".agenda-link#agenda-link-" + meeting.mee_secretary_agenda_id).addClass("secretary-reading");
+	}
+	if ($("#agenda_point").data("id")) {
+		$(".agenda-link#agenda-link-" + $("#agenda_point").data("id")).addClass("personal-reading");
 	}
 }
 

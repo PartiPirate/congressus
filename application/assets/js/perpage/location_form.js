@@ -71,6 +71,36 @@ $(function() {
 
 	$("#location .update-btn").click(function() {
 		$("#change-location-modal").modal("show");
+
+		var type = $("#location").data("type");
+
+		$("#loc_type").val(type).change();
+
+		if (type == "discord") {
+			$("#loc_discord_text_channel").val($("#location-discord .discord-text").text().trim());
+			$("#loc_discord_vocal_channel").val($("#location-discord .discord-vocal").text().trim());
+		}
+	});
+	
+	$("body").on("click", ".btn-save-location", function() {
+		var type = $("#loc_type").val();
+		var extra = $("#loc_extra").val();
+		
+		var channel = "";
+		
+		if (type == "discord") {
+			var textChannel = $("#loc_discord_text_channel").val();
+			var vocalChannel = $("#loc_discord_vocal_channel").val();
+
+			channel = textChannel + "," + vocalChannel;
+		}
+		
+		var meetingId = $(".meeting").data("id");
+		var text = JSON.stringify({type: type, extra: extra, channel: channel});
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_location", text: text}, function(data) {
+		$("#change-location-modal").modal("hide");
+		});
 	});
 
 });

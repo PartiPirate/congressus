@@ -60,7 +60,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || true) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     
     $data = array();
     

@@ -179,15 +179,15 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body">
 
 					<!-- Location -->
-					<div id="location" style="height: 21px;">
+					<div id="location" style="height: 21px;" data-type="<?php echo $meeting["loc_type"];?>">
 						<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
-						<?php echo $meeting["loc_type"];?>
+						<span class="location-type"><?php echo $meeting["loc_type"];?></span>
 						<button style="display: none;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</div>
 
 					<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
 						<!-- Mumble -->
-						<div >
+						<div id="location-mumble">
 							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
 							<?php
 							include("config/mumble.structure.php");
@@ -196,10 +196,20 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							echo "<a href='$mumble_link' target='_blank'>$mumble_channel</a>";
 							?>
 						</div>
+						<div id="location-discord" style="display: none;">
+							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
+
+							<span class='discord-text'><i class='fa fa-hashtag' aria-hidden='true'></i> <a href='#' target='_blank'></a></span>
+							<span class='discord-vocal'><i class='fa fa-volume-up' aria-hidden='true'></i> <a href='#' target='_blank'></a></span>
+						</div>
 					<?php }
 						  else if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {?>
 						<!-- Discord -->
-						<div>
+						<div id="location-mumble" style="display:none;">
+							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_mumblePlace"); ?>
+							<a href='#' target='_blank'></a>
+						</div>
+						<div id="location-discord">
 							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
 							<?php
 							include("config/discord.structure.php");
@@ -209,12 +219,24 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							$discord_text_link = @$discord_text_channels[$discord_text_channel];
 							$discord_vocal_link = @$discord_vocal_channels[$discord_vocal_channel];
 							
-							echo "<i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a> ";
-							echo "<i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a>";
+							echo "<span class='discord-text'><i class='fa fa-hashtag' aria-hidden='true'></i> <a href='$discord_text_link' target='_blank'>$discord_text_channel</a></span> ";
+							echo "<span class='discord-vocal'><i class='fa fa-volume-up' aria-hidden='true'></i> <a href='$discord_vocal_link' target='_blank'>$discord_vocal_channel</a></span>";
 							
 							?>
 						</div>
-					<?php }?>
+					<?php }
+						  else {?>
+						<div id="location-mumble" style="display:none;">
+							<span class="glyphicon glyphicon-link"></span> <span class="mumble-place"></span>
+							<a href='#' target='_blank'></a>
+						</div>
+						<div id="location-discord" style="display: none;">
+							<span class="glyphicon glyphicon-link"></span> <?php echo lang("createMeeting_discordPlace"); ?>
+
+							<span class='discord-text'><i class='fa fa-hashtag' aria-hidden='true'></i> <a href='#' target='_blank'></a></span>
+							<span class='discord-vocal'><i class='fa fa-volume-up' aria-hidden='true'></i> <a href='#' target='_blank'></a></span>
+						</div>
+					<?php } ?>
 
 				</div>
 			</div>

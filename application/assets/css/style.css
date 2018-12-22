@@ -143,6 +143,28 @@ a.agenda-link {
 	font-style: italic;
 }
 
+.secretary-reading:after {
+	content:" \f0e3";
+	font:normal normal normal 14px/1 FontAwesome;
+	font-size:inherit;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale
+}
+
+.personal-reading {
+	font-weight: bold;
+}
+
+.personal-reading:after {
+	content:" \f02d";
+	font:normal normal normal 14px/1 FontAwesome;
+	font-size:inherit;
+	text-rendering:auto;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale
+}
+
 .form-alert {
 	height: 34px;
     margin: 0;

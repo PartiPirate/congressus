@@ -69,6 +69,13 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || true)
     $motion = $propositions[0];
     $agenda = $agendaBo->getById($motion["mot_agenda_id"]);
     $meeting = $meetingBo->getById($agenda["age_meeting_id"]);
+
+	$end = getDateTime($meeting["mee_datetime"]);
+	$duration = new DateInterval("PT" . ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60) . "M");
+	$end = $end->add($duration);
+
+    $motion["mot_date"] = $end->format("Y-m-d");
+
     $voters = array();
     $nbVoters = 0;
     

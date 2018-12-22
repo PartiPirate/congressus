@@ -33,7 +33,7 @@ $memcacheKey = "do_getAgenda_$meetingId";
 $memcache = openMemcacheConnection();
 $json = $memcache->get($memcacheKey);
 
-if (!$json || true) {
+if (!$json) {
 	$connection = openConnection();
 
 	$meetingBo = MeetingBo::newInstance($connection, $config);

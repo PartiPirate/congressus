@@ -30,6 +30,7 @@
 /* global meeting_vote */
 /* global meeting_motionVote2 */
 /* global emojione */
+/* global goDownPoint */
 
 var judgmentVoteIsMandatory = false;
 
@@ -399,6 +400,8 @@ function addSpeakerChat() {
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
+
+		goDownPoint();
 	}, "json");
 }
 
@@ -415,6 +418,8 @@ function addOwnChat() {
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
+
+		goDownPoint();
 	}, "json");
 }
 
@@ -430,6 +435,8 @@ function addOwnTask() {
 		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
+
+		goDownPoint();
 	}, "json");
 }
 
@@ -443,6 +450,8 @@ function addConclusion() {
 		$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
+
+		goDownPoint();
 	}, "json");
 }
 
@@ -458,6 +467,8 @@ function addMotion(event) {
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
+
+		goDownPoint();
 	}, "json");
 }
 

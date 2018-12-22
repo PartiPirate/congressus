@@ -77,7 +77,7 @@ $schema["tables"]["conclusions"] = array("fields" => array(), "indexes" => array
 $schema["tables"]["conclusions"]["fields"]["con_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["conclusions"]["fields"]["con_agenda_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["conclusions"]["fields"]["con_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
-$schema["tables"]["conclusions"]["fields"]["con_text"] = array("type" => "text", "null" => false);
+$schema["tables"]["conclusions"]["fields"]["con_text"] = array("type" => "text", "null" => true);
 $schema["tables"]["conclusions"]["indexes"]["con_agenda_id"] = array("con_agenda_id");
 $schema["tables"]["conclusions"]["indexes"]["con_deleted"] = array("con_deleted");
 

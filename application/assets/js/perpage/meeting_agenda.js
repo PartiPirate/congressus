@@ -490,8 +490,15 @@ function addMeetingHandlers() {
 
 function goDownPoint() {
 	var agendaObjects = $(".objects")[0];
-
 	agendaObjects.scrollTop = agendaObjects.scrollHeight;
+
+	var body = $("body")[0];
+	body.scrollTop = body.scrollHeight;
+
+	var html = $("html")[0];
+	html.scrollTop = html.scrollHeight;
+
+	window.scrollTop = window.scrollHeight;
 }
 
 function showNextPoint() {

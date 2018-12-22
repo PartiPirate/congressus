@@ -52,13 +52,17 @@ h2, h3 {
 }
 
 #agenda_point .objects {
+/*
 	max-height: 500px;
 	overflow-y: scroll;
+*/
 }
 
 #right-panel {
+/*	
     max-height: 465px;
     overflow-y: scroll;
+*/    
 }
 
 .proposition ul li {

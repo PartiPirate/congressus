@@ -29,6 +29,8 @@ define("EVENT_SPEAK_RENOUNCE", "speak_renounce");
 define("EVENT_SPEAK_SET", "speak_set");
 define("EVENT_EXTERNAL_CHAT", "external_chat");
 define("EVENT_USER_ON_AGENDA_POINT", "user_on_agenda_point");
+define("EVENT_USER_START_TYPING", "user_start_typing");
+define("EVENT_USER_STOP_TYPING", "user_stop_typing");
 
 function addEvent($meetingId, $type, $text, $options = null) {
 	$events = getEvents($meetingId);

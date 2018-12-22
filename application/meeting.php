@@ -1041,6 +1041,8 @@ var majority_judgement_values = <?php echo json_encode($config["congressus"]["ba
 var speakingTimesChartTitle = "Temps de parole par personne";
 var motionDelegationsTitle = "Délégations en jeu";
 
+isWriting = <?php echo json_encode(lang("meeting_user_is_writing", false)); ?>; 
+
 <?php
 
 $translatons = array();

@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -19,6 +19,7 @@
 /* global $ */
 
 var lastEventTimestamp = 0;
+var isWriting = " is writing";
 
 function computeEventPositions() {
 	var margin = 5;
@@ -109,7 +110,15 @@ function showUserOnAgendaPoint(event) {
 			$("#agenda_point #agenda-members-container").append(memberAvatar);
 		}
 		memberAvatar.data("last-timestamp", event.timestamp);
-		
+
+		if (event.type == "user_start_typing") {
+			memberAvatar.attr("title", memberAvatar.attr("title") + isWriting);
+			memberAvatar.css({border: "#62c462", "border-width": "2px", "border-style": "solid"});
+		}
+		else if (event.type == "user_stop_typing") {
+			memberAvatar.attr("title", memberAvatar.attr("title").replace(isWriting, ""));
+			memberAvatar.css({border: "#62c462", "border-width": "0px", "border-style": "solid"});
+		}
 	}
 	else {
 //		console.log("ignore");
@@ -126,6 +135,16 @@ function showEvent(event) {
 	}
 
 	if (event.type == "user_on_agenda_point") {
+		showUserOnAgendaPoint(event);
+		return;
+	}
+
+	if (event.type == "user_start_typing") {
+		showUserOnAgendaPoint(event);
+		return;
+	}
+
+	if (event.type == "user_stop_typing") {
 		showUserOnAgendaPoint(event);
 		return;
 	}

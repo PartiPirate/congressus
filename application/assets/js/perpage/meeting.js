@@ -2017,14 +2017,51 @@ function addMeetingLabelHandlers() {
 }
 
 function addStartingTextHandler() {
+	
+	var startingKeyupTimeoutId = null;
+
+	function clearStartingKeyup() {
+		if (startingKeyupTimeoutId) {
+			clearTimeout(startingKeyupTimeoutId);
+			startingKeyupTimeoutId = null;
+		}
+	}
+
 	$("#starting-text").keyup(function() {
+		var meetingId = $(".meeting").data("id");
+		var agendaId = $("#agenda_point").data("id");
+
 		var startingText = $(this).val();
-		
+
+		if (startingKeyupTimeoutId) {
+			// reset the timeout
+			clearStartingKeyup();
+		}
+		else {
+			// set en event, starting typing
+			var event = {meetingId: meetingId, event: "user_start_typing", pointId: agendaId};
+			console.log(event);
+			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
+		}
+
+		startingKeyupTimeoutId = setTimeout(function() {
+			// set en event, stop typing
+			var event = {meetingId: meetingId, event: "user_stop_typing", pointId: agendaId};
+			console.log(event);
+			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
+			clearStartingKeyup();
+		}, 30000);
+
 		if (startingText) {
 			$("#starting-text-buttons button").removeAttr("disabled");
 		}
 		else {
 			$("#starting-text-buttons button").attr("disabled", "disabled");
+			// set en event, stop typing
+			var event = {meetingId: meetingId, event: "user_stop_typing", pointId: agendaId};
+			console.log(event);
+			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
+			clearStartingKeyup();
 		}
 	});
 

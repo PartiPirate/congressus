@@ -81,12 +81,18 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<button style="display: none;" id="save-meeting-label-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
 			<button style="display: none;" id="cancel-meeting-label-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 		</li>
+		<li class="pull-right no-crumb" style="margin-left: 5px;">
+			<button class="btn btn-xs btn-default show-info-panels-btn active" style="width: 22px;"><i class="fa fa-info"></i></button>
+		</li>
+		<li class="pull-right no-crumb" style="margin-left: 5px;">
+			<button class="btn btn-xs btn-default show-speaking-btn active" style="width: 22px;"><i class="fa fa-comment"></i></button>
+		</li>
 		<li class="pull-right no-crumb">
 			<?php addShareButton("dropdownMeetingShareButton", "btn-primary btn-xs btn-share-meeting", "", $config["server"]["base"] ."meeting.php?id=" . $meeting["mee_id"], $meeting["mee_label"], "congressus"); ?>
 		</li>
 	</ol>
 
-	<div class="row">
+	<div id="meeting-info-panels" class="row">
 		<div class="col-md-6 col-xs-12 col-sm-12 col-lg-3">
 			<div class="panel panel-default">
 				<div class="panel-heading"></div>

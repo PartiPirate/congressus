@@ -2020,6 +2020,32 @@ function addStartingTextHandler() {
 	$("#starting-text").keyup();
 }
 
+function addMeetingInfoPanelsHandler() {
+	$(".show-info-panels-btn").click(function() {
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+			$("#meeting-info-panels").hide(200);
+		}
+		else {
+			$(this).addClass("active");
+			$("#meeting-info-panels").show(200);
+		}
+	});
+}
+
+function addMeetingSpeekingPanelsHandler() {
+	$(".show-speaking-btn").click(function() {
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+			$(".president-panels").hide(200);
+		}
+		else {
+			$(this).addClass("active");
+			$(".president-panels").show(200);
+		}
+	});
+}
+
 $(function() {
 	setFramatalkPosition("left");
 	addEmojiHelper();
@@ -2027,6 +2053,8 @@ $(function() {
 	addMeetingLabelHandlers();
 	
 	addStartingTextHandler();
+	addMeetingInfoPanelsHandler();
+	addMeetingSpeekingPanelsHandler();
 
 /*	
 	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);

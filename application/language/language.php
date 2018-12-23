@@ -60,7 +60,7 @@ function isLanguageKey($key, $language = null, $path = null) {
 		$directoryHandler = dir($path . "language/" . $language);
 		while(($fileEntry = $directoryHandler->read()) !== false) {
 			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
-				include_once("language/" . $language . "/" . $fileEntry);
+				include("language/" . $language . "/" . $fileEntry);
 			}
 		}
 		$directoryHandler->close();
@@ -74,6 +74,43 @@ function isLanguageKey($key, $language = null, $path = null) {
 	}
 
 	return false;
+}
+
+/**
+ * returns array All translations for a given key
+ */
+function langs($key, $path = "") {
+    global $lang;
+
+    $langs = array();
+    $languages = array();
+
+	$directoryHandler = dir($path . "language/");
+	
+	while(($fileEntry = $directoryHandler->read()) !== false) {
+		if($fileEntry != '.' && $fileEntry != '..' && is_dir($path . "language/" . $fileEntry)) {
+		    $languages[] = $fileEntry;
+		}
+	}
+	$directoryHandler->close();
+
+    foreach($languages as $language) {
+        $lang = array();
+
+    	$directoryHandler = dir($path . "language/" . $language);
+    	while(($fileEntry = $directoryHandler->read()) !== false) {
+    		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+    			include("language/" . $language . "/" . $fileEntry);
+    		}
+    	}
+		if (isset($lang[$key])) {
+		    $langs[] = $lang[$key];
+		}
+    }
+
+    $lang = array();
+
+    return $langs;
 }
 
 function lang($key, $htmlencode = true, $language = null, $path = "") {

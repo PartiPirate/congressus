@@ -188,6 +188,8 @@ $lang["meeting_number_of_voters"] = "Nombre de votant-e-s : ";
 $lang["meeting_base_type"] = "Type de réunion";
 $lang["meeting_change_location_title"] = "Changer la localisation de la réunion";
 $lang["meeting_user_is_writing"] = " est en train d'écrire";
+$lang["meeting_motion_to_vote"] = "La motion {motionTitle} dans le point {agendaLabel} est mise au vote";
+$lang["meeting_motion_close_vote"] = "La motion {motionTitle} dans le point {agendaLabel} est fermée au vote";
 
 $lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
 

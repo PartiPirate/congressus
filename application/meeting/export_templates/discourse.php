@@ -38,15 +38,15 @@ function showMotion($motions, $id, &$voters) {
 
 			//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
 
-			if (strtolower( $motion["mpr_label"] ) == "pour" || strtolower( $motion["mpr_label"] ) == "oui") {
+			if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_pro")))) {
 				echo "> ";
 				echo $motion["mpr_label"];
 			}
-			else if (strtolower( $motion["mpr_label"] ) == "contre" || strtolower( $motion["mpr_label"] ) == "non") {
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_against")))) {
 				echo "> ";
 				echo $motion["mpr_label"];
 			}
-			else if (strtolower( $motion["mpr_label"] ) == "nspp") {
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_abstain")))) {
 				echo "> ";
 				echo $motion["mpr_label"];
 			}
@@ -91,7 +91,7 @@ function showMotion($motions, $id, &$voters) {
 		}
 	}
 
-	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
+	if (in_array(strtolower($winning), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_pro")))) {
 		echo "> Motion adoptée\n";
 //		echo "> pour\n";
 	}
@@ -108,7 +108,7 @@ function showMotion($motions, $id, &$voters) {
 			}
 		}
 	}
-	else if (strtolower($winning) == "contre" || strtolower($winning) == "non") {
+	else if (in_array(strtolower($winning), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_against")))) {
 		echo "> Motion rejetée\n";
 //		echo "> contre\n";
 	}

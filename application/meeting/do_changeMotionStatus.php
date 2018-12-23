@@ -82,16 +82,23 @@ if ($motion["mot_status"] == "voting") {
 	// add, if necessary the NSPP vote
 	if ($motionWinLimit >= 0) {
 		$proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD]);
-		$proposition["mpr_label"] = "NSPP";
+		$proposition["mpr_label"] = lang("vote_abstain");
 		$proposition["mpr_neutral"] = 1;
 	
 		$motionBo->saveProposition($proposition);
 	}
+	$text = lang("meeting_motion_to_vote");
+	$text = str_replace("{motionTitle}", $motionTitle, $text);
+	$text = str_replace("{agendaLabel}", $agenda["age_label"], $text);
 
-	addEvent($meetingId, EVENT_MOTION_TO_VOTE, "La motion \"".$motionTitle."\" dans le point \"".$agenda["age_label"]."\" est mise au vote");
+	addEvent($meetingId, EVENT_MOTION_TO_VOTE, $text);
 }
 else if ($motion["mot_status"] == "resolved") {
-	addEvent($meetingId, EVENT_MOTION_CLOSE_VOTE, "La motion \"".$motionTitle."\" dans le point \"".$agenda["age_label"]."\" est fermée au vote");
+	$text = lang("meeting_motion_close_vote");
+	$text = str_replace("{motionTitle}", $motionTitle, $text);
+	$text = str_replace("{agendaLabel}", $agenda["age_label"], $text);
+
+	addEvent($meetingId, EVENT_MOTION_CLOSE_VOTE, $text);
 	// TODO compute result
 }
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017  Cédric Levieux, Parti Pirate
+	Copyright 2015-2018  Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -40,14 +40,14 @@ function showMotion($motions, $id, &$voters) {
 
 			//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
 
-			if (strtolower( $motion["mpr_label"] ) == "pour" || strtolower( $motion["mpr_label"] ) == "oui") {
-				echo "|pour=";
+			if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_pro")))) {
+				echo "|" . lang("vote_yes") . "=";
 			}
-			else if (strtolower( $motion["mpr_label"] ) == "contre" || strtolower( $motion["mpr_label"] ) == "non") {
-				echo "|contre=";
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_against")))) {
+				echo "|" . lang("vote_no") . "=";
 			}
-			else if (strtolower( $motion["mpr_label"] ) == "nspp") {
-				echo "|nspp=";
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_abstain")))) {
+				echo "|" . lang("vote_abstain") . "=";
 			}
 			else {
 				echo "|vote=";
@@ -83,9 +83,9 @@ function showMotion($motions, $id, &$voters) {
 		}
 	}
 
-	if (strtolower($winning) == "pour" || strtolower($winning) == "oui") {
+	if (in_array(strtolower($winning), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_pro")))) {
 		echo "|close=Motion adoptée\n";
-		echo "|result=pour\n";
+		echo "|result=".lang("vote_pro")."\n";
 	}
 	else if ($motion["mot_win_limit"] == -2) {
 		echo "|close=Motion adoptée\n";
@@ -100,9 +100,9 @@ function showMotion($motions, $id, &$voters) {
 			}
 		}
 	}
-	else if (strtolower($winning) == "contre" || strtolower($winning) == "non") {
+	else if (in_array(strtolower($winning), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_against")))) {
 		echo "|close=Motion rejetée\n";
-		echo "|result=contre\n";
+		echo "|result=".lang("vote_against")."\n";
 	}
 	else {
 		echo "|close=Motion adoptée\n";

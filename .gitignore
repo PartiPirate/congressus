@@ -34,3 +34,6 @@ application/engine/mediawiki/addwiki/mediawiki-api-base/phpunit.xml
 
 # application/engine/mediawiki/psr/log/
 application/engine/mediawiki/psr/log/vendor
+
+# 
+application/langs.php

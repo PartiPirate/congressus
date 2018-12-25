@@ -24,6 +24,7 @@ include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/LogUtils.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/utils/SessionUtils.php");
 
 session_start();
 

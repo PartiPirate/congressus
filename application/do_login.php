@@ -57,6 +57,8 @@ if ($member) {
 	$connectedMember["pseudo_adh"] = GaletteBo::showIdentity($member);
 	$connectedMember["id_adh"] = $member["id_adh"];
 
+	SessionUtils::setLanguage($member["pref_lang"], $_SESSION);
+
 	$_SESSION["member"] = json_encode($connectedMember);
 	$_SESSION["memberId"] = $member["id_adh"];
 	addLog($_SERVER, $_SESSION, null, array("result" => "ok"));

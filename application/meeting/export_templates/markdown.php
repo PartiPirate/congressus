@@ -40,13 +40,13 @@ function showMotion($motions, $id, &$voters) {
 
 			//			echo $motion["mpr_label"] . "&nbsp;(" . $explanation["power"] . ") : ";
 
-			if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_pro")))) {
+			if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_yes", "../"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_pro", "../")))) {
 				echo "|" . lang("vote_yes") . "=";
 			}
-			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_against")))) {
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_no", "../"))) || in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_against", "../")))) {
 				echo "|" . lang("vote_no") . "=";
 			}
-			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_abstain")))) {
+			else if (in_array(strtolower($motion["mpr_label"]), array_map('strtolower', langs("vote_abstain", "../")))) {
 				echo "|" . lang("vote_abstain") . "=";
 			}
 			else {
@@ -83,7 +83,7 @@ function showMotion($motions, $id, &$voters) {
 		}
 	}
 
-	if (in_array(strtolower($winning), array_map('strtolower', langs("vote_yes"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_pro")))) {
+	if (in_array(strtolower($winning), array_map('strtolower', langs("vote_yes", "../"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_pro", "../")))) {
 		echo "|close=Motion adoptée\n";
 		echo "|result=".lang("vote_pro")."\n";
 	}
@@ -100,7 +100,7 @@ function showMotion($motions, $id, &$voters) {
 			}
 		}
 	}
-	else if (in_array(strtolower($winning), array_map('strtolower', langs("vote_no"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_against")))) {
+	else if (in_array(strtolower($winning), array_map('strtolower', langs("vote_no", "../"))) || in_array(strtolower($winning), array_map('strtolower', langs("vote_against", "../")))) {
 		echo "|close=Motion rejetée\n";
 		echo "|result=".lang("vote_against")."\n";
 	}

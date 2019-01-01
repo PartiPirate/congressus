@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -37,6 +37,7 @@ require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/VoteBo.php");
+require_once("engine/bo/TagBo.php");
 require_once("language/language.php");
 
 require_once("engine/utils/PersonaeClient.php");
@@ -54,6 +55,7 @@ $motionBo  = MotionBo::newInstance($connection, $config);
 $agendaBo  = AgendaBo::newInstance($connection, $config);
 $noticeBo  = NoticeBo::newInstance($connection, $config);
 $voteBo    = VoteBo::newInstance($connection, $config);
+$tagBo     = TagBo::newInstance($connection, $config);
 
 $motionId = intval($_REQUEST["motionId"]);
 
@@ -75,6 +77,14 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
 	$end = $end->add($duration);
 
     $motion["mot_date"] = $end->format("Y-m-d");
+
+	$motion["mot_tag_ids"] = json_decode($motion["mot_tag_ids"]);
+	$motion["mot_tags"] = array();
+	
+	if (count($motion["mot_tag_ids"])) {
+		$tags = $tagBo->getByFilters(array("tag_ids" => $motion["mot_tag_ids"]));
+		$motion["mot_tags"] = $tags;
+	}
 
     $voters = array();
     $nbVoters = 0;

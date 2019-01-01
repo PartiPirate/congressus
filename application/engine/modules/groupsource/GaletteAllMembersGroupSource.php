@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2018 Cédric Levieux, Parti Pirate
+    Copyright 2018-2019 Cédric Levieux, Parti Pirate
     
     This file is part of Congressus.
     
@@ -78,7 +78,7 @@ class GaletteAllMembersGroupSource {
 		foreach($members as $member) {
 			$people = array("mem_id" => $member["id_adh"]);
 			$people["mem_nickname"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
-			$people["mem_power"] = 1;
+			$people["mem_power"] = isset($config["modules"]["GaletteAllMembersGroups"]["votePower"]) ? $config["modules"]["GaletteAllMembersGroups"]["votePower"] : 1;
 			$people["mem_noticed"] = 1;
 			$people["mem_voting"] = $notice["not_voting"];
 			$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
@@ -102,7 +102,7 @@ class GaletteAllMembersGroupSource {
     }
 
     function addMotionNoticeVoters($queryBuilder, $filters) {
-/*        
+        
         global $config;
 		//  galette groups
 
@@ -113,20 +113,22 @@ class GaletteAllMembersGroupSource {
             $galetteDatabase .= ".";
         }
 
+/*
 		$queryBuilder->join($galetteDatabase."galette_groups",		    	"gg.id_group = not_target_id AND not_target_type = 'galette_groups'",	"gg", "left");
-
+*/
 		if (isset($filters["vot_member_id"])) {
-			$queryBuilder->join($galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group	AND ggm.id_adh = :vot_member_id",	    	"ggm", "left");
+//			$queryBuilder->join($galetteDatabase."galette_groups_members",	"ggg.id_group = ggm.id_group	AND ggm.id_adh = :vot_member_id",	    	"ggm", "left");
+    		$queryBuilder->join($galetteDatabase."galette_adherents", 			"ggama.id_adh = :vot_member_id",								    			"ggama", "left");
 		}
 		else {
-			$queryBuilder->join($galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group",								    		"ggm", "left");
+//			$queryBuilder->join($galetteDatabase."galette_groups_members",	"gg.id_group = ggm.id_group",								    		"ggm", "left");
+    		$queryBuilder->join($galetteDatabase."galette_adherents", 			"1 == 1",								    			"ggama", "left");
 		}
 
-		// TODO 2 <= externalize
-		$queryBuilder->addSelect(2, "gga_vote_power");
+
+		$queryBuilder->addSelect(isset($config["modules"]["GaletteAllMembersGroups"]["votePower"]) ? $config["modules"]["GaletteAllMembersGroups"]["votePower"] : 1, "gga_vote_power");
 		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
-		$queryBuilder->join($galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",								    			"gga", "left");
-*/		
+		
     }
 
     function getMaxVotepower($motion) {
@@ -134,7 +136,7 @@ class GaletteAllMembersGroupSource {
     }
 
     function getVoterNotNull() {
-    	return "(gga.id_adh IS NOT NULL)";
+    	return "(ggama.id_adh IS NOT NULL)";
     }
 }
 

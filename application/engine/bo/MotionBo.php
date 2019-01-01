@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -120,6 +120,9 @@ class MotionBo {
 			$orSeparator = "";
 
 			foreach($this->config["modules"]["groupsources"] as $groupSourceKey) {
+				
+//				echo "Go through : " . $groupSourceKey . "<br> \n";
+				
 				$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 
 		    	$groupSource->addMotionNoticeVoters($queryBuilder, $filters);

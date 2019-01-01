@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2018 Cédric Levieux, Parti Pirate
+	Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Installer.
 
@@ -144,6 +144,7 @@ $schema["tables"]["motions"]["fields"]["mot_author_id"] = array("type" => "bigin
 $schema["tables"]["motions"]["fields"]["mot_agenda_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["motions"]["fields"]["mot_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motions"]["fields"]["mot_status"] = array("type" => "enum", "size" => "'construction','voting','resolved'", "null" => false, "default" => "construction");
+$schema["tables"]["motions"]["fields"]["mot_tag_ids"] = array("type" => "varchar", "size" => 2048, "null" => false, "default" => "[]");
 $schema["tables"]["motions"]["fields"]["mot_pinned"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0", "comment" => 'set to 1 to force the anymous mode during the vote');
 $schema["tables"]["motions"]["fields"]["mot_anonymous"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motions"]["fields"]["mot_type"] = array("type" => "enum", "size" => "'yes_no','a_b_c'", "null" => false, "default" => "yes_no");
@@ -158,6 +159,7 @@ $schema["tables"]["motions"]["indexes"]["mot_deleted"] = array("mot_deleted");
 $schema["tables"]["motions"]["indexes"]["mot_agenda_id"] = array("mot_agenda_id");
 $schema["tables"]["motions"]["indexes"]["mot_pinned"] = array("mot_pinned");
 $schema["tables"]["motions"]["indexes"]["mot_trashed"] = array("mot_trashed");
+$schema["tables"]["motions"]["indexes"]["mot_tag_ids"] = array("mot_tag_ids");
 
 $schema["tables"]["motion_propositions"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["motion_propositions"]["fields"]["mpr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
@@ -257,5 +259,11 @@ $schema["tables"]["customizer_properties"]["fields"]["cpr_key"] = array("type" =
 $schema["tables"]["customizer_properties"]["fields"]["cpr_value"] = array("type" => "text", "null" => true);
 $schema["tables"]["customizer_properties"]["indexes"]["cpr_customizer_id"] = array("cpr_customizer_id");
 $schema["tables"]["customizer_properties"]["indexes"]["cpr_key"] = array("cpr_key");
+
+$schema["tables"]["tags"] = array("fields" => array(), "indexes" => array());
+$schema["tables"]["tags"]["fields"]["tag_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["tags"]["fields"]["tag_server_id"] = array("type" => "bigint", "size" => 20, "null" => false, "default" => "0");
+$schema["tables"]["tags"]["fields"]["tag_label"] = array("type" => "varchar", "size" => 255, "null" => true);
+$schema["tables"]["tags"]["indexes"]["tag_server_id"] = array("tag_server_id");
 
 ?>

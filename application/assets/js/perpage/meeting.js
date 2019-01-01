@@ -32,6 +32,9 @@
 /* global emojione */
 /* global goDownPoint */
 
+/* global keyupTimeoutId */
+/* global setMotionTags */
+
 var judgmentVoteIsMandatory = false;
 
 keyupTimeoutId = null;
@@ -99,7 +102,7 @@ function hasWritingRight(id) {
 }
 
 function isPresident(id) {
-	hasRight = false;
+	var hasRight = false;
 	hasRight |= $(".mee_president_member_id").data("id") == id;
 
 	return hasRight;
@@ -284,12 +287,13 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-add-proposition").show();
 					motionActions.find(".btn-do-vote").show();
 					motionActions.find(".btn-remove-motion").show();
-
 					motionActions.find(".btn-motion-limits").show();
 					motionActions.find(".btn-motion-limits").removeClass("active").removeClass("disabled");
 					motionActions.find(".btn-motion-anonymous").show();
 					motionActions.find(".btn-see-motion-stats").hide();
 					motionActions.find(".btn-see-motion-delegations").hide();
+					motionContainer.find(".btn-motion-add-tag").show();
+					motionContainer.find(".btn-remove-tag").show();
 					break;
 				case "voting":
 					motionActions.find(".btn-do-close").show();
@@ -299,6 +303,8 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-motion-anonymous").show();
 					motionActions.find(".btn-see-motion-stats").show();
 					motionActions.find(".btn-see-motion-delegations").show();
+					motionContainer.find(".btn-motion-add-tag").hide();
+					motionContainer.find(".btn-remove-tag").hide();
 					break;
 				case "resolved":
 					motionActions.find(".btn-motion-limits").addClass("disabled");
@@ -306,12 +312,16 @@ function setAgendaMotion(id, motions) {
 					motionActions.find(".btn-motion-anonymous").hide();
 					motionActions.find(".btn-see-motion-stats").show();
 					motionActions.find(".btn-see-motion-delegations").show();
+					motionContainer.find(".btn-motion-add-tag").hide();
+					motionContainer.find(".btn-remove-tag").hide();
 					break;
 				default:
 			}
 
 			if (!hasRight(getUserId(), "handle_motion")) {
 				motionActions.find(".btn-motion-limits.btn-motion-limits").hide();
+				motionContainer.find(".btn-motion-add-tag").hide();
+				motionContainer.find(".btn-remove-tag").hide();
 			}
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
 
@@ -351,6 +361,11 @@ function setAgendaMotion(id, motions) {
 			proposition.find(".proposition-label").text(motion.mpr_label);
 		}
 		proposition.removeClass("to-delete");
+	}
+
+	if (motionContainer.data("tag-ids") != JSON.stringify(motion.mot_tag_ids)) {
+		setMotionTags(motion.mot_id, motion.mot_tag_ids);
+		motionContainer.data("tag-ids", JSON.stringify(motion.mot_tag_ids));
 	}
 
 	propositions.children(".to-delete").remove();
@@ -1534,191 +1549,6 @@ function addConclusionHandlers() {
 	});
 }
 
-function addMotionHandlers() {
-	$("#agenda_point ul.objects").on("mouseenter", ".motion h4,.proposition,.motion-description", function(event) {
-		if (!hasRight(getUserId(), "handle_motion")) return;
-		if ($(this).parents(".motion").data("status") == "resolved") return;
-
-		if (!$(this).find("input:visible,textarea:visible").length) {
-			$(this).find(".glyphicon-pencil").show();
-			$(this).find("button.btn-remove-proposition").show();
-		}
-	});
-
-	$("#agenda_point ul.objects").on("mouseleave", ".motion h4,.proposition,.motion-description", function(event) {
-		$(this).find(".glyphicon-pencil").hide();
-		$(this).find("button.btn-remove-proposition").hide();
-	});
-
-	$("#agenda_point ul.objects").on("click", ".proposition button.btn-remove-proposition", function(event) {
-		if (!hasRight(getUserId(), "handle_motion")) return;
-		if ($(this).parents(".motion").data("status") == "resolved") return;
-
-		var agendaId = $("#agenda_point").data("id");
-		var meetingId = $(".meeting").data("id");
-		var motionId = $(this).parents(".motion").data("id");
-
-		var proposition = $(this).parents(".proposition");
-
-		var propositionId = proposition.data("id");
-
-		bootbox.setLocale("fr");
-		bootbox.confirm(meeting_proposalDelete + " \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
-			if (result) {
-				$.post("meeting_api.php?method=do_removeMotionProposition", {
-					meetingId: meetingId,
-					pointId: agendaId,
-					motionId: motionId,
-					propositionId: propositionId
-				}, function(data) {}, "json");
-			}
-		});
-	});
-
-	$("#agenda_point ul.objects").on("click", ".motion h4,.proposition", function(event) {
-		// Click on vote button intercepted
-		if ($(event.target).hasClass("btn")) return;
-		if ($(event.target).hasClass("glyphicon")) return;
-
-		if (!hasRight(getUserId(), "handle_motion")) return;
-
-		if ($(this).find("input").length) {
-			$(this).find("input").focus();
-			return;
-		}
-
-		$(this).find(".glyphicon-pencil").hide();
-		$(this).find("button.btn-remove-proposition").hide();
-
-		var input = $("<input />", {"class": "form-control", "style": "width: 75%; display: inline-block;"});
-		var propertyText = $(this).find(".motion-title,.proposition-label");
-
-		var motionId = $(this).parents(".motion").data("id");
-		var property = "mot_title";
-		var propositionId = 0;
-
-		if ($(this).hasClass("proposition")) {
-			property = "mpr_label";
-			propositionId = $(this).data("id");
-			input.addClass("pull-left");
-			input.addClass("input-xs");
-		}
-		else {
-			input.addClass("input-sm");
-		}
-
-		input.val(propertyText.text());
-		input.blur(function() {
-//			return;
-			clearKeyup();
-			// update the text into the server
-			var newText = input.val();
-
-			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-				propertyText.text(newText);
-				propertyText.show();
-				input.remove();
-			}, "json");
-		});
-
-		input.keyup(function() {
-//			return;
-			clearKeyup();
-			keyupTimeoutId = setTimeout(function() {
-				var newText = input.val();
-
-				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-				}, "json");
-			}, 1500);
-		});
-
-		propertyText.after(input);
-		propertyText.hide();
-
-		input.focus();
-	});
-
-	$("#agenda_point ul.objects").on("click", ".btn-motion-anonymous", function(event) {
-		if (!hasRight(getUserId(), "handle_motion")) return;
-
-		var button = $(this);
-		button.addClass("disabled");
-
-		button.toggleClass("active");
-		var checked = button.hasClass("active");
-
-		var motionId = $(this).parents(".motion").data("id");
-		var property = "mot_anonymous";
-		var propositionId = 0;
-		var newText = checked ? 1 : 0;
-
-		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-		}, "json");
-	});
-
-	$("#agenda_point ul.objects").on("click", ".btn-motion-limits", function(event) {
-		if (!hasRight(getUserId(), "handle_motion")) return;
-
-		$(this).parents(".motion").find(".btn-motion-limits").addClass("disabled");
-
-		var motionId = $(this).parents(".motion").data("id");
-		var property = "mot_win_limit";
-		var propositionId = 0;
-		var newText = $(this).val();
-
-		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-		}, "json");
-	});
-
-	$("#agenda_point ul.objects").on("click", ".motion-description", function(event) {
-		if (!hasRight(getUserId(), "handle_motion")) return;
-
-		if ($(this).find("textarea").length) {
-			$(this).find("textarea").focus();
-			return;
-		}
-
-		$(this).find(".glyphicon-pencil").hide();
-
-		var input = $("<textarea />", {"class": "form-control", "style": "width: 100%;"});
-		var propertyText = $(this).find(".motion-description-text");
-
-		var motionId = $(this).parents(".motion").data("id");
-		var property = "mot_description";
-		var propositionId = 0;
-
-		input.text(propertyText.text());
-		input.blur(function() {
-//			return;
-			clearKeyup();
-			// update the text into the server
-			var newText = input.val();
-
-			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-				propertyText.text(newText);
-				propertyText.show();
-				input.remove();
-			}, "json");
-		});
-
-		input.keyup(function() {
-//			return;
-			clearKeyup();
-			keyupTimeoutId = setTimeout(function() {
-				var newText = input.val();
-
-				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
-				}, "json");
-			}, 1500);
-		});
-
-		propertyText.after(input);
-		propertyText.hide();
-
-		input.focus();
-	});
-}
-
 function updateTasks() {
 	var meetingId = $(".meeting").data("id");
 
@@ -1825,7 +1655,6 @@ $(function() {
 	addChatHandlers();
 	addTaskHandlers();
 	addConclusionHandlers();
-	addMotionHandlers();
 	addAgendaPointHandlers();
 
 //	addVideoHandlers();

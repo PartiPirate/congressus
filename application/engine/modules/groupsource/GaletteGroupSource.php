@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2019 Cédric Levieux, Parti Pirate
     
     This file is part of Congressus.
     
@@ -81,7 +81,7 @@ class GaletteGroupSource {
 		foreach($members as $member) {
 			$people = array("mem_id" => $member["id_adh"]);
 			$people["mem_nickname"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
-			$people["mem_power"] = 2;
+			$people["mem_power"] = isset($config["modules"]["GaletteGroups"]["votePower"]) ? $config["modules"]["GaletteGroups"]["votePower"] : 1;
 			$people["mem_noticed"] = 1;
 			$people["mem_voting"] = $notice["not_voting"];
 			$people["mem_meeting_president"] = ($people["mem_id"] == $meeting["mee_president_member_id"]) ? 1 : 0;
@@ -125,7 +125,7 @@ class GaletteGroupSource {
 		}
 
 		// TODO 2 <= externalize
-		$queryBuilder->addSelect(2, "gga_vote_power");
+		$queryBuilder->addSelect(isset($config["modules"]["GaletteGroups"]["votePower"]) ? $config["modules"]["GaletteGroups"]["votePower"] : 1, "gga_vote_power");
 		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
 		$queryBuilder->join($galetteDatabase."galette_adherents", 			"gga.id_adh = ggm.id_adh",								    			"gga", "left");
     }

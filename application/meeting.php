@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -19,6 +19,7 @@
 include_once("header.php");
 
 require_once("engine/bo/GuestBo.php");
+require_once("engine/bo/TagBo.php");
 require_once("engine/utils/bootstrap_forms.php");
 
 if (!$meeting) {
@@ -52,6 +53,9 @@ if (!$userId) {
 	}
 	$guestId = $_SESSION["guestId"];
 }
+
+$tagBo = TagBo::newInstance($connection, $config);
+$tags = $tagBo->getByFilters();
 
 $hasChat = false;
 $leftColumn = 3;
@@ -756,6 +760,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<span class="number-of-voters">XX</span> <?php echo lang("meeting_voters"); ?>
 				</span>
 			</div>
+			<?php	if (count($tags)) { ?>
+			<div class="motion-tags" style="margin-top: 5px;">
+				<div class="motion-tags-container"></div>
+				<button value="0" type="button" class="btn btn-default btn-xs btn-motion-add-tag"><?php echo lang("meeting_addTag"); ?></button>
+				<div class="clearfix"></div>
+			</div>
+			<?php	} ?>
 			<div class="motion-charts" data-status="to-init" style="display: none; padding-top: 10px;">
 				<canvas class="chart-area" style="width: 100%; height: 400px;"></canvas>
 			</div>
@@ -894,12 +905,19 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</div>
 	</div>
 
+	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px;" data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
+		<span class="speaker" style="text-align: left;">${tag_label}</span>
+		<span class="text-danger btn-remove-tag"
+			style="display: none;" title="<?php echo lang("meeting_removeTag"); ?>"><span class="glyphicon glyphicon-remove"></span>
+		</span>
+	</div>
 
 </templates>
 
 <div id="exportModal"></div>
 
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
+<?php	include("meeting/addTag_modal.php"); ?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
 	<div class="modal-dialog">
@@ -1040,6 +1058,8 @@ var majority_judgement_values = <?php echo json_encode($config["congressus"]["ba
 
 var speakingTimesChartTitle = "Temps de parole par personne";
 var motionDelegationsTitle = "Délégations en jeu";
+
+var tags = <?php echo json_encode($tags); ?>;
 
 isWriting = <?php echo json_encode(lang("meeting_user_is_writing", false)); ?>; 
 

@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -33,6 +33,13 @@
 /* global positiveColor */
 /* global negativeColor */
 /* global shortenLabel */
+
+/* global keyupTimeoutId */
+/* global clearKeyup */
+/* global hasRight */
+/* global getUserId */
+/* global bootbox */
+/* global tags */
 
 function voteRound(value) {
 	return (Math.round(value * 100, 2) / 100);
@@ -86,7 +93,7 @@ function computeMotion(motion) {
 					proposition.removeClass("text-success");
 				}
 			}
-			
+
 			var powers = proposition.find(".powers");
 			var html = powers.html();
 
@@ -320,8 +327,290 @@ function dumpMotion(motion) {
 
 }
 
+function addMotionHandlers() {
+	$("#agenda_point ul.objects").on("mouseenter", ".motion h4,.proposition,.motion-description", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+		if ($(this).parents(".motion").data("status") == "resolved") return;
+
+		if (!$(this).find("input:visible,textarea:visible").length) {
+			$(this).find(".glyphicon-pencil").show();
+			$(this).find("button.btn-remove-proposition").show();
+		}
+	});
+
+	$("#agenda_point ul.objects").on("mouseleave", ".motion h4,.proposition,.motion-description", function(event) {
+		$(this).find(".glyphicon-pencil").hide();
+		$(this).find("button.btn-remove-proposition").hide();
+	});
+
+	$("#agenda_point ul.objects").on("click", ".proposition button.btn-remove-proposition", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+		if ($(this).parents(".motion").data("status") == "resolved") return;
+
+		var agendaId = $("#agenda_point").data("id");
+		var meetingId = $(".meeting").data("id");
+		var motionId = $(this).parents(".motion").data("id");
+
+		var proposition = $(this).parents(".proposition");
+
+		var propositionId = proposition.data("id");
+
+		bootbox.setLocale("fr");
+		bootbox.confirm(meeting_proposalDelete + " \"" + proposition.children(".proposition-label").text() + "\" ?", function(result) {
+			if (result) {
+				$.post("meeting_api.php?method=do_removeMotionProposition", {
+					meetingId: meetingId,
+					pointId: agendaId,
+					motionId: motionId,
+					propositionId: propositionId
+				}, function(data) {}, "json");
+			}
+		});
+	});
+
+	$("#agenda_point ul.objects").on("click", ".motion h4,.proposition", function(event) {
+		// Click on vote button intercepted
+		if ($(event.target).hasClass("btn")) return;
+		if ($(event.target).hasClass("glyphicon")) return;
+
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		if ($(this).find("input").length) {
+			$(this).find("input").focus();
+			return;
+		}
+
+		$(this).find(".glyphicon-pencil").hide();
+		$(this).find("button.btn-remove-proposition").hide();
+
+		var input = $("<input />", {"class": "form-control", "style": "width: 75%; display: inline-block;"});
+		var propertyText = $(this).find(".motion-title,.proposition-label");
+
+		var motionId = $(this).parents(".motion").data("id");
+		var property = "mot_title";
+		var propositionId = 0;
+
+		if ($(this).hasClass("proposition")) {
+			property = "mpr_label";
+			propositionId = $(this).data("id");
+			input.addClass("pull-left");
+			input.addClass("input-xs");
+		}
+		else {
+			input.addClass("input-sm");
+		}
+
+		input.val(propertyText.text());
+		input.blur(function() {
+//			return;
+			clearKeyup();
+			// update the text into the server
+			var newText = input.val();
+
+			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				propertyText.text(newText);
+				propertyText.show();
+				input.remove();
+			}, "json");
+		});
+
+		input.keyup(function() {
+//			return;
+			clearKeyup();
+			keyupTimeoutId = setTimeout(function() {
+				var newText = input.val();
+
+				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				}, "json");
+			}, 1500);
+		});
+
+		propertyText.after(input);
+		propertyText.hide();
+
+		input.focus();
+	});
+
+	$("#agenda_point ul.objects").on("click", ".btn-motion-anonymous", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		var button = $(this);
+		button.addClass("disabled");
+
+		button.toggleClass("active");
+		var checked = button.hasClass("active");
+
+		var motionId = $(this).parents(".motion").data("id");
+		var property = "mot_anonymous";
+		var propositionId = 0;
+		var newText = checked ? 1 : 0;
+
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+		}, "json");
+	});
+
+	$("#agenda_point ul.objects").on("click", ".btn-motion-limits", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		$(this).parents(".motion").find(".btn-motion-limits").addClass("disabled");
+
+		var motionId = $(this).parents(".motion").data("id");
+		var property = "mot_win_limit";
+		var propositionId = 0;
+		var newText = $(this).val();
+
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+		}, "json");
+	});
+
+	$("#agenda_point ul.objects").on("click", ".motion-description", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		if ($(this).find("textarea").length) {
+			$(this).find("textarea").focus();
+			return;
+		}
+
+		$(this).find(".glyphicon-pencil").hide();
+
+		var input = $("<textarea />", {"class": "form-control", "style": "width: 100%;"});
+		var propertyText = $(this).find(".motion-description-text");
+
+		var motionId = $(this).parents(".motion").data("id");
+		var property = "mot_description";
+		var propositionId = 0;
+
+		input.text(propertyText.text());
+		input.blur(function() {
+//			return;
+			clearKeyup();
+			// update the text into the server
+			var newText = input.val();
+
+			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				propertyText.text(newText);
+				propertyText.show();
+				input.remove();
+			}, "json");
+		});
+
+		input.keyup(function() {
+//			return;
+			clearKeyup();
+			keyupTimeoutId = setTimeout(function() {
+				var newText = input.val();
+
+				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+				}, "json");
+			}, 1500);
+		});
+
+		propertyText.after(input);
+		propertyText.hide();
+
+		input.focus();
+	});
+
+	$("#agenda_point ul.objects").on("click", ".btn-motion-add-tag", function(event) {
+		if (!hasRight(getUserId(), "handle_motion")) return;
+
+		$(this).parents(".motion").find(".btn-motion-limits").addClass("disabled");
+
+		var motionId = $(this).parents(".motion").data("id");
+		$("#add-tag-modal input[name=motionId]").val(motionId);
+
+		var motionContainer = $("#motion-" + motionId);
+		var tagIds = motionContainer.data("tag-ids");
+		tagIds = JSON.parse(tagIds);
+
+		$("#add-tag-modal input[type=checkbox]").each(function() {
+			$(this).prop("checked", false);
+			for(var index = 0; index < tagIds.length; ++index) {
+				if ($(this).val() == tagIds[index]) {
+					$(this).prop("checked", true);
+					break;
+				}
+			}
+		});
+
+		$("#add-tag-modal").modal("show");
+	});
+
+	$(".btn-modify-tags").click(function(event) {
+		var motionId = $("#add-tag-modal input[name=motionId]").val();
+		var tagIds = [];
+		$("#add-tag-modal input[type=checkbox]:checked").each(function() {
+			tagIds.push($(this).val());
+		});
+
+		var property = "mot_tag_ids";
+		var propositionId = 0;
+		var newText = JSON.stringify(tagIds);
+
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+			setMotionTags(motionId, tagIds);
+			$("#add-tag-modal").modal("hide");
+		}, "json");
+		
+	});
+
+	$("#agenda_point ul.objects").on("click", ".btn-remove-tag", function(event) {
+		var tag = $(this).parents(".tag");
+		var motionId = tag.data("motion-id");
+		var toRemoveTagId = tag.data("tag-id");
+
+		var motionContainer = $("#motion-" + motionId);
+		var tagIds = motionContainer.data("tag-ids");
+		tagIds = JSON.parse(tagIds);
+		var newTagIds = [];
+
+		for(var index = 0; index < tagIds.length; ++index) {
+			if (toRemoveTagId != tagIds[index]) {
+				newTagIds.push(tagIds[index]);
+			}			
+		}
+
+		var property = "mot_tag_ids";
+		var propositionId = 0;
+		var newText = JSON.stringify(newTagIds);
+
+		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: newText}, function(data) {
+			tag.remove();
+			motionContainer.data("tag-ids", JSON.stringify(newTagIds));
+		}, "json");
+	});
+}
+
+function setMotionTags(motionId, tagIds) {
+	var motionContainer = $("#motion-" + motionId);
+	var motionTagsContainer = motionContainer.find(".motion-tags-container");
+	
+	motionTagsContainer.children().remove();
+
+	for(var index = 0; index < tagIds.length; ++index) {
+		var tagId = tagIds[index];
+		
+		for(var jndex = 0; jndex < tags.length; ++jndex) {
+			var tag = tags[jndex];
+			if (tag["tag_id"] == tagId) {
+				
+				var tagData = {tag_id: tag.tag_id, tag_label: tag.tag_label, mot_id: motionId}
+
+				var tagLabel = $("div[data-template-id=tag]").template("use", {data: tagData});
+
+				motionTagsContainer.append(tagLabel);
+
+				break;
+			}
+		}
+	}
+}
+
 $(function() {
 	$(".btn-local-anonymous").click(function() {
 		$(this).toggleClass("active");
 	});
-})
+
+	addMotionHandlers();
+
+});

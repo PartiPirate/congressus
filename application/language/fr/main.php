@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -27,6 +27,7 @@ $lang["common_back"] = "Retour";
 $lang["common_connect"] = "Connecter";
 $lang["common_close"] = "Fermer";
 $lang["common_create"] = "Créer";
+$lang["common_modify"] = "Modifier";
 $lang["common_date"] = "Date";
 $lang["common_add"] = "Ajouter";
 $lang["common_delete"] = "Supprimer";
@@ -179,6 +180,8 @@ $lang["meeting_voteClose"] = "Fermer le vote";
 $lang["meeting_voteNow"] = "Passer au vote";
 $lang["meeting_votePower"] = "Pouvoir du vote";
 $lang["meeting_voters"] = "Votants";
+$lang["meeting_addTag"] = "Ajout d'un libellé";
+$lang["meeting_removeTag"] = "Retire ce libellé";
 $lang["meeting_waiting"] = "Prête";
 $lang["meeting_voteExternal"] = "Interface de vote";
 $lang["meeting_external_chat"] = "Tchat";
@@ -192,6 +195,7 @@ $lang["meeting_motion_to_vote"] = "La motion {motionTitle} dans le point {agenda
 $lang["meeting_motion_close_vote"] = "La motion {motionTitle} dans le point {agendaLabel} est fermée au vote";
 
 $lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
+$lang["addTag_title"] = "Gestion des libellés de la motion";
 
 $lang["myMeetings_closed"] = "Réunions terminés";
 $lang["myMeetings_construction"] = "Réunions en construction";
@@ -423,6 +427,7 @@ $lang["mypreferences_style_themeSlate"] = "Slate";
 $lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
 $lang["myVotes_maxPower"] = "Points à distribuer : {value}";
 $lang["myVotes_voteMethod"] = "Méthode : {value}";
+$lang["myVotes_tagsMethod"] = "Libellés: {tags}";
 $lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce que les réunions ne sont pas ouvertes.";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";

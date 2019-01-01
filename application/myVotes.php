@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -19,6 +19,7 @@
 include_once("header.php");
 
 require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/TagBo.php");
 require_once("engine/utils/Parsedown.php");
 require_once("engine/emojione/autoload.php");
 
@@ -26,6 +27,7 @@ $Parsedown = new Parsedown();
 $emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 $motionBo = MotionBo::newInstance($connection, $config);
+$tagBo = TagBo::newInstance($connection, $config);
 
 $userId = SessionUtils::getUserId($_SESSION);
 if (!$userId) $userId = -1;
@@ -59,6 +61,14 @@ $motions = $motionBo->getByFilters($filters);
 $sortedMotions = array();
 
 foreach($motions as $motion) {
+	$motion["mot_tag_ids"] = json_decode($motion["mot_tag_ids"]);
+	$motion["mot_tags"] = array();
+	
+	if (count($motion["mot_tag_ids"])) {
+		$tags = $tagBo->getByFilters(array("tag_ids" => $motion["mot_tag_ids"]));
+		$motion["mot_tags"] = $tags;
+	}
+
 	if(!isset($sortedMotions[$motion["mot_id"]])) {
 		$sortedMotions[$motion["mot_id"]] = $motion;
 		$sortedMotions[$motion["mot_id"]]["propositions"] = array();
@@ -152,6 +162,14 @@ function sortPropositions($a, $b) {
 		<h4><?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?></h4>
 		<h4><?php echo str_replace("{value}", $maxVotePower, lang("myVotes_maxPower")); ?></h4>
 		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?></h4>
+		<?php	if (count($motion["mot_tags"])) { 
+					$tags = array();
+					foreach($motion["mot_tags"] as $tag) {
+						$tags[] = $tag["tag_label"];
+					}
+		?>
+		<h4><?php echo str_replace("{tags}", implode(", ", $tags), lang("myVotes_tagsMethod")); ?></h4>
+		<?php 	} ?>
 
 		<div class="propositions">
 	<?php	

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -27,6 +27,7 @@ $lang["common_back"]    = "Back";
 $lang["common_connect"] = "Connect";
 $lang["common_close"]   = "Close";
 $lang["common_create"]  = "Create";
+$lang["common_modify"]  = "Modify";
 $lang["common_date"]    = "Date";
 $lang["common_add"]     = "Add";
 $lang["common_delete"]  = "Delete";
@@ -176,6 +177,8 @@ $lang["meeting_voteClose"]      = "End the vote";
 $lang["meeting_voteNow"]        = "Vote now";
 $lang["meeting_votePower"]      = "Vote power";
 $lang["meeting_voters"]         = "Voters";
+$lang["meeting_addTag"]         = "Add tag";
+$lang["meeting_removeTag"]      = "Remove this tag";
 $lang["meeting_waiting"]        = "Ready";
 $lang["meeting_voteExternal"]   = "Vote interface";
 $lang["meeting_external_chat"]  = "Chat";
@@ -411,6 +414,7 @@ $lang["mypreferences_style_themeSlate"] = "Slate";
 $lang["myVotes_numberOfMotions"] = "Number of motions: {value}";
 $lang["myVotes_maxPower"] = "Points to distribute: {value}";
 $lang["myVotes_voteMethod"] = "Method: {value}";
+$lang["myVotes_tagsMethod"] = "Tags: {tags}";
 $lang["myVotes_no_motion"] = "There is no motion to vote, either because you do not have the right to vote, or because the meeting are not open.";
 
 $lang["forgotten_guide"] = "You forgot your password, welcome on the page that will let you recover your access";

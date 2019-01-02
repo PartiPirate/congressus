@@ -905,11 +905,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</div>
 	</div>
 
-	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px;" data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
-		<span class="speaker" style="text-align: left;">${tag_label}</span>
-		<span class="text-danger btn-remove-tag"
-			style="display: none;" title="<?php echo lang("meeting_removeTag"); ?>"><span class="glyphicon glyphicon-remove"></span>
-		</span>
+	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px; height: 18px; " data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
+		<span class="" style="text-align: left;">${tag_label}</span>
+		<span class="text-danger btn-remove-tag glyphicon glyphicon-remove"	style="display: none;" title="<?php echo lang("meeting_removeTag"); ?>"></span>
 	</div>
 
 </templates>

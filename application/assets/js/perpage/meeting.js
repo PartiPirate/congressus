@@ -282,6 +282,11 @@ function setAgendaMotion(id, motions) {
 				motionActions.find(".btn-motion-limits.btn-motion-limits").prop("disabled", false);
 			}
 
+			if (motionContainer.data("tag-ids") != JSON.stringify(motion.mot_tag_ids)) {
+				setMotionTags(motion.mot_id, motion.mot_tag_ids);
+				motionContainer.data("tag-ids", JSON.stringify(motion.mot_tag_ids));
+			}
+
 			switch(motion.mot_status) {
 				case "construction":
 					motionActions.find(".btn-add-proposition").show();
@@ -361,11 +366,6 @@ function setAgendaMotion(id, motions) {
 			proposition.find(".proposition-label").text(motion.mpr_label);
 		}
 		proposition.removeClass("to-delete");
-	}
-
-	if (motionContainer.data("tag-ids") != JSON.stringify(motion.mot_tag_ids)) {
-		setMotionTags(motion.mot_id, motion.mot_tag_ids);
-		motionContainer.data("tag-ids", JSON.stringify(motion.mot_tag_ids));
 	}
 
 	propositions.children(".to-delete").remove();

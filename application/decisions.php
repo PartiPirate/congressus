@@ -18,6 +18,7 @@
 */
 include_once("header.php");
 
+require_once("engine/bo/TagBo.php");
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/SearchBo.php");
 
@@ -36,7 +37,9 @@ if (isset($_REQUEST["id"])) {
     $groupId = $_REQUEST["id"];
 }
 
+$tagBo = TagBo::newInstance($connection, $config);
 $searchBo = SearchBo::newInstance($connection, $config);
+
 $conclusions = $searchBo->conclusionSearch(array("query" => ""));
 $propositions = $searchBo->propositionSearch(array("query" => "", "mot_status" => "resolved", "mee_type" => "meeting"));
 
@@ -124,8 +127,17 @@ foreach($propositions as $proposition) {
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_title"] = $proposition["mot_title"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_description"] = $proposition["mot_description"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_win_limit"] = $proposition["mot_win_limit"];
-        
+
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["propositions"] = array();
+
+    	$proposition["mot_tag_ids"] = json_decode($proposition["mot_tag_ids"]);
+    	$objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_tags"] = array();
+    	
+    	if (count($proposition["mot_tag_ids"])) {
+    		$tags = $tagBo->getByFilters(array("tag_ids" => $proposition["mot_tag_ids"]));
+    		$objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"][$motionIndex]["mot_tags"] = $tags;
+    	}
+
     }
 
 //    echo json_encode($proposition["object"]);
@@ -361,6 +373,13 @@ foreach($propositions as $proposition) {
                     			    
                     			    
                     			</div>
+                    			<?php   if (count($object["mot_tags"])) { ?>
+                    			<div class="motion-tags">
+                    			    <?php   foreach($object["mot_tags"] as $tag) { ?>
+                    			        <span class="badge"><?php echo $tag["tag_label"]; ?></span>
+                    			    <?php   } ?>
+                    			</div>
+                    			<?php   } ?>
                     		</li>
 
 

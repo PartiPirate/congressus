@@ -41,6 +41,9 @@ class SessionUtils {
 	}
 
 	static function setLanguage($language, &$session) {
+		if (strlen($language) > 2) {
+			$language = substr($language, 0, 2);
+		}
 		$session["language"] = $language;
 	}
 

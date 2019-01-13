@@ -655,3 +655,11 @@ a[disabled] {
     display: inline-block;
     margin-right: 2px;
 }
+
+.judgement {
+    filter: brightness(75%) !important;
+}
+
+.judgement.active {
+    filter: brightness(100%) !important;
+}

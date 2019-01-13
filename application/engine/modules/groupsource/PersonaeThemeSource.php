@@ -36,7 +36,7 @@ class PersonaeThemeSource {
         $themes = $themeBo->getThemes(array("with_group_information" => true));
 
 		echo "		<!-- Themes -->\n";
-		echo "			<option class=\"dlp_themes\" value=\"0\" >Veuillez choisir un theme</option>\n";
+		echo "			<option class=\"dlp_themes\" value=\"0\" >".lang("pts_choose")."</option>\n";
 
         $groupLabel = null;
 

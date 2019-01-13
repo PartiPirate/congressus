@@ -276,6 +276,10 @@ $lang["createMeeting_type_aperitif"]                = "Aperitif";
 $lang["createMeeting_type_generalMeeting"]          = "General Meeting";
 $lang["createMeeting_type_extraordinaryGeneralMeeting"] = "Extraordinary General Meeting";
 $lang["createMeeting_visualIndication"]             = "Visual indication:";
+$lang["createMeeting_information"]                  = "Information";
+$lang["createMeeting_convocation"]                  = "Convocation";
+$lang["createMeeting_agenda"]                       = "Agenda";
+$lang["createMeeting_location"]                     = "Location";
 
 $lang["createMeeting_visualIndication_info"]        = "Crew";
 $lang["createMeeting_visualIndication_important"]   = "Team";
@@ -292,13 +296,15 @@ $lang["createMeeting_base_type_construction"]       = "Chat and co-building";
 $lang["createMeeting_type_meeting_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Meetings and decision making are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
 $lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Chat and co-building are usually used in asynchronous mode to promote texts through approval and improvments";
 
-$lang["notice_source"]          = "Primary source";
-$lang["notice_group"]           = "Group";
-$lang["notice_groupGalette"]    = "Galette group";
-$lang["notice_themes"]          = "Theme";
-$lang["notice_customUsers"]     = "Custom users";
-$lang["notice_groups"]          = "Noticed groups";
-$lang["notice_groupAllGalette"] = "All members";
+$lang["notice_source"]           = "Primary source";
+$lang["notice_secondary_source"] = "Secondary source";
+$lang["notice_group"]            = "Group";
+$lang["notice_groupGalette"]     = "Galette group";
+$lang["notice_themes"]           = "Theme";
+$lang["notice_customUsers"]      = "Custom users";
+$lang["notice_groups"]           = "Noticed groups";
+$lang["notice_groupAllGalette"]  = "All members";
+$lang["notice_has_voting_rights"] = "has voting rights";
 
 $lang["agenda_lines"]       = "Agenda";
 $lang["agenda_lines_help"]  = "Insert one point per line to the agenda, add spaces to indent and create dependancy between points.";

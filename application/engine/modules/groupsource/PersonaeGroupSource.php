@@ -36,7 +36,7 @@ class PersonaeGroupSource {
         $groups = $groupBo->getGroups();
 
 		echo "		<!-- Groups -->\n";
-		echo "			<option class=\"dlp_groups\" value=\"0\" >Veuillez choisir un groupe</option>\n";
+		echo "			<option class=\"dlp_groups\" value=\"0\" >".lang("pgs_choose")."</option>\n";
 
 		foreach($groups as $listGroup) {
 		    echo "		<option class=\"dlp_groups\"";

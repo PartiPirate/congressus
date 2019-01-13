@@ -40,10 +40,10 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Information</a></li>
-			<li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">Convocation</a></li>
-			<li role="presentation"><a href="#agenda" aria-controls="agenda" role="tab" data-toggle="tab">Ordre du jour</a></li>
-			<li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab">Localisation</a></li>
+			<li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo lang("createMeeting_information"); ?></a></li>
+			<li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab"><?php echo lang("createMeeting_convocation"); ?></a></li>
+			<li role="presentation"><a href="#agenda" aria-controls="agenda" role="tab" data-toggle="tab"><?php echo lang("createMeeting_agenda"); ?></a></li>
+			<li role="presentation"><a href="#location" aria-controls="location" role="tab" data-toggle="tab"><?php echo lang("createMeeting_location"); ?></a></li>
 		</ul>
 
 		<!-- Tab panes -->
@@ -130,7 +130,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 		</div>
 
 		<div class="form-group not_mails">
-			<label for="not_target_id" class="col-md-4 control-label">Source secondaire :</label>
+			<label for="not_target_id" class="col-md-4 control-label"><?php echo lang("notice_secondary_source"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="not_target_id" name="not_target_id">
 
@@ -159,7 +159,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 					value="1"/>
 			</div>
 			<div class="col-md-4">
-				<label class="form-control labelForCheckbox" for="not_voting">A le droit de vote</label>
+				<label class="form-control labelForCheckbox" for="not_voting"><?php echo lang("notice_has_voting_rights"); ?></label>
 			</div>
 		</div>
 

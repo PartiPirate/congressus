@@ -36,7 +36,7 @@ class GaletteGroupSource {
         $galetteGroups = $galetteBo->getGroups();
 
 		echo "		<!-- Galette groups -->\n";
-		echo "			<option class=\"galette_groups\" value=\"0\" >Veuillez choisir un groupe</option>\n";
+		echo "			<option class=\"galette_groups\" value=\"0\" >".lang("ggs_choose")."</option>\n";
 
 		foreach($galetteGroups as $listGroup) {
 		    echo "		<option class=\"galette_groups\"";

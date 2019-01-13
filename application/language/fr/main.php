@@ -281,6 +281,10 @@ $lang["createMeeting_type_aperitif"] = "Apéro";
 $lang["createMeeting_type_generalMeeting"] = "Assemblée Générale Ordinaire";
 $lang["createMeeting_type_extraordinaryGeneralMeeting"] = "Assemblée Générale Extra-ordinaire";
 $lang["createMeeting_visualIndication"] = "Indication visuelle :";
+$lang["createMeeting_information"] = "Information";
+$lang["createMeeting_convocation"] = "Convocation";
+$lang["createMeeting_agenda"] = "Ordre du jour";
+$lang["createMeeting_location"] = "Localisation";
 
 $lang["createMeeting_visualIndication_info"] = "Équipage";
 $lang["createMeeting_visualIndication_important"] = "Équipe";
@@ -298,12 +302,14 @@ $lang["createMeeting_type_meeting_explanation"] = "<i class='fa fa-info-circle' 
 $lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les discussions et co-constructions fonctionnent essentiellement en mode asynchrone permettant de soumettre des textes à l'approbation et à l'amélioration";
 
 $lang["notice_source"] = "Source primaire";
+$lang["notice_secondary_source"] = "Source secondaire";
 $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
 $lang["notice_customUsers"] = "Utilisateurs Custom";
 $lang["notice_groups"] = "Groupes convoqués";
 $lang["notice_groupAllGalette"] = "Tous les membres";
+$lang["notice_has_voting_rights"] = "a le droit de vote";
 
 $lang["agenda_lines"] = "Agenda";
 $lang["agenda_lines_help"] = "Mettez un point à l'ordre du jour par ligne, ajoutez des espaces pour indenter et créer des dépendances entre les points.";

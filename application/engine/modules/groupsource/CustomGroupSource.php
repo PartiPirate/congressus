@@ -36,7 +36,7 @@ class CustomGroupSource {
         global $connection;
 
 		echo "		<!-- Custom group -->\n";
-		echo "			<option class=\"cus_users\" value=\"0\" >Veuillez choisir un groupe</option>\n";
+		echo "			<option class=\"cus_users\" value=\"0\" >".lang("cgs_choose")."</option>\n";
 
 //		foreach($galetteGroups as $listGroup) {
 		    echo "		<option class=\"cus_users\"";

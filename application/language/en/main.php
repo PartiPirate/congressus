@@ -305,6 +305,7 @@ $lang["notice_customUsers"]      = "Custom users";
 $lang["notice_groups"]           = "Noticed groups";
 $lang["notice_groupAllGalette"]  = "All members";
 $lang["notice_has_voting_rights"] = "has voting rights";
+$lang["notice_has_voting_rights_help"] = "Give the voting right to the given group of persons for this meeting";
 
 $lang["agenda_lines"]       = "Agenda";
 $lang["agenda_lines_help"]  = "Insert one point per line to the agenda, add spaces to indent and create dependancy between points.";

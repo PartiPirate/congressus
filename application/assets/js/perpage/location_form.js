@@ -62,7 +62,7 @@ $(function() {
 	});
 	
 	$("#location").hover(function() {
-		if (hasWritingRight(getUserId())) {
+		if ((typeof hasWritingRight) != "undefined" && hasWritingRight(getUserId())) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {

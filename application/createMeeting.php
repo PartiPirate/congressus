@@ -159,7 +159,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 					value="1"/>
 			</div>
 			<div class="col-md-4">
-				<label class="form-control labelForCheckbox" for="not_voting"><?php echo lang("notice_has_voting_rights"); ?></label>
+				<label class="form-control labelForCheckbox" for="not_voting"><?php echo lang("notice_has_voting_rights"); ?> <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("notice_has_voting_rights_help"); ?>"></span></label>
 			</div>
 		</div>
 

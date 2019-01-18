@@ -147,6 +147,7 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     foreach($notices as $notice) {
         if (!$notice["not_voting"]) continue;
         if ($notice["not_target_type"] == "dlp_themes") {
+
             $delegations = $personaeClient->getNoticePowers($notice["not_target_id"], $motion, $votes);
 /*
             echo "<!--\n";

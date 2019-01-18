@@ -43,7 +43,7 @@ xssCleanArray($_POST);
 
 $method = $_GET["method"];
 
-error_log("Meeting API Method : $method");
+//error_log("Meeting API Method : $method");
 // Security
 
 if (strpos($method, "..") !== false) {

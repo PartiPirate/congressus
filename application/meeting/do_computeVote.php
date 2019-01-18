@@ -62,7 +62,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || true) {
     
     $data = array();
     
@@ -176,7 +176,29 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
                 $delegations["powers"][$people["mem_id"]]["delegation_level"] = 1;
             }
         }
+        else if ($notice["not_target_type"] == "galette_groups") {
+
+            $delegations = array("theme" => array());
+            $delegations["theme"]["the_voting_power"] = 1;
+            $delegations["votes"] = $votes;
+            $delegations["powers"] = array();
+
+            $groupSource = GroupSourceFactory::getInstance("galettegroups");
+            $pings = array();
+            $groupSource->updateNotice($meeting, $notice, $pings, $pings);
+            
+            foreach($notice["not_people"] as $people) {
+                $delegations["powers"][$people["mem_id"]] = array();
+                $delegations["powers"][$people["mem_id"]]["id_adh"] = $people["mem_id"];
+                $delegations["powers"][$people["mem_id"]]["nickname"] = $people["mem_nickname"];
+                $delegations["powers"][$people["mem_id"]]["power"] = 1;
+                $delegations["powers"][$people["mem_id"]]["max_power"] = 1;
+                $delegations["powers"][$people["mem_id"]]["delegation_level"] = 1;
+            }
+        }
     }
+
+//    $data["notices"] = $notices;
     
     /*
     echo "#";

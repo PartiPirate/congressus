@@ -24,7 +24,7 @@ session_start();
 
 $method = $_GET["method"];
 
-error_log("Administration API Method : $method");
+//error_log("Administration API Method : $method");
 
 // Security
 

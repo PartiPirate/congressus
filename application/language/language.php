@@ -54,6 +54,8 @@ function isLanguageKey($key, $language = null, $path = null) {
 		$language = getLanguage();
 	}
 
+    $language = strtolower(substr($language, 0, 2));
+
 //    echo("Call for $key in $language around $path");
 
 	if (!count($lang)) {

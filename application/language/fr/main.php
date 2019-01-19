@@ -247,6 +247,13 @@ $lang["motion_majorityJudgment_4"] = "Assez bien";
 $lang["motion_majorityJudgment_5"] = "Bien";
 $lang["motion_majorityJudgment_6"] = "Très bien";
 
+$lang["motion_ballot_majority_-2_help"] = "Pour chacune des propositions, rendez votre jugement qualitatif. Une décision prise à l'aide du jugement majoritaire permet de qualifier chacune des propositions par rapport à elle-même et non dans un système de concurrence ou de préférence. La ou les propositions gagnantes sont celles qui ont le meilleur taux d'adhésion.";
+$lang["motion_ballot_majority_-1_help"] = "Classez les propositions par ordre de préférence (la plus acceptable pour vous en haut). Le vote Borda est un vote préférentiel permettant de trouver la proposition la plus soutenue parmi toutes celles proposées.";
+$lang["motion_ballot_majority_0_help"]  = "La proposition qui a le plus de voix gagne.";
+$lang["motion_ballot_majority_50_help"] = "La proposition qui a plus de 50% des voix gagne.";
+$lang["motion_ballot_majority_66_help"] = "La proposition qui a plus de 66% des voix gagne.";
+$lang["motion_ballot_majority_80_help"] = "La proposition qui a plus de 80% des voix gagne.";
+
 $lang["motion_already_voted"] = "Vous avez déjà voté";
 $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
 $lang["motion_add_source"] = "Ajouter une source"; 

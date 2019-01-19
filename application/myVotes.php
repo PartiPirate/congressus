@@ -161,7 +161,14 @@ function sortPropositions($a, $b) {
 	<div class="panel-body">
 		<h4><?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?></h4>
 		<h4><?php echo str_replace("{value}", $maxVotePower, lang("myVotes_maxPower")); ?></h4>
-		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?></h4>
+		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?>
+		
+		<?php	if(isLanguageKey("motion_ballot_majority_" . $motion["mot_win_limit"] . "_help")) {
+					?><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("motion_ballot_majority_" . $motion["mot_win_limit"] . "_help"); ?>"></span><?php
+				}
+		?>
+		
+		</h4>
 		<?php	if (count($motion["mot_tags"])) { 
 					$tags = array();
 					foreach($motion["mot_tags"] as $tag) {

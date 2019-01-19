@@ -243,6 +243,13 @@ $lang["motion_majorityJudgment_4"] = "Good enought";
 $lang["motion_majorityJudgment_5"] = "Good";
 $lang["motion_majorityJudgment_6"] = "Perfect";
 
+$lang["motion_ballot_majority_-2_help"] = "For each of the propositions, make your qualitative judgment. A decision taken using the majority judgment qualifies each of the proposals in relation to itself and not in a system of competition or preference. The winning proposal (s) have the best membership rate.";
+$lang["motion_ballot_majority_-1_help"] = "Rank the proposals in order of preference (most acceptable to you at the top). The Borda vote is a preferential vote to find the most supported proposal among all those proposed.";
+$lang["motion_ballot_majority_0_help"]  = "The proposal with the most votes wins.";
+$lang["motion_ballot_majority_50_help"] = "The proposal that has more than 50% of the votes wins.";
+$lang["motion_ballot_majority_66_help"] = "The proposal that has more than 66% of the votes wins.";
+$lang["motion_ballot_majority_80_help"] = "The proposal that has more than 80% of the votes wins.";
+
 $lang["motion_already_voted"]       = "You already vote";
 $lang["motion_already_argumented"]  = "You already argument";
 $lang["motion_add_source"]          = "Add a source"; 

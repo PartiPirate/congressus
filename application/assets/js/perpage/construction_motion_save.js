@@ -110,9 +110,20 @@ function saveMotion(event) {
 	}, "json");
 }
 
+function previewMotion(event) {
+	var form = $("#save-amendment-modal form");
+
+	$.post("meeting_api.php?method=do_showPreview", form.serialize(), function(data) {
+		$("#preview-modal-container").children().remove();
+		$("#preview-modal-container").append(data);
+		$("#preview-modal").modal('show');
+	}, "html");
+}
+
 function addAmendmentListeners() {
 	$("body").on("click", ".btn-add-motion", showAddMotion);
 	$("body").on("click", ".btn-save-motion", saveMotion);
+	$("body").on("click", ".btn-preview-motion", previewMotion);
 	$("body").on("change", "#save-amendment-modal #sourceSelect", function () { sourceSelectHandler($("#save-amendment-modal"), $(this)); });
 	$("body").on("change", "#save-amendment-modal #sourceUrlInput", function () { sourceUrlHandler($("#save-amendment-modal"), $(this)); });
 	$("body").on("change", "#save-amendment-modal #sourceArticlesSelect", function () { sourceArticlesHandler($("#save-amendment-modal")); });

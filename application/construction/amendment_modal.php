@@ -107,6 +107,7 @@
       <div class="modal-footer">
 
         <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang("common_close"); ?></button>
+        <button type="button" class="btn btn-info btn-preview-motion"><?php echo lang("common_preview"); ?></button>
         <button type="button" class="btn btn-primary btn-save-motion"><?php echo lang("common_create"); ?></button>
 
       </div>

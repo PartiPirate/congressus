@@ -337,6 +337,8 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 	include("construction/agenda_modal.php");
 ?>
 
+<div id="preview-modal-container"></div>
+
 <script>
 </script>
 <?php include("footer.php");?>

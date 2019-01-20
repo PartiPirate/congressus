@@ -75,10 +75,87 @@ function addTabListeners() {
 	});
 }
 
-$(function() {
+function addCopyListeners() {
+	$("#mee_id").change(function() {
+		var meetingId = $("#mee_id").val();
+		$("#mee_type,.show-notice").prop("disabled", meetingId != -1);
+		$(".copy-meeting-btn").prop("disabled", meetingId == -1);
 
-	addTabListeners();
+		if (meetingId && meetingId != -1) {
+			var meetingOption = $("#mee_id option:selected");
+			var type = meetingOption.parents("optgroup").data("type");
 
+			if ($("#mee_label").val() == "") {
+				$("#mee_label").val(meetingOption.text());
+			}
+
+			$("#mee_type").val(type).change();
+		}
+	});
+	
+	$(".copy-meeting-btn").click(function(event) {
+		event.preventDefault();
+
+		$("#create-meeting-form").find(".form-group").removeClass("has-success").removeClass("has-warning").removeClass("has-error");
+
+		var errorCount = 0;
+
+		errorCount += isDateValid($("#mee_date").val()) ? 0 : 1;
+		errorCount += isTimeValid($("#mee_time").val()) ? 0 : 1;
+
+		if (errorCount) {
+
+			$("#mee_date").parents(".form-group").addClass("has-error");
+
+			$('.nav-tabs li:eq(0) a').tab('show');
+
+			$("#date-time-error-alert").show().delay(5000).fadeOut(1000, function() {
+			});
+		}
+		else {
+			$("#mee_date").parents(".form-group").addClass("has-success");
+		}
+
+		if ($("#mee_label").val() == "") {
+			$("#mee_label").parents(".form-group").addClass("has-error");
+
+			$('.nav-tabs li:eq(0) a').tab('show');
+
+			$("#label-error-alert").show().delay(5000).fadeOut(1000, function() {
+			});
+
+			errorCount++;
+		}
+		else {
+			$("#mee_label").parents(".form-group").addClass("has-success");
+		}
+
+		if (!errorCount) {
+			var meetingForm = {};
+			
+			meetingForm["mee_label"] = $("#mee_label").val();
+			meetingForm["mee_type"]  = $("#mee_type").val();
+			meetingForm["mee_date"]  = $("#mee_date").val();
+			meetingForm["mee_time"]  = $("#mee_time").val();
+			meetingForm["mee_expected_duration"] = $("#mee_expected_duration").val();
+
+			meetingForm["mee_id"] = $("#mee_id").val();
+			
+			meetingForm["ajax"] = true;
+
+			// submit
+			$.post("meeting_api.php?method=do_copyMeeting", meetingForm, function(data) {
+				if (data.ok) {
+					window.location.href = data.url;
+				}
+			}, "json");
+		}
+
+
+	});
+}
+
+function addCreateListener() {
 	$("#create-meeting-form").submit(function(event) {
 
 		$("#create-meeting-form").find(".form-group").removeClass("has-success").removeClass("has-warning").removeClass("has-error");
@@ -123,7 +200,13 @@ $(function() {
 		else {
 			$("#not_target_id").parents(".form-group").addClass("has-success");
 		}
-	})
+	});
+}
+
+$(function() {
+	addCreateListener();
+	addCopyListeners();
+	addTabListeners();
 
 	$("body").on("change", "#mee_type", function() {
 		var type = $("#mee_type").val();

@@ -65,7 +65,7 @@ $json = $memcache->get($memcacheKey);
 if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     
     $data = array();
-    
+   
     $propositions = $motionBo->getByFilters(array($motionBo->ID_FIELD => $motionId));
     
     $motion = $propositions[0];

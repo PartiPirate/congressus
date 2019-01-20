@@ -440,7 +440,7 @@ function addOwnChat() {
 
 function addOwnTask() {
 	var targetId = $(".meeting").data("user-id");
-	var targetType = "galette_adherent";
+	var targetType = "galette_adherents";
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 	var startingText = $("#starting-text").val();

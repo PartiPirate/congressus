@@ -17,6 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("header.php");
+include_once("config/memcache.php");
 
 $groupKeyLabels = array();
 
@@ -26,6 +27,33 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 	if ($groupSource->getGroupKeyLabel()) {
 		$groupKeyLabels[] = $groupSource->getGroupKeyLabel();
 	}
+}
+
+$meetingBo = MeetingBo::newInstance($connection, $config);
+$memcache = openMemcacheConnection();
+
+$memcacheKey = "createMeetingMeetings";
+$json = $memcache->get($memcacheKey);
+
+if (!$json || true) {
+	$filters = array();
+    $filters["with_status"] = array("open", "closed", "template");
+	$meetings = $meetingBo->getByFilters($filters);
+	
+	$sortedMeetings = array("template_meeting" => array(), "template_construction" => array(), "meeting" => array(), "construction" => array());
+	foreach($meetings as $meeting) {
+		$superType = ($meeting["mee_status"] == "template" ? "template_" : "") . $meeting["mee_type"];
+		$sortedMeetings[$superType][] = $meeting;
+	}
+	
+	$json = json_encode($sortedMeetings, JSON_NUMERIC_CHECK);
+
+	if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 60)) {
+		$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 60);
+	}
+}
+else {
+	$sortedMeetings = json_decode($json, true);
 }
 
 ?>
@@ -100,16 +128,46 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			</div>
 		</div>
 
-		<div class="well well-sm type-meeting type-explanation">
+		<div class="well well-sm type-meeting type-explanation" style="display: none;">
 			<p><?php echo lang("createMeeting_type_meeting_explanation"); ?></p>
 		</div>
 
-		<div class="well well-sm type-construction type-explanation">
+		<div class="well well-sm type-construction type-explanation" style="display: none;">
 			<p><?php echo lang("createMeeting_type_construction_explanation"); ?></p>
 		</div>
 
 		<div class="row text-center">
 			<button class="btn btn-primary show-notice" type="button" ><?php echo lang("common_next"); ?></button>
+		</div>
+
+		<hr>
+		
+		<label><?php echo lang("createMeeting_copy_label"); ?></label>
+
+		<div class="form-group">
+			<label for="mee_id" class="col-md-4 control-label"><?php echo lang("createMeeting_copy_from"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="mee_id" name="mee_id">
+					<option value="-1" selected=selected><?php echo lang("createMeeting_select_meeting"); ?></option>
+					<?php
+						foreach($sortedMeetings as $type => $typeMeetings) {
+							if (count($typeMeetings)) {
+					?>
+					<optgroup label="<?php echo lang("createMeeting_base_type_$type"); ?>" data-type="<?php echo str_replace("template_", "", $type); ?>">
+						<?php	foreach($typeMeetings as $meeting) { ?>
+						<option value="<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></option>
+						<?php	} ?>
+					</optgroup>
+					<?php
+							}
+						}
+					?>
+				</select>
+			</div>
+		</div>
+
+		<div class="row text-center">
+			<button class="btn btn-primary copy-meeting-btn" type="button" disabled=disabled><?php echo lang("common_copy"); ?></button>
 		</div>
 
 	</div>

@@ -100,7 +100,7 @@ if (!$json) {
 
 //	error_log($_REQUEST["pointId"]);
 //	error_log(print_r($agenda, true));
-	
+
 	$data["motions"] = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 	foreach($data["motions"] as $index => $motions) {
 		$data["motions"][$index]["mot_tag_ids"] = json_decode($data["motions"][$index]["mot_tag_ids"]);

@@ -278,6 +278,7 @@ function updateMeeting(meeting) {
 	switch (meeting.mee_status) {
 		case "construction":
 			$("#meeting-state-panel").addClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").removeClass("panel-danger");
+			$("#meeting-status-panel button.btn-template-meeting").show();
 			$("#meeting-status-panel button.btn-delete-meeting").show();
 			$("#meeting-status-panel button.btn-waiting-meeting").show();
 			break;
@@ -298,9 +299,12 @@ function updateMeeting(meeting) {
 			$("#meeting-status-panel br.export-br").show();
 			$(".navbar-nav li.export-divider,.navbar-nav li.export-li").show();
 			break;
+		case "template":
+			$("#meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").removeClass("panel-success").addClass("panel-warning").removeClass("panel-danger");
+			break;
 		case "deleted":
 			$("#meeting-state-panel").removeClass("panel-info").removeClass("panel-primary").removeClass("panel-success").removeClass("panel-warning").addClass("panel-danger");
-			break;			
+			break;
 	}
 
 	$("#meeting-status-panel .btn-vote-meeting").show();
@@ -444,11 +448,17 @@ function updateAgenda() {
 function addMeetingHandlers() {
 	$(".synchro-vote select").hide();
 
-	
 	$("#meeting-status-panel .btn-delete-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "deleted"},
+				function(data) {}, "json");
+	});
+
+	$("#meeting-status-panel .btn-template-meeting").click(function() {
+		if (!hasWritingRight(getUserId())) return;
+		var meetingId = $(".meeting").data("id");
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "template"},
 				function(data) {}, "json");
 	});
 

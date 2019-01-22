@@ -264,6 +264,9 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					case "open":
 						$panelClass = "panel-success";
 						break;
+					case "template":
+						$panelClass = "panel-warning";
+						break;
 					case "closed":
 						$panelClass = "panel-warning";
 						break;
@@ -353,10 +356,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body text-center">
 
 					<div class="row">
-						<button style="display: none;" class="margin-top-5 btn btn-primary btn-waiting-meeting"><?php echo lang("meeting_waiting"); ?></button>
-						<button style="display: none;" class="margin-top-5 btn btn-danger btn-delete-meeting"><?php echo lang("meeting_delete"); ?></button>
-						<button style="display: none;" class="margin-top-5 btn btn-success btn-open-meeting"><?php echo lang("meeting_open"); ?></button>
-						<button style="display: none;" class="margin-top-5 btn btn-danger btn-close-meeting"><?php echo lang("meeting_close"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-primary btn-waiting-meeting"><?php  echo lang("meeting_waiting"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-danger  btn-delete-meeting"><?php   echo lang("meeting_delete"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-warning btn-template-meeting"><?php echo lang("meeting_template"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-success btn-open-meeting"><?php     echo lang("meeting_open"); ?></button>
+						<button style="display: none;" class="margin-top-5 btn btn-danger  btn-close-meeting"><?php    echo lang("meeting_close"); ?></button>
 					</div>
 
 					<span style="display: none;" class="closed-meeting"><?php echo lang("meeting_closed"); ?></span>

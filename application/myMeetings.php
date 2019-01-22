@@ -32,8 +32,10 @@ $secretaryMeetings = $meetingBo->getByFilters(array("mee_secretary_member_id" =>
 $meetings = array();
 $meetings = array_merge($meetings, $secretaryMeetings);
 
-$statusMeetings = array("waiting" => array(),
+$statusMeetings = array(
 		"construction" => array(),
+		"template" => array(),
+		"waiting" => array(),
 		"open" => array(),
 		"closed" => array());
 
@@ -151,15 +153,18 @@ if ($config["server"]["timezone"]) {
 						<td>
 							<?php // echo $status; ?>
 <?php				if ($status == "construction" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-primary btn-waiting-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_waiting"); ?></button>
-						<button class="btn btn-danger  btn-delete-meeting"  data-status="<?php echo $status; ?>"  data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+						<button class="btn btn-primary btn-xs btn-waiting-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_waiting"); ?></button>
+						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
 <?php				} ?>
 <?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-success btn-open-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
-						<button class="btn btn-danger  btn-delete-meeting"  data-status="<?php echo $status; ?>"  data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+						<button class="btn btn-success btn-xs btn-open-meeting"    data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
+						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
 <?php				} ?>
 <?php				if ($status == "open" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-danger btn-close-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_close"); ?></button>
+						<button class="btn btn-danger  btn-xs btn-close-meeting"   data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_close"); ?></button>
+<?php				} ?>
+<?php				if ($status == "template") { ?>
+						<button class="btn btn-info    btn-xs btn-copy-meeting"    data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_copy"); ?></button>
 <?php				} ?>
 						</td>
 					</tr>

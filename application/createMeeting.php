@@ -56,6 +56,8 @@ else {
 	$sortedMeetings = json_decode($json, true);
 }
 
+$templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
+
 ?>
 
 <div class="container theme-showcase meeting" role="main">
@@ -67,7 +69,7 @@ else {
 	<form action="meeting/do_createMeeting.php" method="post" class="form-horizontal" id="create-meeting-form">
 
 		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
+		<ul class="nav nav-tabs" role="tablist" id="creation-step-tabs">
 			<li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo lang("createMeeting_information"); ?></a></li>
 			<li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab"><?php echo lang("createMeeting_convocation"); ?></a></li>
 			<li role="presentation"><a href="#agenda" aria-controls="agenda" role="tab" data-toggle="tab"><?php echo lang("createMeeting_agenda"); ?></a></li>
@@ -148,14 +150,14 @@ else {
 			<label for="mee_id" class="col-md-4 control-label"><?php echo lang("createMeeting_copy_from"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_id" name="mee_id">
-					<option value="-1" selected=selected><?php echo lang("createMeeting_select_meeting"); ?></option>
+					<option value="-1" <?php if ($templateId == -1) echo 'selected="selected"'; ?>><?php echo lang("createMeeting_select_meeting"); ?></option>
 					<?php
 						foreach($sortedMeetings as $type => $typeMeetings) {
 							if (count($typeMeetings)) {
 					?>
 					<optgroup label="<?php echo lang("createMeeting_base_type_$type"); ?>" data-type="<?php echo str_replace("template_", "", $type); ?>">
 						<?php	foreach($typeMeetings as $meeting) { ?>
-						<option value="<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></option>
+						<option value="<?php echo $meeting["mee_id"]; ?>" <?php if ($templateId == $meeting["mee_id"]) echo 'selected="selected"'; ?>><?php echo $meeting["mee_label"]; ?></option>
 						<?php	} ?>
 					</optgroup>
 					<?php

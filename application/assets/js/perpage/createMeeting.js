@@ -81,7 +81,10 @@ function addCopyListeners() {
 		$("#mee_type,.show-notice").prop("disabled", meetingId != -1);
 		$(".copy-meeting-btn").prop("disabled", meetingId == -1);
 
+		$("#mee_type,.show-notice").prop("disabled", meetingId != -1);
+
 		if (meetingId && meetingId != -1) {
+			$("#creation-step-tabs li:not(':eq(0)')").hide();
 			var meetingOption = $("#mee_id option:selected");
 			var type = meetingOption.parents("optgroup").data("type");
 
@@ -90,6 +93,9 @@ function addCopyListeners() {
 			}
 
 			$("#mee_type").val(type).change();
+		}
+		else {
+			$("#creation-step-tabs li:not(':eq(0)')").show();
 		}
 	});
 	
@@ -215,5 +221,6 @@ $(function() {
 
 		$(".type-" + type).show();
 	});
+	$("#mee_id").change();
 	$("#mee_type").change();
 });

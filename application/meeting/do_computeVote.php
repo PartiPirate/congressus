@@ -62,7 +62,7 @@ $motionId = intval($_REQUEST["motionId"]);
 $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
-if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
+if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true") || true) {
     
     $data = array();
    
@@ -337,38 +337,54 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     
         return intval(100 * ($p2["jm_median_power"] - $p1["jm_median_power"]));
     }
-    
-    switch($motion["mot_win_limit"]) {
-        case 0:
-    //        echo "La meilleure\n";
-            usort($propositions, "sortPropositionsOnProportionPower");
-            $propositions[0]["mpr_winning"] = 1;
-            $propositions[0]["mpr_explanation"]["winning"] = 1;
-            break;
-        case -1: // Borda, TODO can have more than one winner
-    //        echo "Borda\n";
-            usort($propositions, "sortPropositionsOnProportionPower");
-            $propositions[0]["mpr_winning"] = 1;
-            $propositions[0]["mpr_explanation"]["winning"] = 1;
-            break;
-        case -2: // JM, TODO can have more than one winner
-    //        echo "Jugement majoritaire\n"; 
-            usort($propositions, "sortPropositionsOnJMPower");
-            $propositions[0]["mpr_winning"] = 1;
-            $propositions[0]["mpr_explanation"]["winning"] = 1;
-            break;
-        default:
-    //        echo "Majorité qualifiée : " . $motion["mot_win_limit"] . "%\n";
-            usort($propositions, "sortPropositionsOnProportionPower");
-            if ($motion["mot_win_limit"] < ($propositions[0]["proportion_power"] * 100)) {
-                $propositions[0]["mpr_winning"] = 1;
-                $propositions[0]["mpr_explanation"]["winning"] = 1;
-            }
-            break;
+
+    function sortPropositionsOnLabel($a, $b) {
+		if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
+		if (strtolower(($a["mpr_label"])) == "nspp") return 1;
+
+		if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
+		if (strtolower(($b["mpr_label"])) == "nspp") return -1;
+
+    	return 0;
     }
 
-    foreach($propositions as $index => $proposition) {
-        $propositions[$index]["mpr_position"] = $index;
+    if ($motion["mot_anonymous"] && $motion["mot_status"] != "resolved") {
+        usort($propositions, "sortPropositionsOnLabel");
+    }
+    else {
+        switch($motion["mot_win_limit"]) {
+            case 0:
+        //        echo "La meilleure\n";
+                usort($propositions, "sortPropositionsOnProportionPower");
+                $propositions[0]["mpr_winning"] = 1;
+                $propositions[0]["mpr_explanation"]["winning"] = 1;
+                break;
+            case -1: // Borda, TODO can have more than one winner
+        //        echo "Borda\n";
+                usort($propositions, "sortPropositionsOnProportionPower");
+                $propositions[0]["mpr_winning"] = 1;
+                $propositions[0]["mpr_explanation"]["winning"] = 1;
+                break;
+            case -2: // JM, TODO can have more than one winner
+        //        echo "Jugement majoritaire\n"; 
+                usort($propositions, "sortPropositionsOnJMPower");
+                $propositions[0]["mpr_winning"] = 1;
+                $propositions[0]["mpr_explanation"]["winning"] = 1;
+                break;
+            default:
+        //        echo "Majorité qualifiée : " . $motion["mot_win_limit"] . "%\n";
+                usort($propositions, "sortPropositionsOnProportionPower");
+                if ($motion["mot_win_limit"] < ($propositions[0]["proportion_power"] * 100)) {
+                    $propositions[0]["mpr_winning"] = 1;
+                    $propositions[0]["mpr_explanation"]["winning"] = 1;
+                }
+                break;
+        }
+
+    
+        foreach($propositions as $index => $proposition) {
+            $propositions[$index]["mpr_position"] = $index;
+        }
     }
 
     // Clean
@@ -403,12 +419,17 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     $data["motion"] = $motion;
     $data["propositions"] = $propositions;
     $data["delegations"] = $delegations;
-    
+
     if ($motion["mot_anonymous"] && $motion["mot_status"] != "resolved") {
         $data["delegations"] = array();
         
         foreach($data["propositions"] as $propositionIndex => $proposition) {
             $data["propositions"][$propositionIndex]["mpr_explanation"] = json_encode(array("winning" => 0, "votes" => array(), "power" => 0));
+            $data["propositions"][$propositionIndex]["mpr_winning"] = 0;
+            $data["propositions"][$propositionIndex]["proportion_power"] = 0;
+            $data["propositions"][$propositionIndex]["total_power"] = 0;
+            $data["propositions"][$propositionIndex]["jm_median_power"] = 0;
+            $data["propositions"][$propositionIndex]["jm_sum_proportion_powers"] = 0;
         }
     }
 

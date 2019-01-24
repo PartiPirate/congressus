@@ -101,7 +101,22 @@ if (!$json) {
 //	error_log($_REQUEST["pointId"]);
 //	error_log(print_r($agenda, true));
 
-	$data["motions"] = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+    function sortPropositionsOnLabel($a, $b) {
+		if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
+		if (strtolower(($a["mpr_label"])) == "nspp") return 1;
+
+		if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
+		if (strtolower(($b["mpr_label"])) == "nspp") return -1;
+
+    	return 0;
+    }
+
+	$motions = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+
+	// The appearing of the proposition is based on pro first, no change otherwise
+	usort($motions, "sortPropositionsOnLabel");
+
+	$data["motions"] = $motions; 
 	foreach($data["motions"] as $index => $motions) {
 		$data["motions"][$index]["mot_tag_ids"] = json_decode($data["motions"][$index]["mot_tag_ids"]);
 	}

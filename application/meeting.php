@@ -383,6 +383,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<div id="meeting-agenda" class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-target="#agenda-points-list" href="#"><?php echo lang("meeting_agenda"); ?></a>
+					<button class="btn btn-primary btn-xs pull-right btn-restore-point"  style="display: none; margin-left: 5px;" ><i class="fa fa-window-restore"  aria-hidden="true"></i></button>
+					<button class="btn btn-primary btn-xs pull-right btn-maximize-point" style="display: none; margin-left: 5px;" ><i class="fa fa-window-maximize" aria-hidden="true"></i></button>
 					<button class="btn btn-warning btn-xs pull-right btn-agenda-mode" style="display: none; margin-left: 5px;" title="<?php echo lang("meeting_agenda_mode"); ?>" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-book"></span></button>
 					<button class="btn btn-primary btn-xs pull-right btn-add-point" style="display: none; margin-left: 5px;" ><span class="glyphicon glyphicon-plus"></span></button>
 				</div>

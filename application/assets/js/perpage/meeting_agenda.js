@@ -28,6 +28,7 @@
 /* global toMarkdownWithEmoji */
 
 var preventAgendaHandling = false;
+var AGENDA_MAX_HEIGHT = 300;
 
 function addAgendaHandlers() {
 	$("#meeting-agenda").on("mouseenter", "li", function(event) {
@@ -45,11 +46,11 @@ function addAgendaHandlers() {
 
 	$("#meeting-agenda").on("mouseenter", ".panel-heading", function(event) {
 		if (hasRight(getUserId(), "handle_agenda")) {
-			$(this).children("button").show();
+			$(this).children("button.btn-agenda-mode, button.btn-add-point").show();
 		}
 	});
 	$("#meeting-agenda").on("mouseleave", ".panel-heading", function(event) {
-		$(this).children("button").hide();
+		$(this).children("button.btn-agenda-mode, button.btn-add-point").hide();
 	});
 
 	$("#meeting-agenda").on("click", "button.btn-remove-point", function(event) {
@@ -111,6 +112,22 @@ function addAgendaHandlers() {
 				$("#meeting-agenda ul").sortable("enable");
 			}
 		}
+	});
+
+	$("#meeting-agenda").on("click", "button.btn-restore-point", function(event) {
+		event.stopPropagation();
+		
+		$("#meeting-agenda button.btn-maximize-point").show();
+		$("#meeting-agenda button.btn-restore-point").hide();
+		$("#meeting-agenda #agenda-points-list").css({"max-height": AGENDA_MAX_HEIGHT + "px", "overflow-y": "scroll"});
+	});
+
+	$("#meeting-agenda").on("click", "button.btn-maximize-point", function(event) {
+		event.stopPropagation();
+		
+		$("#meeting-agenda button.btn-maximize-point").hide();
+		$("#meeting-agenda button.btn-restore-point").show();
+		$("#meeting-agenda #agenda-points-list").css({"max-height": "", "overflow-y": "auto"});
 	});
 
 
@@ -266,6 +283,10 @@ function addAgenda(agendas, parent, parentId) {
 		    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
 		};
 		parent.children().sort(sortLi).appendTo(parent);
+	}
+
+	if ($("#agenda-points-list").height() > AGENDA_MAX_HEIGHT) {
+		$("#meeting-agenda .btn-restore-point").show();
 	}
 }
 

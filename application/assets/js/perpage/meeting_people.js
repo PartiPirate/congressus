@@ -461,6 +461,10 @@ function addNotice(notice, parent) {
 			if (people.mem_meeting_president == 1 || people.mem_meeting_secretary == 1) {
 //				$(".president-panels").show();
 				$(".president-panels .speaking-requesters button").removeClass("disabled");
+
+				$("#meeting-status-panel .btn-waiting-meeting").removeClass("disabled");
+				$("#meeting-status-panel .btn-open-meeting").removeClass("disabled");
+				$("#meeting-status-panel .btn-close-meeting").removeClass("disabled");
 			}
 			else {
 //				$(".president-panels").show();

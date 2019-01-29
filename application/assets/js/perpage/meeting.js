@@ -216,7 +216,7 @@ function setAgendaPoint(point) {
 
 	var list = $("#agenda_point ul");
 
-	if ($("#agenda_point .agenda-label").text() != point.agenda.age_label) {
+	if ($("#agenda_point .agenda-label").eq(0).text() != point.agenda.age_label) {
 		$("#agenda_point .agenda-label").text(point.agenda.age_label);
 	}
 
@@ -787,7 +787,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 		});
 //		console.log("End call");
 
-		$("#agenda_point .panel-footer button").removeClass("disabled");
+		$("#agenda_point .panel-footer.action-footer button").removeClass("disabled");
 		$("templates *").removeClass("to-delete");
 		$("li.to-delete").remove();
 
@@ -1615,31 +1615,6 @@ function testMeetingReady() {
 }
 
 $(function() {
-//	$("#start-meeting-modal").modal({
-//		  keyboard: false
-////		  ,
-////		  show: true
-//		});
-//	$("#start-meeting-modal").modal("show");
-
-//	$("ul.objects").click(function(event) {
-//		event.stopPropagation();
-//	});
-//
-//	$("html").on("click", "*", function(event) {
-//		var description = $("ul.objects");
-//
-////		if (description.contains($(this))) {
-//		if ($.contains(description.get(0), this)) {
-//			return;
-//		}
-//
-//		editorBlurHandler(event);
-//	});
-
-//	var getAgendaPointTimer = $.timer(updateAgendaPoint);
-//	getAgendaPointTimer.set({ time : 1500, autostart : true });
-
 	$("#agenda_point").on("click", ".motion button.btn-vote", vote);
 	$("#agenda_point").on("click", "button.btn-add-speaker-chat", addSpeakerChat);
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);

@@ -441,18 +441,18 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-heading">
 					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
 					<button class="btn btn-default btn-xs pull-right btn-go-down"
-						title="Descendre" data-toggle="tooltip" data-placement="bottom"
+						title="<?php echo lang("meeting_godown_point"); ?>" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
 					<button class="btn btn-default btn-xs pull-right btn-next-point"
-						title="Point suivant" data-toggle="tooltip" data-placement="bottom"
+						title="<?php echo lang("meeting_next_point"); ?>" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
 					<button class="btn btn-default btn-xs pull-right btn-previous-point"
-						title="Point précédent" data-toggle="tooltip" data-placement="bottom"
+						title="<?php echo lang("meeting_previous_point"); ?>" data-toggle="tooltip" data-placement="bottom"
 						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-left"></span></button>
 				</div>
 				<ul class="list-group objects">
 				</ul>
-				<div class="panel-footer">
+				<div class="panel-footer action-footer">
 					<div class="form-group">
 					  	<div class="col-md-12">                     
 					    	<textarea class="form-control" id="starting-text" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"></textarea>
@@ -468,6 +468,15 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						
 						<span id="agenda-members-container" class="pull-right"></span>
 					</div>
+				</div>
+				<div class="panel-footer navigation-footer">
+					<?php echo lang("meeting_agenda_point"); ?><span class="agenda-label"></span>
+					<button class="btn btn-default btn-xs pull-right btn-next-point"
+						title="<?php echo lang("meeting_next_point"); ?>" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+					<button class="btn btn-default btn-xs pull-right btn-previous-point"
+						title="<?php echo lang("meeting_previous_point"); ?>" data-toggle="tooltip" data-placement="bottom"
+						style="display: none; margin-left: 5px;"><span class="glyphicon glyphicon-chevron-left"></span></button>
 				</div>
 			</div>
 		</div>

@@ -197,6 +197,9 @@ $lang["meeting_change_location_title"] = "Changer la localisation de la réunion
 $lang["meeting_user_is_writing"] = " est en train d'écrire";
 $lang["meeting_motion_to_vote"] = "La motion {motionTitle} dans le point {agendaLabel} est mise au vote";
 $lang["meeting_motion_close_vote"] = "La motion {motionTitle} dans le point {agendaLabel} est fermée au vote";
+$lang["meeting_next_point"] = "Point suivant";
+$lang["meeting_previous_point"] = "Point précédent";
+$lang["meeting_godown_point"] = "Descendre";
 
 $lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
 $lang["addTag_title"] = "Gestion des libellés de la motion";

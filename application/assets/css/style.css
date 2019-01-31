@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -16,6 +16,15 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
+@font-face {
+    font-family: 'ubunturegular';
+    src: url('../fonts/ubuntu-r-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu-r-webfont.woff') format('woff'),
+         url('../fonts/ubuntu-r-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 nav.footer {
 	margin-top: 20px;
 	text-align: center;
@@ -181,8 +190,11 @@ a.agenda-link {
 }
 
 body {
-    background-image: url(../images/background_lightgrey.png);
+	background-image: url(../images/background_cross.png);
+/*
+	background-image: url(../images/background_lightgrey.png);
     background-size: cover;
+*/    
 }
 
 .breadcrumb {
@@ -662,4 +674,8 @@ a[disabled] {
 
 .judgement.active {
     filter: brightness(100%) !important;
+}
+
+div, p ul, li, h1, h2, h3, h4, h5, h6, button, label {
+	font-family: ubunturegular, ubuntu !important;
 }

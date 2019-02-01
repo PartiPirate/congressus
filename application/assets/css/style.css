@@ -190,11 +190,28 @@ a.agenda-link {
 }
 
 body {
-	background-image: url(../images/background_cross.png);
 /*
 	background-image: url(../images/background_lightgrey.png);
     background-size: cover;
 */    
+}
+
+.watermark {
+    position: absolute;
+    top: 500px;
+    left: -150px;
+    z-index: -10;
+    width: 50%;
+    height: 0;
+    overflow: hidden;
+}
+
+.watermark-inside {
+	background-image: url(../images/logo_pp_voile.svg) !important; 
+    background-repeat: no-repeat;
+    opacity: 0.02;
+    background-size: contain;
+    height: 1000px;
 }
 
 .breadcrumb {

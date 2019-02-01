@@ -22,6 +22,12 @@
 
 function resizeWindow() {
 	$(".theme-showcase").css("min-height", ($(window).height() - 166) + "px");
+	$(".watermark").css({height: "0" });
+	
+	var watermarkHeight = $("#footer").position().top - 470;
+	watermarkHeight = ((watermarkHeight > 1000) ? 1000 : watermarkHeight);
+
+	$(".watermark").css({height: watermarkHeight + "px" });
 }
 
 function toHumanDate(selector) {

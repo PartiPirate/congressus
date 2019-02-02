@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2018 Cédric Levieux, Parti Pirate
+	Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -176,7 +176,8 @@ else {
 	$amendmentAgenda["age_active"] = 0;
 	$amendmentAgenda["age_expected_duration"] = 0;
 	$amendmentAgenda["age_objects"] = "[]";
-	$amendmentAgenda["age_description"] = "Pas de description";
+//	$amendmentAgenda["age_description"] = "Pas de description";
+	$amendmentAgenda["age_description"] = "";
 
 	// create
 	$agendaBo->save($amendmentAgenda);

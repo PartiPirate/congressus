@@ -373,6 +373,20 @@ function addVoteHandlers(motion) {
 
 $(function() {
 
+	$(".show-description-link").click(function() {
+		var tabId = $(this).data("tab-id");
+		$(".show-description-link[data-tab-id="+tabId+"]").hide();
+		$(".hide-description-link[data-tab-id="+tabId+"]").show();
+		$("#"+tabId).show();
+	});
+
+	$(".hide-description-link").click(function() {
+		var tabId = $(this).data("tab-id");
+		$(".show-description-link[data-tab-id="+tabId+"]").show();
+		$(".hide-description-link[data-tab-id="+tabId+"]").hide();
+		$("#"+tabId).hide();
+	});
+
 	$(".btn-previous").attr("disabled", "disabled").click(function() {
 		if ($(this).is(":disabled")) return;
 

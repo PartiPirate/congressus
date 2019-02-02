@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -145,7 +145,8 @@ if (isset($_REQUEST["age_lines"])) {
         $agenda["age_expected_duration"] = 0;
         $agenda["age_label"] = $entry["label"];
         $agenda["age_objects"] = "[]";
-        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "Pas de description" : "");
+//        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "Pas de description" : "");
+        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "" : "");
 
         if ($parent) {
         	$agenda["age_parent_id"] = $parent["age_id"];

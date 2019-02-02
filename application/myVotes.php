@@ -131,6 +131,10 @@ function sortPropositions($a, $b) {
 
 <?php	foreach($sortedMotions as $motionId => $motion) { 
 
+//	echo "<pre>\n";
+//	print_r($motion);
+//	echo "</pre>";
+
 //	echo $motionId . "\n";
 //	echo $motion["not_target_type"] . "\n";
 
@@ -154,7 +158,7 @@ function sortPropositions($a, $b) {
 
 <div class="panel panel-default motion" style="display: none;" data-id="<?php echo $motion["mot_id"]; ?>" data-max-power="<?php echo $maxVotePower; ?>" data-method="<?php echo $motion["mot_win_limit"]; ?>">
 	<div class="panel-heading">
-		<h3 class="panel-title"><a href="meeting.php?id=<?php echo $motion["mee_id"]; ?>#agenda-<?php echo $motion["age_id"]; ?>|motion-<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?> 
+		<h3 class="panel-title motion-title"><a href="meeting.php?id=<?php echo $motion["mee_id"]; ?>#agenda-<?php echo $motion["age_id"]; ?>|motion-<?php echo $motion["mot_id"]; ?>"><?php echo $motion["mot_title"]; ?> 
 <!--			(<?php echo $motion["mot_id"]; ?>) -->
 		</a></h3>
 	</div>
@@ -177,6 +181,23 @@ function sortPropositions($a, $b) {
 		?>
 		<h4><?php echo str_replace("{tags}", implode(", ", $tags), lang("myVotes_tagsMethod")); ?></h4>
 		<?php 	} ?>
+
+		<?php
+
+			if ($motion["age_description"]) {
+				$randomId = uniqid("description_");
+?>
+				<a href="#" class="show-description-link" data-tab-id="<?php echo $randomId; ?>" style="             "><?php echo lang("myVotes_show_agenda_description"); ?> <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+				<a href="#" class="hide-description-link" data-tab-id="<?php echo $randomId; ?>" style="display:none;"><?php echo lang("myVotes_hide_agenda_description"); ?> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+				<div id="<?php echo $randomId; ?>" style="display:none;">
+				<?php echo $motion["age_description"]; ?>
+				</div>
+<?php
+			}
+
+		?>
+
+		<hr>
 
 		<div class="propositions">
 	<?php	
@@ -204,7 +225,7 @@ function sortPropositions($a, $b) {
 		</div>
 
 		<br>
-		<button class="btn btn-primary btn-vote" style="width: 100%;" type="button">Voter</button>
+		<button class="btn btn-primary btn-vote" style="width: 100%;" type="button"><?php echo lang("common_vote"); ?></button>
 
 	</div>
 	<div class="panel-footer text-right">

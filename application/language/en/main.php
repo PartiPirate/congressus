@@ -44,6 +44,7 @@ $lang["common_edit"]     = "Edit";
 $lang["common_next"]     = "Next";
 $lang["common_previous"] = "Previous";
 $lang["common_preview"]  = "Preview";
+$lang["common_vote"]     = "Vote";
 
 $lang["common_proposition_pro"]     = "Pro";
 $lang["common_proposition_against"] = "Against";

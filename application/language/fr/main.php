@@ -44,6 +44,7 @@ $lang["common_edit"]     = "Modifier";
 $lang["common_next"]     = "Suivant";
 $lang["common_previous"] = "Précédent";
 $lang["common_preview"]  = "Previsualiser";
+$lang["common_vote"]     = "Voter";
 
 $lang["common_proposition_pro"] = "Pour";
 $lang["common_proposition_against"] = "Contre";
@@ -457,6 +458,8 @@ $lang["myVotes_maxPower"] = "Points à distribuer : {value}";
 $lang["myVotes_voteMethod"] = "Méthode : {value}";
 $lang["myVotes_tagsMethod"] = "Libellés: {tags}";
 $lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce que les réunions ne sont pas ouvertes.";
+$lang["myVotes_show_agenda_description"] = "Montrer la description du point à voter";
+$lang["myVotes_hide_agenda_description"] = "Cacher la description du point à voter";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

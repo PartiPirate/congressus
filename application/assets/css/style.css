@@ -696,3 +696,7 @@ a[disabled] {
 div, p ul, li, h1, h2, h3, h4, h5, h6, button, label {
 	font-family: ubunturegular, ubuntu !important;
 }
+
+.panel-title.motion-title {
+	font-size: 22px;
+}

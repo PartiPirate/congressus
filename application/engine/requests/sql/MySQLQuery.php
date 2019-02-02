@@ -28,6 +28,7 @@ class MySQLQuery {
 	var $sets = array();
 	var $request = null;
 	var $distinct = false;
+	var $limit = 0;
 
 	function insert($table = null) {
 	    $this->request = "INSERT";
@@ -150,6 +151,10 @@ class MySQLQuery {
 	    $this->orderBys[] = array("column" => $column, "ascending" => $ascending);
 
 	    return $this;
+	}
+
+	function limit($limit) {
+		$this->limit = $limit;
 	}
 
 	function constructRequest() {
@@ -277,6 +282,10 @@ class MySQLQuery {
 
 	        $separator = ", ";
 	    }
+
+		if ($this->limit) {
+			$query .= "\nLIMIT " . $this->limit;
+		}
 
         return $query;
 	}

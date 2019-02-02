@@ -700,3 +700,27 @@ div, p ul, li, h1, h2, h3, h4, h5, h6, button, label {
 .panel-title.motion-title {
 	font-size: 22px;
 }
+
+.meetings .event-important {
+    background-color: hsl(0, 68%, 90%);
+}
+
+.meetings .event-info {
+    background-color: hsl(210, 100%, 90%);
+}
+
+.meetings .event-warning {
+    background-color: hsl(49, 93%, 90%);
+}
+
+.meetings .event-inverse {
+    background-color: hsl(0, 0%, 90%);
+}
+
+.meetings .event-success {
+    background-color: hsl(120, 100%, 90%);
+}
+
+.meetings .event-special {
+    background-color: hsl(300, 100%, 90%);
+}

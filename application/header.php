@@ -336,6 +336,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 			<div class="collapse navbar-collapse" id="otb-navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<li <?php if ($page == "calendar") echo 'class="active"'; ?>><a href="calendar.php"><?php echo lang("menu_calendar"); ?><?php if ($page == "calendar") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 
 					<?php 	if ($isConnected) {?>

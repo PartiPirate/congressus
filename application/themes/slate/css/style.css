@@ -115,3 +115,27 @@ select {
     background-image: -webkit-gradient(linear, left top, left bottom, from(#781B82), color-stop(60%, #7a8288), to(#5E0269));
     background-image: linear-gradient(#781B82, #680C74 60%, #5E0269);
 }
+
+.meetings .event-important {
+    background-color: hsl(0, 68%, 10%);
+}
+
+.meetings .event-info {
+    background-color: hsl(210, 100%, 10%);
+}
+
+.meetings .event-warning {
+    background-color: hsl(49, 93%, 10%);
+}
+
+.meetings .event-inverse {
+    background-color: hsl(0, 0%, 10%);
+}
+
+.meetings .event-success {
+    background-color: hsl(120, 100%, 10%);
+}
+
+.meetings .event-special {
+    background-color: hsl(300, 100%, 10%);
+}

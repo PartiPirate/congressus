@@ -67,6 +67,7 @@ $lang["menu_mypreferences"]     = "My preferences";
 $lang["menu_myVotes"]           = "My votes";
 $lang["menu_meetings"]          = "Meetings";
 $lang["menu_openMeetings"]      = "Meetings in progress";
+$lang["menu_calendar"]          = "Calendrier";
 
 $lang["login_title"]            = "Log in";
 $lang["login_loginInput"]       = "Loin";
@@ -89,6 +90,7 @@ $lang["breadcrumb_mybadges"]        = "My badges";
 $lang["breadcrumb_myMeetings"]      = "My meetings";
 $lang["breadcrumb_mypreferences"]   = "My preferences";
 $lang["breadcrumb_search"]          = "Search";
+$lang["breadcrumb_calendar"]        = "Calendar";
 
 $lang["index_guide"]            = "Congressus allow you to manage meetings by groups supplied by Galette + Personae.<br>
 You can define who is attending, who has right to vote, define motions...<br>
@@ -200,6 +202,14 @@ $lang["meeting_previous_point"] = "Previous point";
 $lang["meeting_godown_point"] = "Go down";
 
 $lang["addAgendaFrom_title"]    = "Add a point to the agenda from a source";
+$lang["addTag_title"] = "Management of motion labels";
+
+$lang["meetings_upcoming_meetings"]   = "Upcoming meetings";
+$lang["meetings_passed_meetings"]     = "Passed meetings";
+$lang["meetings_ongoing_meetings"]    = "Ongoing meetings";
+$lang["meetings_no_upcoming_meeting"] = "No upcoming meeting";
+$lang["meetings_no_passed_meeting"]   = "No passed meetings";
+$lang["meetings_no_ongoing_meeting"]  = "No ongoing meetings";
 
 $lang["myMeetings_closed"]          = "Ended meetings";
 $lang["myMeetings_construction"]    = "In construction meetings";

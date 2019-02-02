@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -163,7 +163,16 @@ class MeetingBo {
 			$queryBuilder->orderBy("gro_label");
 		}
 
-		$queryBuilder->orderDescBy("mee_datetime");
+		if (isset($filters["limit"])) {
+			$queryBuilder->limit($filters["limit"]);
+		}
+
+		if (isset($filters["older_first"]) && $filters["older_first"]) {
+			$queryBuilder->orderAscBy("mee_datetime");
+		}
+		else {
+			$queryBuilder->orderDescBy("mee_datetime");
+		}
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

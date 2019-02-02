@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -42,6 +42,25 @@ foreach($motions as $motion) {
 
 $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMotions) : 1));
 
+$filters = array();
+$filters["with_status"] = array("closed");
+$filters["limit"] = 5;
+
+$closedMeetings = $meetingBo->getByFilters($filters);
+
+$filters = array();
+$filters["with_status"] = array("waiting");
+$filters["older_first"] = true;
+$filters["limit"] = 5;
+
+$waitingMeetings = $meetingBo->getByFilters($filters);
+
+/*
+echo "<pre>";
+print_r($closedMeetings);
+echo "</pre>";
+*/
+
 //echo "<!-- \n";
 //print_r($trendingMotions);
 //echo "\n -->";
@@ -50,7 +69,9 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 
 ?>
 
-<div class="container theme-showcase" role="main" id="main" tabindex="-1">
+<div class=" theme-showcase" role="main" id="main" 
+	style="margin-left: 32px; margin-right: 32px; "
+	tabindex="-1">
 	<ol class="breadcrumb">
 		<li class="active"><?php echo lang("breadcrumb_index"); ?></li>
 	</ol>
@@ -59,6 +80,7 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 		<p><?php echo lang("index_guide"); ?></p>
 	</div>
 
+<!--
 	<?php	$nearMeetings = 0;
 			$now = getNow();
 			foreach($meetings as $meeting) { 
@@ -92,11 +114,13 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 	</div>
 	<?php	} ?>
 
+-->
+
 	<?php	if (count($trendingMotions)) { ?>
 	
 	<div class="row">
 	<?php		foreach($trendingMotions as $motion) { ?>
-		<div class="<?php echo $headingColMd; ?>">
+		<div class="<?php echo $headingColMd; ?> col-xs-12 col-sm-6">
 			<div class="panel panel-default">
 				<div class="panel-heading no-caret" style="height: 61px;">
 					<p class="text-info" style="display: inline-block;"><a 
@@ -131,28 +155,92 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 	
 	<?php	} ?>
 
-	<div class="calendar-nav clearfix">
-		<div class="pull-right form-inline" style="margin-top: 15px;">
-			<div class="btn-group">
-				<button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; <?php echo lang("calendar_prev"); ?></button>
-				<button class="btn btn-default" data-calendar-nav="today"><?php echo lang("calendar_today"); ?></button>
-				<button class="btn btn-primary" data-calendar-nav="next"><?php echo lang("calendar_next"); ?> &gt;&gt;</button>
+<div class="row">
+	<div class="col-md-4 col-xs-12 col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><?php echo lang("meetings_upcoming_meetings"); ?></div>
+<?php	if (count($waitingMeetings)) { ?>
+			<ul class="list-group meetings">
+<?php		foreach($waitingMeetings as $meeting) { 
+
+				$date = getDateTime($meeting["mee_datetime"]);
+				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+
+?>
+				<li class="list-group-item <?php echo $meeting["mee_class"]; ?>">
+					<div class="pull-right"><?php echo $date; ?></div>
+					<div><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></div>
+					<br>
+					<div><em><?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?></em></div>
+				</li>
+<?php		} ?>
+			</ul>
+<?php	}
+		else { ?>
+			<div class="panel-body">
+				<?php echo lang("meetings_no_upcoming_meeting"); ?>
 			</div>
-			<div class="btn-group">
-				<button class="btn btn-warning" data-calendar-view="year"><?php echo lang("calendar_year"); ?></button>
-				<button class="btn btn-warning active" data-calendar-view="month"><?php echo lang("calendar_month"); ?></button>
-				<button class="btn btn-warning" data-calendar-view="week"><?php echo lang("calendar_week"); ?></button>
-				<button class="btn btn-warning" data-calendar-view="day"><?php echo lang("calendar_day"); ?></button>
-			</div>
+<?php	} ?>
 		</div>
-		<h3>&nbsp;</h3>
-	</div>
+	</div>	
 
-	<br />
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading"><?php echo lang("meetings_ongoing_meetings"); ?></div>
+<?php	if (count($meetings)) { ?>
+			<ul class="list-group meetings">
+<?php		foreach($meetings as $meeting) { 
 
-	<div id="calendar"></div>
+				$date = getDateTime($meeting["mee_datetime"]);
+				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
 
-	<div class="text-center"><a href="do_downloadCalendar.php"><?php echo lang("index_downloadCalendar"); ?></a></div>
+//				print_r($meeting);
+?>
+				<li class="list-group-item <?php echo $meeting["mee_class"]; ?>">
+					<div class="pull-right"><?php echo $date; ?></div>
+					<div><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></div>
+					<br>
+					<div><em><?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?></em></div>
+				</li>
+<?php		} ?>
+			</ul>
+<?php	}
+		else { ?>
+			<div class="panel-body">
+				<?php echo lang("meetings_no_ongoing_meeting"); ?>
+			</div>
+<?php	} ?>
+		</div>
+	</div>	
+	
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading"><?php echo lang("meetings_passed_meetings"); ?></div>
+<?php	if (count($closedMeetings)) { ?>
+			<ul class="list-group meetings">
+<?php		foreach($closedMeetings as $meeting) { 
+
+				$date = getDateTime($meeting["mee_datetime"]);
+				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+
+?>
+				<li class="list-group-item <?php echo $meeting["mee_class"]; ?>">
+					<div class="pull-right"><?php echo $date; ?></div>
+					<div><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></div>
+					<br>
+					<div><em><?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?></em></div>
+				</li>
+<?php		} ?>
+			</ul>
+<?php	}
+		else { ?>
+			<div class="panel-body">
+				<?php echo lang("meetings_no_passed_meeting"); ?>
+			</div>
+<?php	} ?>
+		</div>
+	</div>	
+</div>
 
 
 <?php 	if ($isConnected) {?>
@@ -170,38 +258,6 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 <div class="lastDiv"></div>
 
 <?php include("footer.php");?>
-<script type="text/javascript">
-/* global $ */
-$(function() {
-	var calendar = $("#calendar").calendar(
-            {
-            	language: "fr-FR",
-                tmpl_path: "tmpls/",
-                events_source: "do_getMeetings.php",
-                time_end: "23:30",
-                onAfterViewLoad: function(view) {
-        			$('.calendar-nav h3').text(this.getTitle());
-        			$('.btn-group button').removeClass('active');
-        			$('button[data-calendar-view="' + view + '"]').addClass('active');
-        		},
-            });
-
-	$('.btn-group button[data-calendar-nav]').each(function() {
-		var $this = $(this);
-		$this.click(function() {
-			calendar.navigate($this.data('calendar-nav'));
-		});
-	});
-
-	$('.btn-group button[data-calendar-view]').each(function() {
-		var $this = $(this);
-		$this.click(function() {
-			calendar.view($this.data('calendar-view'));
-		});
-	});
-
-});
-</script>
 
 </body>
 </html>

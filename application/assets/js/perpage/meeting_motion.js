@@ -55,6 +55,41 @@ function areVotesAnonymous(motion) {
 	return false;
 }
 
+function orderPropositions(motion, propositions) {
+	if (motion.mot_status != "resolved") return;
+	var motionId = motion.mot_id;
+
+	var motionContainer = $("#agenda_point .motion[data-id=" + motionId + "]");
+
+	if (motionContainer.data("ordered-propositions") == "ordered") return;
+
+	motionContainer.data("ordered-propositions", "ordered")
+
+	motionContainer.find(".proposition").each(function() {
+
+		for(var propositionIndex = 0; propositionIndex < propositions.length; ++propositionIndex) {
+			if (propositions[propositionIndex].mpr_id == $(this).data("id")) {
+				$(this).data("order", propositions[propositionIndex].mpr_position);
+				break;
+			}
+		}
+
+	});
+
+	var sortPropositions = function(a, b) {
+		if ($(b).data('order') == $(a).data('order')) return 0;
+		
+	    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
+	};
+
+	var propositionDivs = motionContainer.find(".motion-propositions").children();
+	propositionDivs.detach();
+
+	propositionDivs.sort(sortPropositions).appendTo(motionContainer.find(".motion-propositions"));
+
+}
+
+
 function computeMotion(motion) {
 	var motionId = motion.data("id");
 //	console.log("computeMotion " + motionId);
@@ -316,6 +351,7 @@ function computeMotion(motion) {
 			}
 		}
 
+		orderPropositions(data.motion, data.propositions);
 	}, "json");
 }
 
@@ -323,6 +359,7 @@ function dumpMotion(motion) {
 	var motionId = motion.data("id");
 
 	$.post("meeting/do_computeVote.php", {motionId: motionId, save: true}, function(data) {
+		orderPropositions(data.motion, data.propositions);
 	}, "json");
 
 }

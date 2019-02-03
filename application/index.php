@@ -44,14 +44,14 @@ $headingColMd = "col-md-" . (12 / (count($trendingMotions) ? count($trendingMoti
 
 $filters = array();
 $filters["with_status"] = array("closed");
-$filters["limit"] = 5;
+$filters["limit"] = 7;
 
 $closedMeetings = $meetingBo->getByFilters($filters);
 
 $filters = array();
 $filters["with_status"] = array("waiting");
 $filters["older_first"] = true;
-$filters["limit"] = 5;
+$filters["limit"] = 7;
 
 $waitingMeetings = $meetingBo->getByFilters($filters);
 

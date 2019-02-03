@@ -202,7 +202,7 @@ function sortPropositions($a, $b) {
 		<div class="propositions">
 	<?php	
 			foreach($propositions as $index => $proposition) {
-	
+
 				if ($motion["mot_win_limit"] == -2) {
 					if ($index != 0) echo "<br>";
 				?>
@@ -214,6 +214,12 @@ function sortPropositions($a, $b) {
 						<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
 					<?php	} ?>
 				</div>
+			</div>
+	<?php 		} 
+				else if ($motion["mot_win_limit"] == -1) {
+				?>
+			<div class="btn btn-default proposition text-center" style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
+				<button class='btn btn-up btn-xs pull-left' style='background-color: inherit;'><i class="fa fa-arrow-up" aria-hidden="true"></i></button><span class='proposition-label'><?php echo $proposition["mpr_label"]; ?></span><button class='btn btn-down btn-xs pull-right' style='background-color: inherit;'><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 			</div>
 	<?php 		} 
 				else {?>

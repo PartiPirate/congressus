@@ -893,9 +893,12 @@ function setSchulzeOrderStyle(propositionsHolder) {
 		index++;
 
 		$(this).removeClass("btn-success").removeClass("btn-warning").removeClass("btn-danger").removeClass("btn-default");
+		$(this).find(".btn-up").removeAttr("disabled");
+		$(this).find(".btn-down").removeAttr("disabled");
 
 		if (index == 1) {
 			$(this).addClass("btn-success");
+			$(this).find(".btn-up").attr("disabled", "disabled");
 		}
 		else if (index == propositionHolders.length) {
 			$(this).addClass("btn-danger");
@@ -905,6 +908,10 @@ function setSchulzeOrderStyle(propositionsHolder) {
 		}
 		else {
 			$(this).addClass("btn-default");
+		}
+
+		if (index == propositionHolders.length) {
+			$(this).find(".btn-down").attr("disabled", "disabled");
 		}
 	});
 }
@@ -1068,8 +1075,8 @@ function vote(event) {
 		var propositionsHolder = dialog.find(".propositions");
 
 		propositions.each(function() {
-			var propositionHolder = $("<div class=\"btn btn-default col-md-12 proposition\" style=\"margin-bottom: 2px; \" />");
-			propositionHolder.text($(this).find(".proposition-label").text());
+			var propositionHolder = $("<div class=\"btn btn-default col-md-12 proposition\" style=\"margin-bottom: 2px; \"><button class='btn btn-up btn-xs pull-left' style='background-color: inherit;'><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i></button><span class='proposition-label'></span><button class='btn btn-down btn-xs pull-right' style='background-color: inherit;'><i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i></button></div>");
+			propositionHolder.find(".proposition-label").text($(this).find(".proposition-label").text());
 			propositionHolder.attr("data-proposition-id", $(this).data("id"));
 
 			propositionsHolder.append(propositionHolder);
@@ -1084,6 +1091,31 @@ function vote(event) {
 			"stop": function() {
 				setSchulzeOrderStyle(propositionsHolder);
 			}
+		});
+
+		propositionsHolder.find(".btn-up").click(function(e) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+
+			var proposition = $(this).parent(".proposition");
+			var prevProposition = proposition.prev();
+
+			proposition.detach();
+			proposition.insertBefore(prevProposition);
+
+			setSchulzeOrderStyle(propositionsHolder);
+		});
+		propositionsHolder.find(".btn-down").click(function(e) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+
+			var prevProposition = $(this).parent(".proposition");
+			var proposition = prevProposition.next();
+
+			proposition.detach();
+			proposition.insertBefore(prevProposition);
+
+			setSchulzeOrderStyle(propositionsHolder);
 		});
 
 		retrievePreviousVotes(motion, propositionsHolder);

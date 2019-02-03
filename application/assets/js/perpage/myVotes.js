@@ -285,11 +285,22 @@ function setSchulzeOrderStyle(propositionsHolder) {
 	
 	var maxPower = propositionsHolder.parents(".motion").data("max-power");
 
-	
 	propositions.each(function(index) {
+		$(this).find(".btn-up").removeAttr("disabled");
+		$(this).find(".btn-down").removeAttr("disabled");
+
 		$(this).data("power", (propositions.length - index) * maxPower);
 		var hue = 120 - (propositions.length == 1 ? 0 : 120 * index / (propositions.length - 1));
 		$(this).css({"background" : "hsl(" + hue + ", 70%, 70%)", "color" : "#111111"});
+
+		if (index == 0) {
+			$(this).find(".btn-up").attr("disabled", "disabled");
+		}
+
+		if (index == propositions.length - 1) {
+			$(this).find(".btn-down").attr("disabled", "disabled");
+		}
+
 	});
 }
 
@@ -309,6 +320,33 @@ function addBordaHandlers(motion) {
 			setSchulzeOrderStyle(propositionsHolder);
 			setMotionDirty(motion, true);
 		}
+	});
+
+	propositionsHolder.find(".btn-up").click(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		var proposition = $(this).parent(".proposition");
+		var prevProposition = proposition.prev();
+
+		proposition.detach();
+		proposition.insertBefore(prevProposition);
+
+		setSchulzeOrderStyle(propositionsHolder);
+		setMotionDirty(motion, true);
+	});
+	propositionsHolder.find(".btn-down").click(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		var prevProposition = $(this).parent(".proposition");
+		var proposition = prevProposition.next();
+
+		proposition.detach();
+		proposition.insertBefore(prevProposition);
+
+		setSchulzeOrderStyle(propositionsHolder);
+		setMotionDirty(motion, true);
 	});
 
 	setSchulzeOrderStyle(propositionsHolder);

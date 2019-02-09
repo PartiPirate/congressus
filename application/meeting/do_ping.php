@@ -69,7 +69,7 @@ $previousPings = $pingBo->getByFilters($ping);
 
 //error_log("Number of pings : " . count($previousPings));
 
-print_r($previousPings);
+//print_r($previousPings);
 
 if (count($previousPings)) {
 	$previousPing = $previousPings[0];

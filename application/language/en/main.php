@@ -21,6 +21,14 @@ $lang["date_format"] = "m/d/Y";
 $lang["time_format"] = "H:iA";
 $lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "{date} at {time}";
+$lang["todaytime_format"] = "today at {time}";
+$lang["tomorrowtime_format"] = "tomorrow at {time}";
+$lang["until_datetime_format"] = "until {date} à {time}";
+$lang["until_todaytime_format"] = "until today, {time}";
+$lang["until_tomorrowtime_format"] = "until tomorrow, {time}";
+$lang["today"] = "today";
+$lang["tomorrow"] = "tomorrow";
+$lang["yesterday"] = "yesterday";
 
 $lang["common_ask_for_modification"] = "Ask modification";
 $lang["common_back"]     = "Back";

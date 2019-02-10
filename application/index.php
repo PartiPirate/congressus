@@ -155,6 +155,19 @@ echo "</pre>";
 	
 	<?php	} ?>
 
+<?php
+	$now = getNow();
+	$nowFormat = $now->format(lang("date_format"));
+
+	$tomorrow = getNow();
+	$tomorrow = $tomorrow->add(new DateInterval('P1D'));
+	$tomorrowFormat = $tomorrow->format(lang("date_format"));
+
+	$yesterday = getNow();
+	$yesterday = $yesterday->sub(new DateInterval('P1D'));
+	$yesterdayFormat = $yesterday->format(lang("date_format"));
+?>
+
 <div class="row">
 	<div class="col-md-4 col-xs-12 col-sm-12">
 		<div class="panel panel-default">
@@ -164,7 +177,17 @@ echo "</pre>";
 <?php		foreach($waitingMeetings as $meeting) { 
 
 				$date = getDateTime($meeting["mee_datetime"]);
-				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+				$dateFormat = $date->format(lang("date_format"));
+
+				if ($dateFormat == $nowFormat) {
+					$date = str_replace("{time}", $date->format(lang("time_format")), lang("todaytime_format"));
+				}
+				else if ($dateFormat == $tomorrowFormat) {
+					$date = str_replace("{time}", $date->format(lang("time_format")), lang("tomorrowtime_format"));
+				}
+				else {
+					$date = str_replace("{date}", $dateFormat, str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+				}
 
 ?>
 				<li class="list-group-item <?php echo $meeting["mee_class"]; ?>">
@@ -191,8 +214,23 @@ echo "</pre>";
 			<ul class="list-group meetings">
 <?php		foreach($meetings as $meeting) { 
 
-				$date = getDateTime($meeting["mee_datetime"]);
-				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+				$start = new DateTime($meeting["mee_datetime"]);
+				$end = new DateTime($meeting["mee_datetime"]);
+				$duration = new DateInterval("PT" . ($meeting["mee_expected_duration"] ? $meeting["mee_expected_duration"] : 60) . "M");
+				$end = $end->add($duration);
+
+				$date = $end;
+				$dateFormat = $date->format(lang("date_format"));
+
+				if ($dateFormat == $nowFormat) {
+					$date = str_replace("{time}", $date->format(lang("time_format")), lang("until_todaytime_format"));
+				}
+				else if ($dateFormat == $tomorrowFormat) {
+					$date = str_replace("{time}", $date->format(lang("time_format")), lang("until_tomorrowtime_format"));
+				}
+				else {
+					$date = str_replace("{date}", $dateFormat, str_replace("{time}", $date->format(lang("time_format")), lang("until_datetime_format")));
+				}
 
 //				print_r($meeting);
 ?>
@@ -221,7 +259,17 @@ echo "</pre>";
 <?php		foreach($closedMeetings as $meeting) { 
 
 				$date = getDateTime($meeting["mee_datetime"]);
-				$date = str_replace("{date}", $date->format(lang("date_format")), str_replace("{time}", $date->format(lang("time_format")), lang("datetime_format")));
+				$dateFormat = $date->format(lang("date_format"));
+
+				if ($dateFormat == $nowFormat) {
+					$date = lang("today");
+				}
+				else if ($dateFormat == $yesterdayFormat) {
+					$date = lang("yesterday");
+				}
+				else {
+					$date = $dateFormat;
+				}
 
 ?>
 				<li class="list-group-item <?php echo $meeting["mee_class"]; ?>">

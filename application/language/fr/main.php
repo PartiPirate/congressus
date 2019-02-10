@@ -21,6 +21,14 @@ $lang["date_format"] = "d/m/Y";
 $lang["time_format"] = "H:i";
 $lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "le {date} à {time}";
+$lang["todaytime_format"] = "aujourd'hui à {time}";
+$lang["tomorrowtime_format"] = "demain à {time}";
+$lang["until_datetime_format"] = "jusqu'au {date} à {time}";
+$lang["until_todaytime_format"] = "jusqu'à aujourd'hui, {time}";
+$lang["until_tomorrowtime_format"] = "jusqu'à demain, {time}";
+$lang["today"] = "aujourd'hui";
+$lang["tomorrow"] = "demain";
+$lang["yesterday"] = "hier";
 
 $lang["common_ask_for_modification"] = "Demander modification";
 $lang["common_back"]     = "Retour";

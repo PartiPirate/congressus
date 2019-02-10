@@ -139,3 +139,8 @@ select {
 .meetings .event-special {
     background-color: hsl(300, 100%, 10%);
 }
+
+.export_content {
+/*	background-image: url(../images/background_lightgrey.png);*/
+	background-color: #272b30;
+}

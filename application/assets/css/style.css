@@ -357,6 +357,7 @@ a[disabled] {
 /* Modal Content/Box */
 .export_content {
 /*	background-image: url(../images/background_lightgrey.png);*/
+	background-color: #ffffff;
 	margin: 5% auto;
 	padding: 0;
 	width: 80%;

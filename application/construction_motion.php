@@ -1091,7 +1091,9 @@ include("construction/pieChart.php");
 ?>
 			<div role="tabpanel" class="tab-pane" id="amendments" style="padding-top: 15px;">
 <?php	
+		$motionSources = $sources;
 		include("construction/amendment_list.php");
+		$sources = $motionSources;
 ?>
 			</div>
 <?php	

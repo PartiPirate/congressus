@@ -138,6 +138,10 @@ class GaletteAllMembersGroupSource {
     function getVoterNotNull() {
     	return "(ggama.id_adh IS NOT NULL)";
     }
+    
+    function getGroups($userId) {
+        return array(array("type" => "galette_adherents", "id" => "0", "label" => lang("notice_groupAllGalette"), "active" => true));
+    }
 }
 
 ?>

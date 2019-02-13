@@ -199,6 +199,52 @@ class PersonaeThemeSource {
     function getVoterNotNull() {
     	return "(ta.id_adh IS NOT NULL)";
     }
+
+    function getGroups($userId) {
+        global $config;
+
+        $personaeDatabase = "";
+
+        if (isset($config["personae"]["db"]) && $config["personae"]["db"]) {
+            $personaeDatabase = $config["personae"]["db"];
+            $personaeDatabase .= ".";
+        }
+
+		$queryBuilder = QueryFactory::getInstance($config["database"]["dialect"]);
+    	
+    	$queryBuilder->addSelect("'dlp_themes'", "type");
+    	$queryBuilder->addSelect("t.the_id", "id");
+    	$queryBuilder->addSelect("t.the_label", "label");
+    	$queryBuilder->addSelect("t.the_deleted", "deleted");
+		$queryBuilder->from($personaeDatabase."dlp_themes", 			"t");
+		$queryBuilder->join($personaeDatabase."dlp_fixations",			"tf.fix_id = t.the_current_fixation_id AND tf.fix_theme_type = 'dlp_themes'",	"tf", "NONE");
+		$queryBuilder->join($personaeDatabase."dlp_fixation_members",	"tfm.fme_fixation_id = tf.fix_id AND tfm.fme_member_id = :userId",		"tfm", "NONE");
+
+		$query = $queryBuilder->constructRequest();
+
+		$args = array("userId" => $userId);
+/*
+		echo "\n";
+		echo showQuery($query, $args);
+		echo "\n";
+*/
+		$pdo = openConnection();
+
+		$statement = $pdo->prepare($query);
+		$statement->execute($args);
+
+		$results = $statement->fetchAll();
+
+		$groups = array();
+
+		foreach($results as $result) {
+//			print_r($result);
+			$groups[] = array("type" => $result["type"], "id" => $result["id"], "label" => $result["label"], "active" => ($result["deleted"] == 0));
+		}
+
+        return $groups;
+    }
+
 }
 
 ?>

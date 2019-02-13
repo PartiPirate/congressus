@@ -295,6 +295,10 @@ $lang["calendar_month"] = "Month";
 $lang["calendar_week"]  = "Week";
 $lang["calendar_day"]   = "Day";
 
+$lang["decisions_ownactivegroups"]   = "My active groups";
+$lang["decisions_othergroups"]       = "Other groups";
+$lang["decisions_owninactivegroups"] = "My older inactive groups";
+
 $lang["createMeeting_datetime"]                     = "Date and time of the meeting:";
 $lang["createMeeting_datetimeError"]                = "Please, use a date with the format YYYY-MM-DD and a time with the format HH:MM";
 $lang["createMeeting_length"]                       = "Planned length:";

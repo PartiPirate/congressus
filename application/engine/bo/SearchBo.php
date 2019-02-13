@@ -66,6 +66,8 @@ class SearchBo {
 		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ']')", "object");
 		$queryBuilder->where("mee_label LIKE :likeQuery");
 
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
+
 		$query = $queryBuilder->constructRequest();
 //		echo showQuery($query, $args);
 
@@ -90,6 +92,8 @@ class SearchBo {
 		$queryBuilder->addSelect("CONCAT('[', '{\"type\":\"meeting\",\"id\":\"', mee_id, '\"}', ',', 
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ']')", "object");
 		$queryBuilder->where("(age_description LIKE :likeQuery OR age_label LIKE :likeQuery)");
+
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
 
 		$query = $queryBuilder->constructRequest();
 
@@ -122,11 +126,13 @@ class SearchBo {
 								'{\"type\":\"conclusion\",\"id\":\"', con_id, '\"}',']')", "object");
 		$queryBuilder->where("con_text LIKE :likeQuery");
 
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
+
 		$query = $queryBuilder->constructRequest();
 
-		//		echo showQuery($query, $args);
-
 		$args = array("likeQuery" => $likeQuery);
+//		echo showQuery($query, $args);
+
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
 		$queryResults = $statement->fetchAll();
@@ -159,6 +165,8 @@ class SearchBo {
 								'{\"type\":\"chat\",\"id\":\"', cha_id, '\"}', ']')", "object");
 		$queryBuilder->where("cha_text LIKE :likeQuery");
 
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
+
 		$query = $queryBuilder->constructRequest();
 
 		//		echo showQuery($query, $args);
@@ -187,6 +195,8 @@ class SearchBo {
 								'{\"type\":\"agenda\",\"id\":\"', age_id, '\"}', ',' ,
 								'{\"type\":\"task\",\"id\":\"', tas_id, '\"}', ']')", "object");
 		$queryBuilder->where("tas_label LIKE :likeQuery");
+
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
 
 		$query = $queryBuilder->constructRequest();
 
@@ -229,6 +239,8 @@ class SearchBo {
 			$args["mee_type"] = $filters["mee_type"];
 			$queryBuilder->where("mee_type = :mee_type");
 		}
+
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
 
 		$query = $queryBuilder->constructRequest();
 
@@ -273,6 +285,8 @@ class SearchBo {
 			$args["mee_type"] = $filters["mee_type"];
 			$queryBuilder->where("mee_type = :mee_type");
 		}
+
+		$queryBuilder->where("(mee_status = 'closed' or mee_status = 'open')");
 
 		$query = $queryBuilder->constructRequest();
 

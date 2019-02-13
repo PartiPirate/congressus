@@ -298,6 +298,10 @@ $lang["calendar_month"] = "Mois";
 $lang["calendar_week"] = "Semaine";
 $lang["calendar_day"] = "Jour";
 
+$lang["decisions_ownactivegroups"] = "Mes groupes actifs";
+$lang["decisions_othergroups"] = "Les autres groupes";
+$lang["decisions_owninactivegroups"] = "Mes anciens groupes inactifs";
+
 $lang["createMeeting_datetime"] = "Date et heure de la réunion :";
 $lang["createMeeting_labelError"] = "Veuillez entrer un nom pour la réunion";
 $lang["createMeeting_datetimeError"] = "Veuillez entrer une date au format AAAA-MM-JJ et un horaire au format HH:MM";

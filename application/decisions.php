@@ -155,15 +155,29 @@ foreach($propositions as $proposition) {
 
 <style>
     
+.nav-tabs>li>a {
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.nav-tabs>li>a:hover {
+    margin-left: 5px;
+}
+
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #555;
     cursor: default;
     background-color: #fff;
     border: 1px solid #ddd;
+    margin-left: 5px;
 }
 
-.nav-tabs>li>a {
-    border-radius: 4px;
+.nav-tabs>li.li-header>a, .nav-tabs>li.li-header>a:focus, .nav-tabs>li.li-header>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    margin-left: 0px;
 }
 
 </style>
@@ -176,14 +190,29 @@ foreach($propositions as $proposition) {
 		<li class="active"><?php echo lang("breadcrumb_decisions"); ?></li>
 	</ol>
 
-<?php if ($skeleton) {?>
+<?php if ($skeleton) {
+
+$personalGroups = array();
+
+foreach($config["modules"]["groupsources"] as $groupSourceId) {
+    $groupSource = GroupSourceFactory::getInstance($groupSourceId);
+
+    if (method_exists($groupSource, "getGroups")) {
+        $groups = $groupSource->getGroups($sessionUserId);
+        $personalGroups = array_merge($personalGroups, $groups);
+    }
+}
+
+?>
 
 	<div class="row">
 		<div class="col-md-3">
 
         	<!-- Nav tabs -->
         	<ul class="nav nav-tabs" role="tablist">
-<?php 	$active = "active";
+<?php 	
+//        $active = "active";
+        $active = "";
 
 		foreach($objects as $voterIndex => $voter) {
 		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
@@ -216,14 +245,83 @@ foreach($propositions as $proposition) {
 
         uasort($objects, "compareVoterByLabel");
 
+        //  Only active
+?>        
+		<li role="presentation" class="li-header" style="float: none;">
+			<a href="#" disabled=disabled><?php echo lang("decisions_ownactivegroups"); ?></a>
+		</li>
+<?php        
+        foreach($personalGroups as $personalGroup) {
+            if (!$personalGroup["active"]) continue;
+            $currentId = $personalGroup["type"] . "_" .  $personalGroup["id"];
+
+    		foreach($objects as $voterIndex => $voter) {
+    		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
+    		    
+    		    if ($currentId != $id) continue;
+    ?>
+            		<li role="presentation" class="<?php echo $active; ?>" style="float: none;">
+            			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $objects[$voterIndex]["label"]; ?></a>
+            		</li>
+    <?php 	    $active = "";
+                break;
+    		}
+    	}
+
+?><li style="float: none;">&nbsp;</li><?php
+
+        // Not yours
+?>        
+		<li role="presentation" class="li-header" style="float: none;">
+			<a href="#" disabled=disabled><?php echo lang("decisions_othergroups"); ?></a>
+		</li>
+<?php        
 		foreach($objects as $voterIndex => $voter) {
 		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
+
+            $found = false;
+
+            foreach($personalGroups as $personalGroup) {
+                $currentId = $personalGroup["type"] . "_" .  $personalGroup["id"];
+    		    if ($currentId == $id) {
+    		        $found = true;
+    		        break;
+    		    }
+            }
+		    
+		    if ($found) continue;
 ?>
         		<li role="presentation" class="<?php echo $active; ?>" style="float: none;">
         			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $objects[$voterIndex]["label"]; ?></a>
         		</li>
 <?php 	    $active = "";
-		}?>
+		}
+
+?><li style="float: none;">&nbsp;</li><?php
+
+        //  Only unactive
+?>        
+		<li role="presentation" class="li-header" style="float: none;">
+			<a href="#" disabled=disabled><?php echo lang("decisions_owninactivegroups"); ?></a>
+		</li>
+<?php        
+        foreach($personalGroups as $personalGroup) {
+            if ($personalGroup["active"]) continue;
+            $currentId = $personalGroup["type"] . "_" .  $personalGroup["id"];
+
+    		foreach($objects as $voterIndex => $voter) {
+    		    $id = $voter["voter"]["not_target_type"] . "_" .  $voter["voter"]["not_target_id"];
+    		    
+    		    if ($currentId != $id) continue;
+    ?>
+            		<li role="presentation" class="<?php echo $active; ?>" style="float: none;">
+            			<a href="#<?php echo $id; ?>" role="tab" data-toggle="tab"><?php echo $objects[$voterIndex]["label"]; ?></a>
+            		</li>
+    <?php 	    $active = "";
+                break;
+    		}
+    	}
+?>
         	</ul>
     	</div>
 		<div class="col-md-9">

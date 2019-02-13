@@ -26,11 +26,13 @@ $(function() {
         
         loadGroup(newlyGroup.replace("#", ""), newlyDiv, 0);
     });
-
+/*
     $('li.active a[data-toggle="tab"]').each(function () {
         var newlyGroup = $(this).attr("href");
         var newlyDiv = $(newlyGroup);
 
         loadGroup(newlyGroup.replace("#", ""), newlyDiv, 0);
-    })
+    });
+*/
+    $('li a[data-toggle="tab"]').eq(0).click();
 });

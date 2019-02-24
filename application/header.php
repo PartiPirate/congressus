@@ -411,7 +411,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 
 					<?php 	if ($isConnected || $isAdministrator) {?>
 					<?php 	if ($isConnected) {?>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="getAvatar.php" class="img-circle" style="max-width: 32px; max-height: 32px; margin: -20px 0 -20px 0;" 
+					<li class="dropdown"><a href="#" class="dropdown-toggle nickname-link" data-nickname="<?php echo GaletteBo::showIdentity($sessionUser); ?>" data-toggle="dropdown" role="button" aria-expanded="false"><img src="getAvatar.php" class="img-circle" style="max-width: 32px; max-height: 32px; margin: -20px 0 -20px 0;" 
 								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($sessionUser); ?>"><?php echo GaletteBo::showIdentity($sessionUser); ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">

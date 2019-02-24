@@ -271,6 +271,27 @@ var checkDiff = function(before, after) {
     console.assert(JSON.stringify(after)  === JSON.stringify(_after),  'Expected', after,  'got', _after);
 };
 
+/*
+var constructByDiff = function(before, diffArray) {
+    var _before = [], _after  = [], i;
+
+    for (i=0; i < diffArray.length; i++) {
+        switch (diffArray[i][0]) {
+            case '-':
+                _before = _before.concat(result[i][1]);
+                break;
+            case '+':
+                _after  = _after.concat(result[i][1]);
+                break;
+            default:
+                _before = _before.concat(result[i][1]);
+                _after  = _after.concat( result[i][1]);
+        }
+    }
+    
+}
+*/
+
 if (typeof(module) === 'object') {
   // Export functionality if used as a node.js or requirejs module
   module.exports = {
@@ -278,5 +299,8 @@ if (typeof(module) === 'object') {
     htmlDiff: htmlDiff,
     stringDiff: stringDiff,
     checkDiff: checkDiff
+/*    ,
+    constructByDiff: constructByDiff
+*/    
   };
 }

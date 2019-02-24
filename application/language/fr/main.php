@@ -378,10 +378,20 @@ $lang["loc_type_framatalk"] = "Sur framatalk";
 $lang["loc_type_discord"] = "Sur discord";
 $lang["loc_type_unknown"] = "à un endroit inconnu";
 
-$lang["construction_arguments"] = "Arguments";
-$lang["construction_amendments"] = "Amendements";
+$lang["construction_arguments"]     = "Arguments";
+$lang["construction_amendments"]    = "Amendements";
 $lang["construction_argument_send"] = "Envoyer";
-$lang["construction_sources"] = "Sources";
+$lang["construction_sources"]       = "Sources";
+
+$lang["construction_motion_markdown"]  = "Texte stylisé";
+$lang["construction_motion_motion"]    = "Texte (ajout)";
+$lang["construction_motion_diff"]      = "Texte (diff)";
+$lang["construction_motion_authoring"] = "Éditer";
+$lang["construction_motion_both"]      = "Comparaison";
+$lang["construction_motion_right"]     = "...";
+$lang["construction_motion_save"]      = "Sauvegarder";
+$lang["construction_motion_coauthors"] = "Gérer des co-author";
+$lang["construction_motion_pin"]       = "Épingler";
 
 $lang["authorship_title"] = "Gestion des co-auteurs";
 $lang["authorship_add_co_author"] = "Ajouter un co-auteur";

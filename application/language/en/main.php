@@ -379,6 +379,16 @@ $lang["construction_amendments"]    = "Amendements";
 $lang["construction_argument_send"] = "Send";
 $lang["construction_sources"]       = "Sources";
 
+$lang["construction_motion_markdown"]  = "Styled text";
+$lang["construction_motion_motion"]    = "Text (add)";
+$lang["construction_motion_diff"]      = "Text (diff)";
+$lang["construction_motion_authoring"] = "Edit";
+$lang["construction_motion_both"]      = "Compare";
+$lang["construction_motion_right"]     = "...";
+$lang["construction_motion_save"]      = "Save";
+$lang["construction_motion_coauthors"] = "Manage co-authors";
+$lang["construction_motion_pin"]       = "Pin";
+
 $lang["authorship_title"]           = "Co-authors managment";
 $lang["authorship_add_co_author"]   = "Add a co-author";
 $lang["authorship_co_authors"]      = "Co-authors";

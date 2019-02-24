@@ -64,6 +64,10 @@
 <script src="assets/js/emojione.min.js"></script>
 <script src="assets/js/emojione.helper.js"></script>
 <script src="assets/js/social.js"></script>
+<script>
+    var PAD_WS = <?php echo json_encode($config["server"]["pad"]); ?>;
+</script>
+<script src="assets/js/pad.js"></script>
 
 <!--
 <script src="assets/js/pagination.js"></script>

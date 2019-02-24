@@ -421,28 +421,28 @@ include("construction/pieChart.php");
 				</div>
 				<div class="btn-toolbar panel-body" role="toolbar" style="margin-left: 0px;">
 					<div class="btn-group btn-type-group" role="group">
-						<button id="show-markdown-btn" type="button" class="btn btn-default active"><i class="fa fa-file-text" aria-hidden="true"></i></button>
-						<button id="show-motion-btn" type="button" class="btn btn-default"><i class="fa fa-archive" aria-hidden="true"></i></button>
-						<button id="show-diff-btn" type="button" class="btn btn-default"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
+						<button id="show-markdown-btn" type="button" class="btn btn-default active" title="<?php echo lang("construction_motion_markdown"); ?>"><i class="fa fa-file-text" aria-hidden="true"></i></button>
+						<button id="show-motion-btn"   type="button" class="btn btn-default"          title="<?php echo lang("construction_motion_motion"); ?>"><i class="fa fa-archive" aria-hidden="true"></i></button>
+						<button id="show-diff-btn"     type="button" class="btn btn-default"            title="<?php echo lang("construction_motion_diff"); ?>"><i class="fa fa-balance-scale" aria-hidden="true"></i></button>
 						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
-						<button id="show-motion-authoring-btn" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button id="show-motion-authoring-btn" type="button" class="btn btn-default" title="<?php echo lang("construction_motion_authoring"); ?>"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						<?php	} ?>
 					</div>
 						<?php	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 					<div class="btn-group btn-authoring-group" style="display: none;" role="group">
-						<button id="show-both-panels-btn" type="button" class="btn btn-default active"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
-						<button id="show-right-panel-btn" type="button" class="btn btn-default"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+						<button id="show-both-panels-btn" type="button" class="btn btn-default active" title="<?php echo lang("construction_motion_both"); ?>"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
+						<button id="show-right-panel-btn" type="button" class="btn btn-default" title="<?php echo lang("construction_motion_right"); ?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" title="<?php echo lang("construction_motion_save"); ?>"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
 					</div>
 						<?php	} ?>
 						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 					<div class="btn-group btn-authors-group" role="group">
-						<button id="show-motion-co-authors-btn" type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+						<button id="show-motion-co-authors-btn" type="button" class="btn btn-default" title="<?php echo lang("construction_motion_coauthors"); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 					</div>
 						<?php	} ?>
 						<?php 	if ($hasWritingRights) { ?>
 					<div class="btn-group btn-admin-group" role="group">
-						<button id="btn-pin" type="button" class="btn btn-primary <?php echo $motion["mot_pinned"] ? "active" : ""; ?>" ><span class="glyphicon glyphicon-pushpin"></span></button>
+						<button id="btn-pin" type="button" class="btn btn-primary <?php echo $motion["mot_pinned"] ? "active" : ""; ?>" title="<?php echo lang("construction_motion_pin"); ?>"><span class="glyphicon glyphicon-pushpin"></span></button>
 					</div>
 						<?php	} ?>
 				</div>
@@ -452,7 +452,9 @@ include("construction/pieChart.php");
 						<label for="explanation"><?php echo lang("amendment_explanation"); ?></label>
 						<br>
 						<div id="explanation-textarea-div" style="display: none;">
-							<textarea class="form-control autogrow" name="explanation" id="explanation" data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></textarea>
+							<textarea class="form-control autogrow" name="explanation" id="explanation" 
+								data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
+								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></textarea>
 						</div>
 						<div id="explanation-content-div" style="display: block;">
 							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_explanation"])); ?>
@@ -469,7 +471,9 @@ include("construction/pieChart.php");
 					</div>
 					<textarea class="col-md-6 autogrow" disabled="disabled" style="display: none; height: auto;" id="source"><?php 
 						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
-					<textarea class="col-md-6 autogrow" style="display: none; height: auto;" id="destination" ><?php echo $motion["mot_description"]; ?></textarea>
+					<textarea class="col-md-6 autogrow" style="display: none; height: auto;" 
+						data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
+						id="destination" ><?php echo $motion["mot_description"]; ?></textarea>
 					<div class="clearfix "></div>
 					<div id="diff-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>

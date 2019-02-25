@@ -48,8 +48,8 @@ if (!$json || true) {
 	
 	$json = json_encode($sortedMeetings, JSON_NUMERIC_CHECK);
 
-	if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 60)) {
-		$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 60);
+	if (!$memcache->replace($memcacheKey, $json, 60)) {
+		$memcache->set($memcacheKey, $json, 60);
 	}
 }
 else {

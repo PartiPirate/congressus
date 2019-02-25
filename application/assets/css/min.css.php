@@ -42,12 +42,12 @@ if (!$css || true) {
 	$css = compress($css);
 
 	$timestamp = time();
-	if (!$memcache->replace($memcacheKey . ".ts", $timestamp, MEMCACHE_COMPRESSED, 3600)) {
-		$memcache->set($memcacheKey . ".ts", $timestamp, MEMCACHE_COMPRESSED, 3600);
+	if (!$memcache->replace($memcacheKey . ".ts", $timestamp, 3600)) {
+		$memcache->set($memcacheKey . ".ts", $timestamp, 3600);
 	}
 	
-	if (!$memcache->replace($memcacheKey, $css, MEMCACHE_COMPRESSED, 3600)) {
-		$memcache->set($memcacheKey, $css, MEMCACHE_COMPRESSED, 3600);
+	if (!$memcache->replace($memcacheKey, $css, 3600)) {
+		$memcache->set($memcacheKey, $css, 3600);
 	}
 }
 

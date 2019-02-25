@@ -30,8 +30,9 @@ function openMemcacheConnection($host = null, $port = null)
 		$port = $config["memcached"]["port"];
 	}
 
-	$memcache = new Memcache();
-	$memcache->connect($host, $port) or die ("Could not connect to memcached " . $host);
+	$memcache = new Memcached();
+	$memcache->addServer($host, $port, 100);
+//	$memcache->connect($host, $port) or die ("Could not connect to memcached " . $host);
 //	$memcache = new Memcached();
 //	$memcache->addServer($host, $port) or die ("Could not connect to memcached " . $host);
 

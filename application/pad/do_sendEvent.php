@@ -41,8 +41,8 @@ $events[] = $event;
 
 $json = json_encode($events, JSON_NUMERIC_CHECK);
 
-if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 60)) {
-	$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 60);
+if (!$memcache->replace($memcacheKey, $json, 60)) {
+	$memcache->set($memcacheKey, $json, 60);
 }
 
 echo json_encode(array("ok" => "ok"));

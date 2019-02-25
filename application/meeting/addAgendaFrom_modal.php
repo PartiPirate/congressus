@@ -146,6 +146,10 @@
                                     data-title="L'Assemblée Permanente valide la modification du code de fonctionnement de l'équipage &quot;Nom de l'équipage&quot;" 
                                     data-description="Pour accéder à la modification du code de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
                                     data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;équipage&quot;,&quot;equipage&quot;]}]">Modification de code de fonctionnement d'un équipage</option>
+                                <option value="" 
+                                    data-title="L'Assemblée Permanente valide la demande budgétaire de l'équipage &quot;Nom de l'équipage&quot;" 
+                                    data-description="Pour accéder à la demande budgétaire de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;équipage&quot;,&quot;equipage&quot;]}]">Demande budgétaire d'un équipage</option>
                             </optgroup>
                             <optgroup label="Candidature" id="candidate-group">
                                 <option value="" 
@@ -162,6 +166,21 @@
                                     data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."
                                     data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
                                     data-replace="[{&quot;src&quot;:&quot;Nom du texte&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;signature&quot;,&quot;signer&quot;]}]">Signature de texte</option>
+                                <option value="" 
+                                    data-title="Le Parti Pirate soutient &quot;Nom du soutien&quot;."
+                                    data-description="Pour accéder au sujet du soutien, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom du soutien&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[]}]">Soutien</option>
+<!--
+                                <option value="" 
+                                    data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."
+                                    data-description="Pour accéder au contenu du texte, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.">Signature de texte</option>
+-->                                    
+                            </optgroup>
+                            <optgroup label="Motion programmatique" id="programmatic-motion-group">
+                                <option value="" 
+                                    data-title="L'Assemblée permanente ajoute le point programme &quot;Point programme&quot;"
+                                    data-description="Pour accéder au point programme, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Point programme&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[]}]">Ajout d'un point programme</option>
 <!--
                                 <option value="" 
                                     data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."

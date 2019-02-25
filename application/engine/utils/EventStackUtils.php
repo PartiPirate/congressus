@@ -71,8 +71,8 @@ function addEvent($meetingId, $type, $text, $options = null) {
 	$json = json_encode($newEvents);
 	
 	$memcached = openMemcacheConnection();
-	if (!$memcached->replace("events_$meetingId", $json, MEMCACHE_COMPRESSED, 90)) {
-		$memcached->set("events_$meetingId", $json, MEMCACHE_COMPRESSED, 90);
+	if (!$memcached->replace("events_$meetingId", $json, 90)) {
+		$memcached->set("events_$meetingId", $json, 90);
 	}
 	
 //	$memcache->delete()

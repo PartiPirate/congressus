@@ -41,12 +41,12 @@ if (!$js) {
 	$js = \JShrink\Minifier::minify($js, array('flaggedComments' => false));
 
 	$timestamp = time();
-	if (!$memcache->replace($memcacheKey . ".ts", $timestamp, MEMCACHE_COMPRESSED, 3600)) {
-		$memcache->set($memcacheKey . ".ts", $timestamp, MEMCACHE_COMPRESSED, 3600);
+	if (!$memcache->replace($memcacheKey . ".ts", $timestamp, 3600)) {
+		$memcache->set($memcacheKey . ".ts", $timestamp, 3600);
 	}
 
-	if (!$memcache->replace($memcacheKey, $js, MEMCACHE_COMPRESSED, 3600)) {
-		$memcache->set($memcacheKey, $js, MEMCACHE_COMPRESSED, 3600);
+	if (!$memcache->replace($memcacheKey, $js, 3600)) {
+		$memcache->set($memcacheKey, $js, 3600);
 	}
 }
 else {

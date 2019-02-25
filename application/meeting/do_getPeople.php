@@ -235,8 +235,8 @@ if (!$json) {
 
 	$json = json_encode($data, JSON_NUMERIC_CHECK);
 
-	if (!$memcache->replace($memcacheKey, $json, MEMCACHE_COMPRESSED, 5)) {
-		$memcache->set($memcacheKey, $json, MEMCACHE_COMPRESSED, 5);
+	if (!$memcache->replace($memcacheKey, $json, 5)) {
+		$memcache->set($memcacheKey, $json, 5);
 	}
 }
 else {

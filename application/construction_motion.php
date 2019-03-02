@@ -452,9 +452,9 @@ include("construction/pieChart.php");
 						<label for="explanation"><?php echo lang("amendment_explanation"); ?></label>
 						<br>
 						<div id="explanation-textarea-div" style="display: none;">
-							<textarea class="form-control autogrow" name="explanation" id="explanation" 
+							<div class="form-control autogrow" style="background: white; white-space: pre; max-height: 300px;" name="explanation" id="explanation" contenteditable="true"
 								data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
-								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></textarea>
+								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></div>
 						</div>
 						<div id="explanation-content-div" style="display: block;">
 							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_explanation"])); ?>
@@ -471,9 +471,9 @@ include("construction/pieChart.php");
 					</div>
 					<textarea class="col-md-6 autogrow" disabled="disabled" style="display: none; height: auto;" id="source"><?php 
 						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
-					<textarea class="col-md-6 autogrow" style="display: none; height: auto;" 
+					<div class="col-md-6 autogrow" style="display: none; height: auto; background: white; white-space: pre;"  contenteditable="true"
 						data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
-						id="destination" ><?php echo $motion["mot_description"]; ?></textarea>
+						id="destination" ><?php echo $motion["mot_description"]; ?></div>
 					<div class="clearfix "></div>
 					<div id="diff-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>

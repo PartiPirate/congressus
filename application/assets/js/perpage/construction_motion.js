@@ -368,7 +368,7 @@ function addButtonsListeners() {
 
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
 
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();
@@ -390,7 +390,7 @@ function addButtonsListeners() {
 
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
 
 		$("#diff").hide();
 		$("#diff-group").hide();
@@ -412,7 +412,7 @@ function addButtonsListeners() {
 		$("#motion-description-group").hide();
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div textarea").val()));
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
 
 		$("#diff").show();
 		$("#diff-group").show();
@@ -433,7 +433,7 @@ function addButtonsListeners() {
 	$("#show-motion-authoring-btn").click(function() {
 		$("#explanation-div #explanation-content-div").hide();
 		$("#explanation-div #explanation-textarea-div").show();
-		$("#explanation-div textarea").keyup();
+		$("#explanation-div #explanation").keyup();
 
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();

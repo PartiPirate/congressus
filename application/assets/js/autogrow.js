@@ -1,5 +1,5 @@
 /*
-	Copyright 2018 Cédric Levieux, Parti Pirate
+	Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -20,13 +20,23 @@
 /* global $ */
 
 function autogrowEvent() {
+/*    
 	$(this).css({"height": "auto"});
 	var height = this.scrollHeight;
 	$(this).height(height);
+*/	
+	autogrowElement(this);
+}
+
+function autogrowElement(element) {
+	$(element).css({"height": "auto"});
+	var height = element.scrollHeight;
+	$(element).height(height);
 }
 
 function addAutogrowListeners() {
 	$("body").on("keyup", ".autogrow", autogrowEvent);
+//	$("body").on("autogrow", ".autogrow", autogrowEvent);
 	$("body .autogrow").keyup();
 }
 

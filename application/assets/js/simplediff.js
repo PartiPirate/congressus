@@ -143,9 +143,9 @@ var stringDiff = function(before, after) {
     var beforeArray = [];
     var afterArray = [];
 
-    const regex = /([\wàâéèêûùîôœçÀÂÉÈÊÛÙÎÔŒÇ%\-\=\/\·\#]+|\+|\*|\ |\.|'|,|’|;|:|\r|\n|\(|\)|\[|\]|\@|\_|\"|\€|\>|\<)/g;
+    const regex = /([\wàâéèêûùîôœçÀÂÉÈÊÛÙÎÔŒÇ%\-\=\/\·\#]+|\?|\+|\*|\ |\.|\!|'|,|’|;|:|`|´|°|\^|\||\r|\n|\(|\)|\[|\]|\@|\_|\"|\€|\>|\<)/g;
     let m;
-    
+
     while ((m = regex.exec(before)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
         if (m.index === regex.lastIndex) {

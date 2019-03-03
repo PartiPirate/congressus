@@ -275,8 +275,8 @@ function constructChangeScroll(scrollGroup) {
 
 function createDiff() {
 	var sourceText = $("#source").val();
-	var motionText = $("#destination").val();
-	var explanationText = $("#explanation").val();
+	var motionText = $("#destination").html();
+	var explanationText = $("#explanation").html();
 
 //	$("#diff").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText)).replace(/[\n\r]/g, '<br>'));
 //	$("#motion-description").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText), {not_del_shown: true}).replace(/[\n\r]/g, '<br>'));
@@ -295,7 +295,7 @@ function createDiff() {
 }
 
 function addDiffListeners() {
-	$(".motion-entry").on("keyup", "textarea", function(event) {
+	$(".motion-entry").on("keyup", "#destination,#explanation", function(event) {
 //		console.log(event.char);
 		if (event.key && event.key.length > 2 && event.key != "Backspace" && event.key != "Delete") return;
 
@@ -308,8 +308,8 @@ function addDiffListeners() {
 	});
 
 	$("#explanation").on("keyup", function(event) {
-		var motionText = $("#destination").val();
-		var explanationText = $("#explanation").val();
+		var motionText = $("#destination").html();
+		var explanationText = $("#explanation").html();
 
 		if (motionText != previousMotionText || explanationText != previousExplanation) {
 			$("#save-motion-btn").removeAttr("disabled");
@@ -358,7 +358,7 @@ function addButtonsListeners() {
 		$("#markdown-area").html("");
 		
 		/* mediawiki markdown transformation to normalized markdown titles */
-		var source = $("#destination").val();
+		var source = $("#destination").html();
 		source = toMarkdownWithEmoji(source);
 
 		$("#markdown-area").html(source);
@@ -513,11 +513,11 @@ function addUpdateMotion() {
 		var motionId = $(".motion-entry").data("id");
 		var property = "mot_description";
 		var propositionId = 0;
-		previousMotionText = $("#destination").val();
+		previousMotionText = $("#destination").html();
 
 		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousMotionText}, function(data) {
 			var property = "mot_explanation";
-			previousExplanation = $("#explanation").val();
+			previousExplanation = $("#explanation").html();
 
 			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
 				$("#save-motion-btn").attr("disabled", "disabled");
@@ -657,7 +657,7 @@ $(function() {
 	addOpenDebateListeners();
 	addTitleListeners();
 
-	$("body").on("keyup", "textarea[data-provide=markdown]", function(event) {
+	$("body").on("keyup", "*[data-provide=markdown]", function(event) {
 		//console.log(event)	
 		if (event.key == ":") {
 			var position = $(event.target).offset();
@@ -671,6 +671,6 @@ $(function() {
 
 	$("body").emojioneHelper();
 
-	previousMotionText = $("#destination").val();
-	previousExplanation = $("#explanation").val();
+	previousMotionText = $("#destination").html();
+	previousExplanation = $("#explanation").html();
 });

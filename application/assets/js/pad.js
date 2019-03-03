@@ -83,6 +83,7 @@ $(function() {
                         internalText = data.content;
                         break;
                     case "keyup":
+                    case "diff":
                         updatePad(data);
                         break;
                     case "nicknames":
@@ -97,7 +98,6 @@ $(function() {
                 }
 
                 autogrowElement(area.get(0));
-//                area.trigger("autogrow");
             };
 
             socket.onclose = function(e) {
@@ -118,6 +118,94 @@ $(function() {
             }
         }
 
+        var enablePad2 = function(eventArea) {
+            area = eventArea;
+
+            addNicknameHolder();
+            
+            var padId = area.data("pad-id");
+            var senderId = area.data("pad-sender");
+//            var caretPositionsBefore = {};
+
+            openSocket();
+
+            var keyTimeoutId = null;
+            var previousCaretPosition = area.caret("pos");
+            var previousContent = area.html();
+
+            var endOfTyping = function() {
+                var currentContent = area.html();
+                var currentCaretPosition = area.caret("pos");
+                clearInterval(keyTimeoutId);
+                keyTimeoutId = null;
+
+                var diff = stringDiff(previousContent, currentContent);
+
+                console.log(diff);
+
+                if (diff.length == 1 && diff[0][0] == "=") {
+                    // do nothing
+                    console.log("Only reset position");
+                    var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0};
+
+                    sendPadEvent(padEvent);
+
+                    return;
+                }
+
+                    var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff};
+
+                    sendPadEvent(padEvent);
+            };
+
+            area.keydown(function(event) {
+                if (!keyTimeoutId) {
+                    previousCaretPosition = area.caret("pos");
+                    previousContent = area.html();
+                    previousContent = previousContent.replace("</div>", "");
+                    previousContent = previousContent.replace("<div>", "\n").replace("<br>", "\n");
+                }
+                else {
+                    clearInterval(keyTimeoutId);
+                }
+            });
+
+            area.keyup(function(event) {
+
+                if (event.keyCode == 13) {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    
+                    var localCaretPosition = area.caret("pos");
+                    var content = area.html();
+/*
+                    var before = content.substring(0, localCaretPosition);
+                    var after = content.substring(localCaretPosition);
+
+                    console.log(content);
+                    console.log("Prevent div");
+
+                    content = before + "\n" + after;
+*/
+
+                    content = content.replace("</div>", "");
+                    content = content.replace("<div>", "\n").replace("<br>", "\n");
+
+                    area.html(content);
+                    area.caret("pos", localCaretPosition + 1);
+                } 
+
+                keyTimeoutId = setTimeout(endOfTyping, 300);
+            });
+
+            area.click(function(event) {
+                var caretPosition = area.caret("pos");
+                var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: caretPosition ? caretPosition : 0};
+
+                sendPadEvent(padEvent);
+            });
+        }
+
         var enablePad = function(eventArea) {
             area = eventArea;
 
@@ -129,7 +217,40 @@ $(function() {
 
             openSocket();
 
+            var previousCaretPosition = 0;
+/*
+            var previousContent = null;
+
+            var keyTimeoutId = null;
+
+            var endOfTyping = function() {
+                var currentContent = area.html();
+                var currentCaretPosition = area.caret("pos");
+                keyTimeoutId = null;
+                
+                console.log(previousContent + " <> " + currentContent);
+                console.log(previousCaretPosition + " <> " + currentCaretPosition);
+            };
+
+            area.keydown(function(event) {
+                if (!keyTimeoutId) {
+                    previousCaretPosition = area.caret("pos");
+                    previousContent = area.html();
+                }
+                else {
+                    clearInterval(keyTimeoutId);
+                }
+                keyTimeoutId = setTimeout(endOfTyping, 300);
+            });
+*/
+
 //            console.log("Enable pad " + padId);
+
+            
+            area.keydown(function(event) {
+                previousCaretPosition = area.caret("pos");
+            });
+
 /*
             area.keydown(function(event) {
                 caretPositionsBefore[event.key] = area.caret("pos");
@@ -146,14 +267,19 @@ $(function() {
 //                var myCaretPosition = event.target.selectionStart;
                 var keyCode = event.keyCode;
                 var key = event.key;
+                
+                console.log(event);
 
-                if (   !event.keyCode || event.keyCode == 16 || event.keyCode == 17 || event.keyCode == 18 || event.keyCode == 225) {
+                if (!   event.keyCode || event.keyCode == 16 || event.keyCode == 17 || event.keyCode == 18 || event.keyCode == 225
+                    ||  event.key == "Dead"
+//                 ||   event.keyCode == 219 || event.keyCode == 55 || event.keyCode == 49
+                ) {
                     // Do nothing;
                     return;
                 }
 
-                if (    event.keyCode == 33 || event.keyCode == 34 || event.keyCode == 35 || event.keyCode == 36 ||
-                        event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
+                if (event.keyCode == 33 || event.keyCode == 34 || event.keyCode == 35 || event.keyCode == 36 ||
+                    event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
 
                     var caretPosition = area.caret("pos");
                     var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: caretPosition};
@@ -168,7 +294,11 @@ $(function() {
                     event.preventDefault();
                 } 
 
-                if (    event.keyCode == 46) {
+                if (event.ctrlKey) {
+                    return;
+                }
+
+                if (event.keyCode == 46) {
 
                     var numberOfDeletedCharacters = internalText.length;
                     internalText = area.html();
@@ -185,21 +315,22 @@ $(function() {
                     return;
                 }
 
-
-
-//                var diff = stringDiff(internalText, area.html());
-
                 internalText = area.html();
 
                 var caretPositionAfter = area.caret("pos");
+/*
+                if ((previousCaretPosition - caretPosition) == 2) {
+                    caretPosition--;
+                }
+*/
 
-                var padEvent = {event: "keyup", padId: padId, senderId: senderId, /*caretPositionBefore: caretPositionsBefore[event.key], */caretPositionAfter: caretPositionAfter, keyCode: keyCode, key: key/*, *//*diff: diff, *//*content: area.html()*/};
+                var padEvent = {event: "keyup", padId: padId, senderId: senderId, /*caretPositionBefore: caretPositionsBefore[event.key], */caretPositionAfter: caretPositionAfter, keyCode: keyCode, key: key/*, *//*content: area.html()*/};
 
 //                console.log(padEvent);
 
                 sendPadEvent(padEvent);
             });
-            
+
             area.click(function(event) {
                 var caretPosition = area.caret("pos");
                 var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: caretPosition};
@@ -208,6 +339,7 @@ $(function() {
             });
         }
 
-        enablePad($(this));
+//        enablePad($(this));
+        enablePad2($(this));
     });
 });

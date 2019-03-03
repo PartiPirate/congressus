@@ -46,9 +46,80 @@ class PadConnectionHandler implements MessageComponentInterface {
             case "newCaretPosition":
                 $this->newCaretPosition($from, $msg, $data);
                 break;
+            case "diff":
+                $this->diff($from, $msg, $data);
+                break;
             default:
                 $this->defaultHandle($from, $msg, $data);
                 break;
+        }
+    }
+    
+    public function diff(ConnectionInterface $from, $msg, $data) {
+        
+//        print_r($data["diff"]);
+
+        $content = $this->contents[$data["padId"]];
+        $newContent = "";
+        $offset = 0;
+
+        foreach($data["diff"] as $localDiff) {
+            foreach($localDiff[1] as $word) {
+
+                $wordLength = mb_strlen($word);
+
+                if ($localDiff[0] == "=") {
+                    if (mb_substr($content, $offset, $wordLength)) {
+                        $newContent .= $word;
+                        $offset += $wordLength;
+                    }
+                }
+                else if ($localDiff[0] == "-") {
+                    $offset += $wordLength;
+
+                    foreach ($this->clients as $client) {
+                        if ($this->padIds[$client->resourceId] == $data["padId"] && $from !== $client) {
+                            if ($this->carets[$client->resourceId] > $offset) {
+                                $this->carets[$client->resourceId] -= $wordLength;
+                            }
+                        }
+                    }
+
+                }
+                else if ($localDiff[0] == "+") {
+                    $newContent .= $word;
+
+                    foreach ($this->clients as $client) {
+                        if ($this->padIds[$client->resourceId] == $data["padId"] && $from !== $client) {
+                            if ($this->carets[$client->resourceId] > $offset) {
+                                $this->carets[$client->resourceId] += $wordLength;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        echo $newContent, "\n";
+
+        $this->contents[$data["padId"]] = $newContent;
+        $this->newCaretPosition($from, $msg, $data);
+
+        foreach ($this->clients as $client) {
+            if ($this->padIds[$client->resourceId] == $data["padId"]) {// && $from !== $client) {
+                $event = array();
+                $event["event"] = "diff";
+                $event["padId"] = $data["padId"];
+                $event["content"] = $this->contents[$data["padId"]];
+                $event["caretPosition"] = $this->carets[$client->resourceId];
+/*
+                if ($from == $client) {
+                    print_r($event);
+                    echo "\n";
+                }
+*/
+                $client->send(json_encode($event));
+            }
         }
     }
 
@@ -136,17 +207,29 @@ class PadConnectionHandler implements MessageComponentInterface {
         }
         else {
             $char = $data["key"];
-    
+
+            if ($numberOfChars == 2) {
+                $numberOfChars = 1;
+                $this->carets[$from->resourceId] = $data["caretPositionAfter"] - 1;
+                $caretAfter  = $this->carets[$from->resourceId];
+            }
+            if ($numberOfChars == 0) {
+                $numberOfChars++;
+                $this->carets[$from->resourceId] = $data["caretPositionAfter"] + 1;
+                $caretAfter  = $this->carets[$from->resourceId];
+//                $contentBeforeCaret = mb_substr($contentBeforeCaret, 0, mb_strlen($contentBeforeCaret) - 1);
+            }
+
             echo $numberOfChars . " x " . $char . "\n";
 
             $contentBeforeCaret = mb_substr($this->contents[$data["padId"]], 0, $caretBefore);
             $contentAfterCaret = mb_substr($this->contents[$data["padId"]], $caretBefore);
-
+/*
             if ($numberOfChars == 0) {
                 $numberOfChars++;
                 $contentBeforeCaret = mb_substr($contentBeforeCaret, 0, mb_strlen($contentBeforeCaret) - 1);
             }
-
+*/
             echo "$contentBeforeCaret <=> $contentAfterCaret \n";
     
             $content  = $contentBeforeCaret;
@@ -179,6 +262,11 @@ class PadConnectionHandler implements MessageComponentInterface {
 //                $event["content"] = str_replace("\n", "<br>", $content);
                 $event["content"] = $content;
                 $event["caretPosition"] = $this->carets[$client->resourceId];
+
+                if ($from == $client) {
+                    print_r($event);
+                    echo "\n";
+                }
 
                 $client->send(json_encode($event));
             }

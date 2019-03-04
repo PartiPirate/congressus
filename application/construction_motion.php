@@ -453,7 +453,7 @@ include("construction/pieChart.php");
 						<br>
 						<div id="explanation-textarea-div" style="display: none;">
 							<div id="explanation" class="form-control autogrow" style="background: white; white-space: pre; max-height: 300px; overflow-y: scroll; font-family: Courier New, Lucida Console,Monospace !important;" name="explanation" contenteditable="true"
-								data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
+								<?php if ($userId) { ?>data-pad="enabled"<?php } ?> data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
 								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></div>
 						</div>
 						<div id="explanation-content-div" style="display: block;">
@@ -472,7 +472,7 @@ include("construction/pieChart.php");
 					<textarea class="col-md-6 autogrow" disabled="disabled" style="display: none; height: auto;" id="source"><?php 
 						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
 					<div id="destination" class="col-md-6 autogrow" style="display: none; height: auto; background: white; color: black; white-space: pre; font-family: Courier New, Lucida Console,Monospace !important;"  contenteditable="true"
-						data-pad="enabled" data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>" ><?php echo $motion["mot_description"]; ?></div>
+						<?php if ($userId) { ?>data-pad="enabled"<?php } ?> data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>" ><?php echo $motion["mot_description"]; ?></div>
 					<div class="clearfix "></div>
 					<div id="diff-group" class="with-scroll" style="display: none;">
 						<div class="change-scroll"><div class="scroll-zone"></div></div>

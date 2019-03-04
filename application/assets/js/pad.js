@@ -29,6 +29,9 @@ $(function() {
         var socket = null;
         var internalText = null;
 
+        var toolbar = null;
+        var nicknameHolder = null;
+
         var sendPadEvent = function(event) {
             socket.send(JSON.stringify(event));
         };
@@ -56,8 +59,6 @@ $(function() {
         var openSocket = function() {
             socket = new WebSocket(PAD_WS);
             socket.onopen = function(e) {
-//                console.log("Connection established!");
-
                 attach();                
             };
 
@@ -65,12 +66,19 @@ $(function() {
                 var data = JSON.parse(e.data);
 //                console.log(data);
 
-                var nicknameHolder = $(".nickname-holder[data-pad-id="+data.padId+"]");
-                var position = area.offset();
-                nicknameHolder.css({top: Math.round(position.top - 50) +"px", left: Math.round(position.top + 50) +"px"});
-                
+                if (area.is(":visible")) {
+    //                var nicknameHolder = $(".nickname-holder[data-pad-id="+data.padId+"]");
+                    var position = area.offset();
+    //                nicknameHolder.css({top: Math.round(position.top - 50) +"px", left: Math.round(position.top + 50) +"px"});
+                    toolbar.css({top: Math.round(position.top - toolbar.height()) +"px", left: Math.round(position.left) +"px"});
+                    toolbar.width(area.width());
+                    toolbar.show();
+                }
+
                 switch(data.event) {
                     case "connected":
+                        toolbar.find(".connection-status").text("Connecté");
+                        toolbar.find(".ws-connect-btn").prop("disabled", true);
 //                        console.log("Rid " + data.rid);
                         break;
                     case "synchronize":
@@ -87,6 +95,7 @@ $(function() {
                         updatePad(data);
                         break;
                     case "nicknames":
+
                         nicknameHolder.text("");
                         for(var index = 0; index < data.nicknames.length; ++index) {
                             if (index) {
@@ -94,6 +103,7 @@ $(function() {
                             }
                             nicknameHolder.text(nicknameHolder.text() + data.nicknames[index]);
                         }
+
                         break;
                 }
 
@@ -102,9 +112,12 @@ $(function() {
 
             socket.onclose = function(e) {
                 console.log("perte de la connexion !");
+                toolbar.find(".connection-status").text("Déconnecté");
+                toolbar.find(".ws-connect-btn").prop("disabled", false);
             }
         }
 
+/*
         var addNicknameHolder = function() {
             var padId = area.data("pad-id");
             var position = area.offset();
@@ -117,21 +130,47 @@ $(function() {
 //                $("body").append(nicknameHolder);
             }
         }
+*/
+
+        var createToolbar = function() {
+            var padId = area.data("pad-id");
+
+            toolbar = $(".pad-toolbar[data-pad-id="+padId+"]");
+            if (toolbar.length == 0) {
+                toolbar = "<div class='pad-toolbar' data-pad-id='"+padId+"' style='height: 20px; border: 1px solid black; border-radius: 2px; background: white; position: absolute; z-index: 1000; opacity: 0.5; display: none;'>Statut : <span class='connection-status'></span> <button class='ws-connect-btn btn btn-xs btn-default'>Connecter</button></div>";
+                nicknameHolder = "<div class='nickname-holder'></div>"
+
+                $("body").append(toolbar);
+                toolbar = $(".pad-toolbar[data-pad-id="+padId+"]");
+                toolbar.append($(nicknameHolder));
+            }
+
+            nicknameHolder = toolbar.find(".nickname-holder");
+            toolbar.find(".ws-connect-btn").click(function() {
+                openSocket();
+            });
+        }
 
         var enablePad2 = function(eventArea) {
             area = eventArea;
 
-            addNicknameHolder();
-            
+            createToolbar();
+
             var padId = area.data("pad-id");
             var senderId = area.data("pad-sender");
-//            var caretPositionsBefore = {};
 
             openSocket();
 
             var keyTimeoutId = null;
             var previousCaretPosition = area.caret("pos");
             var previousContent = area.html();
+
+            var cleanReturn = function(content) {
+                content = content.replace("</div>", "");
+                content = content.replace("<div>", "\n").replace("<br>", "\n");
+
+                return content;
+            }
 
             var endOfTyping = function() {
                 var currentContent = area.html();
@@ -144,8 +183,6 @@ $(function() {
                 console.log(diff);
 
                 if (diff.length == 1 && diff[0][0] == "=") {
-                    // do nothing
-                    console.log("Only reset position");
                     var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0};
 
                     sendPadEvent(padEvent);
@@ -153,17 +190,15 @@ $(function() {
                     return;
                 }
 
-                    var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff};
+                var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff};
 
-                    sendPadEvent(padEvent);
+                sendPadEvent(padEvent);
             };
 
             area.keydown(function(event) {
                 if (!keyTimeoutId) {
                     previousCaretPosition = area.caret("pos");
-                    previousContent = area.html();
-                    previousContent = previousContent.replace("</div>", "");
-                    previousContent = previousContent.replace("<div>", "\n").replace("<br>", "\n");
+                    previousContent = cleanReturn(area.html());
                 }
                 else {
                     clearInterval(keyTimeoutId);
@@ -175,21 +210,9 @@ $(function() {
                 if (event.keyCode == 13) {
                     event.stopImmediatePropagation();
                     event.preventDefault();
-                    
+
                     var localCaretPosition = area.caret("pos");
-                    var content = area.html();
-/*
-                    var before = content.substring(0, localCaretPosition);
-                    var after = content.substring(localCaretPosition);
-
-                    console.log(content);
-                    console.log("Prevent div");
-
-                    content = before + "\n" + after;
-*/
-
-                    content = content.replace("</div>", "");
-                    content = content.replace("<div>", "\n").replace("<br>", "\n");
+                    var content = cleanReturn(area.html());
 
                     area.html(content);
                     area.caret("pos", localCaretPosition + 1);

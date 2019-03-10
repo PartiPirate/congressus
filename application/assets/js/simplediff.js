@@ -115,7 +115,7 @@ var diff = function(before, after) {
     );
 };
 
-var stringDiff = function(before, after) {
+var stringDiff = function(before, after, allChars) {
     /*
         Returns the difference between the old and new strings when split on
         whitespace. Considers punctuation a part of the word
@@ -143,7 +143,13 @@ var stringDiff = function(before, after) {
     var beforeArray = [];
     var afterArray = [];
 
-    const regex = /([\wàâéèêûùîôœçÀÂÉÈÊÛÙÎÔŒÇ%\-\=\/\·\#]+|\?|\+|\*|\ |\.|\!|'|,|’|;|:|`|´|°|\^|\||\r|\n|\(|\)|\[|\]|\@|\_|\"|\€|\>|\<)/g;
+    if (allChars) {
+        var regex = /(.)/gs;  
+    }
+    else {
+        var regex = /([\wàâéèêûùîôœçÀÂÉÈÊÛÙÎÔŒÇ%\-\=\/\·\#]+|\?|\+|\*|\ |\.|\!|'|,|’|;|:|`|´|°|\^|\||\r|\n|\(|\)|\[|\]|\@|\_|\"|\€|\>|\<)/g;
+    }
+
     let m;
 
     while ((m = regex.exec(before)) !== null) {

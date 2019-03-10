@@ -64,10 +64,13 @@
 <script src="assets/js/emojione.min.js"></script>
 <script src="assets/js/emojione.helper.js"></script>
 <script src="assets/js/social.js"></script>
+
+<!-- JS pad -->
 <script>
     var PAD_WS = <?php echo json_encode($config["server"]["pad"]); ?>;
 </script>
 <script src="assets/js/caret.js"></script>
+<script src="assets/js/merger.js"></script>
 <script src="assets/js/pad.js"></script>
 
 <!--

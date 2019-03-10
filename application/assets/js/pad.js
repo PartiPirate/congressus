@@ -20,6 +20,7 @@
 /* global $ */
 /* global PAD_WS */
 /* global stringDiff */
+/* global merge */
 
 $(function() {
     $("*[data-pad=enabled]").each(function() {
@@ -29,12 +30,27 @@ $(function() {
         var socket = null;
         var internalText = null;
 
+        var serverStatus = "waiting";
+
         var toolbar = null;
         var nicknameHolder = null;
 
         var sendPadEvent = function(event) {
-            socket.send(JSON.stringify(event));
+            if (socket) {
+                socket.send(JSON.stringify(event));
+            }
         };
+
+        var mergeBack = function(content) {
+            var mergers = [];
+            mergers.push(content);
+            mergers.push(area.html());
+
+            internalText = merge(internalText, mergers);
+            var previousCaretPosition = area.caret("pos");
+            area.html(internalText);
+            area.caret("pos", previousCaretPosition);
+        }
 
         var attach = function() {
             var padId = area.data("pad-id");
@@ -45,22 +61,29 @@ $(function() {
             sendPadEvent(event);
             
             event = {padId: padId, senderId: senderId, event: "synchronize", content: area.html()};
-            
+
             internalText = area.html();
             sendPadEvent(event);
         }
-    
+/*    
         var updatePad = function(event) {
             area.html(event.content);
             area.caret('pos', event.caretPosition);
             internalText = event.content;
         };
-    
+*/    
         var openSocket = function() {
             socket = new WebSocket(PAD_WS);
             socket.onopen = function(e) {
                 attach();                
             };
+            
+            socket.onerror = function(e) {
+                console.log("refus de connexion !");
+                toolbar.find(".connection-status").text("Déconnecté");
+                toolbar.find(".ws-connect-btn").prop("disabled", false);
+                socket = null;
+            }
 
             socket.onmessage = function(e) {
                 var data = JSON.parse(e.data);
@@ -92,7 +115,25 @@ $(function() {
                         break;
                     case "keyup":
                     case "diff":
-                        updatePad(data);
+//                        updatePad(data);
+                        break;
+                    case "processing":
+                        serverStatus = data.event;
+                        break;
+                    case "waiting":
+                        mergeBack(data.mergedContent);
+                        serverStatus = data.event;
+                        break;
+                    case "closingTimer":
+                        setTimeout(function() { 
+                            var padId = area.data("pad-id");
+                            var senderId = area.data("pad-sender");
+    
+                            var event = {padId: padId, senderId: senderId, event: "process"};
+
+                            sendPadEvent(event);
+                        }, data.timer);
+                        serverStatus = "closing";
                         break;
                     case "nicknames":
 
@@ -114,6 +155,7 @@ $(function() {
                 console.log("perte de la connexion !");
                 toolbar.find(".connection-status").text("Déconnecté");
                 toolbar.find(".ws-connect-btn").prop("disabled", false);
+                socket = null;
             }
         }
 
@@ -190,9 +232,15 @@ $(function() {
                     return;
                 }
 
-                var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff};
+                var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff, content: currentContent};
+                internalText = currentContent;
 
-                sendPadEvent(padEvent);
+                if (serverStatus != "processing") {
+                    sendPadEvent(padEvent);
+                }
+                else {
+                    keyTimeoutId = setTimeout(endOfTyping, 50); // Retry
+                }
             };
 
             area.keydown(function(event) {
@@ -218,7 +266,7 @@ $(function() {
                     area.caret("pos", localCaretPosition + 1);
                 } 
 
-                keyTimeoutId = setTimeout(endOfTyping, 300);
+                keyTimeoutId = setTimeout(endOfTyping, 200);
             });
 
             area.click(function(event) {

@@ -1,16 +1,27 @@
 <?php
 
+require 'engine/utils/SimpleDiff.php';
+require 'engine/utils/Merger.php';
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
 class PadConnectionHandler implements MessageComponentInterface {
-    protected $clients;
-    protected $padIds;
+    const WAITING = "waiting";
+    const CLOSING_FRAME = "closing_frame";
+    const PROCESSING = "processing";
+
+    public $clients;
+    protected $pads;
+    public $padIds;
     protected $nicknames;
     protected $contents;
     protected $carets;
+    
+    protected $state = PadConnectionHandler::WAITING;
 
     public function __construct() {
+        $this->pads = new \SplObjectStorage;
         $this->clients = new \SplObjectStorage;
         $this->padIds = array();
         $this->nicknames = array();
@@ -49,6 +60,9 @@ class PadConnectionHandler implements MessageComponentInterface {
             case "diff":
                 $this->diff($from, $msg, $data);
                 break;
+            case "process":
+                $this->process($from, $msg, $data);
+                break;
             default:
                 $this->defaultHandle($from, $msg, $data);
                 break;
@@ -56,7 +70,29 @@ class PadConnectionHandler implements MessageComponentInterface {
     }
     
     public function diff(ConnectionInterface $from, $msg, $data) {
+        echo "Receive diff \n";
         
+        $pad = $this->getPad($data["padId"]);
+        if ($pad->state == PadConnectionHandler::WAITING) {
+            $pad->state = PadConnectionHandler::CLOSING_FRAME;
+            
+            $event = array("event" => "closingTimer", "timer" => "500");
+
+            foreach ($this->clients as $client) {
+                if ($this->padIds[$client->resourceId] == $data["padId"]) {// && $from !== $client) {
+                    $from->send(json_encode($event));
+                }
+            }
+        }
+
+        $composer = new Composer();
+        $composer->revision = $pad->seed++;
+        $composer->sender = $data["senderId"];
+        $composer->content = $data["content"];
+
+        $pad->composers[$composer->sender] = $composer;
+
+/*
 //        print_r($data["diff"]);
 
         $content = $this->contents[$data["padId"]];
@@ -100,11 +136,10 @@ class PadConnectionHandler implements MessageComponentInterface {
             }
         }
 
-        echo $newContent, "\n";
+//        echo $newContent, "\n";
 
         $this->contents[$data["padId"]] = $newContent;
         $this->newCaretPosition($from, $msg, $data);
-
         foreach ($this->clients as $client) {
             if ($this->padIds[$client->resourceId] == $data["padId"]) {// && $from !== $client) {
                 $event = array();
@@ -112,20 +147,38 @@ class PadConnectionHandler implements MessageComponentInterface {
                 $event["padId"] = $data["padId"];
                 $event["content"] = $this->contents[$data["padId"]];
                 $event["caretPosition"] = $this->carets[$client->resourceId];
-/*
-                if ($from == $client) {
-                    print_r($event);
-                    echo "\n";
-                }
-*/
                 $client->send(json_encode($event));
             }
         }
+*/
+    }
+
+    public function process(ConnectionInterface $from, $msg, $data) {
+        $padId = $data["padId"];
+        $pad = $this->getPad($padId);
+
+/*
+        // Send all connections that we are processing
+        $this->state = PadConnectionHandler::PROCESSING;
+*/
+
+        if ($pad->state == PadConnectionHandler::CLOSING_FRAME) {
+            // Do stuff
+            echo "Processing $padId \n";
+            $pad->process($this);
+        }
+
+/*        
+        // Send all connections that we are ready to listen again
+        $this->state = PadConnectionHandler::WAITING;
+*/
+
+        echo "Waiting \n";
     }
 
     public function newCaretPosition(ConnectionInterface $from, $msg, $data) {
         $this->carets[$from->resourceId] = $data["caretPosition"];
-        echo "Upgrade newCaretPosition position : " . $this->carets[$from->resourceId] . "\n";
+//        echo "Upgrade newCaretPosition position : " . $this->carets[$from->resourceId] . "\n";
     }
 
     public function keyup(ConnectionInterface $from, $msg, $data) {
@@ -290,11 +343,29 @@ class PadConnectionHandler implements MessageComponentInterface {
     }
 
     public function attach(ConnectionInterface $from, $data) {
+        $pad = $this->getPad($data["padId"]);
+
+        if (!$pad) {
+            $pad = new Pad();
+            $pad->id = $data["padId"];
+            $this->pads->attach($pad);
+        }
+
         $this->padIds[$from->resourceId] = $data["padId"];
         $this->nicknames[$from->resourceId] = $data["nickname"];
         $this->carets[$from->resourceId] = 0;
 
         $this->sendAllConnected($data["padId"]);
+    }
+
+    public function getPad($padId) {
+        foreach($this->pads as $currentPad) {
+            if ($currentPad->id == $padId) {
+                return $currentPad;
+            }
+        }
+
+        return null;
     }
 
     public function synchronizer(ConnectionInterface $from, $msg, $data) {
@@ -373,5 +444,93 @@ class PadConnectionHandler implements MessageComponentInterface {
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
+    }
+}
+
+/*
+class ClosingThread extends Thread {
+
+    private $padId = null;
+    private $padConnectionHandler = null;
+
+    public function __construct($padId, $padConnectionHandler){
+        $this->padId = $padId;
+        $this->padConnectionHandler = $padConnectionHandler;
+    }
+    
+    public function run(){
+        // Send all connections that we are closing
+        echo "Closing in 0.5s \n";
+
+        usleep(2000000); // sleep during 1/2 second
+        $padConnectionHandler->process($this->padId);
+    }    
+}
+*/
+
+class Composer {
+    public $revision;
+    public $content;
+    public $sender;
+}
+
+class Pad {
+    public $id;
+    public $start;
+    public $head;
+    public $state = PadConnectionHandler::WAITING;
+    
+    /**
+     * Array of <code>Composer</code>
+     */
+    public $composers = array();
+    
+    public $steps = array();
+    
+    public $seed = 0;
+
+    public function sortComposers($a, $b) {
+        return $a->revision - $b->revision;
+    }
+    
+    public function process($handler) {
+        if ($this->state != PadConnectionHandler::CLOSING_FRAME) {
+            // another process is occuring or occured
+            return;
+        }
+
+        echo "[START] Inner process $this->id \n";
+        $this->state = PadConnectionHandler::PROCESSING;
+
+        $event = json_encode(array("event" => "processing"));
+        foreach($handler->clients as $client) {
+            if ($handler->padIds[$client->resourceId] == $this->id) {
+                $client->send($event);
+            }
+        }
+
+        $this->steps[] = $this->composers;
+
+        usort($this->composers, array($this, "sortComposers"));
+
+        $mergers = array();
+        foreach($this->composers as $composer) {
+            $mergers[] = $composer->content;
+        }
+
+        $this->composers = array();
+
+        $this->head = merge($this->head, $mergers);
+
+        $this->state = PadConnectionHandler::WAITING;
+
+        $event = json_encode(array("event" => "waiting", "mergedContent" => $this->head));
+        foreach($handler->clients as $client) {
+            if ($handler->padIds[$client->resourceId] == $this->id) {
+                $client->send($event);
+            }
+        }
+
+        echo " [END]  Inner process $this->id \n";
     }
 }

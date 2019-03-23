@@ -84,6 +84,20 @@ $motion["mot_author_id"] = $userId;
 
 $motionBo->save($motion);
 
+if (!isset($_REQUEST["noProposition"])) {
+    $proposition = array("mpr_motion_id" => $motion[$motionBo->ID_FIELD]);
+    
+    //$propositionLabel = "Proposition " . (count($propositions) > 1 ? count($propositions) + 1 : $propositions[0]["mpr_id"] ? 2 : 1);
+    $propositionLabel = "Proposition";
+    if (isset($_REQUEST["label"]) && $_REQUEST["label"]) {
+        $propositionLabel = $_REQUEST["label"];
+    }
+    
+    $proposition["mpr_label"] = $propositionLabel;
+    
+    $motionBo->saveProposition($proposition);
+}
+
 $agenda["age_objects"][] = array("motionId" => $motion[$motionBo->ID_FIELD]);
 $agenda["age_objects"] = json_encode($agenda["age_objects"]);
 

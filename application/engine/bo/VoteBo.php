@@ -97,6 +97,11 @@ class VoteBo {
 			$queryBuilder->where("mot_agenda_id = :mot_agenda_id");
 		}
 
+		if (isset($filters["mot_anonymous"])) {
+			$args["mot_anonymous"] = $filters["mot_anonymous"];
+			$queryBuilder->where("mot_anonymous = :mot_anonymous");
+		}
+
 		$queryBuilder->orderBy("mot_id");
 		$queryBuilder->orderBy("mpr_id");
 

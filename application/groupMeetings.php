@@ -32,7 +32,7 @@ if (!$userId) {
 		$guestBo->save($guest);
 
 		$guestId = $guest[$guestBo->ID_FIELD];
-		$nickname = "Guest $guestId";
+		$nickname = "Guest " . substr(md5($guestId), 0, 6);
 
 		$_SESSION["guestId"] = $guestId;
 		$_SESSION["guestNickname"] = $nickname;

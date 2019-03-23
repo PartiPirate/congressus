@@ -26,6 +26,7 @@
 /* global clearKeyup */
 /* global keyupTimeoutId */
 /* global toMarkdownWithEmoji */
+/* global resizeWindow() */
 
 var preventAgendaHandling = false;
 var AGENDA_MAX_HEIGHT = 300;
@@ -120,6 +121,8 @@ function addAgendaHandlers() {
 		$("#meeting-agenda button.btn-maximize-point").show();
 		$("#meeting-agenda button.btn-restore-point").hide();
 		$("#meeting-agenda #agenda-points-list").css({"max-height": AGENDA_MAX_HEIGHT + "px", "overflow-y": "scroll"});
+		
+		resizeWindow();
 	});
 
 	$("#meeting-agenda").on("click", "button.btn-maximize-point", function(event) {
@@ -128,6 +131,8 @@ function addAgendaHandlers() {
 		$("#meeting-agenda button.btn-maximize-point").hide();
 		$("#meeting-agenda button.btn-restore-point").show();
 		$("#meeting-agenda #agenda-points-list").css({"max-height": "", "overflow-y": "auto"});
+
+		resizeWindow();
 	});
 
 
@@ -611,7 +616,7 @@ function showAddAgendaFromModal(event) {
 			constructionGroup.children().remove();
 			meetingGroup.children().remove();
 
-			for(var index = 0; index < data.meetings.length; ++index) {
+			for(var index = data.meetings.length - 1; index >=0 ; --index) {
 				var meeting = data.meetings[index];
 
 				var option = $("<option></option>");
@@ -779,6 +784,7 @@ function addAgendaFromSaveHandler() {
 					var addMotionForm = {meetingId: addAgendaPointForm.meetingId, pointId: agendaId, startingText: "", description: ""};
 					addMotionForm.startingText =  $("#add-agenda-from-modal #motionTitleArea").val();
 					addMotionForm.description =  $("#add-agenda-from-modal #motionDescriptionArea").val();
+					addMotionForm.noProposition = true;
 
 					// add motion
 					$.post("meeting_api.php?method=do_addMotion", addMotionForm, function(data) {

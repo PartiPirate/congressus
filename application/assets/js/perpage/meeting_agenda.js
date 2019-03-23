@@ -26,6 +26,7 @@
 /* global clearKeyup */
 /* global keyupTimeoutId */
 /* global toMarkdownWithEmoji */
+/* global resizeWindow() */
 
 var preventAgendaHandling = false;
 var AGENDA_MAX_HEIGHT = 300;
@@ -120,6 +121,8 @@ function addAgendaHandlers() {
 		$("#meeting-agenda button.btn-maximize-point").show();
 		$("#meeting-agenda button.btn-restore-point").hide();
 		$("#meeting-agenda #agenda-points-list").css({"max-height": AGENDA_MAX_HEIGHT + "px", "overflow-y": "scroll"});
+		
+		resizeWindow();
 	});
 
 	$("#meeting-agenda").on("click", "button.btn-maximize-point", function(event) {
@@ -128,6 +131,8 @@ function addAgendaHandlers() {
 		$("#meeting-agenda button.btn-maximize-point").hide();
 		$("#meeting-agenda button.btn-restore-point").show();
 		$("#meeting-agenda #agenda-points-list").css({"max-height": "", "overflow-y": "auto"});
+
+		resizeWindow();
 	});
 
 

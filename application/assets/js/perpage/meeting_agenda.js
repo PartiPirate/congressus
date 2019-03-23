@@ -372,6 +372,7 @@ function updateMeeting(meeting) {
 	}
 
 	if (!hasWritingRight(getUserId())) {
+		$("#meeting-status-panel button.btn-template-meeting").hide();
 		$("#meeting-status-panel button.btn-waiting-meeting").hide();
 		$("#meeting-status-panel button.btn-open-meeting").hide();
 		$("#meeting-status-panel button.btn-close-meeting").hide();

@@ -616,7 +616,7 @@ function showAddAgendaFromModal(event) {
 			constructionGroup.children().remove();
 			meetingGroup.children().remove();
 
-			for(var index = 0; index < data.meetings.length; ++index) {
+			for(var index = data.meetings.length - 1; index >=0 ; --index) {
 				var meeting = data.meetings[index];
 
 				var option = $("<option></option>");
@@ -784,6 +784,7 @@ function addAgendaFromSaveHandler() {
 					var addMotionForm = {meetingId: addAgendaPointForm.meetingId, pointId: agendaId, startingText: "", description: ""};
 					addMotionForm.startingText =  $("#add-agenda-from-modal #motionTitleArea").val();
 					addMotionForm.description =  $("#add-agenda-from-modal #motionDescriptionArea").val();
+					addMotionForm.noProposition = true;
 
 					// add motion
 					$.post("meeting_api.php?method=do_addMotion", addMotionForm, function(data) {

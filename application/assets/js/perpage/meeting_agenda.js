@@ -467,6 +467,7 @@ function updateAgenda() {
 
 		isAgendaReady = true;
 		testMeetingReady();
+		resizeWindow();
 
 	}, "json");
 }

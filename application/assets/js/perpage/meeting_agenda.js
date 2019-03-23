@@ -26,7 +26,7 @@
 /* global clearKeyup */
 /* global keyupTimeoutId */
 /* global toMarkdownWithEmoji */
-/* global resizeWindow() */
+/* global resizeWindow */
 
 var preventAgendaHandling = false;
 var AGENDA_MAX_HEIGHT = 300;
@@ -293,6 +293,8 @@ function addAgenda(agendas, parent, parentId) {
 	if ($("#agenda-points-list").height() > AGENDA_MAX_HEIGHT) {
 		$("#meeting-agenda .btn-restore-point").show();
 	}
+
+	resizeWindow();
 }
 
 function updateMeeting(meeting) {
@@ -467,7 +469,6 @@ function updateAgenda() {
 
 		isAgendaReady = true;
 		testMeetingReady();
-		resizeWindow();
 
 	}, "json");
 }

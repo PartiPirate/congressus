@@ -31,6 +31,7 @@ $(function() {
         var internalText = null;
 
         var serverStatus = "waiting";
+        var clientStatus = "waiting"; 
 
         var toolbar = null;
         var nicknameHolder = null;
@@ -41,15 +42,36 @@ $(function() {
             }
         };
 
-        var mergeBack = function(content) {
-            var mergers = [];
-            mergers.push(content);
-            mergers.push(area.html());
+        var cleanReturn = function(content) {
+            content = content.replace("</div>", "");
+            content = content.replace("<div>", "\n").replace("<br>", "\n");
 
-            internalText = merge(internalText, mergers);
-            var previousCaretPosition = area.caret("pos");
-            area.html(internalText);
-            area.caret("pos", previousCaretPosition);
+            return content;
+        }
+
+        var mergeBack = function(content) {
+            if (clientStatus == "waiting") {
+                var mergers = [];
+                mergers.push(cleanReturn(content));
+                mergers.push(cleanReturn(area.html()));
+    
+                internalText = merge(internalText, mergers);
+                var previousCaretPosition = area.caret("pos");
+                console.log("Previous caret position : " + previousCaretPosition);
+                area.html(internalText);
+                console.log("Length : " + internalText.length);
+
+                if (previousCaretPosition > internalText.length) {
+                    previousCaretPosition = internalText.length;
+                }
+
+                area.caret("pos", previousCaretPosition);
+
+                serverStatus = "waiting";
+            }
+            else {
+                setTimeout(function() { mergeBack(content); }, 5); // Retry
+            }
         }
 
         var attach = function() {
@@ -122,7 +144,6 @@ $(function() {
                         break;
                     case "waiting":
                         mergeBack(data.mergedContent);
-                        serverStatus = data.event;
                         break;
                     case "closingTimer":
                         setTimeout(function() { 
@@ -205,24 +226,17 @@ $(function() {
 
             var keyTimeoutId = null;
             var previousCaretPosition = area.caret("pos");
-            var previousContent = area.html();
-
-            var cleanReturn = function(content) {
-                content = content.replace("</div>", "");
-                content = content.replace("<div>", "\n").replace("<br>", "\n");
-
-                return content;
-            }
+            var previousContent = cleanReturn(area.html());
 
             var endOfTyping = function() {
-                var currentContent = area.html();
+                var currentContent = cleanReturn(area.html());
                 var currentCaretPosition = area.caret("pos");
                 clearInterval(keyTimeoutId);
                 keyTimeoutId = null;
 
                 var diff = stringDiff(previousContent, currentContent);
 
-                console.log(diff);
+//                console.log(diff);
 
                 if (diff.length == 1 && diff[0][0] == "=") {
                     var padEvent = {event: "newCaretPosition", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0};
@@ -232,7 +246,7 @@ $(function() {
                     return;
                 }
 
-                var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, diff: diff, content: currentContent};
+                var padEvent = {event: "diff", padId: padId, senderId: senderId, caretPosition: currentCaretPosition ? currentCaretPosition : 0, /*diff: diff,*/ content: currentContent};
                 internalText = currentContent;
 
                 if (serverStatus != "processing") {
@@ -251,6 +265,8 @@ $(function() {
                 else {
                     clearInterval(keyTimeoutId);
                 }
+
+                clientStatus = "typing";
             });
 
             area.keyup(function(event) {
@@ -267,6 +283,8 @@ $(function() {
                 } 
 
                 keyTimeoutId = setTimeout(endOfTyping, 200);
+
+                clientStatus = "waiting";
             });
 
             area.click(function(event) {

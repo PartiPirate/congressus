@@ -1766,7 +1766,7 @@ function Close() {
 		if (count($this->columnbuffer)) { $this->printcolumnbuffer(); }
 	}
 /*-- END COLUMNS --*/
-	if (count($this->divbuffer)) { $this->printdivbuffer(); }
+	if ($this->divbuffer && count($this->divbuffer)) { $this->printdivbuffer(); }
 
 	// BODY Backgrounds
 	$s = '';

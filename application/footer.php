@@ -67,7 +67,7 @@
 
 <!-- JS pad -->
 <script>
-    var PAD_WS = <?php echo json_encode($config["server"]["pad"]); ?>;
+    var PAD_WS = <?php echo json_encode($config["server"]["pad"]["ws_url"]); ?>;
 </script>
 <script src="assets/js/caret.js"></script>
 <script src="assets/js/merger.js"></script>

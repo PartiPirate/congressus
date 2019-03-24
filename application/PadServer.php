@@ -6,16 +6,18 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
+require_once "config/config.php";
 require_once "pad/PadConnectionHandler.php";
 
+$options = $config["server"]["pad"];
 
-    $server = IoServer::factory(
-        new HttpServer(
-            new WsServer(
-                new PadConnectionHandler()
-            )
-        ),
-        8080
-    );
+$server = IoServer::factory(
+    new HttpServer(
+        new WsServer(
+            new PadConnectionHandler()
+        )
+    ),
+    $config["server"]["pad"]["local_port"], "0.0.0.0", $options
+);
 
-    $server->run();
+$server->run();

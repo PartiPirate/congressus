@@ -375,7 +375,7 @@ function addButtonsListeners() {
 		$("#diff").hide();
 		$("#diff-group").hide();
 		$("#source").hide();
-		$("#destination").hide();
+		$("#destination-textarea-div").hide();
 
 		$(".btn-type-group button").removeClass("active");
 		$(this).addClass("active");
@@ -395,7 +395,7 @@ function addButtonsListeners() {
 		$("#diff").hide();
 		$("#diff-group").hide();
 		$("#source").hide();
-		$("#destination").hide();
+		$("#destination-textarea-div").hide();
 		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
@@ -418,7 +418,7 @@ function addButtonsListeners() {
 		$("#diff-group").show();
 		constructChangeScroll($("#diff-group"));
 		$("#source").hide();
-		$("#destination").hide();
+		$("#destination-textarea-div").hide();
 		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 
@@ -441,7 +441,8 @@ function addButtonsListeners() {
 		$("#diff-group").show();
 		constructChangeScroll($("#diff-group"));
 		$("#source").show().keyup();
-		$("#destination").show().keyup();
+		$("#destination-textarea-div").show();
+		$("#destination").keyup();
 		$("#markdown-area").hide();
 		$("#markdown-group").hide();
 

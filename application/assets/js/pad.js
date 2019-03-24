@@ -102,8 +102,10 @@ $(function() {
             
             socket.onerror = function(e) {
                 console.log("refus de connexion !");
-                toolbar.find(".connection-status").text("Déconnecté");
+//                toolbar.find(".connection-status").text("Déconnecté");
                 toolbar.find(".ws-connect-btn").prop("disabled", false);
+                toolbar.find(".ws-connect-btn").prop("checked", false).change();
+
                 socket = null;
             }
 
@@ -123,6 +125,7 @@ $(function() {
                 switch(data.event) {
                     case "connected":
                         toolbar.find(".connection-status").text("Connecté");
+                        toolbar.find(".ws-connect-btn").prop("checked", true).change();
                         toolbar.find(".ws-connect-btn").prop("disabled", true);
 //                        console.log("Rid " + data.rid);
                         break;
@@ -176,6 +179,7 @@ $(function() {
                 console.log("perte de la connexion !");
                 toolbar.find(".connection-status").text("Déconnecté");
                 toolbar.find(".ws-connect-btn").prop("disabled", false);
+                toolbar.find(".ws-connect-btn").prop("checked", false).change();
                 socket = null;
             }
         }
@@ -209,8 +213,10 @@ $(function() {
             }
 
             nicknameHolder = toolbar.find(".nickname-holder");
-            toolbar.find(".ws-connect-btn").click(function() {
-                openSocket();
+            toolbar.find(".ws-connect-btn").change(function() {
+                if (toolbar.find(".ws-connect-btn").prop("checked") && !socket) {
+                    openSocket();
+                }
             });
         }
 
@@ -222,7 +228,7 @@ $(function() {
             var padId = area.data("pad-id");
             var senderId = area.data("pad-sender");
 
-            openSocket();
+//            openSocket();
 
             var keyTimeoutId = null;
             var previousCaretPosition = area.caret("pos");
@@ -304,7 +310,7 @@ $(function() {
             var senderId = area.data("pad-sender");
 //            var caretPositionsBefore = {};
 
-            openSocket();
+//            openSocket();
 
             var previousCaretPosition = 0;
 /*

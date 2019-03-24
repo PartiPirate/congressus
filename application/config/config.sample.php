@@ -28,6 +28,13 @@ $config["server"]["base"] = "https://congressus.host/";
 $config["server"]["line"] = "";
 $config["server"]["timezone"] = "Europe/Paris";
 
+$config["server"]["pad"]["ws_url"] = "wss://congressus.local:33333/"; // external ws url
+$config["server"]["pad"]["local_port"] = 33333; // local ws port
+$config["server"]["pad"]["local_cert"] = "/etc/ssl/congressus.local/fullchain.pem"; // local certificate
+$config["server"]["pad"]["local_pk"] = "/etc/ssl/congressus.local/privkey.pem"; // local private key
+$config["server"]["pad"]["allow_self_signed"] = false;
+$config["server"]["pad"]["verify_peer"] = false;
+
 $config["congressus"]["ballot_majorities"] = array(0, 50, 66, 80, -1, -2);
 $config["congressus"]["ballot_majority_judgment"] = array(1, 2, 3, 4, 5, 6);
 $config["congressus"]["ballot_majority_judgment_force"] = true; // If ALL vote are mandatory in a single judgment motion

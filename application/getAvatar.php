@@ -62,13 +62,77 @@ $results = $statement->fetchAll();
 
 //echo count($results);
 
-if (!count($results) || !$results[0]["format"]) {
+if (!count($results)) {
     header('Content-type: image/png');
     echo file_get_contents("assets/images/avatar-default.png");
     exit();
 }
 
 $user = $results[0];
+
+if (!$user["format"]) {
+    $dstfname = tempnam(sys_get_temp_dir(), 'DST');
+
+    $letter = "";
+    if ($user["pseudo_adh"]) {
+        $letter = mb_strtoupper(mb_substr($user["pseudo_adh"], 0, 1));
+    }
+    else {
+        $letter = mb_strtoupper(mb_substr($user["prenom_adh"], 0, 1));
+    }
+
+    $hash = md5($user["email_adh"], false);
+//    $hash = md5("TOTOGH", false);
+
+//    echo $hash . "<br>";
+    
+    $r = hexdec(substr($hash, 0, 2));
+    $g = hexdec(substr($hash, 2, 2));
+
+//    $r= 10;
+//    $g= 10;
+    
+    $b = intval(255 - 255 * sqrt($r * $r / 65535. + $g * $g / 65535.));
+
+//    echo $r . " " . $g . " " . $b . " ";
+
+//    exit();
+
+    $size = 128;
+
+    $dst = ImageCreateTrueColor($size, $size);
+    imagesavealpha($dst, true);
+    $transColour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+    imagefill($dst, 0, 0, $transColour);
+
+    $diskColour = imagecolorallocatealpha($dst, $r, $g, $b, 0);
+    imagefilledellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $diskColour);
+/*
+    $circleColour = imagecolorallocatealpha($dst, 255, 255, 255, 0);
+    imageellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $circleColour);
+    $circleColour = imagecolorallocatealpha($dst, $r, $g, $b, 100);
+    imageellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $circleColour);
+*/
+    $font = "assets/fonts/ubuntu-R.ttf";
+    $bbox = imageftbbox(intval($size / 2) , 0, $font , $letter);
+
+    $textColour = imagecolorallocatealpha($dst, 255, 255, 255, 0);
+    imagefttext($dst, intval($size / 2), 0, intval($size / 2) - intval(($bbox[2] - $bbox[0]) / 2), intval($size / 2) - intval(($bbox[7] - $bbox[1]) / 2), $textColour, $font, $letter);
+    $textColour = imagecolorallocatealpha($dst, $r, $g, $b, 100);
+    imagefttext($dst, intval($size / 2), 0, intval($size / 2) - intval(($bbox[2] - $bbox[0]) / 2), intval($size / 2) - intval(($bbox[7] - $bbox[1]) / 2), $textColour, $font, $letter);
+
+//    print_r($bbox);
+//    exit();
+
+//    echo "<br>#$letter#<br>";
+
+    Imagepng($dst, $dstfname);
+    $user["picture"] = file_get_contents($dstfname);
+
+//    header('Content-type: image/png');
+//    echo $user["picture"];
+//    exit();
+}
 
 function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, $forceDimensions){
     $size = getimagesize($srcFilePath);
@@ -102,8 +166,8 @@ function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, 
         $src = ImageCreateFromJpeg($srcFilePath);
         $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
         imagesavealpha($dst, true);
-        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
-        imagefill($dst, 0, 0, $trans_colour);
+        $transColour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $transColour);
         imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
 //        imageinterlace( $dst, true);
 //        ImageJpeg($dst, $dstFilePath, 100);
@@ -113,8 +177,8 @@ function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, 
         $src = ImageCreateFrompng($srcFilePath);
         $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
         imagesavealpha($dst, true);
-        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
-        imagefill($dst, 0, 0, $trans_colour);
+        $transColour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $transColour);
         imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
         Imagepng($dst, $dstFilePath);
     } 
@@ -122,8 +186,8 @@ function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, 
         $src = ImageCreateFromGif($srcFilePath);
         $dst = ImageCreateTrueColor($forceDimensions ? $maxWidth : $thumbWidth, $forceDimensions ? $maxHeight : $thumbHeight);
         imagesavealpha($dst, true);
-        $trans_colour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
-        imagefill($dst, 0, 0, $trans_colour);
+        $transColour = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $transColour);
         imagecopyresampled($dst, $src, $offsetLeft, $offsetTop, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
 //        imagegif($dst, $dstFilePath);
         Imagepng($dst, $dstFilePath);

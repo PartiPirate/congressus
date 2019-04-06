@@ -82,21 +82,12 @@ if (!$user["format"]) {
     }
 
     $hash = md5($user["email_adh"], false);
-//    $hash = md5("TOTOGH", false);
 
-//    echo $hash . "<br>";
-    
     $r = hexdec(substr($hash, 0, 2));
     $g = hexdec(substr($hash, 2, 2));
 
-//    $r= 10;
-//    $g= 10;
-    
-    $b = intval(255 - 255 * sqrt($r * $r / 65535. + $g * $g / 65535.));
-
-//    echo $r . " " . $g . " " . $b . " ";
-
-//    exit();
+    $b = 255 * 255 - $r * $r - $g * $g;
+    $b = $b > 0 ? intval(sqrt($b)) : 0;
 
     $size = 128;
 
@@ -107,12 +98,6 @@ if (!$user["format"]) {
 
     $diskColour = imagecolorallocatealpha($dst, $r, $g, $b, 0);
     imagefilledellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $diskColour);
-/*
-    $circleColour = imagecolorallocatealpha($dst, 255, 255, 255, 0);
-    imageellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $circleColour);
-    $circleColour = imagecolorallocatealpha($dst, $r, $g, $b, 100);
-    imageellipse($dst, intval($size / 2), intval($size / 2), $size - 1, $size - 1, $circleColour);
-*/
     $font = "assets/fonts/ubuntu-R.ttf";
     $bbox = imageftbbox(intval($size / 2) , 0, $font , $letter);
 
@@ -121,17 +106,8 @@ if (!$user["format"]) {
     $textColour = imagecolorallocatealpha($dst, $r, $g, $b, 100);
     imagefttext($dst, intval($size / 2), 0, intval($size / 2) - intval(($bbox[2] - $bbox[0]) / 2), intval($size / 2) - intval(($bbox[7] - $bbox[1]) / 2), $textColour, $font, $letter);
 
-//    print_r($bbox);
-//    exit();
-
-//    echo "<br>#$letter#<br>";
-
     Imagepng($dst, $dstfname);
     $user["picture"] = file_get_contents($dstfname);
-
-//    header('Content-type: image/png');
-//    echo $user["picture"];
-//    exit();
 }
 
 function createThumbFromFile($srcFilePath, $dstFilePath, $maxWidth, $maxHeight, $forceDimensions){

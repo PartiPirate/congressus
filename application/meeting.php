@@ -829,7 +829,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			style="padding-top: 2px; padding-bottom: 2px;"
 			id="member-${mem_id}" data-id="${mem_id}">
 
-			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px;" 
+			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px; margin-top: -8px;" 
 							 data-toggle="tooltip" data-placement="top" title="${mem_nickname}">
 							 
 			<span class="member-nickname" style="margin-right: 5px;"></span>
@@ -868,7 +868,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			style="padding-top: 2px; padding-bottom: 2px;"
 			id="member-${mem_id}" data-id="${mem_id}">
 
-			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px;" 
+			<img src="getAvatar.php?userId=${mem_id}" class="img-circle" style="max-width: 20px; max-height: 20px; margin-top: -8px;" 
 				 data-toggle="tooltip" data-placement="top" title="${mem_nickname}">
 
 			<span class="member-nickname" style="margin-right: 5px;"></span>

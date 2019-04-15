@@ -144,7 +144,7 @@ var stringDiff = function(before, after, allChars) {
     var afterArray = [];
 
     if (allChars) {
-        var regex = /(.)/gs;  
+        var regex = /(.)/g;  
     }
     else {
         var regex = /([\wàâéèêûùîôœçÀÂÉÈÊÛÙÎÔŒÇ%\-\=\/\·\#]+|\?|\+|\*|\ |\.|\!|'|,|’|;|:|`|´|°|\^|\||\r|\n|\(|\)|\[|\]|\@|\_|\"|\€|\>|\<)/g;

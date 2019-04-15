@@ -41,37 +41,42 @@ $data = array();
 
 $userId = SessionUtils::getUserId($_SESSION);
 
-//$data["motions"] = $motions;
-
-foreach($motions as $proposition) {
-    if (!isset($_REQUEST[$proposition["mpr_label"]])) continue;
-    $vote = array();
-    $vote["vot_member_id"] = $userId;
-    $vote["vot_motion_proposition_id"] = $proposition["mpr_id"];
+if (!$userId) {
+    $data["error"] = "no_user";
+}
+else {
+    //$data["motions"] = $motions;
     
-    $votes = $voteBo->getByFilters($vote);
-    if (count($votes)) {
-    	$vote[$voteBo->ID_FIELD] = $votes[0][$voteBo->ID_FIELD];
+    foreach($motions as $proposition) {
+        if (!isset($_REQUEST[$proposition["mpr_label"]])) continue;
+        $vote = array();
+        $vote["vot_member_id"] = $userId;
+        $vote["vot_motion_proposition_id"] = $proposition["mpr_id"];
+        
+        $votes = $voteBo->getByFilters($vote);
+        if (count($votes)) {
+        	$vote[$voteBo->ID_FIELD] = $votes[0][$voteBo->ID_FIELD];
+        }
+        
+        $vote["vot_power"] = $_REQUEST[$proposition["mpr_label"]];
+        $voteBo->save($vote);
+        
+        $data[$proposition["mpr_label"]] = $vote;
     }
     
-    $vote["vot_power"] = $_REQUEST[$proposition["mpr_label"]];
-    $voteBo->save($vote);
+    if ($gamifierClient) {
+        $events = array();
+        $events[] = createGameEvent($userId, GameEvents::HAS_VOTED);
+        
+        $addEventsResult = $gamifierClient->addEvents($events);
     
-    $data[$proposition["mpr_label"]] = $vote;
-}
-
-if ($gamifierClient) {
-    $events = array();
-    $events[] = createGameEvent($userId, GameEvents::HAS_VOTED);
+        $data["gamifiedUser"] = $addEventsResult;
+    }
     
-    $addEventsResult = $gamifierClient->addEvents($events);
-
-    $data["gamifiedUser"] = $addEventsResult;
+    $pointId = $motions[0]["mot_agenda_id"];
+    $memcacheKey = "do_getAgendaPoint_$pointId";
+    $memcache->delete($memcacheKey);
 }
-
-$pointId = $motions[0]["mot_agenda_id"];
-$memcacheKey = "do_getAgendaPoint_$pointId";
-$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

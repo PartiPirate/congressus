@@ -212,6 +212,16 @@ $lang["meeting_godown_point"] = "Go down";
 $lang["addAgendaFrom_title"]    = "Add a point to the agenda from a source";
 $lang["addTag_title"] = "Management of motion labels";
 
+$lang["setQuorum_title"]             = "Management of the meeting quorum";
+$lang["setQuorum_formula"]           = "Formula";
+$lang["setQuorum_numberOfConnected"] = "[NUMBER OF CONNECTED]";
+$lang["setQuorum_numberOfPresents"]  = "[NUMBER OF PRESENTS]";
+$lang["setQuorum_numberOfVoters"]    = "[NUMBER OF VOTERS]";
+$lang["setQuorum_numberOfNoticed"]   = "[NUMBER OF NOTICED]";
+$lang["setQuorum_numberOfPowers"]    = "[NUMBER OF POWERS]";
+$lang["setQuorum_sqrt"]              = "SQRT";
+$lang["setQuorum_percentage"]        = "%";
+
 $lang["meetings_upcoming_meetings"]   = "Upcoming meetings";
 $lang["meetings_passed_meetings"]     = "Passed meetings";
 $lang["meetings_ongoing_meetings"]    = "Ongoing meetings";

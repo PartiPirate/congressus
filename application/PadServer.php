@@ -11,6 +11,8 @@ require_once "pad/PadConnectionHandler.php";
 
 $options = $config["server"]["pad"];
 
+print_r($options);
+
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(

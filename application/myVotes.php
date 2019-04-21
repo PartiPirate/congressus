@@ -56,11 +56,15 @@ if (isset($_REQUEST["meetingId"])) {
 
 $motions = $motionBo->getByFilters($filters);
 
-//print_r($motions);
+// echo "<!-- \n";
+// print_r($motions);
+// echo "\n -->";
 
 $sortedMotions = array();
 
 foreach($motions as $motion) {
+	if (!$motion["id_adh"]) continue;
+
 	$motion["mot_tag_ids"] = json_decode($motion["mot_tag_ids"]);
 	$motion["mot_tags"] = array();
 	
@@ -190,7 +194,7 @@ function sortPropositions($a, $b) {
 				<a href="#" class="show-description-link" data-tab-id="<?php echo $randomId; ?>" style="             "><?php echo lang("myVotes_show_agenda_description"); ?> <i class="fa fa-caret-right" aria-hidden="true"></i></a>
 				<a href="#" class="hide-description-link" data-tab-id="<?php echo $randomId; ?>" style="display:none;"><?php echo lang("myVotes_hide_agenda_description"); ?> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
 				<div id="<?php echo $randomId; ?>" style="display:none;">
-				<?php echo $motion["age_description"]; ?>
+				<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["age_description"])); ?>
 				</div>
 <?php
 			}

@@ -19,13 +19,15 @@
 
 if (!isset($api)) exit();
 
-include_once("config/database.php");
+require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/LocationBo.php");
 require_once("engine/utils/DateTimeUtils.php");
-
 require_once("engine/utils/LogUtils.php");
+require_once("engine/utils/QuorumUtils.php");
+require_once("language/language.php");
+
 addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
@@ -69,6 +71,8 @@ if ($_REQUEST["property"] == "mee_location") {
 }
 else {
 
+    $date = getNow();
+
     if ($_REQUEST["property"] == "mee_expecting_end_time") {
         $startTime = getDateTime($meeting["mee_datetime"]);
         $endTime = getDateTime($_REQUEST["text"]);
@@ -76,17 +80,23 @@ else {
         $expectedDuration = round(($endTime->getTimestamp() -  $startTime->getTimestamp()) / 60);
         $meeting["mee_expected_duration"] = $expectedDuration;
     }
-    else {
-        $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
-    }
-    
-    $date = getNow();
-    
-    if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "open") {
+    else if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "open") {
     	$meeting["mee_start_time"] = $date->format("Y-m-d H:i:s");
+        $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
     }
     else if ($_REQUEST["property"] == "mee_status" && $_REQUEST["text"] == "closed") {
     	$meeting["mee_finish_time"] = $date->format("Y-m-d H:i:s");
+        $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
+    }
+    else if ($_REQUEST["property"] == "mee_quorum") {
+    	$quorumFormula = $_REQUEST["text"];
+
+        $quorumFormula = languageToPHPQuorum($quorumFormula);
+
+        $meeting[$_REQUEST["property"]] = $quorumFormula;
+    }
+    else {
+        $meeting[$_REQUEST["property"]] = $_REQUEST["text"];
     }
     
     $meetingBo->save($meeting);

@@ -27,6 +27,7 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/utils/EventStackUtils.php");
 require_once("engine/utils/DateTimeUtils.php");
+require_once("engine/utils/QuorumUtils.php");
 
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
@@ -247,6 +248,8 @@ else {
 if (!SessionUtils::getUserId($_SESSION)) {
 	$data["notices"] = array();
 }
+
+$data["mee_quorum"] = phpToLanguageQuorum($data["mee_quorum"]);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

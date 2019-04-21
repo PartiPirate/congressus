@@ -556,7 +556,9 @@ function updatePeople() {
 			if (data["mee_computed_quorum"]) {
 				$(".quorum-container").show();
 				quorum.text(data["mee_computed_quorum"]);
-				
+
+				$(".quorum-container").attr("title", data["mee_quorum"] + " = " + data["mee_computed_quorum"]);
+
 				if (data["mee_computed_quorum"] <= data["numberOfVoters"]) {
 					$(".quorum-container *").addClass("text-success").removeClass("text-danger");
 				}

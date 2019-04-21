@@ -215,6 +215,16 @@ $lang["meeting_godown_point"] = "Descendre";
 $lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
 $lang["addTag_title"] = "Gestion des libellés de la motion";
 
+$lang["setQuorum_title"]             = "Gestion du quorum de la réunion";
+$lang["setQuorum_formula"]           = "Formule";
+$lang["setQuorum_numberOfConnected"] = "[NOMBRE DE CONNECTES]";
+$lang["setQuorum_numberOfPresents"]  = "[NOMBRE DE PRESENTS]";
+$lang["setQuorum_numberOfVoters"]    = "[NOMBRE DE VOTANTS]";
+$lang["setQuorum_numberOfNoticed"]   = "[NOMBRE DE CONVOQUES]";
+$lang["setQuorum_numberOfPowers"]    = "[NOMBRE DE POUVOIRS]";
+$lang["setQuorum_sqrt"]              = "RACINE";
+$lang["setQuorum_percentage"]        = "%";
+
 $lang["meetings_upcoming_meetings"]   = "Réunions à venir";
 $lang["meetings_passed_meetings"]     = "Réunions terminées";
 $lang["meetings_ongoing_meetings"]    = "Réunions en cours";

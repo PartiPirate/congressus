@@ -287,8 +287,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<!-- Synchro vote -->
 					<div class="synchro-vote" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 						<span class="fa fa-archive"></span> 
-							<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
-							<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
+						<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
+						<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
 			
 						<select class="form-control" data-type="mee_synchro_vote" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
 							<option value="0"><?php echo lang("mee_synchro_vote_0"); ?></option>
@@ -340,10 +340,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					-
 					<i class="fa fa-archive"></i> <?php echo lang("meeting_number_of_voters"); ?>
 					<span class="number-of-voters">0</span>
-					<span class="quorum-container">
-					-
-					<i class="fa fa-bell-o"></i> <span><?php echo lang("meeting_quorum"); ?></span>
-					<span class="quorum">0</span>
+					<span class="quorum-container" title="">
+						-
+						<i class="fa fa-bell-o"></i> <span><?php echo lang("meeting_quorum"); ?></span>
+						<span class="quorum">0</span>
+						<button style="display: none; margin-top: -6px" type="button" class="btn btn-xs btn-default show-quorum-modal-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</span>
 				</div>
 			</div>
@@ -931,6 +932,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
 <?php	include("meeting/addTag_modal.php"); ?>
+<?php	include("meeting/setQuorum_modal.php"); ?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
 	<div class="modal-dialog">

@@ -1930,6 +1930,34 @@ function addMeetingSpeekingPanelsHandler() {
 	});
 }
 
+function addMeetingQuorumHanbdlers() {
+	$(".show-quorum-modal-btn").click(function() {
+		if (hasWritingRight($(".meeting").data("user-id"))) {
+			
+			$("#set-quorum-modal").one("shown.bs.modal", function() {
+				$("#quorum-formula-area").keyup();
+			});
+
+			$("#set-quorum-modal").modal("show");
+		}
+	});
+
+	$(".btn-set-quorum").click(function() {
+		let form = {meetingId: $("#set-quorum-modal form input[name=meetingId]").val(), text: $("#set-quorum-modal form #quorum-formula-area").val(), property: "mee_quorum"};
+		$.post("meeting_api.php?method=do_changeMeeting", form, function(data) {
+			$("#set-quorum-modal").modal("hide");
+		}, "json");
+	});
+
+	$(".quorum-container").hover(function() {
+		if (hasWritingRight($(".meeting").data("user-id"))) {
+			$(this).find(".update-btn").show();
+		}
+	}, function() {
+		$(this).find(".update-btn").hide();
+	});
+}
+
 $(function() {
 	setFramatalkPosition("left");
 	addEmojiHelper();
@@ -1939,6 +1967,7 @@ $(function() {
 	addStartingTextHandler();
 	addMeetingInfoPanelsHandler();
 	addMeetingSpeekingPanelsHandler();
+	addMeetingQuorumHanbdlers();
 
 /*	
 	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);

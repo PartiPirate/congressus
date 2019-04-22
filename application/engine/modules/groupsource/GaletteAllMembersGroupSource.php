@@ -126,8 +126,8 @@ class GaletteAllMembersGroupSource {
 		}
 
 
-		$queryBuilder->addSelect(isset($config["modules"]["GaletteAllMembersGroups"]["votePower"]) ? $config["modules"]["GaletteAllMembersGroups"]["votePower"] : 1, "gga_vote_power");
-		$queryBuilder->addSelect("gga.id_adh", "gga_id_adh");
+		$queryBuilder->addSelect(isset($config["modules"]["GaletteAllMembersGroups"]["votePower"]) ? $config["modules"]["GaletteAllMembersGroups"]["votePower"] : 1, "ggama_vote_power");
+		$queryBuilder->addSelect("ggama.id_adh", "ggama_id_adh");
 		
     }
 

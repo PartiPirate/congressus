@@ -131,15 +131,14 @@ function sortPropositions($a, $b) {
 <div class="text-center">
 	<button class="btn btn-default btn-previous pull-left" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-left"></span></button>
 	<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
-	
-	<button class="btn btn-default btn-show-summary" type="button"><span class="glyphicon glyphicon-list-alt"></span> Voir le récapitulatif</button>
-	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> Imprimer un bulletin papier</button>
-	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;">Télécharger le bulletin</a>
+
+	<button class="btn btn-default btn-show-summary" type="button"><span class="glyphicon glyphicon-list-alt"></span> <?=lang("myVotes_showSummary")?></button>
+	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> <?=lang("myVotes_printBallot")?></button>
+	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;"><?=lang("myVotes_downloadBallot")?></a>
 </div>
 <?php	} ?>
 
 <div class="clearfix"></div><br>
-
 
 <?php	foreach($sortedMotions as $motionId => $motion) { 
 

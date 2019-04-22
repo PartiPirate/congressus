@@ -502,6 +502,9 @@ $lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez
 $lang["myVotes_show_agenda_description"] = "Montrer la description du point à voter";
 $lang["myVotes_hide_agenda_description"] = "Cacher la description du point à voter";
 $lang["myVotes_summary"] = "Récapitulatif";
+$lang["myVotes_showSummary"] = "Voir le récapitulatif";
+$lang["myVotes_printBallot"] = "Imprimer un bulletin papier";
+$lang["myVotes_downloadBallot"] = "Télécharger le bulletin";
 
 $lang["forgotten_guide"] = "Vous avez oublié votre mot de passe, bienvenue sur la page qui vour permettra de récuperer un accès";
 $lang["forgotten_form_legend"] = "Récupération d'accès";

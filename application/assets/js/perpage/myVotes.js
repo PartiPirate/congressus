@@ -17,6 +17,7 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global judgementMajorityValues */
 
 var judgmentVoteIsMandatory = false;
 
@@ -42,7 +43,7 @@ function computeVotes() {
 				datum[$(this).data("id")] = $(this).data("power") - 0;	
 			}
 		});
-		
+
 		data[motion.data("id")] = datum;
 	});
 
@@ -112,21 +113,32 @@ function doPointVote(motion) {
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
 				numberOfWaitingVotes--;
-//				addVotes([data.vote], proposition, motion);
-//				testBadges(data.gamifiedUser.data);
-			//    addLog("Done !");
+
+				let badge = $("li[data-proposition-id="+data.vote.mpr_id+"] .badge");
+
+				if (data.vote.vot_power) {
+					if (data.vote.mot_win_limit == -2) { // JM
+						badge.html(judgementMajorityValues[data.vote.vot_power]);
+					}
+					else {
+						badge.text(data.vote.vot_power);
+					}
+				}
+				else {
+					badge.text("");
+				}
 			
 				if (numberOfWaitingVotes == 0) {
 					setMotionDirty(motion, false);
 					
 					if ($(".btn-next").is(":disabled")) {
 						showAlert("Votre vote a été pris en compte. C'est fini !", "success");
+						showSummary();
 					}
 					else {
 						showAlert("Votre vote a été pris en compte, on passe à la suite", "success");
+						$(".btn-next").click();
 					}
-					
-					$(".btn-next").click();
 				}
 			}
 		}, "json");
@@ -157,13 +169,36 @@ function doBordaVote(motion) {
 		$.post("meeting_api.php?method=do_vote", form, function(data) {
 			if (data.ok) {
 				numberOfWaitingVotes--;
-//				addVotes([data.vote], proposition, motion);
-//				testBadges(data.gamifiedUser.data);
-			//    addLog("Done !");
-			
+
+				let badge = $("li[data-proposition-id="+data.vote.mpr_id+"] .badge");
+				badge.text(data.vote.vot_power);
+
 				if (numberOfWaitingVotes == 0) {
 					setMotionDirty(motion, false);
-					$(".btn-next").click();
+
+					var sortPropositions = function(a, b) {
+						let aValue = $(a).find(".badge").text();
+						let bValue = $(b).find(".badge").text();
+						
+						if (bValue == aValue) return 0;
+						
+					    return (bValue > aValue) ? 1 : -1;
+					};
+				
+					var motionContainer = $("li[data-motion-id="+data.vote.mot_id+"]");
+					var propositions = motionContainer.find("ul").children();
+					propositions.detach();
+
+					propositions.sort(sortPropositions).appendTo(motionContainer.find("ul"));
+
+					if ($(".btn-next").is(":disabled")) {
+						showAlert("Votre vote a été pris en compte. C'est fini !", "success");
+						showSummary();
+					}
+					else {
+						showAlert("Votre vote a été pris en compte, on passe à la suite", "success");
+						$(".btn-next").click();
+					}
 				}
 			}
 		}, "json");
@@ -409,7 +444,70 @@ function addVoteHandlers(motion) {
 
 }
 
+function showSummary() {
+	$(".motion").hide();
+	$(".summary").show();
+}
+
+function checkNavigation(motion) {
+	$(".btn-previous").removeAttr("disabled");
+	$(".btn-next").removeAttr("disabled");
+
+	if (!motion.prev(".motion").length) {
+		$(".btn-previous").attr("disabled", "disabled");
+	}
+
+	if (!motion.next(".motion").length) {
+		$(".btn-next").attr("disabled", "disabled");
+	}
+}
+
+function orderPropositions(motion, propositions) {
+	if (motion.mot_status != "resolved") return;
+	var motionId = motion.mot_id;
+
+	var motionContainer = $("#agenda_point .motion[data-id=" + motionId + "]");
+
+	if (motionContainer.data("ordered-propositions") == "ordered") return;
+
+	motionContainer.data("ordered-propositions", "ordered")
+
+	motionContainer.find(".proposition").each(function() {
+
+		for(var propositionIndex = 0; propositionIndex < propositions.length; ++propositionIndex) {
+			if (propositions[propositionIndex].mpr_id == $(this).data("id")) {
+				$(this).data("order", propositions[propositionIndex].mpr_position);
+				break;
+			}
+		}
+
+	});
+
+	var sortPropositions = function(a, b) {
+		if ($(b).data('order') == $(a).data('order')) return 0;
+		
+	    return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
+	};
+
+	var propositionDivs = motionContainer.find(".motion-propositions").children();
+	propositionDivs.detach();
+
+	propositionDivs.sort(sortPropositions).appendTo(motionContainer.find(".motion-propositions"));
+
+}
+
 $(function() {
+
+	$(".btn-show-summary").click(showSummary);
+
+	$(".btn-show-motion").click(function() {
+		let motion = $(".motion[data-id=" + $(this).data("motion-id") + "]");
+		$(".motion").hide();
+		motion.show();
+		$(".summary").hide();
+
+		checkNavigation(motion);
+	});
 
 	$(".show-description-link").click(function() {
 		var tabId = $(this).data("tab-id");
@@ -427,34 +525,38 @@ $(function() {
 
 	$(".btn-previous").attr("disabled", "disabled").click(function() {
 		if ($(this).is(":disabled")) return;
+		$(".summary").hide();
 
 		var current = $(".motion:visible");
-		var previous = current.prev(".motion");
+		if (!current.length) {
+			var previous = $(".motion").last();
+		}
+		else {
+			var previous = current.prev(".motion");
+		}
 
 		current.hide();
 		previous.show();
 
-		$(".btn-next").removeAttr("disabled");
-
-		if (!previous.prev(".motion").length) {
-			$(".btn-previous").attr("disabled", "disabled");
-		}
+		checkNavigation(previous);
 	});
 
 	$(".btn-next").attr("disabled", "disabled").click(function() {
 		if ($(this).is(":disabled")) return;
+		$(".summary").hide();
 
 		var current = $(".motion:visible");
-		var next = current.next(".motion");
+		if (!current.length) {
+			var next = $(".motion").first();
+		}
+		else {
+			var next = current.next(".motion");
+		}
 
 		current.hide();
 		next.show();
 
-		$(".btn-previous").removeAttr("disabled");
-
-		if (!next.next(".motion").length) {
-			$(".btn-next").attr("disabled", "disabled");
-		}
+		checkNavigation(next);
 	});
 
 	if ($(".motion").length > 1) {

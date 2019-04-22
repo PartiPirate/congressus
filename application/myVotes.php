@@ -132,6 +132,7 @@ function sortPropositions($a, $b) {
 	<button class="btn btn-default btn-previous pull-left" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-left"></span></button>
 	<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
 	
+	<button class="btn btn-default btn-show-summary" type="button"><span class="glyphicon glyphicon-list-alt"></span> Voir le récapitulatif</button>
 	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> Imprimer un bulletin papier</button>
 	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;">Télécharger le bulletin</a>
 </div>
@@ -255,6 +256,34 @@ function sortPropositions($a, $b) {
 	
 <?php 	} ?>
 
+<div class="panel panel-default summary" style="display: none;">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<?=lang("myVotes_summary")?>
+		</h3>
+	</div>
+	<ul class="list-group">
+<?php	
+foreach($sortedMotions as $motionId => $motion) { 
+	$propositions = $motion["propositions"];
+	usort($propositions, "sortPropositions");
+?>
+	<li class="list-group-item" style="padding-bottom: 0" data-motion-id="<?=$motion["mot_id"]?>"><?=$motion["mot_title"]?> (<?=lang("motion_ballot_majority_" . $motion["mot_win_limit"])?>) <button class="btn btn-default btn-xs pull-right btn-show-motion" data-motion-id="<?=$motion["mot_id"]?>"><i class="fa fa-archive"></i></button>
+		<ul class="list-group" style="margin-bottom: 0">
+<?php
+	foreach($propositions as $index => $proposition) { ?>
+		<li class="list-group-item" data-proposition-id="<?=$proposition["mpr_id"]?>"><?=$proposition["mpr_label"]?> <span class="badge pull-right"><?=($proposition["vot_power"] ? ($motion["mot_win_limit"] == -2 ? lang("motion_majorityJudgment_" . $proposition["vot_power"]) : $proposition["vot_power"]) : "")?></span></li>
+<?php
+	} ?>
+	
+		</ul>
+	</li>
+<?php	
+} ?>	
+	</ul>
+</div>
+
+
 	</div>
 
 <div id="log"></div>
@@ -272,6 +301,16 @@ function sortPropositions($a, $b) {
 <?php include("footer.php");?>
 <script>
 /* global judgmentVoteIsMandatory */
+
+let judgementMajorityValues = {};
+
+<?php
+foreach($config["congressus"]["ballot_majority_judgment"] as $ballotJM) { ?>
+
+judgementMajorityValues[<?=$ballotJM?>] = <?=json_encode(lang("motion_majorityJudgment_$ballotJM"))?>;
+
+<?php
+} ?>
 
 judgmentVoteIsMandatory = <?php echo json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
 </script>

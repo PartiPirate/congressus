@@ -166,7 +166,13 @@ function showConclusion($conclusions, $id) {
 	foreach($conclusions as $conclusion) {
 		if ($conclusion["con_id"] == $id) {
 //			print_r($conclusion);
-			echo "> " . $conclusion["con_text"] . "\n";
+
+			$parts = explode("\n", $conclusion["con_text"]);
+
+			foreach($parts as $part) {
+				echo "> " . $part . "\n";
+			}
+			echo "\n";
 
 			return;
 		}
@@ -178,7 +184,13 @@ function showTask($tasks, $id) {
 		if ($task["tas_id"] == $id) {
 //			print_r($task);
 
-			echo "\n    " . $task["tas_label"] . "\n\n";
+			$parts = explode("\n", $conclusion["tas_label"]);
+
+			echo "\n";
+			foreach($parts as $part) {
+				echo "    " . $part . "\n";
+			}
+			echo "\n";
 
 			return;
 		}

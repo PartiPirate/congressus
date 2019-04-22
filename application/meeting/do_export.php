@@ -21,11 +21,11 @@ session_start();
 
 $path = "../";
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-/*
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-*/
+
 include_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");

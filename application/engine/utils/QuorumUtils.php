@@ -20,7 +20,12 @@
 require_once("language/language.php");
 
 function languageToPHPQuorum($quorumFormula) {
-    $quorumFormula = str_replace('$', '', $quorumFormula);
+    // Don't call me crazy
+    $quorumFormula = str_replace('$',             '', $quorumFormula);
+    $quorumFormula = str_replace('eval',          '', $quorumFormula);
+    $quorumFormula = str_replace('return',        '', $quorumFormula);
+    $quorumFormula = str_replace('base64_decode', '', $quorumFormula);
+    // Normal stuff
     $quorumFormula = str_replace(lang("setQuorum_numberOfConnected"), '$numberOfConnected', $quorumFormula);
     $quorumFormula = str_replace(lang("setQuorum_numberOfPresents"),  '$numberOfPresents',  $quorumFormula);
     $quorumFormula = str_replace(lang("setQuorum_numberOfVoters"),    '$numberOfVoters',    $quorumFormula);

@@ -554,10 +554,7 @@ function updatePeople() {
 		var quorum = $("#speaking-panel .quorum");
 		if (quorum.eq(0).text() != ("" + data["mee_computed_quorum"])) {
 			if (data["mee_computed_quorum"]) {
-				$(".quorum-container").show();
 				quorum.text(data["mee_computed_quorum"]);
-
-				$(".quorum-container").attr("title", data["mee_quorum"] + " = " + data["mee_computed_quorum"]);
 
 				if (data["mee_computed_quorum"] <= data["numberOfVoters"]) {
 					$(".quorum-container *").addClass("text-success").removeClass("text-danger");
@@ -566,9 +563,19 @@ function updatePeople() {
 					$(".quorum-container *").addClass("text-danger").removeClass("text-success");
 				}
 			}
-			else {
-				$(".quorum-container").hide();
-			}
+		}
+
+		let quorumTitle = data["mee_quorum"] + " = " + data["mee_computed_quorum"];
+		if ($(".quorum-container").attr("title") != quorumTitle) {
+			$(".quorum-container").attr("title", quorumTitle);
+		}
+
+		// if there is a quorum OR the user has writing rights
+		if ((data["mee_computed_quorum"] && data["mee_computed_quorum"] != "0") || hasWritingRight($(".meeting").data("user-id"))) {
+				$(".quorum-container").show();
+		}
+		else {
+			$(".quorum-container").hide();
 		}
 
 		$("#speaking-panel .speaker-container").addClass("to-deleted");

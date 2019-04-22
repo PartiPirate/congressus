@@ -44,6 +44,11 @@ $data = array();
 
 $userId = SessionUtils::getUserId($_SESSION);
 
+if (!$userId) {
+	echo json_encode(array("ko" => "ko", "message" => "vote_not_accessible"));
+	exit();
+}
+
 $vote = array();
 $vote["vot_member_id"] = $userId;
 $vote["vot_motion_proposition_id"] = $proposition["mpr_id"];

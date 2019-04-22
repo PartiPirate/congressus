@@ -42,41 +42,41 @@ $data = array();
 $userId = SessionUtils::getUserId($_SESSION);
 
 if (!$userId) {
-    $data["error"] = "no_user";
+	echo json_encode(array("ko" => "ko", "message" => "vote_not_accessible"));
+	exit();
 }
-else {
-    //$data["motions"] = $motions;
+
+//$data["motions"] = $motions;
+
+foreach($motions as $proposition) {
+    if (!isset($_REQUEST[$proposition["mpr_label"]])) continue;
+    $vote = array();
+    $vote["vot_member_id"] = $userId;
+    $vote["vot_motion_proposition_id"] = $proposition["mpr_id"];
     
-    foreach($motions as $proposition) {
-        if (!isset($_REQUEST[$proposition["mpr_label"]])) continue;
-        $vote = array();
-        $vote["vot_member_id"] = $userId;
-        $vote["vot_motion_proposition_id"] = $proposition["mpr_id"];
-        
-        $votes = $voteBo->getByFilters($vote);
-        if (count($votes)) {
-        	$vote[$voteBo->ID_FIELD] = $votes[0][$voteBo->ID_FIELD];
-        }
-        
-        $vote["vot_power"] = $_REQUEST[$proposition["mpr_label"]];
-        $voteBo->save($vote);
-        
-        $data[$proposition["mpr_label"]] = $vote;
+    $votes = $voteBo->getByFilters($vote);
+    if (count($votes)) {
+    	$vote[$voteBo->ID_FIELD] = $votes[0][$voteBo->ID_FIELD];
     }
     
-    if ($gamifierClient) {
-        $events = array();
-        $events[] = createGameEvent($userId, GameEvents::HAS_VOTED);
-        
-        $addEventsResult = $gamifierClient->addEvents($events);
+    $vote["vot_power"] = $_REQUEST[$proposition["mpr_label"]];
+    $voteBo->save($vote);
     
-        $data["gamifiedUser"] = $addEventsResult;
-    }
-    
-    $pointId = $motions[0]["mot_agenda_id"];
-    $memcacheKey = "do_getAgendaPoint_$pointId";
-    $memcache->delete($memcacheKey);
+    $data[$proposition["mpr_label"]] = $vote;
 }
+
+if ($gamifierClient) {
+    $events = array();
+    $events[] = createGameEvent($userId, GameEvents::HAS_VOTED);
+    
+    $addEventsResult = $gamifierClient->addEvents($events);
+
+    $data["gamifiedUser"] = $addEventsResult;
+}
+
+$pointId = $motions[0]["mot_agenda_id"];
+$memcacheKey = "do_getAgendaPoint_$pointId";
+$memcache->delete($memcacheKey);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

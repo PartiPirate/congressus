@@ -63,7 +63,14 @@ $motions = $motionBo->getByFilters($filters);
 $sortedMotions = array();
 
 foreach($motions as $motion) {
-	if (!$motion["id_adh"]) continue;
+	$foundUser = false;
+	foreach($motion as $key => $value) {
+		if (strpos($key, "_id_adh") !== false && $value == $userId) {
+			$foundUser = true;
+			break;
+		}
+	}
+	if (!$foundUser) continue;
 
 	$motion["mot_tag_ids"] = json_decode($motion["mot_tag_ids"]);
 	$motion["mot_tags"] = array();

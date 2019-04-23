@@ -1958,6 +1958,41 @@ function addMeetingQuorumHanbdlers() {
 	});
 }
 
+function addSynchroHandlers() {
+	$(".synchro-vote").hover(function() {
+		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+			$(this).find(".update-btn").show();
+		}
+	}, function() {
+		$(this).find(".update-btn").hide();
+	});
+
+	$(".synchro-vote").find(".update-btn").click(function() {
+		$(this).parents(".synchro-vote").find(".read-data").hide();
+		$(this).parents(".synchro-vote").find(".update-btn").hide();
+		$(this).parents(".synchro-vote").find("select").show();
+//		$(this).parents(".synchro-vote").find(".save-btn").show();
+		$(this).parents(".synchro-vote").find(".cancel-btn").show();
+	});
+	$(".synchro-vote").find(".cancel-btn").click(function() {
+		$(this).parents(".synchro-vote").find("select").hide();
+//		$(this).parents(".breadcrumb .active").find(".read-data").show();
+//		$(this).parents(".breadcrumb .active").find(".save-btn").hide();
+		$(this).parents(".synchro-vote").find(".cancel-btn").hide();
+		$(this).parents(".synchro-vote").find(".update-btn").show();
+	});
+	$(".synchro-vote").find("select").change(function() {
+		var meetingId = $(".meeting").data("id");
+		var text = $(".synchro-vote").find("select option:selected").val();
+		$(".synchro-vote").find("select").hide();
+		$(this).parents(".synchro-vote").find(".cancel-btn").hide();
+		$(this).parents(".synchro-vote").find(".update-btn").show();
+
+		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_synchro_vote", text: text},
+				function(data) {}, "json");
+	})
+}
+
 $(function() {
 	setFramatalkPosition("left");
 	addEmojiHelper();
@@ -1968,6 +2003,7 @@ $(function() {
 	addMeetingInfoPanelsHandler();
 	addMeetingSpeekingPanelsHandler();
 	addMeetingQuorumHanbdlers();
+	addSynchroHandlers();
 
 /*	
 	$("body").on("keyup", "textarea.autogrow, div.autogrow", meetingAutogrowEvent);

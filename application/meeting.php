@@ -287,19 +287,16 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<!-- Synchro vote -->
 					<div class="synchro-vote" style="/*padding-top: 7px; padding-bottom: 7px;*/">
 						<span class="fa fa-archive"></span> 
-						<span class="synchro-vote-option synchro-vote-0" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
-						<span class="synchro-vote-option synchro-vote-1" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
-			
-						<select class="form-control" data-type="mee_synchro_vote" style="margin-top: -7px; height: 20px; padding: 0px 3px;">
+						<span class="synchro-vote-option synchro-vote-0 read-data" style="display: none;"><?php echo lang("mee_synchro_vote_0"); ?></span>
+						<span class="synchro-vote-option synchro-vote-1 read-data" style="display: none;"><?php echo lang("mee_synchro_vote_1"); ?></span>
+
+						<select class="form-control" data-type="mee_synchro_vote" id="synchro-vote-select" style="display: inline-block; margin-top: -7px; height: 20px; padding: 0px 3px; width: calc(100% - 100px);">
 							<option value="0"><?php echo lang("mee_synchro_vote_0"); ?></option>
 							<option value="1"><?php echo lang("mee_synchro_vote_1"); ?></option>
 						</select>
-						
-						<a		class="btn btn-primary btn-xs btn-vote-meeting" style="margin-top: -3px;" 
-							href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window" style="font-size: 10px;"></span></a>
-						<button class="btn btn-default btn-local-anonymous btn-xs" style="margin-top: -3px; margin-left: -2px;" data-toggle="tooltip" data-placement="bottom"
-							title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
-						</button>
+
+						<button style="display: none; margin-top: -2px;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -2px;" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 				</div>
@@ -362,6 +359,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						<button style="display: none;" class="margin-top-5 btn btn-warning btn-template-meeting"><?php echo lang("meeting_template"); ?></button>
 						<button style="display: none;" class="margin-top-5 btn btn-success btn-open-meeting"><?php     echo lang("meeting_open"); ?></button>
 						<button style="display: none;" class="margin-top-5 btn btn-danger  btn-close-meeting"><?php    echo lang("meeting_close"); ?></button>
+						
+						<a	class="btn btn-primary btn-vote-meeting margin-top-5" 
+							href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window" style="font-size: 10px;"></span></a>
+						<button class="btn btn-default btn-local-anonymous margin-top-5" data-toggle="tooltip" data-placement="bottom"
+							title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
+						</button>
+						
 					</div>
 
 					<span style="display: none;" class="closed-meeting"><?php echo lang("meeting_closed"); ?></span>

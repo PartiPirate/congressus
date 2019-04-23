@@ -342,8 +342,10 @@ function updateMeeting(meeting) {
 		$("input[value=" + meeting["mee_rights"][index] + "]").prop("checked", true);
 	}
 
-	$(".synchro-vote-option").hide();
-	$(".synchro-vote-" + meeting.mee_synchro_vote).show();
+	if (!$("#synchro-vote-select").is(":visible")) {
+		$(".synchro-vote-option").hide();
+		$(".synchro-vote-" + meeting.mee_synchro_vote).show();
+	}
 	$(".synchro-vote select").val(meeting.mee_synchro_vote);
 
 	if ($("#location .location-type").text() != meeting.loc_type) {

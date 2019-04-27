@@ -1280,9 +1280,13 @@ function addTaskHandlers() {
 	$("#tasks-list").on("mouseenter", "li.task", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
+		$(this).find(".btn-link-task").show();
+
+		if ($(this).hasClass("list-group-item-success")) return;
+		if ($(this).hasClass("list-group-item-danger")) return;
+
 		$(this).find(".btn-cancel-task").show();
 		$(this).find(".btn-finish-task").show();
-		$(this).find(".btn-link-task").show();
 	});
 
 	$("#tasks-list").on("mouseleave", "li.task", function(event) {

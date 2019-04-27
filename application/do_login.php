@@ -72,11 +72,14 @@ else {
 
 session_write_close();
 
-if (isset($data["ok"]) && $_POST["referer"]) {
-	header('Location: ' . $_POST["referer"]);
+$referer = isset($_POST["referer"]) ? $_POST["referer"] : null;
+if ($referer && substr($referer, strrpos($referer, "/") + 1) == "activate.php") $referer = "index.php";
+
+if (isset($data["ok"]) && $referer) {
+	header('Location: ' . $referer);
 }
-else if (!isset($data["ok"]) && $_POST["referer"]) {
-	header('Location: connect.php?error=' . $data["message"] . "&referer=" . urlencode($_POST["referer"]));
+else if (!isset($data["ok"]) && $referer) {
+	header('Location: connect.php?error=' . $data["message"] . "&referer=" . urlencode($referer));
 }
 else {
 	echo json_encode($data);

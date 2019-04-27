@@ -54,6 +54,7 @@ if ($task) {
 
 	$now = getNow();
 	$task["tas_finish_datetime"] = $now->format("Y-m-d H:i:s");
+	$task["tas_status"] = $_REQUEST["status"];
 
 	$taskBo->save($task);
 

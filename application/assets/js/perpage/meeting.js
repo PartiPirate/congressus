@@ -403,6 +403,7 @@ function setAdvice() {
 }
 
 function addSpeakerChat() {
+	var focus = arguments.length > 0 ? arguments[0] : true;
 	var userId = $(".btn-add-speaker-chat").data("speaker-id");
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
@@ -410,8 +411,9 @@ function addSpeakerChat() {
 
 	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
-		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
-		
+		if (focus) {
+			$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
+		}
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
@@ -421,6 +423,7 @@ function addSpeakerChat() {
 }
 
 function addOwnChat() {
+	var focus = arguments.length > 0 ? arguments[0] : true;
 	var userId = $(".meeting").data("user-id");
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
@@ -428,8 +431,9 @@ function addOwnChat() {
 
 	$.get("meeting_api.php?method=do_addChat", {id: meetingId, pointId: agendaId, userId: userId, startingText: startingText}, function(data) {
 		setAgendaChat(data.chat.cha_id, [data.chat]);
-		$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
-		
+		if (focus) {
+			$("#agenda_point ul.objects li.chat#chat-" + data.chat.cha_id).click();
+		}
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
@@ -439,6 +443,8 @@ function addOwnChat() {
 }
 
 function addOwnTask() {
+	var focus = arguments.length > 0 ? arguments[0] : true;
+
 	var targetId = $(".meeting").data("user-id");
 	var targetType = "galette_adherents";
 	var agendaId = $("#agenda_point").data("id");
@@ -447,7 +453,9 @@ function addOwnTask() {
 
 	$.get("meeting_api.php?method=do_addTask", {id: meetingId, pointId: agendaId, targetId: targetId, targetType: targetType, startingText: startingText}, function(data) {
 		setAgendaTask(data.task.tas_id, [data.task]);
-		$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
+		if (focus) {
+			$("#agenda_point ul.objects li.task#task-" + data.task.tas_id).click();
+		}
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
 
@@ -456,13 +464,17 @@ function addOwnTask() {
 }
 
 function addConclusion() {
+	var focus = arguments.length > 0 ? arguments[0] : true;
+
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 	var startingText = $("#starting-text").val();
 
 	$.get("meeting_api.php?method=do_addConclusion", {id: meetingId, pointId: agendaId, startingText: startingText}, function(data) {
 		setAgendaConclusion(data.conclusion.con_id, [data.conclusion]);
-		$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
+		if (focus) {
+			$("#agenda_point ul.objects li.conclusion#conclusion-" + data.conclusion.con_id).click();
+		}
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
 
@@ -479,7 +491,9 @@ function addMotion(event) {
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
 
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
+
 		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
+
 		$("#starting-text").val("");
 		$("#starting-text").keyup();
 
@@ -634,10 +648,16 @@ function setAgendaTask(id, tasks) {
 		}
 
 		if (task.tas_finish_datetime) {
-			taskContainer.addClass("list-group-item-success");
+			if (task.tas_status == "cancel") {
+				taskContainer.addClass("list-group-item-danger");
+			}
+			else {
+				taskContainer.addClass("list-group-item-success");
+			}
 		}
 		else {
 			taskContainer.removeClass("list-group-item-success");
+			taskContainer.removeClass("list-group-item-danger");
 		}
 
 		break;
@@ -1233,16 +1253,40 @@ function changeMotionStatus(event) {
 	}, "json");
 }
 
+function addTaskConlusion(task, status) {
+	var agendaId = $("#agenda_point").data("id");
+
+	if (!agendaId) return;
+
+	let message = "";
+	const taskLabel = task.children(".task-label").text();
+
+	if (status == "finish") {
+		message = meeting_taskEnd_conclusion.replace("{taskTitle}", taskLabel);
+	}
+	else if (status == "cancel") {
+		message = meeting_taskCancel_conclusion.replace("{taskTitle}", taskLabel);
+	}
+
+	if (message) {
+		$("#starting-text").val(message);
+	}
+
+	addConclusion(false);
+}
+
 function addTaskHandlers() {
 
 	$("#tasks-list").on("mouseenter", "li.task", function(event) {
 		if (!hasWritingRight(getUserId())) return;
 
+		$(this).find(".btn-cancel-task").show();
 		$(this).find(".btn-finish-task").show();
 		$(this).find(".btn-link-task").show();
 	});
 
 	$("#tasks-list").on("mouseleave", "li.task", function(event) {
+		$(this).find(".btn-cancel-task").hide();
 		$(this).find(".btn-finish-task").hide();
 		$(this).find(".btn-link-task").hide();
 	});
@@ -1343,9 +1387,39 @@ function addTaskHandlers() {
 				$.post("meeting_api.php?method=do_finishTask", {
 					meetingId: meetingId,
 					pointId: agendaId,
-					taskId: taskId
+					taskId: taskId,
+					status: "finish"
 				}, function(data) {
 					task.addClass("list-group-item-success");
+					addTaskConlusion(task, "finish");
+				}, "json");
+			}
+		});
+	});
+
+	$("#tasks-list").on("click", "li.task .btn-cancel-task", function(event) {
+		if (!hasWritingRight(getUserId())) return;
+
+		var button = $(this);
+		var task = $(this).parents(".task");
+		var taskId = task.data("id");
+		var agendaId = task.data("agenda-id");
+		var meetingId = task.data("meeting-id");
+
+		bootbox.setLocale("fr");
+		bootbox.confirm(meeting_taskCancel + " \"" + task.children(".task-label").text() + "\" ?", function(result) {
+			if (result) {
+				button.attr("disabled", "disabled");
+				$(".ui-tooltip").remove();
+
+				$.post("meeting_api.php?method=do_finishTask", {
+					meetingId: meetingId,
+					pointId: agendaId,
+					taskId: taskId,
+					status: "cancel"
+				}, function(data) {
+					task.addClass("list-group-item-danger");
+					addTaskConlusion(task, "cancel");
 				}, "json");
 			}
 		});

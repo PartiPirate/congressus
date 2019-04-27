@@ -220,6 +220,7 @@ $schema["tables"]["tasks"]["fields"]["tas_id"] = array("type" => "bigint", "size
 $schema["tables"]["tasks"]["fields"]["tas_agenda_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["tasks"]["fields"]["tas_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["tasks"]["fields"]["tas_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
+$schema["tables"]["tasks"]["fields"]["tas_status"] = array("type" => "varchar", "size" => 255, "null" => true);
 $schema["tables"]["tasks"]["fields"]["tas_target_type"] = array("type" => "enum", "size" => "'galette_adherents','galette_groups','dlp_themes','dlp_groups','con_external','all_members','cus_users'", "null" => false);
 $schema["tables"]["tasks"]["fields"]["tas_target_id"] = array("type" => "bigint", "size" => 20, "null" => false);
 $schema["tables"]["tasks"]["fields"]["tas_start_datetime"] = array("type" => "datetime", "null" => true);

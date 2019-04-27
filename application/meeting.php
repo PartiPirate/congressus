@@ -586,6 +586,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			data-meeting-id="${tas_meeting_id}"
 			style="display: block;">
 
+			<button class="btn btn-danger btn-xs btn-cancel-task pull-right"
+				title="<?php echo lang("meeting_taskCanceled"); ?>"
+				style="margin-right: 5px; display: none;">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
+
 			<button class="btn btn-success btn-xs btn-finish-task pull-right"
 				title="<?php echo lang("meeting_taskEnded"); ?>"
 				style="margin-right: 5px; display: none;">
@@ -1046,41 +1052,44 @@ var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
 
 var defaultPropositions = {yesno: [], proagainst: []};
 
-defaultPropositions.proagainst.push(<?php echo json_encode(lang("common_proposition_pro")); ?>);
-defaultPropositions.proagainst.push(<?php echo json_encode(lang("common_proposition_against")); ?>);
-defaultPropositions.yesno.push(<?php echo json_encode(lang("common_proposition_yes")); ?>);
-defaultPropositions.yesno.push(<?php echo json_encode(lang("common_proposition_no")); ?>);
+defaultPropositions.proagainst.push(<?=json_encode(lang("common_proposition_pro"))?>);
+defaultPropositions.proagainst.push(<?=json_encode(lang("common_proposition_against"))?>);
+defaultPropositions.yesno.push(<?=json_encode(lang("common_proposition_yes"))?>);
+defaultPropositions.yesno.push(<?=json_encode(lang("common_proposition_no"))?>);
 
-judgmentVoteIsMandatory = <?php echo json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
+judgmentVoteIsMandatory = <?=json_encode(isset($config["congressus"]["ballot_majority_judgment_force"]) ? $config["congressus"]["ballot_majority_judgment_force"] : false); ?>;
 
-var common_edit = "<?php echo lang("common_edit"); ?>";
-var common_close = "<?php echo lang("common_close"); ?>";
+var common_edit  = <?=json_encode(lang("common_edit"))?>;
+var common_close = <?=json_encode(lang("common_close"))?>;
 
-var meeting_speakingAsk = "<?php echo strtolower(lang("meeting_speakingAsk")); ?>";
-var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
-var meeting_speakingRenounce = "<?php echo lang("meeting_speakingRenounce"); ?>";
-var meeting_arrival = "<?php echo lang("meeting_arrival"); ?>";
-var meeting_left = "<?php echo lang("meeting_left"); ?>";
-var meeting_votePower = "<?php echo lang("meeting_votePower"); ?>";
-var meeting_notification = "<?php echo lang("meeting_notification"); ?>";
-var meeting_notificationDelete = "<?php echo lang("meeting_notificationDelete"); ?>";
-var meeting_motionVote2 = "<?php echo lang("meeting_motionVote2"); ?>";
-var meeting_vote = "<?php echo lang("meeting_vote"); ?>";
-var meeting_motionDelete = "<?php echo lang("meeting_motionDelete"); ?>";
-var meeting_taskDelete = "<?php echo lang("meeting_taskDelete"); ?>";
-var meeting_taskEnd = "<?php echo lang("meeting_taskEnd"); ?>";
-var meeting_chatDelete = "<?php echo lang("meeting_chatDelete"); ?>";
-var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>";
-var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
+var meeting_speakingAsk           = <?=json_encode(strtolower(lang("meeting_speakingAsk")))?>;
+var meeting_speaking              = <?=json_encode(lang("meeting_speaking"))?>;
+var meeting_speakingRenounce      = <?=json_encode(lang("meeting_speakingRenounce"))?>;
+var meeting_arrival               = <?=json_encode(lang("meeting_arrival"))?>;
+var meeting_left                  = <?=json_encode(lang("meeting_left"))?>;
+var meeting_votePower             = <?=json_encode(lang("meeting_votePower"))?>;
+var meeting_notification          = <?=json_encode(lang("meeting_notification"))?>;
+var meeting_notificationDelete    = <?=json_encode(lang("meeting_notificationDelete"))?>;
+var meeting_motionVote2 		  = <?=json_encode(lang("meeting_motionVote2"))?>;
+var meeting_vote				  = <?=json_encode(lang("meeting_vote"))?>;
+var meeting_motionDelete		  = <?=json_encode(lang("meeting_motionDelete"))?>;
+var meeting_taskDelete			  = <?=json_encode(lang("meeting_taskDelete"))?>;
+var meeting_taskEnd 			  = <?=json_encode(lang("meeting_taskEnd"))?>;
+var meeting_taskCancel			  = <?=json_encode(lang("meeting_taskCancel"))?>;
+var meeting_chatDelete			  = <?=json_encode(lang("meeting_chatDelete"))?>;
+var meeting_conclusionDelete	  = <?=json_encode(lang("meeting_conclusionDelete"))?>;
+var meeting_proposalDelete        = <?=json_encode(lang("meeting_proposalDelete"))?>;
+var meeting_taskEnd_conclusion    = <?=json_encode(lang("meeting_taskEnd_conclusion"))?>;
+var meeting_taskCancel_conclusion = <?=json_encode(lang("meeting_taskCancel_conclusion"))?>;
 
-var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
+var majority_judgement_values = <?=json_encode(json_encode($config["congressus"]["ballot_majority_judgment"]))?>
 
 var speakingTimesChartTitle = "Temps de parole par personne";
-var motionDelegationsTitle = "Délégations en jeu";
+var motionDelegationsTitle  = "Délégations en jeu";
 
-var tags = <?php echo json_encode($tags); ?>;
+var tags = <?=json_encode($tags)?>;
 
-isWriting = <?php echo json_encode(lang("meeting_user_is_writing", false)); ?>; 
+isWriting = <?=json_encode(lang("meeting_user_is_writing", false))?>; 
 
 <?php
 

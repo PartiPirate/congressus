@@ -1082,7 +1082,7 @@ var meeting_proposalDelete        = <?=json_encode(lang("meeting_proposalDelete"
 var meeting_taskEnd_conclusion    = <?=json_encode(lang("meeting_taskEnd_conclusion"))?>;
 var meeting_taskCancel_conclusion = <?=json_encode(lang("meeting_taskCancel_conclusion"))?>;
 
-var majority_judgement_values = <?=json_encode(json_encode($config["congressus"]["ballot_majority_judgment"]))?>
+var majority_judgement_values	  = <?=json_encode($config["congressus"]["ballot_majority_judgment"])?>
 
 var speakingTimesChartTitle = "Temps de parole par personne";
 var motionDelegationsTitle  = "Délégations en jeu";
@@ -1100,7 +1100,7 @@ foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
 
 ?>
 
-var majority_judgement_translations = <?php echo json_encode($translatons); ?>
+var majority_judgement_translations = <?=json_encode($translatons)?>
 
 var isPeopleReady = false;
 var isAgendaReady = false;

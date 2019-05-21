@@ -799,7 +799,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 
 			addVotes(data.votes, proposition, motion);
 		});
-		
+
 //		console.log("Call");
 		$("#agenda_point .motion").each(function() {
 			var motion = $(this);

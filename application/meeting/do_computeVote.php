@@ -332,10 +332,10 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
     
     function sortPropositionsOnJMPower($p1, $p2) {
         if ($p2["jm_median_power"] == $p1["jm_median_power"]) {
-            return intval(100 * ($p2["jm_sum_proportion_powers"][$p2["jm_median_power"]] - $p1["jm_sum_proportion_powers"][$p1["jm_median_power"]]));
+            return intval(10000 * ($p2["jm_sum_proportion_powers"][$p2["jm_median_power"]] - $p1["jm_sum_proportion_powers"][$p1["jm_median_power"]]));
         }
     
-        return intval(100 * ($p2["jm_median_power"] - $p1["jm_median_power"]));
+        return intval(10000 * ($p2["jm_median_power"] - $p1["jm_median_power"]));
     }
 
     function sortPropositionsOnLabel($a, $b) {

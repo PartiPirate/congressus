@@ -184,7 +184,7 @@ function showTask($tasks, $id) {
 		if ($task["tas_id"] == $id) {
 //			print_r($task);
 
-			$parts = explode("\n", $conclusion["tas_label"]);
+			$parts = explode("\n", $task["tas_label"]);
 
 			echo "\n";
 			foreach($parts as $part) {

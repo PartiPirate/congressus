@@ -443,6 +443,8 @@ function addNotice(notice, parent) {
 
 	var userId = getUserId();
 
+//		var start = new Date().getTime();
+
 	for(var index = 0; index < notice.not_people.length; ++index) {
 		var people = notice.not_people[index];
 
@@ -502,6 +504,11 @@ function addNotice(notice, parent) {
 
 //		console.log("Handled member @ " + new Date().getTime());
 	}
+
+//		var end = new Date().getTime();
+
+//		console.log((end - start) + "ms");
+
 
 	handlePages(noticeHtml);
 

@@ -164,15 +164,16 @@ function computeMotion(motion) {
 				for(var jndex = 0; jndex < explanations.votes.length; ++jndex) {
 					var explainedVote = explanations.votes[jndex];
 					var voteContainer = proposition.find("li[data-member-id=" + explainedVote.memberId + "]");
+					var powerBadge = voteContainer.find(".power");
 
 //					console.log(explainedVote);
 //					console.log(voteContainer);
 
 					if (winLimit == -2) {
-						voteContainer.find(".power").attr("title", "Pouvoir du vote : " + explainedVote.votePower)
+						powerBadge.attr("title", "Pouvoir du vote : " + explainedVote.votePower);
 					}
 					else {
-						voteContainer.find(".power").attr("title", "Pouvoir du vote : " + explainedVote.power + "/" + explainedVote.votePower)
+						powerBadge.attr("title", "Pouvoir du vote : " + explainedVote.power + "/" + explainedVote.votePower);
 					}
 				}
 			}

@@ -423,8 +423,8 @@ $lang["amendment_exchange_co_author"] = "Échange ce co-auteur avec l'auteur pri
 
 $lang["amendment_explanation"] = "Exposé des motifs : ";
 $lang["amendment_description"] = "Contenu de la proposition : ";
-$lang["amendments_vote"] = "{vote} vote";
-$lang["amendments_votes"] = "{vote} votes";
+$lang["amendments_vote"] = "{vote} avis";
+$lang["amendments_votes"] = "{vote} avis";
 $lang["amendments_no_argument"] = "Aucun argument proposé";
 $lang["amendments_argument"] = "{argument} argument";
 $lang["amendments_arguments"] = "{argument} arguments";

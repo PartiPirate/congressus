@@ -412,8 +412,8 @@ $lang["amendment_exchange_co_author"]   = "Exchange this co-author with the prin
 
 $lang["amendment_explanation"]          = "Amendment explanation: ";
 $lang["amendment_description"]          = "Amendment content: ";
-$lang["amendments_vote"]                = "{vote} vote";
-$lang["amendments_votes"]               = "{vote} votes";
+$lang["amendments_vote"]                = "{vote} opinion";
+$lang["amendments_votes"]               = "{vote} opinions";
 $lang["amendments_no_argument"]         = "No argument submitted";
 $lang["amendments_argument"]            = "{argument} argument";
 $lang["amendments_arguments"]           = "{argument} arguments";

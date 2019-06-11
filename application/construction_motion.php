@@ -715,7 +715,7 @@ include("construction/pieChart.php");
 				}
 				$chatAdviceCounters["ratio_thumb_up"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
 				$chatAdviceCounters["ratio_thumb_down"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5;
+				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5 && $chatAdviceCounters["thumb_down"] > 2;
 	?>
 							<li class="list-group-item pro-chat <?php echo $chatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
@@ -780,7 +780,7 @@ include("construction/pieChart.php");
 					}
 					$childrenChatAdviceCounters["ratio_thumb_up"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
 					$childrenChatAdviceCounters["ratio_thumb_down"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5;
+					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5 && $childrenChatAdviceCounters["thumb_down"] > 2;
 	?>
 							<li class="list-group-item pro-chat children-chat <?php echo $childrenChatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"
@@ -942,7 +942,7 @@ include("construction/pieChart.php");
 				}
 				$chatAdviceCounters["ratio_thumb_up"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_up"] / $chatAdviceCounters["total"] : 0;
 				$chatAdviceCounters["ratio_thumb_down"] = $chatAdviceCounters["total"] ? $chatAdviceCounters["thumb_down"] / $chatAdviceCounters["total"] : 0;
-				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5;
+				$chatAdviceCounters["ratio_thumb_down_is_major"] = $chatAdviceCounters["ratio_thumb_down"] > 0.5 && $chatAdviceCounters["thumb_down"] > 2;
 
 	?>
 							<li class="list-group-item against-chat <?php echo $chatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
@@ -1009,7 +1009,7 @@ include("construction/pieChart.php");
 					}
 					$childrenChatAdviceCounters["ratio_thumb_up"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_up"] / $childrenChatAdviceCounters["total"] : 0;
 					$childrenChatAdviceCounters["ratio_thumb_down"] = $childrenChatAdviceCounters["total"] ? $childrenChatAdviceCounters["thumb_down"] / $childrenChatAdviceCounters["total"] : 0;
-					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5;
+					$childrenChatAdviceCounters["ratio_thumb_down_is_major"] = $childrenChatAdviceCounters["ratio_thumb_down"] > 0.5 && $childrenChatAdviceCounters["thumb_down"] > 2;
 	?>
 							<li class="list-group-item against-chat children-chat <?php echo $childrenChatAdviceCounters["ratio_thumb_down_is_major"] ? "ratio-thumb-down-is-major" : ""; ?>"
 								data-internal-order="<?php echo $internalOrder++ ; ?>"

@@ -142,11 +142,14 @@ if ($motion["mot_author_id"]) {
 }
 
 $votingPower = 0;
+$isInVotingGroup = false;
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
 
 if ($userId) {
 	foreach($notices as $notice) {
+		if (!$notice["not_voting"]) continue;
+
 		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
         	$groupKeyLabel = $groupSource->getGroupKeyLabel();
@@ -161,6 +164,9 @@ if ($userId) {
 //        		echo "<pre>" . print_r($member, true) . "</pre>";
 
         		$votingPower = $member["fme_power"];
+        		$isInVotingGroup = true;
+
+        		break;
         	}
 		}
 	}
@@ -289,18 +295,18 @@ $jsonMotion = $motion;
 				<div class="panel-body">
 		<?php
 			$groupLabels = array();
-		
+
 			foreach($notices as $notice) {
 				foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 					$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
-		
+
 		        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-		        	
+
 		//        	$members = $groupSource->getNoticeMembers($notice);
 					$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
-					
-					$groupLabels[] = $groupLabel;
+
+					$groupLabels[] = $groupLabel ? $groupLabel : $groupKeyLabel["label"];
 				}
 			}
 		
@@ -1116,7 +1122,7 @@ include("construction/pieChart.php");
 <?php 
 	if (!$agenda["age_parent_id"]) {
 		$agenda = $amendmentAgenda;
-		$hasWritingRights = $hasWritingRights || $votingPower > 0;
+		$hasWritingRights = $hasWritingRights || $isInVotingGroup;
 		$showTitle = false;
 		$isTrash = false;
 ?>

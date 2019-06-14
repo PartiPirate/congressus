@@ -54,6 +54,7 @@ else {
 $userId = SessionUtils::getUserId($_SESSION);
 
 $votingPower = 0;
+$isInVotingGroup = false;
 
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"], "not_voting" => 1));
 
@@ -61,6 +62,8 @@ $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"],
 
 if ($userId) {
 	foreach($notices as $notice) {
+		if (!$notice["not_voting"]) continue;
+		
 		foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 			$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
         	$groupKeyLabel = $groupSource->getGroupKeyLabel();
@@ -68,13 +71,16 @@ if ($userId) {
         	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
 
         	$members = $groupSource->getNoticeMembers($notice);
-        	
+
         	foreach($members as $member) {
         		if ($member["id_adh"] != $userId) continue;
 
 //        		echo "<pre>" . print_r($member, true) . "</pre>";
 
         		$votingPower = $member["fme_power"];
+        		$isInVotingGroup = true;
+
+        		break;
         	}
 		}
 	}
@@ -224,12 +230,12 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 				foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 					$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
-		
+
 		        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
 
 		//        	$members = $groupSource->getNoticeMembers($notice);
 					$groupLabel = $groupSource->getGroupLabel($notice["not_target_id"]);
-					
+
 					$groupLabels[] = $groupLabel ? $groupLabel : $groupKeyLabel["label"];
 				}
 			}
@@ -262,7 +268,7 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 			$isTrash = false;
 
 			$phasWritingRights = $hasWritingRights;
-			$hasWritingRights = $votingPower || $hasWritingRights;
+			$hasWritingRights = $isInVotingGroup || $hasWritingRights;
 
 			include("construction/amendment_list.php");
 

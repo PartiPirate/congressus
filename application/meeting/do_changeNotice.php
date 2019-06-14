@@ -25,6 +25,11 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
+	exit();
+}
+
 $meetingId = $_REQUEST["not_meeting_id"];
 $memcacheKey = "do_getAgenda_$meetingId";
 

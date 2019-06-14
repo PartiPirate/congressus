@@ -28,6 +28,11 @@ require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/VoteBo.php");
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
+	exit();
+}
+
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 

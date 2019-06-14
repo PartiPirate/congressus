@@ -47,12 +47,14 @@ $meeting = $meetingBo->getById($_REQUEST["id"]);
 
 if (!$meeting) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_does_not_exist"));
+	exit();
 }
 
 // TODO Compute the key // Verify the key
 
 if (false) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
+	exit();
 }
 
 $pointId = $_REQUEST["pointId"];
@@ -60,6 +62,7 @@ $agenda = $agendaBo->getById($pointId);
 
 if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 	echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
+	exit();
 }
 
 $agenda["age_objects"] = json_decode($agenda["age_objects"]);

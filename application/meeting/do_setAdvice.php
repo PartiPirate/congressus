@@ -39,6 +39,7 @@ $userId = SessionUtils::getUserId($_SESSION);
 
 if (!$userId) {
 	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
+	exit();
 }
 
 $meeting = $meetingBo->getById($_REQUEST["meetingId"]);

@@ -28,6 +28,11 @@ require_once("engine/utils/LogUtils.php");
 require_once("engine/utils/QuorumUtils.php");
 require_once("language/language.php");
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
+	exit();
+}
+
 addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();

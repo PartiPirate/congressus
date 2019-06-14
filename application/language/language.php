@@ -1,20 +1,20 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2019 Cédric Levieux, Parti Pirate
 
-	This file is part of OpenTweetBar.
+	This file is part of Congressus.
 
-    OpenTweetBar is free software: you can redistribute it and/or modify
+    Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    OpenTweetBar is distributed in the hope that it will be useful,
+    Congressus is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenTweetBar.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 if (isset($lang)) {
@@ -76,6 +76,39 @@ function isLanguageKey($key, $language = null, $path = null) {
 	}
 
 	return false;
+}
+
+function getAvailableLanguages($path = null) {
+
+    if (!$path) {
+        $path = dirname(realpath(dirname(__FILE__))) . "/";
+    }
+
+    $languages = array();
+
+    $directoryHandler = dir($path . "language");
+	while(($fileEntry = $directoryHandler->read()) !== false) {
+		if($fileEntry != '.' && $fileEntry != '..' && strlen($fileEntry) == 2) {
+		    $languages[] = $fileEntry;
+		}
+	}
+	
+	return $languages;
+}
+
+function getLanguageTranslations($language = null, $path = null) {
+
+    unset($lang);
+    
+	$directoryHandler = dir($path . "language/" . $language);
+	while(($fileEntry = $directoryHandler->read()) !== false) {
+		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+			include("language/" . $language . "/" . $fileEntry);
+		}
+	}
+	$directoryHandler->close();
+
+    return $lang;
 }
 
 /**

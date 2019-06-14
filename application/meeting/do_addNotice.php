@@ -24,6 +24,11 @@ require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/NoticeBo.php");
 
+if (!SessionUtils::getUserId($_SESSION)) {
+	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
+	exit();
+}
+
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);
 

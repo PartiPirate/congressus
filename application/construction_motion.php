@@ -562,6 +562,8 @@ include("construction/pieChart.php");
 							    		}
 							    	?>"><i class="fa fa-info-circle"></i></span>
 
+							<?php	} ?>
+
 							<?php addShareButton("dropdownMotionShareButton", "btn-primary btn-share-motion", "height: 36px;", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"], $motion["mot_title"], "congressus"); ?>
 
 							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
@@ -583,7 +585,6 @@ include("construction/pieChart.php");
 							</div>
 							<?php		} ?>
 
-							<?php	} ?>
 							</form>
 						</div>
 						<br>

@@ -13,6 +13,15 @@
 <?php			if ($showTitle) { ?>
 				<div class="panel-heading <?php	 if (!$isTrash) { echo "no-caret"; } ?>">
 
+					<a
+						data-toggle="collapse"
+						data-target="#list-<?php echo $agenda["age_id"]; ?>"
+						href="#list-<?php echo $agenda["age_id"]; ?>"
+						class="pull-right"
+						>
+						<span class="glyphicon glyphicon-collapse-down"></span>
+					</a>
+
 <?php				if (!$isTrash) { ?>
 					<select class="pull-right select-order order-motions form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
 						<option value="older"><?php echo lang("amendments_order_older"); ?></option>
@@ -27,8 +36,6 @@
 <?php				} ?>
 					
 					<a 
-						data-toggle="collapse" 
-						data-target="#list-<?php echo $agenda["age_id"]; ?>"
 <?php				if (!$isTrash) { ?>		
 						href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 <?php				} else { ?>		

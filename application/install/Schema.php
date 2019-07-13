@@ -264,7 +264,9 @@ $schema["tables"]["customizer_properties"]["indexes"]["cpr_key"] = array("cpr_ke
 $schema["tables"]["tags"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["tags"]["fields"]["tag_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["tags"]["fields"]["tag_server_id"] = array("type" => "bigint", "size" => 20, "null" => false, "default" => "0");
+$schema["tables"]["tags"]["fields"]["tag_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["tags"]["fields"]["tag_label"] = array("type" => "varchar", "size" => 255, "null" => true);
 $schema["tables"]["tags"]["indexes"]["tag_server_id"] = array("tag_server_id");
+$schema["tables"]["tags"]["indexes"]["tag_deleted"] = array("tag_deleted");
 
 ?>

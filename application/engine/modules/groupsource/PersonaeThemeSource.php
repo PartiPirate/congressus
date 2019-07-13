@@ -184,6 +184,7 @@ class PersonaeThemeSource {
 		}
 		else {
 			$queryBuilder->addSelect("t.the_voting_power", "ta_vote_power");
+			$queryBuilder->addSelect("t.the_voting_method", "ta_voting_method");
 		}
 		
 		$queryBuilder->addSelect("ta.id_adh", "ta_id_adh");
@@ -193,7 +194,15 @@ class PersonaeThemeSource {
     }
 
     function getMaxVotepower($motion) {
-    	return $motion["ta_vote_power"];
+    	if ($motion["ta_voting_method"] == "demliq") {
+    		return $motion["ta_vote_power"];
+    	}
+
+    	if (isset($motion["ta_id_adh"])) {
+    		return $motion["ta_vote_power"] * ($motion["ta_id_adh"] ? 1 : 0);
+    	}
+
+    	return 0;
     }
 
     function getVoterNotNull() {

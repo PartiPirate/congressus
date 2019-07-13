@@ -458,7 +458,7 @@ include("construction/pieChart.php");
 						<label for="explanation"><?php echo lang("amendment_explanation"); ?></label>
 						<br>
 						<div id="explanation-textarea-div" style="display: none;">
-							<?php 	if ($userId == 1 || $userId == 12) { ?>
+							<?php 	if (($userId == 1 || $userId == 12) && false) { ?>
 							<div id="explanation-toolbar" class="pad-toolbar" data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" >
 								<input type="checkbox" data-toggle="toggle" class="ws-connect-btn" data-on="Connecté" data-off="Déconnecté" data-onstyle="success" data-offstyle="danger" data-size="mini" data-width="100" data-style="slow">
 								<div class="dropdown pull-right" style="display: inline-block;">
@@ -470,9 +470,9 @@ include("construction/pieChart.php");
 								<div class="clearfix "></div>
 							</div>
 							<?php	} ?>
-							<div id="explanation" class="form-control autogrow" style="background: white; white-space: pre; max-height: 300px; overflow-y: scroll; font-family: Courier New, Lucida Console,Monospace !important;" name="explanation" contenteditable="true"
-								<?php if ($userId == 1 || $userId == 12) { ?>data-pad="enabled"<?php } ?> data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
-								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></div>
+							<textarea id="explanation" class="form-control autogrow" style="max-height: 300px;" name="explanation" 
+								<?php if ($userId == 1 || $userId == 12) { ?>data-pad="false"<?php } ?> data-pad-id="<?php echo hash('sha512', 'explanation' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>"
+								data-provide="markdown" data-hidden-buttons="cmdPreview" rows="5"><?php echo $motion["mot_explanation"]; ?></textarea>
 						</div>
 						<div id="explanation-content-div" style="display: block;">
 							<?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_explanation"])); ?>
@@ -491,7 +491,7 @@ include("construction/pieChart.php");
 						echo $parentMotion ? $parentMotion["mot_description"] : ($source ? $source["sou_content"] : ""); ?></textarea>
 
 					<div id="destination-textarea-div" class="col-md-6" style="display: none;">
-						<?php 	if ($userId == 1 || $userId == 12) { ?>
+							<?php 	if (($userId == 1 || $userId == 12) && false) { ?>
 						<div id="destination-toolbar" class="pad-toolbar" data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" >
 							<input type="checkbox" data-toggle="toggle" class="ws-connect-btn" data-on="Connecté" data-off="Déconnecté" data-onstyle="success" data-offstyle="danger" data-size="mini" data-width="100" data-style="slow">
 							<div class="dropdown pull-right" style="display: inline-block;">
@@ -503,8 +503,8 @@ include("construction/pieChart.php");
 							<div class="clearfix "></div>
 						</div>
 						<?php	} ?>
-						<div id="destination" class="autogrow" style="height: auto; background: white; color: black; white-space: pre; font-family: Courier New, Lucida Console,Monospace !important;"  contenteditable="true"
-							<?php if ($userId == 1 || $userId == 12) { ?>data-pad="enabled"<?php } ?> data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>" ><?php echo $motion["mot_description"]; ?></div>
+						<textarea id="destination" class="autogrow" style="width: 100%; max-height: 300px;"  contenteditable="false"
+							<?php if ($userId == 1 || $userId == 12) { ?>data-pad="false"<?php } ?> data-pad-id="<?php echo hash('sha512', 'destination' . $motion["mot_id"]); ?>" data-pad-sender="<?php echo uniqid(); ?>" ><?php echo $motion["mot_description"]; ?></textarea>
 					</div>
 					<div class="clearfix "></div>
 					<div id="diff-group" class="with-scroll" style="display: none;">

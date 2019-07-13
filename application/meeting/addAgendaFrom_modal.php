@@ -150,6 +150,14 @@
                                     data-title="L'Assemblée Permanente valide la demande budgétaire de l'équipage &quot;Nom de l'équipage&quot;" 
                                     data-description="Pour accéder à la demande budgétaire de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
                                     data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;équipage&quot;,&quot;equipage&quot;]}]">Demande budgétaire d'un équipage</option>
+                                <option value="" 
+                                    data-title="L'Assemblée Permanente valide le rapport de fonctionnement de l'équipage &quot;Nom de l'équipage&quot;" 
+                                    data-description="Pour accéder au rapport de fonctionnement de cet équipage, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;rapport&quot;,&quot;fonctionnement&quot;,&quot;équipage&quot;,&quot;equipage&quot;]}]">Validation d'un rapport de fonctionnement</option>
+                                <option value="" 
+                                    data-title="L'Assemblée Permanente valide la dissolution de l'équipage &quot;Nom de l'équipage&quot;" 
+                                    data-description="Pour accéder au rapport de fonctionnement de cet équipage et sa demande de dissolution, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Nom de l'équipage&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;rapport&quot;,&quot;fonctionnement&quot;,&quot;demande&quot;,&quot;dissolution&quot;,&quot;équipage&quot;,&quot;equipage&quot;]}]">Validation d'une demande de dissolution</option>
                             </optgroup>
                             <optgroup label="Candidature" id="candidate-group">
                                 <option value="" 
@@ -160,6 +168,10 @@
                                     data-title="L'Assemblée Permanente inscrit &quot;le candidat&quot; au sein de l'équipe nom de l'équipe."
                                     data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
                                     data-replace="[{&quot;src&quot;:&quot;le candidat&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;candidature&quot;,&quot;de&quot;,&quot;d'&quot;]},{&quot;src&quot;:&quot;nom de l'équipe&quot;,&quot;val&quot;:&quot;parentAgendaLabel&quot;,&quot;rmv&quot;:[&quot;candidatures&quot;,&quot;candidature&quot;,&quot;pour&quot;,&quot;l'&quot;,&quot;equipe&quot;,&quot;équipe&quot;]}]">Candidature à une équipe</option>
+                                <option value="" 
+                                    data-title="L'Assemblée Permanente inscrit &quot;le candidat&quot; au sein du conseil nom du conseil."
+                                    data-description="Pour accéder à sa candidature, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;le candidat&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;candidature&quot;,&quot;de&quot;,&quot;d'&quot;]},{&quot;src&quot;:&quot;nom du conseil&quot;,&quot;val&quot;:&quot;parentAgendaLabel&quot;,&quot;rmv&quot;:[&quot;candidatures&quot;,&quot;candidature&quot;,&quot;pour&quot;,&quot;le&quot;,&quot;conseil&quot;]}]">Candidature à un conseil</option>
                             </optgroup>
                             <optgroup label="Motion simple" id="simple-motion-group">
                                 <option value="" 
@@ -181,6 +193,10 @@
                                     data-title="L'Assemblée permanente ajoute le point programme &quot;Point programme&quot;"
                                     data-description="Pour accéder au point programme, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
                                     data-replace="[{&quot;src&quot;:&quot;Point programme&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[]}]">Ajout d'un point programme</option>
+                                <option value="" 
+                                    data-title="L'Assemblée permanente supprime le point programme &quot;Point programme&quot;"
+                                    data-description="Pour accéder à l'argumentaire, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page."
+                                    data-replace="[{&quot;src&quot;:&quot;Point programme&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[&quot;suppression&quot;,&quot;point&quot;,&quot;programme&quot;]}]">Suppression d'un point programme</option>
 <!--
                                 <option value="" 
                                     data-title="Le Parti Pirate signe le texte &quot;Nom du texte&quot;."

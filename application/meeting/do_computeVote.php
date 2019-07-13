@@ -63,11 +63,11 @@ $memcacheKey = "do_getComputeVote_$motionId";
 $json = $memcache->get($memcacheKey);
 
 if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
-    
+
     $data = array();
-   
+
     $propositions = $motionBo->getByFilters(array($motionBo->ID_FIELD => $motionId));
-    
+
     $motion = $propositions[0];
     $agenda = $agendaBo->getById($motion["mot_agenda_id"]);
     $meeting = $meetingBo->getById($agenda["age_meeting_id"]);
@@ -154,7 +154,7 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
             print_r($delegations);
             echo "\n-->";
 */    
-    //        $data["response"] = $delegations; // TODO compute in a better way
+//            $data["response"] = $delegations; // TODO compute in a better way
         }
         else if ($notice["not_target_type"] == "galette_adherents") {
             $delegations = array("theme" => array());

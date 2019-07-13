@@ -275,8 +275,10 @@ function constructChangeScroll(scrollGroup) {
 
 function createDiff() {
 	var sourceText = $("#source").val();
-	var motionText = $("#destination").html();
-	var explanationText = $("#explanation").html();
+//	var motionText = $("#destination").html();
+//	var explanationText = $("#explanation").html();
+	var motionText = $("#destination").val();
+	var explanationText = $("#explanation").val();
 
 //	$("#diff").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText)).replace(/[\n\r]/g, '<br>'));
 //	$("#motion-description").html(htmlDiff(toMarkdownWithEmoji(sourceText), toMarkdownWithEmoji(motionText), {not_del_shown: true}).replace(/[\n\r]/g, '<br>'));
@@ -308,8 +310,10 @@ function addDiffListeners() {
 	});
 
 	$("#explanation").on("keyup", function(event) {
-		var motionText = $("#destination").html();
-		var explanationText = $("#explanation").html();
+//		var motionText = $("#destination").html();
+//		var explanationText = $("#explanation").html();
+		var motionText = $("#destination").val();
+		var explanationText = $("#explanation").val();
 
 		if (motionText != previousMotionText || explanationText != previousExplanation) {
 			$("#save-motion-btn").removeAttr("disabled");
@@ -368,7 +372,9 @@ function addButtonsListeners() {
 
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
+
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").val()));
+//		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
 
 		$("#motion-description").hide();
 		$("#motion-description-group").hide();
@@ -390,7 +396,8 @@ function addButtonsListeners() {
 
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
+//		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").val()));
 
 		$("#diff").hide();
 		$("#diff-group").hide();
@@ -412,7 +419,8 @@ function addButtonsListeners() {
 		$("#motion-description-group").hide();
 		$("#explanation-div #explanation-textarea-div").hide();
 		$("#explanation-div #explanation-content-div").show();
-		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
+//		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").html()));
+		$("#explanation-div #explanation-content-div").html(toMarkdownWithEmoji($("#explanation-div #explanation").val()));
 
 		$("#diff").show();
 		$("#diff-group").show();
@@ -514,11 +522,13 @@ function addUpdateMotion() {
 		var motionId = $(".motion-entry").data("id");
 		var property = "mot_description";
 		var propositionId = 0;
-		previousMotionText = $("#destination").html();
+//		previousMotionText = $("#destination").html();
+		previousMotionText = $("#destination").val();
 
 		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousMotionText}, function(data) {
 			var property = "mot_explanation";
-			previousExplanation = $("#explanation").html();
+//			previousExplanation = $("#explanation").html();
+			previousExplanation = $("#explanation").val();
 
 			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
 				$("#save-motion-btn").attr("disabled", "disabled");
@@ -672,6 +682,8 @@ $(function() {
 
 	$("body").emojioneHelper();
 
-	previousMotionText = $("#destination").html();
-	previousExplanation = $("#explanation").html();
+//	previousMotionText = $("#destination").html();
+//	previousExplanation = $("#explanation").html();
+	previousMotionText = $("#destination").val();
+	previousExplanation = $("#explanation").val();
 });

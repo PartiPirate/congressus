@@ -198,6 +198,8 @@ class MotionBo {
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 
+//			echo showQuery($query, $args);	
+
 /*
 		if (isset($filters["with_total_votes"])) {
 			echo showQuery($query, $args);	

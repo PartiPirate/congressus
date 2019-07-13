@@ -120,7 +120,30 @@ function sortPropositions($a, $b) {
 	
 	<div>
 
-<?php echo str_replace("{value}", count($sortedMotions), lang("myVotes_numberOfMotions")); ?><br><br>
+<?php	
+
+$numberOfMotions = 0;
+foreach($sortedMotions as $motionId => $motion) { 
+
+	foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+		$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
+
+    	if ($groupSource->getGroupKey() != $motion["not_target_type"]) continue;
+
+	    $maxVotePower = $groupSource->getMaxVotePower($motion);
+
+	    break;
+	}
+
+	if (!$maxVotePower) continue;
+	
+	$numberOfMotions++;
+}
+?>
+
+
+
+<?php echo str_replace("{value}", $numberOfMotions, lang("myVotes_numberOfMotions")); ?><br><br>
 
 <?php	if (!count($sortedMotions)) {
 ?>	<div class="well well-sm"><?php
@@ -156,7 +179,11 @@ function sortPropositions($a, $b) {
 
 //		print_r($groupSource);
 
+//		echo "Oh oh max power : " . $motion["mot_title"] . " (" . print_r($groupSource, true) . ")";
 	    $maxVotePower = $groupSource->getMaxVotePower($motion);
+//	    echo " => " . $maxVotePower . "<br>\n";
+
+	    break;
 	}
 
 	$propositions = $motion["propositions"];
@@ -165,6 +192,7 @@ function sortPropositions($a, $b) {
 		usort($propositions, "sortPropositions");
 //	}
 
+	if (!$maxVotePower) continue;
 ?>
 
 <div class="panel panel-default motion" style="display: none;" data-id="<?php echo $motion["mot_id"]; ?>" data-max-power="<?php echo $maxVotePower; ?>" data-method="<?php echo $motion["mot_win_limit"]; ?>">

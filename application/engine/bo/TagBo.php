@@ -85,6 +85,8 @@ class TagBo {
 			$queryBuilder->where("tag_server_id = :tag_server_id");
 		}
 
+		$queryBuilder->where("tag_deleted = 0");
+
 		$queryBuilder->orderBy("tag_label");
 
 		$query = $queryBuilder->constructRequest();

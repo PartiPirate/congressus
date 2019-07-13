@@ -125,10 +125,10 @@ foreach($agendaObjects as $agendaObject) {
 		$foundMotion = true;
 	}
 	else if (!$foundMotion && isset($agendaObject["motionId"])) {
-		$previousMotion = $agendaObject["motionId"];
+		$previousMotion = $motionBo->getById($agendaObject["motionId"]);
 	}
 	else if ($foundMotion && isset($agendaObject["motionId"])) {
-		$nextMotion = $agendaObject["motionId"];
+		$nextMotion = $motionBo->getById($agendaObject["motionId"]);
 		break;
 	}
 }
@@ -256,7 +256,7 @@ $jsonMotion = $motion;
 			<div class="dropdown" style="display: inline-block;">
 				<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 				<?php	if (count($allAgendas) > 1) { ?>
-				<span class="caret dropdown-toggle" data-toggle="dropdown"></span>
+				<span class="caret dropdown-toggle" data-toggle="dropdown" style="top: -3px; position: relative;"></span>
 				<div class="dropdown-menu" style="padding: 5px">
 					<?php	foreach($allAgendas as $agendaIndex => $currentAgenda) {	
 								if ($currentAgenda["age_parent_id"]) continue;
@@ -275,13 +275,13 @@ $jsonMotion = $motion;
 <?php	} ?>
 		<li class="active">
 			<?php 	if ($previousMotion) { ?>
-			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?php echo $previousMotion; ?>" role="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?=$previousMotion["mot_id"]?>" role="button" title="<?=htmlspecialchars($previousMotion["mot_title"])?>" style="top: -3px; position: relative;"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
 			<?php	} ?>
 			
 			<?php echo $motion["mot_title"]; ?>
 			
 			<?php 	if ($nextMotion) { ?>
-			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?php echo $nextMotion; ?>" role="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+			<a class="btn btn-xs btn-default" href="construction_motion.php?motionId=<?=$nextMotion["mot_id"]?>" role="button" title="<?=htmlspecialchars($nextMotion["mot_title"])?>" style="top: -3px; position: relative;"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 			<?php	} ?>
 		</li>
 	</ol>

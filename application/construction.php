@@ -185,7 +185,7 @@ if (isset($_REQUEST["agendaId"]) && $_REQUEST["agendaId"]) {
 			<div class="dropdown" style="display: inline-block;">
 				<?php echo $agendas[0]["age_label"]; ?>
 				<?php	if (count($allAgendas) > 1) { ?>
-				<span class="caret dropdown-toggle" data-toggle="dropdown"></span>
+				<span class="caret dropdown-toggle" data-toggle="dropdown" style="top: -3px; position: relative;"></span>
 				<div class="dropdown-menu" style="padding: 5px">
 					<?php	foreach($allAgendas as $agendaIndex => $agenda) {	
 								if ($agenda["age_parent_id"]) continue;

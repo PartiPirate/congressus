@@ -203,6 +203,7 @@ if (isset($meeting)) {
 }
 
 if (isset($motion)) {
+	$page_title .= " - " . $motion["mot_title"];
 	$page_description = "Motion &quot;" . str_replace("\"", "&quot;", $motion["mot_title"]) . "&quot;";
 
 	if (isset($parentMotion)) {

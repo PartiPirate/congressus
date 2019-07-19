@@ -99,8 +99,10 @@ $connection = openConnection();
 
 $customizerProperties = array();
 
-$customizerPropertyBo = CustomizerPropertyBo::newInstance($connection, $config);
-$customizerProperties = $customizerPropertyBo->getByFilters(array());
+if ($connection) {
+	$customizerPropertyBo = CustomizerPropertyBo::newInstance($connection, $config);
+	$customizerProperties = $customizerPropertyBo->getByFilters(array());
+}
 
 $userProperties = array();
 if ($sessionUserId) {

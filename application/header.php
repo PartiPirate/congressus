@@ -381,7 +381,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 <?php				
 //					print_r($customizerProperties);
 
-					$menuItemProperty = $customizerPropertyBo->getProperty($customizerProperties, "menu_items");
+					$menuItemProperty = isset($customizerPropertyBo) ? ($customizerPropertyBo->getProperty($customizerProperties, "menu_items")) : null;
 
 //					print_r($menuItemProperty);
 

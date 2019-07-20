@@ -2,7 +2,9 @@
 
 ## Requirements ##
 
-- A Web server with (apache, nginx, ...) and PHP setup
+- A Web server with (apache, nginx, ...) and PHP setup with these activated plugins :
+  - mbstring
+  - gd
 - A database server compatible with mysql (Ex: mysql, mariadb, ...)
 - memcached server
  

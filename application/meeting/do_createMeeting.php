@@ -164,7 +164,7 @@ if (isset($_REQUEST["age_lines"])) {
     foreach($entries as $entry) {
         if (!$entry["root"]) continue;
 
-        createChild($child, $entry);
+        createChild(null, $entry);
     }
 }
 

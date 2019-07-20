@@ -30,7 +30,7 @@ $schema["tables"]["agendas"]["fields"]["age_active"] = array("type" => "tinyint"
 $schema["tables"]["agendas"]["fields"]["age_expected_duration"] = array("type" => "int", "size" => 11, "null" => false, "default" => "60", "comment" => "value in minutes");
 $schema["tables"]["agendas"]["fields"]["age_duration"] = array("type" => "int", "size" => 11, "null" => false, "default" => "0", "comment" => "value in minutes");
 $schema["tables"]["agendas"]["fields"]["age_label"] = array("type" => "varchar", "size" => 255, "null" => false, "default" => "");
-$schema["tables"]["agendas"]["fields"]["age_objects"] = array("type" => "text", "null" => false, "default" => "[]");
+$schema["tables"]["agendas"]["fields"]["age_objects"] = array("type" => "text", "null" => true);
 $schema["tables"]["agendas"]["fields"]["age_description"] = array("type" => "text", "null" => false, "default" => "");
 $schema["tables"]["agendas"]["indexes"]["age_meeting_id"] = array("age_meeting_id");
 $schema["tables"]["agendas"]["indexes"]["age_parent_id"] = array("age_parent_id");
@@ -45,7 +45,7 @@ $schema["tables"]["chats"]["fields"]["cha_member_id"] = array("type" => "bigint"
 $schema["tables"]["chats"]["fields"]["cha_guest_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["chats"]["fields"]["cha_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["chats"]["fields"]["cha_type"] = array("type" => "enum", "size" => "'neutral','pro','against'", "null" => false, "default" => "neutral", "comment" => 'a chat can be neutral (default mode), pro or against');
-$schema["tables"]["chats"]["fields"]["cha_text"] = array("type" => "text", "null" => false, "default" => "");
+$schema["tables"]["chats"]["fields"]["cha_text"] = array("type" => "text", "null" => true);
 $schema["tables"]["chats"]["fields"]["cha_datetime"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["chats"]["indexes"]["cha_agenda_id"] = array("cha_agenda_id");
 $schema["tables"]["chats"]["indexes"]["cha_motion_id"] = array("cha_motion_id");

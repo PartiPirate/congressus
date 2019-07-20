@@ -173,6 +173,7 @@ try {
 			createTable($pdo, $tableName, $table);
 
 			$data["tables"][$tableName]["statuts"] = "created";
+			$data["tables"][$tableName]["errorCode"] = $pdo->errorCode();
 		}
 		else {
 			$data["tables"][$tableName]["statuts"] = "exists";

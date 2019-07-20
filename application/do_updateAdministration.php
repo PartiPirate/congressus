@@ -86,6 +86,9 @@ if(!isset(\$config)) {
 \$config[\"memcached\"][\"port\"] = \"" . @$_REQUEST["memcached_port_input"] . "\";
 
 \$config[\"server\"] = array();
+\$config[\"server\"][\"pad\"][\"ws_url\"] = \"ws://localhost:8080/\";
+\$config[\"server\"][\"pad\"][\"local_port\"] = 8080;
+
 \$config[\"server\"][\"base\"] = \"" . @$_REQUEST["server_base_input"] . "\";
 // The server line, ex : dev, beta - Leave it empty for production
 \$config[\"server\"][\"line\"] = \"" . @$_REQUEST["server_line_input"] . "\";

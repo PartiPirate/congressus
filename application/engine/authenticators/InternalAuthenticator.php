@@ -85,6 +85,7 @@ class InternalAuthenticator {
 	}
 
 	function authenticate($login, $password) {
+		require_once("engine/libs/password.php");
 
 		$query = "	SELECT *
 					FROM ".$this->database."galette_adherents

@@ -2,7 +2,9 @@
 
 ## Pré-requis ##
 
-- Un serveur web (apache, nginx, ...) avec PHP
+- Un serveur web (apache, nginx, ...) avec PHP avec les plugins suivants activés :
+  - mbstring
+  - gd
 - Un serveur base de données type mysql (mysql, mariadb, ...)
   - Avec des identifiants de connexion
 - Un serveur memcached

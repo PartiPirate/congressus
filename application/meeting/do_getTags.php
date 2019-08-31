@@ -28,6 +28,9 @@ $tagBo     = TagBo::newInstance($connection, $config);
 
 $data = array();
 
+$tags = $tagBo->getTagsForCombobox();
+
+/*
 $tags = $tagBo->getByFilters(array());
 
 foreach($tags as &$tag) {
@@ -39,6 +42,7 @@ foreach($tags as &$tag) {
     unset($tag["tag_server_id"]);
     unset($tag["tag_deleted"]);
 }
+*/
 
 echo json_encode($tags, JSON_NUMERIC_CHECK);
 ?>

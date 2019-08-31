@@ -113,4 +113,20 @@ class TagBo {
 
 		return $results;
 	}
+
+	function getTagsForCombobox($filters = null) {
+		$tags = $this->getByFilters($filters);
+
+		foreach($tags as &$tag) {
+		    $tag["id"] = $tag["tag_id"];
+		    $tag["label"] = $tag["tag_label"];
+
+		    unset($tag["tag_id"]);
+		    unset($tag["tag_label"]);
+		    unset($tag["tag_server_id"]);
+		    unset($tag["tag_deleted"]);
+		}
+
+		return $tags;
+	}
 }

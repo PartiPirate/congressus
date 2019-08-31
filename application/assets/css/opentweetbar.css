@@ -43,6 +43,9 @@ html,body {
 	content: "\e080";
 }
 
+.panel-heading a.no-collapse:after {
+	content: none;
+}
 
 .panel-heading.no-caret a:after {
 	content: "" !important;
@@ -63,6 +66,10 @@ html,body {
 	top: -60px;
 	right: 10px;
 	border-radius: 10px;
+}
+
+.soft-hidden {
+	display: none;
 }
 
 .otbHidden {
@@ -227,4 +234,22 @@ tbody tr.selected-row {
 tbody tr.selected-row:hover {
     color: #fff;
     background: #286090;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 20px;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
 }

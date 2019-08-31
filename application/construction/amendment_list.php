@@ -11,9 +11,10 @@
 ?>			
 			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
 <?php			if ($showTitle) { ?>
-				<div class="panel-heading <?php	 if (!$isTrash) { echo "no-caret"; } ?>">
+				<div class="panel-heading">
 
 <?php				if (!$isTrash) { ?>
+					<a class="<?php if (!isset($oneAgenda) || !$oneAgenda) { echo "collapsed"; } ?> pull-right" data-toggle="collapse" data-target="#list-<?php echo $agenda["age_id"]; ?>" href="#"></a>
 					<select class="pull-right select-order order-motions form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
 						<option value="older"><?php echo lang("amendments_order_older"); ?></option>
 						<option value="newer"><?php echo lang("amendments_order_newer"); ?></option>
@@ -28,7 +29,7 @@
 					
 					<a 
 <?php				if (!$isTrash) { ?>		
-						href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+						class="no-collapse" href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 <?php				} else { ?>		
 						data-toggle="collapse" 	
 						data-target="#list-<?php echo $agenda["age_id"]; ?>"
@@ -42,7 +43,7 @@
 				</div>
 <?php				} 
 				} ?>
-				<ul class="list-group objects panel-collapse collapse <?php	 if (!$isTrash) { echo "in"; } ?>" id="list-<?php echo $agenda["age_id"]; ?>">
+				<ul class="list-group objects panel-collapse collapse <?php if (isset($oneAgenda) && $oneAgenda && !$isTrash) { echo "in"; } ?>" id="list-<?php echo $agenda["age_id"]; ?>">
 					
 <?php		if(!count($motions)) { ?>
 					<li class="list-group-item text-center unsortable">

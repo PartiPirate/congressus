@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -84,8 +84,15 @@ class ThemeBo {
 	}
 
 	function delete($theme) {
-		$theme["the_deleted"] = 1;
-		$this->save($theme);
+		$query = "	DELETE FROM ".$this->personaeDatabase."dlp_themes ";
+		$query .= "	WHERE the_id = :the_id ";
+
+		//		echo showQuery($query, $agenda);
+
+		$args = array("the_id" => $theme["the_id"]);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
 	}
 
 	function getTheme($id, $withDeleted = false) {

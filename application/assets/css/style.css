@@ -730,3 +730,15 @@ div, p ul, li, h1, h2, h3, h4, h5, h6, button, label {
 .chat-body a {
     text-decoration: underline !important;
 }
+
+ul.givers-list {
+    list-style-type: none;
+}
+
+.group-list, .group-list ul {
+    list-style: none;
+}
+
+.btn-open-givers, .btn-close-givers {
+    margin-top: -6px;
+}

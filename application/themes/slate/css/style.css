@@ -144,3 +144,32 @@ select {
 /*	background-image: url(../images/background_lightgrey.png);*/
 	background-color: #272b30;
 }
+
+/* custom inclusion of right, left and below tabs */
+.tabs-bottom > .nav-tabs {
+  border-top: 1px solid rgba(0,0,0,0.6);
+}
+
+.tabs-bottom > .nav-tabs > li > a:hover,
+.tabs-bottom > .nav-tabs > li > a:focus {
+  border-top-color: rgba(0,0,0,0.6);
+  border-bottom-color: transparent;
+}
+
+.tabs-bottom > .nav-tabs > .active > a,
+.tabs-bottom > .nav-tabs > .active > a:hover,
+.tabs-bottom > .nav-tabs > .active > a:focus {
+  border-color: transparent rgba(0,0,0,0.6) rgba(0,0,0,0.6) rgba(0,0,0,0.6);
+}
+
+.tabs-bottom {
+    padding-bottom: 0;
+}
+
+.row-striped > .row:nth-of-type(odd) {
+    background-color: #272c31;
+}
+
+.row-hover > .row:hover {
+    background-color: #2b3035;
+}

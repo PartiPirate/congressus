@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -29,6 +29,7 @@ require_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserPropertyBo.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 require_once("engine/bo/CustomizerPropertyBo.php");
 
@@ -56,9 +57,12 @@ addLog($_SERVER, $_SESSION);
 
 $isConnected = false;
 $isAdministrator = false;
+$isAdmin = false;
 $sessionUserId = 0;
 $hasUnnoticed = false;
 $gamifiedUser = null;
+
+$connection = openConnection();
 
 if (SessionUtils::getUserId($_SESSION)) {
 	$sessionUser = SessionUtils::getUser($_SESSION);
@@ -77,6 +81,9 @@ if (SessionUtils::getUserId($_SESSION)) {
 	}
 
 	$isConnected = true;
+	
+	$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+	$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
 }
 
 if (isset($_SESSION["administrator"]) && $_SESSION["administrator"]) {
@@ -95,7 +102,8 @@ if ($page == "administration" && !$isAdministrator) {
 	header('Location: index.php');
 }
 
-$connection = openConnection();
+require_once("BreadcrumbHandler.php");
+include_once("CardHandler.php");
 
 $customizerProperties = array();
 
@@ -341,6 +349,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "calendar") echo 'class="active"'; ?>><a href="calendar.php"><?php echo lang("menu_calendar"); ?><?php if ($page == "calendar") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<li <?php if ($page == "groups") echo 'class="active"'; ?>><a href="groups.php"><?php echo lang("menu_groups"); ?><?php if ($page == "groups") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 
 					<?php 	if ($isConnected) {?>
 					<li <?php if ($page == "myVotes") echo 'class="active"'; ?>><a href="myVotes.php"><?php echo lang("menu_myVotes"); ?><?php if ($page == "myVotes") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
@@ -438,7 +447,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 				<?php 	} else {?>
 				<form action="search.php" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						<input type="text" class="form-control" name="query" placeholder="<?php echo lang("common_search"); ?>">
+						<input type="text" class="form-control" name="query" style="margin-bottom: 0;" placeholder="<?php echo lang("common_search"); ?>">
 					</div>
 					<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
 				</form>

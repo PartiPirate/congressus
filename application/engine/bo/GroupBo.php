@@ -39,14 +39,14 @@ class GroupBo {
 	}
 
 	function create(&$group) {
-		$query = "	INSERT INTO ".$this->personaeDatabase."dlp_groups (sig_id) VALUES (:sig_id)	";
+		$query = "	INSERT INTO ".$this->personaeDatabase."dlp_groups () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
-		//		echo showQuery($query, $args);
+//		echo showQuery($query, $args);
 
 		try {
-			$statement->execute(array("sig_id" => $group["sig_id"]));
-//			$group["sig_id"] = $this->pdo->lastInsertId();
+			$statement->execute(array("gro_id" => $group["gro_id"]));
+			$group["gro_id"] = $this->pdo->lastInsertId();
 
 			return true;
 		}
@@ -67,7 +67,7 @@ class GroupBo {
 			$separator = ", ";
 		}
 
-		$query .= "	WHERE sig_id = :sig_id ";
+		$query .= "	WHERE gro_id = :gro_id ";
 
 //		echo showQuery($query, $group);
 
@@ -76,18 +76,16 @@ class GroupBo {
 	}
 
 	function save(&$group) {
-// 		if (!isset($group["sig_id"]) || !$group["sig_id"]) {
+		$isCreated = false;
+		
+ 		if (!isset($group["gro_id"]) || !$group["gro_id"]) {
 			$this->create($group);
-
-			// create reference
-// 			$group["tra_reference"] = "" . $group["sig_id"];
-// 			while(strlen($group["tra_reference"]) < 8) {
-// 				$group["tra_reference"] = "0" . $group["tra_reference"];
-// 			}
-// 			$group["tra_reference"] = "PP" . $group["tra_reference"];
-// 		}
+			$isCreated = true;
+ 		}
 
 		$this->update($group);
+		
+		return $isCreated;
 	}
 
 	function getMyGroups($filters) {
@@ -95,15 +93,16 @@ class GroupBo {
 
 		$state = $filters["state"];
 
-		$filterField = "the_voting_group_";
+		$filterField = "dlp_themes.the_voting_group_";
 		if ($state != "voting") {
-			$filterField = "the_eligible_group_";
+			$filterField = "dlp_themes.the_eligible_group_";
 		}
 
 		$query = "	SELECT ".$this->personaeDatabase."dlp_groups.*, ".$this->personaeDatabase."dlp_themes.*,
-						gga.id_adh AS gga_id_adh, gga.email_adh AS gga_email_adh, gga.pseudo_adh AS gga_pseudo_adh, gga.nom_adh AS gga_nom_adh, gga.prenom_adh AS gga_prenom_adh, ggc.can_status AS ggc_can_status, ggc.can_text AS ggc_can_text,
-						dga.id_adh AS dga_id_adh, dga.email_adh AS dga_email_adh, dga.pseudo_adh AS dga_pseudo_adh, dga.nom_adh AS dga_nom_adh, dga.prenom_adh AS dga_prenom_adh, dgc.can_status AS dgc_can_status, dgc.can_text AS dgc_can_text,
-						ga.id_adh AS ga_id_adh, ga.email_adh AS ga_email_adh, ga.pseudo_adh AS ga_pseudo_adh, ga.nom_adh AS ga_nom_adh, ga.prenom_adh AS ga_prenom_adh, gc.can_status AS gc_can_status, gc.can_text AS gc_can_text
+						_ggc.id_type_cotis AS gga_id_type_cotis, gga.id_adh AS gga_id_adh, gga.email_adh AS gga_email_adh, gga.pseudo_adh AS gga_pseudo_adh, gga.nom_adh AS gga_nom_adh, gga.prenom_adh AS gga_prenom_adh, ggc.can_status AS ggc_can_status, ggc.can_text AS ggc_can_text,
+						_dgc.id_type_cotis AS dga_id_type_cotis, dga.id_adh AS dga_id_adh, dga.email_adh AS dga_email_adh, dga.pseudo_adh AS dga_pseudo_adh, dga.nom_adh AS dga_nom_adh, dga.prenom_adh AS dga_prenom_adh, dgc.can_status AS dgc_can_status, dgc.can_text AS dgc_can_text,
+						_gc.id_type_cotis AS ga_id_type_cotis, ga.id_adh AS ga_id_adh, ga.email_adh AS ga_email_adh, ga.pseudo_adh AS ga_pseudo_adh, ga.nom_adh AS ga_nom_adh, ga.prenom_adh AS ga_prenom_adh, gc.can_status AS gc_can_status, gc.can_text AS gc_can_text,
+						_tgc.id_type_cotis AS tga_id_type_cotis, tga.id_adh AS tga_id_adh, tga.email_adh AS tga_email_adh, tga.pseudo_adh AS tga_pseudo_adh, tga.nom_adh AS tga_nom_adh, tga.prenom_adh AS tga_prenom_adh, tgc.can_status AS tgc_can_status, tgc.can_text AS tgc_can_text
 					FROM  ".$this->personaeDatabase."dlp_groups
 					RIGHT JOIN ".$this->personaeDatabase."dlp_group_themes ON gth_group_id = gro_id
 					RIGHT JOIN ".$this->personaeDatabase."dlp_themes ON gth_theme_id = the_id AND gth_theme_type = 'dlp_themes'
@@ -124,12 +123,35 @@ class GroupBo {
 					LEFT JOIN ".$this->personaeDatabase."dlp_fixation_members dfm ON dfm.fme_fixation_id = df.fix_id
 					LEFT JOIN ".$this->galetteDatabase."galette_adherents dga ON dga.id_adh = dfm.fme_member_id
 
+					-- The source of voting is maybe a personae theme
+					LEFT JOIN ".$this->personaeDatabase."dlp_themes tt ON tt.the_id = ".$filterField."id AND ".$filterField."type = 'dlp_themes'
+					LEFT JOIN ".$this->personaeDatabase."dlp_fixations tf ON tf.fix_id = tt.the_current_fixation_id
+					LEFT JOIN ".$this->personaeDatabase."dlp_fixation_members tfm ON tfm.fme_fixation_id = tf.fix_id
+					LEFT JOIN ".$this->galetteDatabase."galette_adherents tga ON tga.id_adh = tfm.fme_member_id
+
 					-- The candidate status
 					LEFT JOIN ".$this->personaeDatabase."dlp_candidates ggc ON ggc.can_member_id = gga.id_adh AND ".$this->personaeDatabase."dlp_themes.the_id = ggc.can_theme_id
 					LEFT JOIN ".$this->personaeDatabase."dlp_candidates gc ON gc.can_member_id = ga.id_adh AND ".$this->personaeDatabase."dlp_themes.the_id = gc.can_theme_id
 					LEFT JOIN ".$this->personaeDatabase."dlp_candidates dgc ON dgc.can_member_id = dga.id_adh AND ".$this->personaeDatabase."dlp_themes.the_id = dgc.can_theme_id
+					LEFT JOIN ".$this->personaeDatabase."dlp_candidates tgc ON tgc.can_member_id = tga.id_adh AND ".$this->personaeDatabase."dlp_themes.the_id = tgc.can_theme_id ";
 
-					WHERE 1 = 1 AND (dt.the_deleted = 0 OR dt.the_deleted IS NULL) ";
+		if (true) {
+
+			$query .= "
+					LEFT JOIN ".$this->galetteDatabase."galette_cotisations _gc ON ga.id_adh = _gc.id_adh AND _gc.info_cotis = '' AND _gc.date_fin_cotis > NOW()
+					LEFT JOIN ".$this->galetteDatabase."galette_types_cotisation gtc ON _gc.id_type_cotis = gtc.id_type_cotis AND gtc.cotis_extension = 1
+
+					LEFT JOIN ".$this->galetteDatabase."galette_cotisations _dgc ON dga.id_adh = _dgc.id_adh AND _dgc.info_cotis = '' AND _dgc.date_fin_cotis > NOW()
+					LEFT JOIN ".$this->galetteDatabase."galette_types_cotisation dgtc ON _dgc.id_type_cotis = dgtc.id_type_cotis AND dgtc.cotis_extension = 1
+
+					LEFT JOIN ".$this->galetteDatabase."galette_cotisations _ggc ON gga.id_adh = _ggc.id_adh AND _ggc.info_cotis = '' AND _ggc.date_fin_cotis > NOW()
+					LEFT JOIN ".$this->galetteDatabase."galette_types_cotisation ggtc ON _ggc.id_type_cotis = ggtc.id_type_cotis AND ggtc.cotis_extension = 1 
+
+					LEFT JOIN ".$this->galetteDatabase."galette_cotisations _tgc ON tga.id_adh = _tgc.id_adh AND _tgc.info_cotis = '' AND _tgc.date_fin_cotis > NOW()
+					LEFT JOIN ".$this->galetteDatabase."galette_types_cotisation tgtc ON _tgc.id_type_cotis = tgtc.id_type_cotis AND tgtc.cotis_extension = 1 ";
+		}
+
+		$query .= " WHERE 1 = 1 AND (dt.the_deleted = 0 OR dt.the_deleted IS NULL) ";
 
 		if (isset($filters["the_id"])) {
 			$args["the_id"] = $filters["the_id"];
@@ -178,8 +200,10 @@ class GroupBo {
 				$memberPseudo = $line["gga_pseudo_adh"] ? $line["gga_pseudo_adh"] : ($line["dga_pseudo_adh"] ? $line["dga_pseudo_adh"] : $line["ga_pseudo_adh"]);
 				$memberNom = $line["gga_nom_adh"] ? $line["gga_nom_adh"] : ($line["dga_nom_adh"] ? $line["dga_nom_adh"] : $line["ga_nom_adh"]);
 				$memberPrenom = $line["gga_prenom_adh"] ? $line["gga_prenom_adh"] : ($line["dga_prenom_adh"] ? $line["dga_prenom_adh"] : $line["ga_prenom_adh"]);
+
 				$candidateStatus = $line["ggc_can_status"] ? $line["ggc_can_status"] : ($line["dgc_can_status"] ? $line["dgc_can_status"] : ($line["gc_can_status"] ? $line["gc_can_status"] : "neutral"));
 				$candidateText = $line["ggc_can_text"] ? $line["ggc_can_text"] : ($line["dgc_can_text"] ? $line["dgc_can_text"] : ($line["gc_can_text"] ? $line["gc_can_text"] : ""));
+				$isTodayAdherent = $line["gga_id_type_cotis"] ? $line["gga_id_type_cotis"] : ($line["dga_id_type_cotis"] ? $line["dga_id_type_cotis"] : ($line["tga_id_type_cotis"] ? $line["tga_id_type_cotis"] : ($line["ga_id_type_cotis"] ? $line["ga_id_type_cotis"] : "")));
 
 				if (!$memberId) continue;
 
@@ -190,6 +214,7 @@ class GroupBo {
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["members"][$memberId]["prenom_adh"] = $memberPrenom;
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["members"][$memberId]["can_status"] = $candidateStatus;
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["members"][$memberId]["can_text"] = $candidateText;
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["members"][$memberId]["id_type_cotis"] = $isTodayAdherent;
 			}
 
 			return $groups;
@@ -228,6 +253,7 @@ class GroupBo {
 
  		if (!isset($filters["with_deleted"])) {
  			$query .= " AND the_deleted = 0 \n";
+ 			$query .= " AND (gro_deleted = 0 OR gro_id IS NULL) \n";
  		}
 
 // 		if (isset($filters["sig_like_logo"])) {
@@ -259,6 +285,8 @@ class GroupBo {
 
 				$groups[$groupId]["gro_id"] = $line["gro_id"];
 				$groups[$groupId]["gro_label"] = $line["gro_label"];
+				$groups[$groupId]["gro_contact"] = $line["gro_contact"];
+				$groups[$groupId]["gro_contact_type"] = $line["gro_contact_type"];
 
 				if (!isset($groups[$groupId]["gro_themes"])) {
 					$groups[$groupId]["gro_themes"] = array();
@@ -268,6 +296,7 @@ class GroupBo {
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"] = $line["the_label"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_power"] = $line["the_voting_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_method"] = $line["the_voting_method"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_delegate_only"] = $line["the_delegate_only"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"] = $line["gth_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["fix_until_date"] = $line["fix_until_date"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["id_adh"] = $line["fme_member_id"];
@@ -423,4 +452,58 @@ class GroupBo {
 
 		return $results;
 	}
+
+		// Authority part
+	
+	// Admin part
+
+	function addAuthorityAdmin($admin) {
+		$query = "	INSERT INTO ".$this->personaeDatabase."dlp_group_authoritatives
+						(gau_group_id, gau_authoritative_id)
+					VALUES
+						(:gau_group_id, :gau_authoritative_id) \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($admin);
+	}
+
+	function removeAuthorityAdmin($admin) {
+		$query = "	DELETE FROM ".$this->personaeDatabase."dlp_group_authoritatives
+					WHERE
+						gau_group_id = :gau_group_id
+					AND gau_authoritative_id = :gau_authoritative_id \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($admin);
+	}
+	
+	function getAuthorityAdmins($group) {
+		$args = array();
+		$args["gau_group_id"] = $group["gro_id"];
+
+		$query = "	SELECT *, group_name as gau_authoritative_name
+					FROM ".$this->personaeDatabase."dlp_group_authoritatives
+					LEFT JOIN ".$this->galetteDatabase."galette_groups ON id_group = gau_authoritative_id
+					WHERE
+						gau_group_id = :gau_group_id \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($args);
+		$results = $statement->fetchAll();
+
+		return $results;
+	}
+
 }

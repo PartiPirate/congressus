@@ -11,7 +11,7 @@
  
 ## Récupération de l'application ##
 
-- Récupérez le code source sur le dépot git et mettez le contenur du répertoire **application** dans le repertoire racine de votre application web (*par exemple : /usr/share/nginx/html/congressus*).
+- Récupérez le code source sur le dépot git et mettez le contenu du répertoire **application** dans le repertoire racine de votre application web (*par exemple : /usr/share/nginx/html/congressus*).
 - Lancer l'url de l'accès à cette application (*par exemple : http://127.0.0.1/congressus*)
  
 À ce stade, l'application vous affiche la page d'administration et vous a créé quelques fichiers de configuration "vierges" dans le repertoire **config**.

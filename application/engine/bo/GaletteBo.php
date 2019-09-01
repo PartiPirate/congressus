@@ -36,8 +36,21 @@ class GaletteBo {
 
 		$args = array();
 
-		$query = "	SELECT *
-					FROM ".$this->database."galette_adherents ga \n";
+		$query = "	SELECT *, diaf.field_val as discord_id_adh ";
+		
+		if ($filters && isset($filters["with_skills"]) && $filters["with_skills"]) {
+			
+			$query .= ", (SELECT GROUP_CONCAT(CONCAT(ski_label , '#' , sus_level, '#' , (SELECT COUNT(*) FROM ".$this->database."skill_endorsments WHERE sen_skill_user_id = sus_id))) FROM ".$this->database."skill_users JOIN ".$this->database."skills ON ski_id = sus_skill_id WHERE sus_user_id = ga.id_adh ";
+			
+			if (isset($filters["skill_ids"])) {
+				$in = implode(", ", $filters["skill_ids"]);
+				$query .= "	AND sus_skill_id IN ($in) ";
+			}
+			
+			$query .= ") AS skills";
+		}
+		$query .= " FROM ".$this->database."galette_adherents ga \n";
+		$query .= "	LEFT JOIN ".$this->database."galette_dynamic_fields diaf ON diaf.field_id = 2 AND diaf.field_form = 'adh' AND diaf.item_id = id_adh \n";
 
 		if ($filters && isset($filters["adh_group_names"])) {
 			foreach($filters["adh_group_names"] as $index => $groupName) {
@@ -67,11 +80,25 @@ class GaletteBo {
 
 		if ($filters) {
 			foreach($filters as $key => $value) {
-				if (in_array($key, array("id_adh", "nom_adh", "prenom_adh", "pseudo_adh", "email_adh", "cp_adh", "ville_adh"))) {
+				if (in_array($key, array("id_adh", "nom_adh", "prenom_adh", "pseudo_adh", "email_adh", "cp_adh", "ville_adh", "activite_adh"))) {
 					$query .= "	AND ga.$key = :$key \n";
 					$args[$key] = $value;
 				}
 			}
+
+			foreach($filters as $key => $value) {
+				if (in_array($key, array("nom_adh_like", "prenom_adh_like", "pseudo_adh_like", "cp_adh_like", "ville_adh_like"))) {
+					$field = str_replace("_like", "", $key);
+					$query .= "	AND ga.$field LIKE :$key \n";
+//					$args[$key] = "%" . $value . "%";
+					$args[$key] = $value . "%";
+				}
+			}
+		}
+
+		if ($filters && isset($filters["discord_id_adh"])) {
+			$query .= "	AND diaf.field_val =  :discord_id_adh \n";
+			$args["discord_id_adh"] = $filters["discord_id_adh"];
 		}
 
 		if ($filters && isset($filters["adh_group_names"])) {
@@ -88,6 +115,11 @@ class GaletteBo {
 			}
 		}
 
+		if ($filters && isset($filters["skill_ids"])) {
+			$in = implode(", ", $filters["skill_ids"]);
+			$query .= "	AND ga.id_adh IN (SELECT sus_user_id FROM ".$this->database."skill_users WHERE sus_skill_id IN ($in))";
+		}
+
 		$statement = $this->pdo->prepare($query);
 
 //		echo showQuery($query, $args);
@@ -95,6 +127,8 @@ class GaletteBo {
 		try {
 			$statement->execute($args);
 			$results = $statement->fetchAll();
+
+//			print_r($results);
 
 			foreach($results as $key => $member) {
 				foreach($member as $field => $value) {

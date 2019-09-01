@@ -16,6 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once("config/database.php");
 include_once("language/language.php");
 require_once("engine/utils/FormUtils.php");
@@ -39,7 +43,7 @@ $sessionUserId = SessionUtils::getUserId($_SESSION);
 if (!$sessionUserId) exit();
 
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
-$groupBo = GroupBo::newInstance($connection, $config["galette"]["db"]);
+$groupBo = GroupBo::newInstance($connection, $config);
 
 $filters = array();
 if(isset($_POST["mem_lastname"]) && $_POST["mem_lastname"]) {
@@ -125,10 +129,12 @@ foreach($members as $member) {
 		$row["lastname"] = utf8_encode($member["nom_adh"]);
 		$row["firstname"] = utf8_encode($member["prenom_adh"]);
 		$row["nickname"] = "";
-		$row["mail"] = $member["email_adh"];
+		$row["mail"] = "";
+//		$row["mail"] = $member["email_adh"];
 	}
 
-	$row["zipcode"] = $member["cp_adh"];
+//	$row["zipcode"] = $member["cp_adh"];
+	$row["zipcode"] = "";
 //	$row["city"] = utf8_encode($member["ville_adh"]);
 	$row["city"] = "";
 	$row["status"] = isset($member["mem_status"]) ? $member["mem_status"] : "";
@@ -138,6 +144,7 @@ foreach($members as $member) {
 	
 	if ($member["skills"]) {
 		$skills = explode(",", $member["skills"]);
+//		print_r($skills);
 		foreach($skills as $skill) {
 			$skill = explode("#", trim($skill));
 			$uSkill = $skill[0];

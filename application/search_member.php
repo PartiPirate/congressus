@@ -16,6 +16,9 @@
     You should have received a copy of the GNU General Public License
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $isModal = isset($_GET["isModal"]);
 
@@ -160,10 +163,10 @@ $skills = $skillBo->getByFilters(array());
 
 	<templates>
 		<table>
-			<tr data-template-id="template-tweet"
+			<tr data-template-id="template-member"
 				data-row=""
 				class="template">
-				<td><a href="member.php?id=${id}" target="_blank">${lastname} ${firstname} ${nickname}</a></td>
+				<td><a href="member.php?id=${id}" target="_blank" style="color: inherit;">${lastname} ${firstname} ${nickname}</a></td>
 				<td>${mail}</td>
 				<td>${zipcode}</td>
 				<td>${city}</td>

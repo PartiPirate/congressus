@@ -1,5 +1,36 @@
+/*
+	Copyright 2019 Cédric Levieux, Parti Pirate
+
+	This file is part of Personae.
+
+    Personae is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Personae is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Personae.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* global $ */
+
+function hideUnactiveSkills() {
+	$(".btn-skill-filter").each(function() {
+		if ($(this).hasClass("active")) {
+			return;
+		}
+		
+		$(this).hide();
+	});
+}
+
 $(function() {
-	checkSuccesButtonState = function(target) {
+	const checkSuccesButtonState = function(target) {
 		var dialog = target.parents(".modal-dialog");
 		if (dialog.length == 0) return;
 
@@ -101,7 +132,7 @@ $(function() {
 			for(var index = 0; index < data.rows.length; ++index) {
 				var row = data.rows[index];
 
-				var htmlRow = $("*[data-template-id=template-tweet]").template("use", {"data": row});
+				var htmlRow = $("*[data-template-id=template-member]").template("use", {"data": row});
 				htmlRow.data("row", row);
 				tbody.append(htmlRow);
 			}
@@ -120,5 +151,30 @@ $(function() {
 		$(this).toggleClass("selected-row");
 
 		checkSuccesButtonState($(this));
+	});
+
+	$("body").on("click", ".btn-add-skill-filter", function(event) {
+		var button = $(this);
+		var icon = button.find(".fa");
+		
+		if (icon.hasClass("fa-plus")) {
+			$(".btn-skill-filter").show();
+		}
+		else {
+			hideUnactiveSkills();
+		}
+		
+		button.toggleClass("btn-primary").toggleClass("btn-danger");
+		icon.toggleClass("fa-plus").toggleClass("fa-minus");
+		
+		$(this).blur();
+	});
+
+	$("body").on("click", ".btn-skill-filter", function(event) {
+		var button = $(this);
+		button.toggleClass("active");
+		
+		var checkbox = $("#" + button.data("for"));
+		checkbox.prop("checked", button.hasClass("active"));
 	});
 });

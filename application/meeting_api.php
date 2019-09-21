@@ -28,6 +28,7 @@ include_once("config/memcache.php");
 include_once("config/mail.php");
 include_once("language/language.php");
 require_once("engine/utils/SessionUtils.php");
+require_once("engine/utils/DateTimeUtils.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/GamifierClient.php");
 require_once("engine/bo/MeetingBo.php");

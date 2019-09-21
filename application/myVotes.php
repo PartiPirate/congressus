@@ -61,6 +61,7 @@ $motions = $motionBo->getByFilters($filters);
 // echo "\n -->";
 
 $sortedMotions = array();
+$now = getNow();
 
 foreach($motions as $motion) {
 	$foundUser = false;
@@ -78,6 +79,20 @@ foreach($motions as $motion) {
 	if (count($motion["mot_tag_ids"])) {
 		$tags = $tagBo->getByFilters(array("tag_ids" => $motion["mot_tag_ids"]));
 		$motion["mot_tags"] = $tags;
+	}
+
+	if ($motion["mot_deadline"]) {
+		$date = getDateTime($motion["mot_deadline"]);
+		$dateFormat = $date->format(lang("date_format", false));
+
+		$motion["mot_deadline_string"] = str_replace("{date}", $dateFormat, str_replace("{time}", $date->format(lang("time_format", false)), lang("datetime_format", false)));
+
+		$interval = $date->diff($now);
+
+		$hours = $interval->format("%a") * 24 + $interval->format("%H");
+
+		$motion["mot_deadline_diff"] = $interval->format("%r". ($hours < 10 ? "0" : "") . $hours.":%I:%S");
+		$motion["mot_deadline_expired"] = (strpos($motion["mot_deadline_diff"], "-") === false);
 	}
 
 	if(!isset($sortedMotions[$motion["mot_id"]])) {
@@ -205,11 +220,13 @@ foreach($sortedMotions as $motionId => $motion) {
 		<h4><?php echo $emojiClient->shortnameToImage($Parsedown->text($motion["mot_description"])); ?></h4>
 		<h4><?php echo str_replace("{value}", $maxVotePower, lang("myVotes_maxPower")); ?></h4>
 		<h4><?php echo str_replace("{value}", lang("motion_ballot_majority_" . $motion["mot_win_limit"]), lang("myVotes_voteMethod")); ?>
-		
 		<?php	if(isLanguageKey("motion_ballot_majority_" . $motion["mot_win_limit"] . "_help")) {
 					?><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("motion_ballot_majority_" . $motion["mot_win_limit"] . "_help"); ?>"></span><?php
 				}
 		?>
+		<?php	if ($motion["mot_deadline"]) {?>
+		<h4><?php echo str_replace("{value}", $motion["mot_deadline_string"], lang("myVotes_deadline")); ?></h4>
+		<?php	}?>
 		
 		</h4>
 		<?php	if (count($motion["mot_tags"])) { 
@@ -238,7 +255,7 @@ foreach($sortedMotions as $motionId => $motion) {
 
 		<hr>
 
-		<div class="propositions">
+		<div class="propositions" data-expired="<?=(($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false")?>" style="<?=(($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "opacity: 0.5;" : "")?>">
 	<?php	
 			foreach($propositions as $index => $proposition) {
 
@@ -246,23 +263,28 @@ foreach($sortedMotions as $motionId => $motion) {
 					if ($index != 0) echo "<br>";
 				?>
 			<?php echo $proposition["mpr_label"]; ?><br>
-			<div class="proposition" style="width: 100%; border-radius: 4px; padding: 2px;" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
+			<div class="proposition" style="width: 100%; border-radius: 4px; padding: 2px;" data-expired="<?php echo (($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false"); ?>" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
 				<div class="btn-group" style="width: 100%; margin: 2px;">
 					<?php 	$nbItems = count($config["congressus"]["ballot_majority_judgment"]);
 							foreach($config["congressus"]["ballot_majority_judgment"] as $judgeIndex => $judgementMajorityItem) {?>
-						<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
+						<div class="btn btn-default judgement" 
+							style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_majorityJudgment_" . $judgementMajorityItem); ?></div>				
 					<?php	} ?>
 				</div>
 			</div>
 	<?php 		} 
 				else if ($motion["mot_win_limit"] == -1) {
 				?>
-			<div class="btn btn-default proposition text-center" style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
-				<button class='btn btn-up btn-xs pull-left' style='background-color: inherit;'><i class="fa fa-arrow-up" aria-hidden="true"></i></button><span class='proposition-label'><?php echo $proposition["mpr_label"]; ?></span><button class='btn btn-down btn-xs pull-right' style='background-color: inherit;'><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+			<div class="btn btn-default proposition text-center" data-expired="<?php echo (($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false"); ?>"
+				style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
+				<button class='btn btn-up btn-xs pull-left' 
+					style='background-color: inherit;'><i class="fa fa-arrow-up" aria-hidden="true"></i></button><span class='proposition-label'><?php echo $proposition["mpr_label"]; ?></span><button class='btn btn-down btn-xs pull-right' 
+					style='background-color: inherit;'><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 			</div>
 	<?php 		} 
 				else {?>
-			<div class="btn btn-default proposition" style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
+			<div class="btn btn-default proposition" data-expired="<?php echo (($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false"); ?>"
+					style="width: 100%; white-space: pre-wrap;" type="button" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>"><?php echo $proposition["mpr_label"]; ?></div>
 	<?php 		}
 			}
 			?>
@@ -270,7 +292,9 @@ foreach($sortedMotions as $motionId => $motion) {
 		</div>
 
 		<br>
-		<button class="btn btn-primary btn-vote" style="width: 100%;" type="button"><?php echo lang("common_vote"); ?></button>
+		<button class="btn btn-primary btn-vote" style="width: 100%; margin-bottom: 4px;" type="button"><?php echo lang("common_vote"); ?></button>
+		<button class="btn btn-warning btn-reset" style="width: calc(50% - 2px);" type="button"><?php echo lang("common_reset"); ?></button>
+		<button class="btn btn-info btn-abstain" style="width: calc(50% - 2px);" type="button"><?php echo lang("common_abstain"); ?></button>
 
 	</div>
 	<div class="panel-footer text-right">

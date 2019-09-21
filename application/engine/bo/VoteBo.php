@@ -42,6 +42,10 @@ class VoteBo {
 		return BoHelper::update($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
+	function delete($vote) {
+		return BoHelper::delete($vote, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
+	}
+
 	function save(&$vote) {
  		if (!isset($vote[$this->ID_FIELD]) || !$vote[$this->ID_FIELD]) {
 			$this->create($vote);
@@ -90,6 +94,11 @@ class VoteBo {
 		if (isset($filters["vot_motion_proposition_id"])) {
 			$args["vot_motion_proposition_id"] = $filters["vot_motion_proposition_id"];
 			$queryBuilder->where("vot_motion_proposition_id = :vot_motion_proposition_id");
+		}
+
+		if (isset($filters["mot_id"])) {
+			$args["mot_id"] = $filters["mot_id"];
+			$queryBuilder->where("mot_id = :mot_id");
 		}
 
 		if (isset($filters["mot_agenda_id"])) {

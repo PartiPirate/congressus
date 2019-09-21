@@ -53,6 +53,8 @@ $lang["common_next"]     = "Suivant";
 $lang["common_previous"] = "Précédent";
 $lang["common_preview"]  = "Previsualiser";
 $lang["common_vote"]     = "Voter";
+$lang["common_reset"]     = "Remise à zéro";
+$lang["common_abstain"]     = "S'abstenir";
 
 $lang["common_proposition_pro"] = "Pour";
 $lang["common_proposition_against"] = "Contre";
@@ -141,6 +143,7 @@ $lang["meeting_eventNew"]         = "Nouvel événement";
 $lang["meeting_hideVotes"]        = "Se cacher les votes jusqu'à la résolution";
 $lang["meeting_left"] = "vient de sortir de la réunion";
 $lang["meeting_motion"] = "Motion";
+$lang["meeting_motionSetDeadline"] = "Donner une limite de temps"; 
 $lang["meeting_motionCloseVote"] = "Fermer la motion au vote";
 $lang["meeting_motionDelete"] = "Supprimer la motion";
 $lang["meeting_motionHas"] = "Contient au moins une motion à voter";
@@ -229,6 +232,10 @@ $lang["setQuorum_numberOfPowers"]    = "[NOMBRE DE POUVOIRS]";
 $lang["setQuorum_sqrt"]              = "RACINE";
 $lang["setQuorum_percentage"]        = "%";
 
+$lang["setMotionDeadline_title"] = "Mise en place d'une date limite pour la motion";
+$lang["setMotionDeadline_date"] = "Jour";
+$lang["setMotionDeadline_time"] = "Heure";
+
 $lang["meetings_upcoming_meetings"]   = "Réunions à venir";
 $lang["meetings_passed_meetings"]     = "Réunions terminées";
 $lang["meetings_ongoing_meetings"]    = "Réunions en cours";
@@ -287,7 +294,7 @@ $lang["motion_majorityJudgment_4"] = "Assez bien";
 $lang["motion_majorityJudgment_5"] = "Bien";
 $lang["motion_majorityJudgment_6"] = "Très bien";
 
-$lang["motion_ballot_majority_-2_help"] = "Pour chacune des propositions, rendez votre jugement qualitatif. Une décision prise à l'aide du jugement majoritaire permet de qualifier chacune des propositions par rapport à elle-même et non dans un système de concurrence ou de préférence. La ou les propositions gagnantes sont celles qui ont le meilleur taux d'adhésion.";
+$lang["motion_ballot_majority_-2_help"] = "Pour chacune des propositions, rendez votre jugement qualitatif. Une décision prise à l'aide du jugement majoritaire permet de qualifier chacune des propositions par rapport à elle-même et non dans un système de concurrence ou de préférence. Toutefois quand vous commencer à rendre votre jugement, toutes les propositions doivent être jugées, à défaut le jugement est &laquo;À rejeter&raquo;.\n\nLa ou les propositions gagnantes sont celles qui ont le meilleur taux d'adhésion.";
 $lang["motion_ballot_majority_-1_help"] = "Classez les propositions par ordre de préférence (la plus acceptable pour vous en haut). Le vote Borda est un vote préférentiel permettant de trouver la proposition la plus soutenue parmi toutes celles proposées.";
 $lang["motion_ballot_majority_0_help"]  = "La proposition qui a le plus de voix gagne.";
 $lang["motion_ballot_majority_50_help"] = "La proposition qui a plus de 50% des voix gagne.";
@@ -299,6 +306,7 @@ $lang["motion_already_argumented"] = "Vous avez déjà argumenté";
 $lang["motion_add_source"] = "Ajouter une source"; 
 $lang["motion_trash"] = "Envoyer à la &laquo; corbeille &raquo;";
 $lang["motion_open_debate"] = "Ouvrir le &laquo; débat &raquo;";
+$lang["motion_expired"] = "Expiré";
 
 $lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";
 $lang["trash_description"] = "La corbeille garantit la transparence du processus de la construction. Elle contient les motions qui ne respectent pas ce processus.";
@@ -502,6 +510,7 @@ $lang["myVotes_numberOfMotions"] = "Nombre de motions : {value}";
 $lang["myVotes_maxPower"] = "Points à distribuer : {value}";
 $lang["myVotes_voteMethod"] = "Méthode : {value}";
 $lang["myVotes_tagsMethod"] = "Libellés: {tags}";
+$lang["myVotes_deadline"] = "Date limite : {value}";
 $lang["myVotes_no_motion"] = "Aucune motion à voter, soit parce que vous n'avez pas le droit de vote, soit parce que les réunions ne sont pas ouvertes.";
 $lang["myVotes_show_agenda_description"] = "Montrer la description du point à voter";
 $lang["myVotes_hide_agenda_description"] = "Cacher la description du point à voter";

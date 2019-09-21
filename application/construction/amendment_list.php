@@ -9,32 +9,32 @@
 			$votes = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 
 ?>			
-			<div class="panel panel-default agenda-entry" id="agenda-entry-<?php echo $agenda["age_id"]; ?>" data-id="<?php echo $agenda["age_id"]; ?>">
+			<div class="panel panel-default agenda-entry" id="agenda-entry-<?=$agenda["age_id"]?>" data-id="<?=$agenda["age_id"]?>">
 <?php			if ($showTitle) { ?>
 				<div class="panel-heading">
 
 <?php				if (!$isTrash) { ?>
-					<a class="<?php if (!isset($oneAgenda) || !$oneAgenda) { echo "collapsed"; } ?> pull-right" data-toggle="collapse" data-target="#list-<?php echo $agenda["age_id"]; ?>" href="#"></a>
+					<a class="<?php if (!isset($oneAgenda) || !$oneAgenda) { echo "collapsed"; } ?> pull-right" data-toggle="collapse" data-target="#list-<?=$agenda["age_id"]?>" href="#"></a>
 					<select class="pull-right select-order order-motions form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
-						<option value="older"><?php echo lang("amendments_order_older"); ?></option>
-						<option value="newer"><?php echo lang("amendments_order_newer"); ?></option>
-						<option value="participation"><?php echo lang("amendments_order_participation"); ?></option>
-						<option value="arguments"><?php echo lang("amendments_order_arguments"); ?></option>
-						<option value="absolute-pro"><?php echo lang("amendments_order_absolute_pro"); ?></option>
-						<option value="relative-pro"><?php echo lang("amendments_order_relative_pro"); ?></option>
-						<option value="absolute-against"><?php echo lang("amendments_order_absolute_against"); ?></option>
-						<option value="relative-against"><?php echo lang("amendments_order_relative_against"); ?></option>
+						<option value="older"><?=lang("amendments_order_older")?></option>
+						<option value="newer"><?=lang("amendments_order_newer")?></option>
+						<option value="participation"><?=lang("amendments_order_participation")?></option>
+						<option value="arguments"><?=lang("amendments_order_arguments")?></option>
+						<option value="absolute-pro"><?=lang("amendments_order_absolute_pro")?></option>
+						<option value="relative-pro"><?=lang("amendments_order_relative_pro")?></option>
+						<option value="absolute-against"><?=lang("amendments_order_absolute_against")?></option>
+						<option value="relative-against"><?=lang("amendments_order_relative_against")?></option>
 					</select>
 <?php				} ?>
 					
 					<a 
 <?php				if (!$isTrash) { ?>		
-						class="no-collapse" href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+						class="no-collapse" href="?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?=$agenda["age_id"]?>"><?php echo $agenda["age_label"]; ?></a>
 <?php				} else { ?>		
 						data-toggle="collapse" 	
-						data-target="#list-<?php echo $agenda["age_id"]; ?>"
+						data-target="#list-<?=$agenda["age_id"]?>"
 						class="collapsed"
-						href="#"><?php echo $agenda["age_label"]; ?></a>
+						href="#"><?=$agenda["age_label"]?></a>
 <?php				} ?>
 				</div>
 <?php				if ($agenda["age_description"]) { ?>
@@ -43,7 +43,7 @@
 				</div>
 <?php				} 
 				} ?>
-				<ul class="list-group objects panel-collapse collapse <?php if (isset($oneAgenda) && $oneAgenda && !$isTrash) { echo "in"; } ?>" id="list-<?php echo $agenda["age_id"]; ?>">
+				<ul class="list-group objects panel-collapse collapse <?php if ((true || (isset($oneAgenda) && $oneAgenda)) && !$isTrash) { echo "in"; } ?>" id="list-<?=$agenda["age_id"]?>">
 					
 <?php		if(!count($motions)) { ?>
 					<li class="list-group-item text-center unsortable">
@@ -203,7 +203,7 @@ include("construction/pieChart.php");
 				</ul>
 				<div class="panel-footer">
 <?php				if ($hasWritingRights && ($meeting["mee_status"] != "closed")) { ?>
-						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>"><?php echo lang("amendments_add_amendment"); ?> <span class="fa fa-archive"></span></button>
+						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?=$agenda["age_id"]?>"><?php echo lang("amendments_add_amendment"); ?> <span class="fa fa-archive"></span></button>
 <?php				} ?>
 				</div>
 			</div>

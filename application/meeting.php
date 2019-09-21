@@ -718,7 +718,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="conclusion-text"></span>
 		</li>
 
-		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" class="template list-group-item motion simply-hidden">
+		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" data-deadline="${mot_deadline}" class="template list-group-item motion simply-hidden">
+			<span class="pull-right deadline-span"></span>
 			<h4>
 				<span class="fa fa-archive"></span>
 				<span class="motion-title"></span>
@@ -770,6 +771,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					title="<?php echo lang("meeting_motionCloseVote"); ?>"
 					style="display: none;">
 					<?php echo lang("meeting_voteClose"); ?>&nbsp;<span class="fa fa-archive"></span>
+				</button>
+				<button class="btn btn-primary btn-xs btn-set-deadline"
+					title="<?php echo lang("meeting_motionSetDeadline"); ?>"
+					style="display: none;">
+					<?php echo lang("meeting_motionSetDeadline"); ?>&nbsp;<span class="fa fa-calendar"></span>
 				</button>
 
 				<button class="btn btn-info btn-xs btn-see-motion-delegations pull-right"
@@ -931,8 +937,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</div>
 	</div>
 
-	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px; height: 18px; " data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
-		<span class="" style="text-align: left;">${tag_label}</span>
+	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px; margin-top: 4px; height: 18px; " data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
+		<span class="" style="text-align: left; position: relative; top: -1px;">${tag_label}</span>
 		<span class="text-danger btn-remove-tag glyphicon glyphicon-remove"	style="display: none;" title="<?php echo lang("meeting_removeTag"); ?>"></span>
 	</div>
 
@@ -943,6 +949,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
 <?php	include("meeting/addTag_modal.php"); ?>
 <?php	include("meeting/setQuorum_modal.php"); ?>
+<?php	include("meeting/setMotionDeadline_modal.php"); ?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">
 	<div class="modal-dialog">
@@ -1081,6 +1088,7 @@ var meeting_conclusionDelete	  = <?=json_encode(lang("meeting_conclusionDelete")
 var meeting_proposalDelete        = <?=json_encode(lang("meeting_proposalDelete"))?>;
 var meeting_taskEnd_conclusion    = <?=json_encode(lang("meeting_taskEnd_conclusion"))?>;
 var meeting_taskCancel_conclusion = <?=json_encode(lang("meeting_taskCancel_conclusion"))?>;
+var motion_expired                = <?=json_encode(lang("motion_expired"))?>;
 
 var majority_judgement_values	  = <?=json_encode($config["congressus"]["ballot_majority_judgment"])?>
 

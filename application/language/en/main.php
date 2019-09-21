@@ -53,6 +53,8 @@ $lang["common_next"]     = "Next";
 $lang["common_previous"] = "Previous";
 $lang["common_preview"]  = "Preview";
 $lang["common_vote"]     = "Vote";
+$lang["common_reset"]     = "Reset";
+$lang["common_abstain"]     = "Abstain";
 
 $lang["common_proposition_pro"]     = "Pro";
 $lang["common_proposition_against"] = "Against";
@@ -138,6 +140,7 @@ $lang["meeting_eventNew"]       = "New event";
 $lang["meeting_hideVotes"]      = "Hide votes until the voting is closed";
 $lang["meeting_left"]           = "just left the meeting";
 $lang["meeting_motion"]         = "Motion";
+$lang["meeting_motionSetDeadline"] = "Set a deadline"; 
 $lang["meeting_motionCloseVote"] = "End the vote on this motion";
 $lang["meeting_motionDelete"]   = "Delete motion";
 $lang["meeting_motionHas"]      = "Has at least one motion for vote";
@@ -226,6 +229,10 @@ $lang["setQuorum_numberOfPowers"]    = "[NUMBER OF POWERS]";
 $lang["setQuorum_sqrt"]              = "SQRT";
 $lang["setQuorum_percentage"]        = "%";
 
+$lang["setMotionDeadline_title"] = "Set a deadline for the motion";
+$lang["setMotionDeadline_date"] = "Date";
+$lang["setMotionDeadline_time"] = "Time";
+
 $lang["meetings_upcoming_meetings"]   = "Upcoming meetings";
 $lang["meetings_passed_meetings"]     = "Passed meetings";
 $lang["meetings_ongoing_meetings"]    = "Ongoing meetings";
@@ -296,6 +303,7 @@ $lang["motion_already_argumented"]  = "You already argument";
 $lang["motion_add_source"]          = "Add a source"; 
 $lang["motion_trash"]               = "Send to trash";
 $lang["motion_open_debate"]         = "Open a debate";
+$lang["motion_expired"]             = "Expired";
 
 $lang["trash_title"]        = "Trash";
 $lang["trash_description"]  = "The trash guarantees the transparency of the construction process. It contains motions that do not respect this process."; // Todo
@@ -490,6 +498,7 @@ $lang["myVotes_numberOfMotions"] = "Number of motions: {value}";
 $lang["myVotes_maxPower"] = "Points to distribute: {value}";
 $lang["myVotes_voteMethod"] = "Method: {value}";
 $lang["myVotes_tagsMethod"] = "Tags: {tags}";
+$lang["myVotes_deadline"] = "Deadline : {value}";
 $lang["myVotes_no_motion"] = "There is no motion to vote, either because you do not have the right to vote, or because the meeting are not open.";
 
 $lang["forgotten_guide"] = "You forgot your password, welcome on the page that will let you recover your access";

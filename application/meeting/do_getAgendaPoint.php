@@ -86,6 +86,7 @@ $json = $memcache->get($memcacheKey);
 
 if (!$json) {
 	$agenda = $agendaBo->getById($pointId);
+	$now = getNow();
 	
 	if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 		echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
@@ -117,8 +118,21 @@ if (!$json) {
 	usort($motions, "sortPropositionsOnLabel");
 
 	$data["motions"] = $motions; 
-	foreach($data["motions"] as $index => $motions) {
+	foreach($data["motions"] as $index => $motion) {
 		$data["motions"][$index]["mot_tag_ids"] = json_decode($data["motions"][$index]["mot_tag_ids"]);
+
+		if ($motion["mot_deadline"]) {
+			$date = getDateTime($motion["mot_deadline"]);
+			$dateFormat = $date->format(lang("date_format", false));
+
+			$data["motions"][$index]["mot_deadline_string"] = str_replace("{date}", $dateFormat, str_replace("{time}", $date->format(lang("time_format", false)), lang("datetime_format", false)));
+
+			$interval = $date->diff($now);
+
+			$hours = $interval->format("%a") * 24 + $interval->format("%H");
+
+			$data["motions"][$index]["mot_deadline_diff"] = $interval->format("%r". ($hours < 10 ? "0" : "") . $hours.":%I:%S");
+		}
 	}
 
 	$data["chats"] = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));

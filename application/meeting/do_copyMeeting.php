@@ -102,6 +102,19 @@ $agendaTranslationsIds = array();
 $motionTranslationsIds = array();
 
 $sourceAgendas = $agendaBo->getByFilters(array("age_meeting_id" => $sourceMeeting[$meetingBo->ID_FIELD]));
+
+$agendaIds = array();
+foreach($sourceAgendas as $sourceAgenda) {
+    $agendaIds[$sourceAgenda["age_id"]] = $sourceAgenda["age_id"];
+}
+foreach($sourceAgendas as $id => $sourceAgenda) {
+    if (!$sourceAgenda["age_parent_id"]) continue;
+    
+    if (!isset($agendaIds[$sourceAgenda["age_parent_id"]])) {
+        unset($sourceAgendas[$id]);
+    }
+}
+
 foreach($sourceAgendas as $sourceAgenda) {
     $agenda = array();
 

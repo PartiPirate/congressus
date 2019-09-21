@@ -94,6 +94,27 @@ function showAlert(text, eventClass) {
 	
 }
 
+function removeVotes(motion) {
+	var form = {"motionId": motion.data("id")};
+
+	$.post("meeting_api.php?method=do_removeVotes", form, function(data) {
+		if (data.ok) {
+			setMotionDirty(motion, false);
+			showAlert("Vous avez annulé votre vote sur la motion en cours.", "warning");
+
+			var propositionHolders = motion.find(".proposition");
+		
+			propositionHolders.each(function() {
+		
+				var proposition = $(this);
+			
+				let badge = $("li[data-proposition-id=" + proposition.data("id") + "] .badge");
+				badge.text("");
+			});
+		}
+	}, "json");
+}
+
 function doPointVote(motion) {
 //    addLog("point vote on : " + motion.data("id"));
 	
@@ -130,7 +151,7 @@ function doPointVote(motion) {
 			
 				if (numberOfWaitingVotes == 0) {
 					setMotionDirty(motion, false);
-					
+
 					if ($(".btn-next").is(":disabled")) {
 						showAlert("Votre vote a été pris en compte. C'est fini !", "success");
 						showSummary();
@@ -255,37 +276,48 @@ function addPointHandlers(motion) {
 
 	if (maxPower == 1) {
 		motion.find(".proposition").click(function() {
+			var proposition = $(this);
+			if (proposition.data("expired")) return;
+
 			motion.find(".proposition").removeClass("active").data("power", 0);
-			$(this).addClass("active").data("power", 1);
+			proposition.addClass("active").data("power", 1);
 			setMotionDirty(motion, true);
 		});
 
 		motion.find(".proposition").each(function() {
-			if ($(this).data("power") == 1) {
-				$(this).addClass("active");
+			var proposition = $(this);
+			if (proposition.data("expired")) return;
+
+			if (proposition.data("power") == 1) {
+				proposition.addClass("active");
 			}
 		});
 	}
 	else {
 		motion.find(".proposition").click(function(e) {
-			if (e.target == $(this).find("input").get(0)) {
+			var proposition = $(this);
+			if (e.target == proposition.find("input").get(0)) {
 				e.stopImmediatePropagation();
 				return;
 			}
+
+			if (proposition.data("expired")) return;
 
 			motion.find(".proposition input").each(function() {
 				$(this).val(0);	
 			});
 
-			$(this).find("input").val(maxPower);
+			proposition.find("input").val(maxPower);
 
 			checkMaxValues(motion.find(".proposition"), maxPower);
 			setMotionDirty(motion, true);
 		});
 		motion.find(".proposition").each(function() {
 			var proposition = $(this);
-			var input = $("<input type='number' class='pull-right text-right' style='width: 60px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
+
+			var input = $("<input type='number' " + (proposition.data("expired") ? "disabled=disabled" : "") + " class='pull-right text-right' style='width: 60px; color: #000;' min='0' max='"+maxPower+"' value='"+($(this).data("power") ? $(this).data("power") : 0)+"'>");
 			input.change(function() {
+				if (proposition.data("expired")) return;
 				checkMaxValues(motion.find(".proposition"), maxPower);
 				setMotionDirty(motion, true);
 
@@ -313,6 +345,17 @@ function addPointHandlers(motion) {
 	motion.find(".btn-vote").click(function() {
 	 	doPointVote(motion);
 	});
+
+	motion.find(".btn-reset").click(function() {
+		motion.find(".proposition").each(function() {
+			var proposition = $(this);
+			proposition.find("input").val(0);
+			proposition.removeClass("active");
+		});
+
+		removeVotes(motion);
+	});
+
 }
 
 function setSchulzeOrderStyle(propositionsHolder) {
@@ -343,6 +386,10 @@ function addBordaHandlers(motion) {
 //    addLog("Add borda on " + motion.data("id"));
 
 	var propositionsHolder = motion.find(".propositions");
+
+	setSchulzeOrderStyle(propositionsHolder);
+
+	if (propositionsHolder.data("expired")) return;
 
 	propositionsHolder.sortable({
 		"axis": "y",
@@ -384,10 +431,12 @@ function addBordaHandlers(motion) {
 		setMotionDirty(motion, true);
 	});
 
-	setSchulzeOrderStyle(propositionsHolder);
-
 	motion.find(".btn-vote").click(function() {
 	 	doBordaVote(motion);
+	});
+
+	motion.find(".btn-reset").click(function() {
+		removeVotes(motion);
 	});
 }
 
@@ -397,6 +446,8 @@ function addMajorityJudgmentHandlers(motion) {
 	var propositionsHolder = motion.find(".propositions");
 	propositionsHolder.find(".proposition").each(function() {
 		var proposition = $(this);
+
+		if (proposition.data("expired")) return;
 		
 		proposition.find(".judgement").click(function() {
 			proposition.find(".judgement").removeClass("active");
@@ -416,7 +467,7 @@ function addMajorityJudgmentHandlers(motion) {
 				foundAlreadyVoted = true;
 			}
 		});
-		
+
 		if (!foundAlreadyVoted && judgmentVoteIsMandatory) {
 			proposition.find(".judgement").eq(0).click();
 		}
@@ -424,6 +475,18 @@ function addMajorityJudgmentHandlers(motion) {
 
 	motion.find(".btn-vote").click(function() {
 	 	doPointVote(motion);
+	});
+
+	motion.find(".btn-reset").click(function() {
+		propositionsHolder.find(".proposition").each(function() {
+			var proposition = $(this);
+			proposition.find(".judgement").removeClass("active");
+			if (judgmentVoteIsMandatory) {
+				proposition.find(".judgement").eq(0).click();
+			}
+		});
+
+		removeVotes(motion);
 	});
 }
 
@@ -493,7 +556,6 @@ function orderPropositions(motion, propositions) {
 	propositionDivs.detach();
 
 	propositionDivs.sort(sortPropositions).appendTo(motionContainer.find(".motion-propositions"));
-
 }
 
 $(function() {
@@ -578,4 +640,15 @@ $(function() {
 	});
 
 	$(".btn-paper-vote").click(computeVotes);
+	
+	$(".btn-abstain").click(function() {
+		if ($(".btn-next").is(":disabled")) {
+			showAlert("Vous vous êtes abstenu·e. C'est fini !", "success");
+			showSummary();
+		}
+		else {
+			showAlert("Vous vous êtes abstenu·e, on passe à la suite", "success");
+			$(".btn-next").click();
+		}
+	});
 });

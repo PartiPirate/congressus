@@ -35,6 +35,8 @@
 /* global keyupTimeoutId */
 /* global setMotionTags */
 
+/* global motion_expired */
+
 var judgmentVoteIsMandatory = false;
 
 keyupTimeoutId = null;
@@ -289,6 +291,7 @@ function setAgendaMotion(id, motions) {
 
 			switch(motion.mot_status) {
 				case "construction":
+					motionActions.find(".btn-set-deadline").show();
 					motionActions.find(".btn-add-proposition").show();
 					motionActions.find(".btn-do-vote").show();
 					motionActions.find(".btn-remove-motion").show();
@@ -301,6 +304,7 @@ function setAgendaMotion(id, motions) {
 					motionContainer.find(".btn-remove-tag").show();
 					break;
 				case "voting":
+					motionActions.find(".btn-set-deadline").show();
 					motionActions.find(".btn-do-close").show();
 					motionActions.find(".btn-remove-motion").show();
 					motionActions.find(".btn-motion-limits").addClass("disabled");
@@ -312,6 +316,7 @@ function setAgendaMotion(id, motions) {
 					motionContainer.find(".btn-remove-tag").hide();
 					break;
 				case "resolved":
+					motionActions.find(".btn-set-deadline").hide();
 					motionActions.find(".btn-motion-limits").addClass("disabled");
 					motionActions.find(".voters").show();
 					motionActions.find(".btn-motion-anonymous").hide();
@@ -340,6 +345,58 @@ function setAgendaMotion(id, motions) {
 				}
 			}
 
+			const deadlineContainer = motionContainer.find(".deadline-span");
+
+			if (motion.mot_deadline != motionContainer.data("deadline")) {
+				motionContainer.data("deadline", motion.mot_deadline);
+
+				if (motion.mot_deadline) {
+					deadlineContainer.attr("title", motion.mot_deadline_string);
+					deadlineContainer.show();
+				}
+				else {
+					deadlineContainer.hide();
+					motionContainer.data("expired", false);
+				}
+			}
+
+			if (motion.mot_deadline) {
+				if (motion.mot_deadline_diff.indexOf("-") == -1) {
+					motionContainer.data("expired", true);
+					deadlineContainer.html(motion_expired);
+					if (!deadlineContainer.hasClass("text-danger")) {
+						deadlineContainer.removeClass("text-warning");
+						deadlineContainer.removeClass("text-success");
+						deadlineContainer.addClass("text-danger");
+					}
+				}
+				else {
+					motionContainer.data("expired", false);
+					const deadlineDiff = motion.mot_deadline_diff.replace("-","");
+					deadlineContainer.text(deadlineDiff);
+
+					if (deadlineDiff < "00:05:00") {
+						if (!deadlineContainer.hasClass("text-danger")) {
+							deadlineContainer.addClass("text-danger");
+							deadlineContainer.removeClass("text-warning");
+							deadlineContainer.removeClass("text-success");
+						}
+					}
+					else if (deadlineDiff < "00:30:00") {
+						if (!deadlineContainer.hasClass("text-warning")) {
+							deadlineContainer.addClass("text-warning");
+							deadlineContainer.removeClass("text-success");
+							deadlineContainer.removeClass("text-danger");
+						}
+					}
+					else if (!deadlineContainer.hasClass("text-success")) {
+						deadlineContainer.addClass("text-success");
+						deadlineContainer.removeClass("text-warning");
+						deadlineContainer.removeClass("text-danger");
+					}
+				}
+			}
+
 			motionActions.find(".btn-motion-anonymous").prop("disabled", !hasRight(getUserId(), "handle_motion"));
 		}
 
@@ -354,7 +411,7 @@ function setAgendaMotion(id, motions) {
 			proposition.hide().fadeIn(400);
 		}
 
-		if (hasVotingRight(userId) && motion.mot_status == "voting" && synchroVote) {
+		if (hasVotingRight(userId) && motion.mot_status == "voting" && synchroVote && !motionContainer.data("expired")) {
 			proposition.find("button.btn-vote").show();
 		}
 		else {
@@ -1724,7 +1781,45 @@ function testMeetingReady() {
 	$("#start-meeting-modal").modal("hide");
 }
 
+function showSetMotionDeadlineModal() {
+	$("#set-motion-deadline-modal input").val("");
+
+	const motionContainer = $(this).parents(".motion");
+
+	const motionId = motionContainer.data("id");
+	const agendaId = $("#agenda_point").data("id");
+
+	const deadline = motionContainer.data("deadline");
+	if (deadline) {
+		const deadlineParts = deadline.split(" ");
+		$("#set-motion-deadline-modal input#motion-deadline-date").val(deadlineParts[0]);
+		$("#set-motion-deadline-modal input#motion-deadline-time").val(deadlineParts[1]);
+	}
+
+	$("#set-motion-deadline-modal input[name=motionId]").val(motionId);
+	$("#set-motion-deadline-modal input[name=agendaId]").val(agendaId);
+
+	$("#set-motion-deadline-modal button.btn-set-motion-deadline").removeAttr("disabled");
+	$("#set-motion-deadline-modal").modal("show");
+}
+
+function saveMotionDeadline() {
+	$("#set-motion-deadline-modal button.btn-set-motion-deadline").attr("disabled", "disabled");
+
+	const form = $("#set-motion-deadline-modal form");
+	let deadline = $("#set-motion-deadline-modal input#motion-deadline-date").val();
+	deadline += " " + $("#set-motion-deadline-modal input#motion-deadline-time").val();
+	const myForm = {motionId: $("#set-motion-deadline-modal input[name=motionId]").val(), propositionId: 0, property: "mot_deadline", text: deadline};
+
+	$.post("meeting_api.php?method=do_changeMotionProperty", myForm, function(data) {
+		$("#set-motion-deadline-modal").modal("hide");
+	}, "json");
+}
+
 $(function() {
+	$("#set-motion-deadline-modal").on("click", "button.btn-set-motion-deadline", saveMotionDeadline);
+	$("#agenda_point").on("click", "button.btn-set-deadline", showSetMotionDeadlineModal);
+	
 	$("#agenda_point").on("click", ".motion button.btn-vote", vote);
 	$("#agenda_point").on("click", "button.btn-add-speaker-chat", addSpeakerChat);
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);

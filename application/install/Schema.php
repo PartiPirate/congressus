@@ -144,6 +144,7 @@ $schema["tables"]["motions"]["fields"]["mot_author_id"] = array("type" => "bigin
 $schema["tables"]["motions"]["fields"]["mot_agenda_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["motions"]["fields"]["mot_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motions"]["fields"]["mot_status"] = array("type" => "enum", "size" => "'construction','voting','resolved'", "null" => false, "default" => "construction");
+$schema["tables"]["motions"]["fields"]["mot_deadline"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["motions"]["fields"]["mot_tag_ids"] = array("type" => "varchar", "size" => 2048, "null" => false, "default" => "[]");
 $schema["tables"]["motions"]["fields"]["mot_pinned"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0", "comment" => 'set to 1 to force the anymous mode during the vote');
 $schema["tables"]["motions"]["fields"]["mot_anonymous"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");

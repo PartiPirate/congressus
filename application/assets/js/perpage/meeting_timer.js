@@ -17,6 +17,13 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global numberOfConnected */
+/* global updateAgenda */
+/* global updateAgendaPoint */
+/* global updatePeople */
+/* global getEvents */
+/* global ping */
+/* global checkAgendaMembers */
 
 var getAgendaTimer;
 var getAgendaTimerInterval = 2000;

@@ -1,5 +1,5 @@
 <?php  /*
-	Copyright 2015-2017 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -56,6 +56,20 @@ class BoHelper {
 
 		$statement = $pdo->prepare($query);
 		$statement->execute($object);
+	}
+
+	static function delete($object, $table, $idField, $config, $pdo) {
+		$queryBuilder = QueryFactory::getInstance($config["database"]["dialect"]);
+		$queryBuilder->delete($table);
+
+        $queryBuilder->where("$idField = :$idField");
+
+		$query = $queryBuilder->constructRequest();
+
+//		echo showQuery($query, $object);
+
+		$statement = $pdo->prepare($query);
+		$statement->execute(array($idField => $object[$idField]));
 	}
 
 }

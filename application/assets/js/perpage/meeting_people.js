@@ -732,7 +732,7 @@ function updatePeople() {
 				newOrder += $(this).val();
 			});
 
-			console.log(previousOrder + " vs " + newOrder);
+//			console.log(previousOrder + " vs " + newOrder);
 
 			if (previousOrder != newOrder) {
 				optGroup.html(options);

@@ -559,6 +559,7 @@ function addMotion(event) {
 }
 
 function setAgendaChat(id, chats) {
+	
 	var list = $("#agenda_point ul.objects");
 	var chatContainer = list.find("li#chat-" + id);
 
@@ -591,7 +592,9 @@ function setAgendaChat(id, chats) {
 		var chat = chats[index];
 		if (chat.cha_id != id) continue;
 
-		memberSelect.val(chat.cha_member_id);
+		if (!memberSelect.is(":visible")) {
+			memberSelect.val(chat.cha_member_id);
+		}
 
 		if (nickname.text() != chat.mem_nickname) {
 			nickname.text(chat.mem_nickname);

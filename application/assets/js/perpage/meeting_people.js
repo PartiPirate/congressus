@@ -118,6 +118,7 @@ function updateMemberLi(member, people) {
 
 	$("select.chat-select-member").each(function() {
 		if($(this).parents(".template").length) return;
+//		if($(this).is(":visible")) return;
 
 		var select = $(this);
 		var chat = select.parents(".chat").data("json");
@@ -706,15 +707,36 @@ function updatePeople() {
 		// Order person boxes
 		$("select .voting, select .unknown, select .noticed, select .connected").each(function() {
 			var optGroup = $(this);
+			var select = optGroup.parent();
+
+			if (select.is(":visible")) return;
 
 			var options = optGroup.children();
+			
+			var previousOrder = "";
+			options.each(function() {
+				previousOrder += "-";
+				previousOrder += $(this).val();
+			});
 
-			optGroup.html(options.sort(function (a, b) {
+			options.sort(function (a, b) {
 				var aText = a.text.removeAccent().toLowerCase();
 				var bText = b.text.removeAccent().toLowerCase();
 				
 			    return aText == bText ? 0 : aText < bText ? -1 : 1;
-			}));
+			});
+
+			var newOrder = "";
+			options.each(function() {
+				newOrder += "-";
+				newOrder += $(this).val();
+			});
+
+			console.log(previousOrder + " vs " + newOrder);
+
+			if (previousOrder != newOrder) {
+				optGroup.html(options);
+			}
 		});
 
 		if (!hasWritingRight(userId)) { // The user has not the right to manage the agenda

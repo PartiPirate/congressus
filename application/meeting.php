@@ -560,8 +560,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	<form data-template-id="schulze-form" action="" class="template form-horizontal">
 		<fieldset>
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="mpr_label"><?php echo lang("meeting_proposals"); ?> :</label>
-				<div class="col-md-4 propositions">
+				<label class="col-md-2 control-label" for="mpr_label"><?php echo lang("meeting_proposals"); ?> :</label>
+				<div class="col-md-9 propositions">
 
 				</div>
 			</div>

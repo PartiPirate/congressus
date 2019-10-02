@@ -742,3 +742,15 @@ ul.givers-list {
 .btn-open-givers, .btn-close-givers {
     margin-top: -6px;
 }
+
+@media (min-width: 1024px) {
+  .modal-dialog {
+      width: 900px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .modal-dialog {
+      width: 1300px;
+  }
+}

@@ -22,8 +22,8 @@ $lang["about_what_s_congressus_content"] = "Congressus is an application allowin
 or of power groups.<br >
 <br />
 From a user list (currently managed by Galette), you can define multiples instances,
-groups, wich have eligibles people or electors (or both). The differents
-electors and candidats are allocating theire powers.";
+groups, wich have eligibles people or electors (or both). The different
+electors and candidates are allocating their powers.";
 
 $lang["about_help_us_legend"] = "Help us";
 $lang["about_help_us_content"] = "Congressus is edited by a political party <a href=\"https://www.partipirate.fr\">Parti Pirate</a>. You can

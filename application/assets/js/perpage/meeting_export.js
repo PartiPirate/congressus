@@ -1,7 +1,7 @@
 /*
-	Copyright 2017 Cédric Levieux, Nino Treyssat-Vincent, Parti Pirate
+    Copyright 2017 Cédric Levieux, Nino Treyssat-Vincent, Parti Pirate
 
-	This file is part of Congressus.
+    This file is part of Congressus.
 
     Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

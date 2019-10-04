@@ -81,11 +81,11 @@ $lang["administration_discourse_user"] = "Impersonification";
 $lang["administration_discourse_base"] = "Base d'url Discourse";
 $lang["administration_discourse_allowed_categories"] = "Catégories autorisées";
 
-$lang["administration_mediawiki"] = "Mediawiki"; 
+$lang["administration_mediawiki"] = "MediaWiki";
 $lang["administration_mediawiki_url"] = "Hôte";
 $lang["administration_mediawiki_login"] = "Identifiant";
 $lang["administration_mediawiki_password"] = "Mot de passe";
-$lang["administration_mediawiki_base"] = "Base d'url Mediawiki";
+$lang["administration_mediawiki_base"] = "Base d'url MediaWiki";
 $lang["administration_mediawiki_categories"] = "Catégories connues";
 
 $lang["administration_modules"] = "Modules utilisateurs";

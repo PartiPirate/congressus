@@ -77,7 +77,7 @@ $lang["menu_mypreferences"]     = "My preferences";
 $lang["menu_myVotes"]           = "My votes";
 $lang["menu_meetings"]          = "Meetings";
 $lang["menu_openMeetings"]      = "Meetings in progress";
-$lang["menu_calendar"]          = "Calendrier";
+$lang["menu_calendar"]          = "Calendar";
 
 $lang["login_title"]            = "Log in";
 $lang["login_loginInput"]       = "Loin";
@@ -140,7 +140,7 @@ $lang["meeting_eventNew"]       = "New event";
 $lang["meeting_hideVotes"]      = "Hide votes until the voting is closed";
 $lang["meeting_left"]           = "just left the meeting";
 $lang["meeting_motion"]         = "Motion";
-$lang["meeting_motionSetDeadline"] = "Set a deadline"; 
+$lang["meeting_motionSetDeadline"] = "Set a deadline";
 $lang["meeting_motionCloseVote"] = "End the vote on this motion";
 $lang["meeting_motionDelete"]   = "Delete motion";
 $lang["meeting_motionHas"]      = "Has at least one motion for vote";
@@ -178,7 +178,7 @@ $lang["meeting_start"]          = "Start";
 $lang["meeting_status"]         = "Meetings status";
 $lang["meeting_talkManagement"] = "Speakers list";
 $lang["meeting_task"]           = "Task";
-$lang["meeting_taskContext"]    = "Voir la tâche dans son contexte";
+$lang["meeting_taskContext"]    = "See the task in context";
 $lang["meeting_taskDelete"]     = "Delete task";
 $lang["meeting_taskEnd"]        = "End task";
 $lang["meeting_taskCancel"]     = "Cancel task";
@@ -259,7 +259,7 @@ $lang["export_wiki_fail"]           = "Error: The report hasn't been published."
 $lang["export_wiki_title"]          = "Wiki page title";
 $lang["export_wiki_shortTitle"]     = "Error: The title must have more than 15 characters.";
 $lang["export_wiki_description"]    = "The report will be publish by Congressus at the page choosen below.";
-$lang["export_send_wiki"]           = "Send it to the wiki"; 
+$lang["export_send_wiki"]           = "Send it to the wiki";
 $lang["export_html"]                = "HTML Export";
 $lang["export_pdf"]                 = "PDF Export";
 $lang["export_discourse"]           = "Export to Discourse";
@@ -270,9 +270,9 @@ $lang["export_discourse_shortTitle"] = "Error: The title must have more than 15 
 $lang["export_preview"]             = "Preview";
 $lang["export_send_discourse"]      = "Send on Discourse";
 $lang["export_permission"]          = "You don't have enough right";
-$lang["export_permission_description"] = "To prevent spam, Only the president and secretaire of the meeting have the right to export to Discourse.";
-$lang["export_permission_guests"]   = "Guest are not authorised to use this fonction";
-$lang["export_rendering"]           = "Rendu"; // Missing context to translate
+$lang["export_permission_description"] = "To prevent spam, only the president and secretary of the meeting have the right to export to Discourse.";
+$lang["export_permission_guests"]   = "Guest are not authorised to use this function";
+$lang["export_rendering"]           = "Rendering"; // Missing context to translate
 $lang["export_open"]                = "Open in a new page";
 $lang["export_iframes"]             = "Please activate iframes";
 $lang["export_send"]                = "Send";
@@ -285,9 +285,9 @@ $lang["motion_ballot_majority_66"] = "66% majority";
 $lang["motion_ballot_majority_80"] = "80% majority";
 
 $lang["motion_majorityJudgment_1"] = "Rejected";
-$lang["motion_majorityJudgment_2"] = "Insuficiant";
+$lang["motion_majorityJudgment_2"] = "Insufficient";
 $lang["motion_majorityJudgment_3"] = "Passable";
-$lang["motion_majorityJudgment_4"] = "Good enought";
+$lang["motion_majorityJudgment_4"] = "Good enough";
 $lang["motion_majorityJudgment_5"] = "Good";
 $lang["motion_majorityJudgment_6"] = "Perfect";
 
@@ -300,14 +300,14 @@ $lang["motion_ballot_majority_80_help"] = "The proposal that has more than 80% o
 
 $lang["motion_already_voted"]       = "You already vote";
 $lang["motion_already_argumented"]  = "You already argument";
-$lang["motion_add_source"]          = "Add a source"; 
+$lang["motion_add_source"]          = "Add a source";
 $lang["motion_trash"]               = "Send to trash";
 $lang["motion_open_debate"]         = "Open a debate";
 $lang["motion_expired"]             = "Expired";
 
 $lang["trash_title"]        = "Trash";
 $lang["trash_description"]  = "The trash guarantees the transparency of the construction process. It contains motions that do not respect this process."; // Todo
-$lang["trash_no_amendment"] = "No amendement into the trash";
+$lang["trash_no_amendment"] = "No amendment into the trash";
 
 $lang["calendar_prev"]  = "Previous";
 $lang["calendar_today"] = "Today";
@@ -373,13 +373,13 @@ $lang["notice_has_voting_rights"] = "has voting rights";
 $lang["notice_has_voting_rights_help"] = "Give the voting right to the given group of persons for this meeting";
 
 $lang["agenda_lines"]       = "Agenda";
-$lang["agenda_lines_help"]  = "Insert one point per line to the agenda, add spaces to indent and create dependancy between points.";
+$lang["agenda_lines_help"]  = "Insert one point per line to the agenda, add spaces to indent and create dependency between points.";
 
 $lang["mee_synchro_vote_0"] = "Votes available on the vote interface";
-$lang["mee_synchro_vote_1"] = "Votes synchonised";
+$lang["mee_synchro_vote_1"] = "Votes synchronised";
 
-$lang["save_amendment_title"]   = "Add amendement";
-$lang["save_agenda_title"]      = "Add amendement group";
+$lang["save_amendment_title"]   = "Add amendment";
+$lang["save_agenda_title"]      = "Add amendment group";
 $lang["save_source_title"]      = "Add a source";
 $lang["save_trash_title"]       = "Trash the motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
 $lang["preview_motion_title"]   = "Preview the motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
@@ -397,7 +397,7 @@ $lang["loc_type_discord"]   = "On discord";
 $lang["loc_type_unknown"]   = "at an unknown place";
 
 $lang["construction_arguments"]     = "Arguments";
-$lang["construction_amendments"]    = "Amendements";
+$lang["construction_amendments"]    = "Amendments";
 $lang["construction_argument_send"] = "Send";
 $lang["construction_sources"]       = "Sources";
 
@@ -416,7 +416,7 @@ $lang["authorship_add_co_author"]   = "Add a co-author";
 $lang["authorship_co_authors"]      = "Co-authors";
 
 $lang["amendment_delete_co_author"]     = "Delete co-auteur";
-$lang["amendment_exchange_co_author"]   = "Exchange this co-author with the principal author of this amendement";
+$lang["amendment_exchange_co_author"]   = "Exchange this co-author with the principal author of this amendment";
 
 $lang["amendment_explanation"]          = "Amendment explanation: ";
 $lang["amendment_description"]          = "Amendment content: ";
@@ -425,13 +425,13 @@ $lang["amendments_votes"]               = "{vote} opinions";
 $lang["amendments_no_argument"]         = "No argument submitted";
 $lang["amendments_argument"]            = "{argument} argument";
 $lang["amendments_arguments"]           = "{argument} arguments";
-$lang["amendments_no_amendment"]        = "No amendement submitted";
-$lang["amendments_amendment"]           = "{amendment} amendement";
-$lang["amendments_amendments"]          = "{amendment} amendements";
+$lang["amendments_no_amendment"]        = "No amendment submitted";
+$lang["amendments_amendment"]           = "{amendment} amendment";
+$lang["amendments_amendments"]          = "{amendment} amendments";
 $lang["amendments_no_source"]           = "No source submitted";
 $lang["amendments_source"]              = "{source} source";
 $lang["amendments_sources"]             = "{source} sources";
-$lang["amendments_add_amendment"]       = "Add a amendement";
+$lang["amendments_add_amendment"]       = "Add an amendment";
 $lang["amendments_pro_argument"]        = "{argument} argument in favour";
 $lang["amendments_pro_arguments"]       = "{argument} arguments in favour";
 $lang["amendments_against_argument"]    = "{argument} argument against";

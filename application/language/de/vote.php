@@ -1,7 +1,7 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2018 Cédric Levieux, Parti Pirate
 
-    This file is part of Congressus.
+	This file is part of Congressus.
 
     Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,9 +14,13 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$lang["cgs_choose"] = "Select a group";
+$lang["vote_yes"]       = "Ja";
+$lang["vote_no"]        = "Nein";
+$lang["vote_pro"]       = "Dafür";
+$lang["vote_against"]   = "Dagegen";
+$lang["vote_abstain"]   = "Enthaltung";
 
 ?>

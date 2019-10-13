@@ -1,7 +1,7 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
-	This file is part of Congressus.
+    This file is part of Congressus.
 
     Congressus is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
+    along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 $lang["about_what_s_congressus_legend"] = "What is Congressus ?";
@@ -22,8 +22,8 @@ $lang["about_what_s_congressus_content"] = "Congressus is an application allowin
 or of power groups.<br >
 <br />
 From a user list (currently managed by Galette), you can define multiples instances,
-groups, wich have eligibles people or electors (or both). The differents
-electors and candidats are allocating theire powers.";
+groups, wich have eligibles people or electors (or both). The different
+electors and candidates are allocating their powers.";
 
 $lang["about_help_us_legend"] = "Help us";
 $lang["about_help_us_content"] = "Congressus is edited by a political party <a href=\"https://www.partipirate.fr\">Parti Pirate</a>. You can

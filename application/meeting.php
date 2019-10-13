@@ -308,9 +308,13 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		<div class="col-md-8">
 			<div id="speaking-panel" class="panel panel-default">
 				<div class="panel-heading">
-					<button class="btn btn-default request-speaking pull-right" style="margin-top: -7px;"><?php echo lang("meeting_speakingAsk"); ?>
+					<button class="btn btn-default request-speaking btn-sm pull-right" style="margin-top: -5px;"><?php echo lang("meeting_speakingAsk"); ?>
 						<span class="fa fa-hand-paper-o"></span>
 						<span class="badge" style="display: none;"></span>
+					</button>
+					
+					<button class="btn btn-default btn-move btn-sm pull-right" style="margin-top: -5px; margin-right: 5px;">
+						<span class="fa fa-arrows"></span>
 					</button>
 
 					<?php echo lang("meeting_talkManagement"); ?>
@@ -1044,6 +1048,7 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 <script src="assets/js/perpage/meeting_timer.js"></script>
 <script src="assets/js/perpage/meeting_export.js"></script>
 <script src="assets/js/perpage/meeting_charts.js"></script>
+<script src="assets/js/perpage/meeting_forms.js"></script>
 <script src="assets/js/perpage/location_form.js"></script>
 
 <script>

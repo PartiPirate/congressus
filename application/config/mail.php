@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
-*/
+
 @include_once("config/mail.config.php");
 require_once("engine/utils/PHPMailerAutoload.php");
 

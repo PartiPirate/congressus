@@ -68,6 +68,10 @@
 <!-- JS pad -->
 <script>
     var PAD_WS = <?php echo json_encode($config["server"]["pad"]["ws_url"]); ?>;
+    
+	var nopTimer = $.timer(function() { $.get("nop.php", function(data) {}, "json"); });
+	nopTimer.set({ time : 60000, autostart : true });
+
 </script>
 <script src="assets/js/caret.js"></script>
 <script src="assets/js/merger.js"></script>

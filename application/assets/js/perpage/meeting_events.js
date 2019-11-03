@@ -150,6 +150,7 @@ function showEvent(event) {
 	}
 
 	switch(event.type) {
+		case "notice_sent":
 		case "motion_add":
 		case "motion_to_vote":
 		case "join":

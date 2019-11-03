@@ -149,6 +149,7 @@ $lang["meeting_motionVote2"]    = "Vote motion";
 $lang["meeting_name"]           = "Meeting name";
 $lang["meeting_noInfluence"]    = "I'm afraid of been influenced";
 $lang["meeting_notice"]         = "Convoke";
+$lang["meeting_notice_discourse"] = "Convoke on Discourse"; 
 $lang["meeting_noticed_people"] = "Convoked";
 $lang["meeting_notification"]   = "Notification";
 $lang["meeting_notificationDelete"] = "Delete the notification of";

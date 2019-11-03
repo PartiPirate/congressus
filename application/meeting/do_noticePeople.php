@@ -19,6 +19,8 @@
 
 if (!isset($api)) exit();
 
+require_once("engine/utils/EventStackUtils.php");
+
 $meetingId = $arguments["meetingId"];
 $memcacheKey = "do_getPeople_$meetingId";
 
@@ -140,6 +142,8 @@ if (count($membersToNotice)) {
 
 	$message->send();
 }
+
+addEvent($meetingId, EVENT_NOTICE_SENT, "Convocation envoyée");
 
 $data["number_of_noticed_people"] = count($membersToNotice);
 $data["ok"] = "ok";

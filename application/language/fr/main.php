@@ -152,6 +152,7 @@ $lang["meeting_motionVote2"] = "Voter la motion";
 $lang["meeting_name"] = "Nom de la réunion";
 $lang["meeting_noInfluence"] = "J'ai peur d'être influencé";
 $lang["meeting_notice"] = "Convoquer";
+$lang["meeting_notice_discourse"] = "Convoquer sur Discourse"; 
 $lang["meeting_noticed_people"] = "Personnes convoquées";
 $lang["meeting_notification"] = "Convocation";
 $lang["meeting_notificationDelete"] = "Supprimer la convocation de";
@@ -470,7 +471,7 @@ $lang["chats_order_relative_against"] = "Les plus en désaccord en premier (en v
 $lang["notice_mail_subject"] = "[CONGRESSUS] Convocation à la réunion \"{meeting_label}\"";
 $lang["notice_mail_content"] = "Bonjour,
 
-Vous êtes convoqué-e à la réunion \"{meeting_label}\".
+Vous êtes convoqué·e à la réunion \"{meeting_label}\".
 
 Vous pouvez consulter l'ordre du jour et participer à la réunion en cliquant sur le lien ci-dessous :
 {meeting_link}

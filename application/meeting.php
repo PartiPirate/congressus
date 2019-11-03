@@ -413,6 +413,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				</ul>
 				<div class="panel-footer" style="display: none;">
 					<button class="btn btn-primary btn-xs btn-notice-people"><?php echo lang("meeting_notice"); ?> <span class="glyphicon glyphicon-envelope"></span></button>
+					<button class="btn btn-primary btn-xs btn-notice-discourse-people"><?php echo lang("meeting_notice_discourse"); ?> <span class="glyphicon glyphicon-envelope"></span></button>
 				</div>
 			</div>
 

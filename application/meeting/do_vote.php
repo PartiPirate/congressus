@@ -64,7 +64,7 @@ $voteBo->save($vote);
 $vote = $voteBo->getById($vote[$voteBo->ID_FIELD]);
 
 $vote["mem_id"] = $vote["id_adh"] ? $vote["id_adh"] : "G" . $vote["chat_guest_id"];
-$vote["mem_nickname"] = htmlspecialchars(utf8_encode($vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["pin_nickname"]));
+$vote["mem_nickname"] = htmlspecialchars(utf8_encode($vote["pseudo_adh"] ? $vote["pseudo_adh"] : (isset($vote["pin_nickname"]) ? $vote["pin_nickname"] : "")));
 
 $data["ok"] = "ok";
 

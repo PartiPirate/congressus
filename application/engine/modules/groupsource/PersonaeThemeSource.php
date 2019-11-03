@@ -84,11 +84,18 @@ class PersonaeThemeSource {
 		$fixationBo = FixationBo::newInstance($connection, $config);
         $themeBo = ThemeBo::newInstance($connection, $config);
 
-		$theme = $themeBo->getTheme($notice["not_target_id"], true);
+//		$theme = $themeBo->getTheme($notice["not_target_id"], true);
+
+		$themes = $themeBo->getThemes(array("the_id" => $notice["not_target_id"], "with_deleted" => true, "with_group_information" => true));
+		$theme = $themes[0];
+
+//		print_r($theme);
 
 		$notice["not_label"] = $theme["the_label"];
 		$notice["not_people"] = array();
 		$notice["not_children"] = array();
+		$notice["not_contact"] = $theme["gro_contact"];
+		$notice["not_contact_type"] = $theme["gro_contact_type"];
 
 		if ($theme["the_delegate_only"] == "1") {
 			// We get all eligibles, because eligible is the only persons with voting rights (if the theme as a voting power)

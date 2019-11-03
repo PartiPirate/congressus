@@ -17,6 +17,7 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+define("EVENT_NOTICE_SENT", "notice_sent");
 define("EVENT_JOIN", "join");
 define("EVENT_LEFT", "left");
 define("EVENT_MOTION_ADD", "motion_add");

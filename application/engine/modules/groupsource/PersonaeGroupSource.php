@@ -74,6 +74,8 @@ class PersonaeGroupSource {
 		$notice["not_label"] = $group["gro_label"];
 		$notice["not_people"] = array();
 		$notice["not_children"] = array();
+		$notice["not_contact"] = $group["gro_contact"];
+		$notice["not_contact_type"] = $group["gro_contact_type"];
 
 		foreach($group["gro_themes"] as $theme) {
 			$child = array();
@@ -81,6 +83,8 @@ class PersonaeGroupSource {
 			$child["not_label"] = $theme["the_label"];
 			$child["not_people"] = array();
 			$child["not_power"] = $theme["gth_power"];
+    		$child["not_contact"] = $group["gro_contact"];
+    		$child["not_contact_type"] = $group["gro_contact_type"];
 
 //            print_r($theme);
 

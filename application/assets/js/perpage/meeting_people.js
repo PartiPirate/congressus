@@ -351,6 +351,8 @@ function addNotice(notice, parent) {
 	if (!noticeHtml.length) {
 		noticeHtml = $("<li />", {"class": "list-group-item notice",
 			id: noticeId,
+			"data-contact-type": notice.not_contact_type,
+			"data-contact": notice.not_contact,
 			style: "padding-top: 2px; padding-bottom: 2px;"});
 		var title = $("<h5 />", {style: "margin: 0;"});
 		title.append($("<span />", {"class": "notice-name"}).append(notice.not_label));
@@ -691,6 +693,15 @@ function updatePeople() {
 		else {
 			$("#noticed-people .panel-footer").show();
 			$("#noticed-people .panel-footer .btn-notice-people").removeClass("disabled");
+
+			if ($("li.notice[data-contact-type=discourse_category],li.notice[data-contact-type=discourse_group]").length) {
+				$("#noticed-people .panel-footer .btn-notice-discourse-people").show();
+				$("#noticed-people .panel-footer .btn-notice-discourse-people").removeClass("disabled");
+			}
+			else {
+				$("#noticed-people .panel-footer .btn-notice-discourse-people").hide();
+				$("#noticed-people .panel-footer .btn-notice-discourse-people").addClass("disabled");
+			}
 		}
 
 //		console.log("Toggle missing people @ " + new Date());
@@ -1110,7 +1121,25 @@ function addNoticeHandlers() {
 
 		var meetingId = $(".meeting").data("id");
 
-		$.post("meeting_api.php?method=do_noticePeople", {meetingId: meetingId}, function(data) {}, "json");
+		$.post("meeting_api.php?method=do_noticePeople", {meetingId: meetingId}, function(data) {
+			if(data.ok) {
+				
+			}
+		}, "json");
+	});
+
+	$("#noticed-people .panel-footer").on("click", ".btn-notice-discourse-people", function(event) {
+		if (!hasRight(getUserId(), "handle_notice")) return;
+
+		$(this).addClass("disabled");
+
+		var meetingId = $(".meeting").data("id");
+
+		$.post("meeting_api.php?method=do_noticeDiscoursePeople", {meetingId: meetingId}, function(data) {
+			if(data.ok) {
+				
+			}
+		}, "json");
 	});
 
 	$("#visitors").on("mouseenter", "li.member", function() {

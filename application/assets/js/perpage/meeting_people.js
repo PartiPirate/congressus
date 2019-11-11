@@ -688,10 +688,18 @@ function updatePeople() {
 		}
 
 		if (((meeting.mee_status != "construction") && (meeting.mee_status != "waiting")) || isPeopleNoticed || !hasRight(getUserId(), "handle_notice")) {
-			$("#noticed-people .panel-footer").hide();
+			$("#noticed-people .panel-footer .btn-notice-people").hide();
+
+			if ($("li.notice[data-contact-type=discourse_category],li.notice[data-contact-type=discourse_group]").length) {
+				$("#noticed-people .panel-footer").show();
+			}
+			else {
+				$("#noticed-people .panel-footer").hide();
+			}
 		}
 		else {
 			$("#noticed-people .panel-footer").show();
+			$("#noticed-people .panel-footer .btn-notice-people").show();
 			$("#noticed-people .panel-footer .btn-notice-people").removeClass("disabled");
 
 			if ($("li.notice[data-contact-type=discourse_category],li.notice[data-contact-type=discourse_group]").length) {

@@ -363,9 +363,12 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						<button style="display: none;" class="margin-top-5 btn btn-warning btn-template-meeting"><?php echo lang("meeting_template"); ?></button>
 						<button style="display: none;" class="margin-top-5 btn btn-success btn-open-meeting"><?php     echo lang("meeting_open"); ?></button>
 						<button style="display: none;" class="margin-top-5 btn btn-danger  btn-close-meeting"><?php    echo lang("meeting_close"); ?></button>
+
+						<button class="margin-top-5 btn btn-warning btn-scrutineer-mode"><?php   echo lang("meeting_scrutineer_mode"); ?></button>
 						
 						<a	class="btn btn-primary btn-vote-meeting margin-top-5" 
 							href="myVotes.php?meetingId=<?php echo $meeting["mee_id"]; ?>" target="_blank"><?php echo lang("meeting_voteExternal"); ?> <span class="glyphicon glyphicon-new-window" style="font-size: 10px;"></span></a>
+
 						<button class="btn btn-default btn-local-anonymous margin-top-5" data-toggle="tooltip" data-placement="bottom"
 							title="<?php echo lang("meeting_hideVotes"); ?>"><?php echo lang("meeting_noInfluence"); ?> <span class="fa fa-archive"></span>
 						</button>
@@ -491,7 +494,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			</div>
 		</div>
 		<?php	if ($hasChat) { ?>
-		<div class="col-md-<?php echo $rightColumn; ?>">
+		<div class="col-md-<?php echo $rightColumn; ?>" id="left-panel">
 			<div id="meeting_external_chat" class="panel panel-default" style="margin-bottom: 0px;">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-target="#echat-list" href="#"><?php echo lang("meeting_external_chat"); ?></a>

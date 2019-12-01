@@ -110,6 +110,11 @@ class MotionBo {
 				$args["mee_status"] = $filters["mee_status"];
 				$queryBuilder->where("mee_status = :mee_status");
 			}
+
+			if (isset($filters["mee_id"]) && $filters["mee_id"]) {
+				$args["mee_id"] = $filters["mee_id"];
+				$queryBuilder->where("mee_id = :mee_id");
+			}
 		}
 
 		if (isset($filters["with_notice"]) && $filters["with_notice"]) {

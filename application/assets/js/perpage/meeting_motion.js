@@ -644,9 +644,87 @@ function setMotionTags(motionId, tagIds) {
 	}
 }
 
+function activateScrutineerMode() {
+	$("#right-panel").hide();
+	$("#left-panel").hide();
+	$("#tasks").hide();
+	$("#main-panel").removeClass("col-md-6").removeClass("col-md-9").addClass("col-md-12");
+
+	$("#agenda_point").data("previous-id", $("#agenda_point").data("id"));
+	$("#agenda_point").data("id", -1);
+
+	$("#agenda_point").show();
+	$("#agenda_point .panel-heading, #agenda_point .panel-footer").hide();
+
+	const showInfoPanelsButton = $(".show-info-panels-btn")
+	const showSpeakingButton = $(".show-speaking-btn")
+	
+	if (showInfoPanelsButton.hasClass("active")) {
+		showInfoPanelsButton.data("was-state", "activated");
+		showInfoPanelsButton.click();
+	}
+	else {
+		showInfoPanelsButton.data("was-state", "deactivated");
+	}
+	
+	if (showSpeakingButton.hasClass("active")) {
+		showSpeakingButton.data("was-state", "activated");
+		showSpeakingButton.click();
+	}
+	else {
+		showSpeakingButton.data("was-state", "deactivated");
+	}
+}
+
+function deactivateScrutineerMode() {
+	$("#right-panel").show();
+	$("#left-panel").show();
+	$("#tasks").show();
+	$("#main-panel").removeClass("col-md-12");
+
+	$("#agenda_point").data("id", $("#agenda_point").data("previous-id"));
+/*	
+	if ($("#agenda_point").data("id")) {
+		$("#agenda_point").hide();
+	}
+*/
+
+	$("#agenda_point .panel-heading, #agenda_point .panel-footer").show();
+
+	if ($("#left-panel").length) {
+		$("#main-panel").addClass("col-md-6");
+	}
+	else {
+		$("#main-panel").addClass("col-md-9");
+	}
+
+	const showInfoPanelsButton = $(".show-info-panels-btn")
+	const showSpeakingButton = $(".show-speaking-btn")
+
+	if (showInfoPanelsButton.data("was-state") == "activated") {
+		showInfoPanelsButton.click();
+	}
+/*
+	if (showSpeakingButton.data("was-state") == "activated") {
+		showSpeakingButton.click();
+	}
+*/	
+}
+
 $(function() {
 	$(".btn-local-anonymous").click(function() {
 		$(this).toggleClass("active");
+	});
+
+	$(".btn-scrutineer-mode").click(function() {
+		$(this).toggleClass("active");
+
+		if ($(this).hasClass("active")) {
+			activateScrutineerMode();
+		}
+		else {
+			deactivateScrutineerMode();
+		}
 	});
 
 	addMotionHandlers();

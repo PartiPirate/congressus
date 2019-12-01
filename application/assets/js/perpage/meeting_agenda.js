@@ -300,7 +300,7 @@ function addAgenda(agendas, parent, parentId) {
 function updateMeeting(meeting) {
 	$(".meeting").data("json", meeting);
 
-	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
+	$("#meeting-status-panel button:not(.request-speaking,.btn-local-anonymous,.btn-scrutineer-mode), #meeting-status-panel .panel-body>span,#meeting-status-panel a.export-link,#meeting-status-panel br.export-br").hide();
 	$(".navbar-nav li.export-divider,.navbar-nav li.export-li").hide();
 
 	switch (meeting.mee_status) {

@@ -85,9 +85,28 @@ $memcacheKey = "do_getAgendaPoint_$pointId";
 $json = $memcache->get($memcacheKey);
 
 if (!$json) {
-	$agenda = $agendaBo->getById($pointId);
+	if ($pointId == -1) {
+		$agendas = $agendaBo->getByFilters(array("age_meeting_id" => $meetingId));
+		$agenda = array("age_meeting_id" => $meetingId, "age_id" => -1);
+
+		$motions = array();
+
+		foreach($agendas as $currentAgenda) {
+			$ageObjects = json_decode($currentAgenda["age_objects"], true);
+			foreach($ageObjects as $ageObject) {
+				if (isset($ageObject["motionId"])) {
+					$motions[] = $ageObject;
+				}
+			}
+		}
+
+		$agenda["age_objects"] = json_encode($motions);
+	}
+	else {
+		$agenda = $agendaBo->getById($pointId);
+	}
 	$now = getNow();
-	
+
 	if (!$agenda || $agenda["age_meeting_id"] != $meeting[$meetingBo->ID_FIELD]) {
 		echo json_encode(array("ko" => "ko", "message" => "agenda_point_not_accessible"));
 		exit();
@@ -112,7 +131,14 @@ if (!$json) {
     	return 0;
     }
 
-	$motions = $motionBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+	if ($pointId == -1) {
+		$motionFilters = array("with_meeting" => true, "mee_id" => $meetingId);
+	}
+	else {
+		$motionFilters = array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]);
+	}
+
+	$motions = $motionBo->getByFilters($motionFilters);
 
 	// The appearing of the proposition is based on pro first, no change otherwise
 	usort($motions, "sortPropositionsOnLabel");
@@ -120,6 +146,11 @@ if (!$json) {
 	$data["motions"] = $motions; 
 	foreach($data["motions"] as $index => $motion) {
 		$data["motions"][$index]["mot_tag_ids"] = json_decode($data["motions"][$index]["mot_tag_ids"]);
+
+		foreach($motion as $key => $value) {
+			if (strpos($key, "age_") !== false) unset($data["motions"][$index][$key]);
+			if (strpos($key, "mee_") !== false) unset($data["motions"][$index][$key]);
+		}
 
 		if ($motion["mot_deadline"]) {
 			$date = getDateTime($motion["mot_deadline"]);
@@ -160,8 +191,18 @@ if (!$json) {
  		}
 	}
 
-	$data["votes"] = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
-	
+	$data["votes"] = array();
+
+	if (isset($agendas)) {
+		foreach($agendas as $currentAgenda) {
+			$votes = $voteBo->getByFilters(array("mot_agenda_id" => $currentAgenda[$agendaBo->ID_FIELD]));
+			$data["votes"] = array_merge($data["votes"], $votes);
+		}
+	}
+	else {
+		$data["votes"] = $voteBo->getByFilters(array("mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+	}
+
 	foreach($data["votes"] as $index => $vote) {
 		$data["votes"][$index]["mem_id"] = $vote["id_adh"];
 		$data["votes"][$index]["mem_nickname"] = htmlspecialchars(utf8_encode($vote["pseudo_adh"] ? $vote["pseudo_adh"] : $vote["nom_adh"] . ' ' . $vote["prenom_adh"]), ENT_SUBSTITUTE);

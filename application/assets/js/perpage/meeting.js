@@ -170,7 +170,10 @@ function editorBlurHandler(event) {
 function getDescriptionLi(list) {
 	var description = list.find("li#description");
 
-	if (!description.length) {
+	var agendaId = $("#agenda_point").data("id");
+	var meetingId = $(".meeting").data("id");
+
+	if (!description.length && agendaId != -1) {
 		description = $("<li />", {id: "description", "class": "list-group-item"});
 
 		description.append($("<p />"));
@@ -187,9 +190,6 @@ function getDescriptionLi(list) {
 		editor.children(".Editor-editor").css({"max-height": "300px", "overflow-y": "scroll"});
 
 		description.hide().fadeIn(400);
-
-		var agendaId = $("#agenda_point").data("id");
-		var meetingId = $(".meeting").data("id");
 
 		editor.find("*[contenteditable=true]").keyup(function() {
 			clearKeyup();

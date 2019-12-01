@@ -135,6 +135,7 @@ $lang["meeting_dateEnd"]        = "End date:";
 $lang["meeting_dateStart"]      = "Start date:";
 $lang["meeting_delete"]         = "Delete";
 $lang["meeting_template"]       = "Transform in template";
+$lang["meeting_scrutineer_mode"]= "Activate/Deactivate scrutineer mode";
 $lang["meeting_empty"]          = "There is no meeting";
 $lang["meeting_eventNew"]       = "New event";
 $lang["meeting_hideVotes"]      = "Hide votes until the voting is closed";

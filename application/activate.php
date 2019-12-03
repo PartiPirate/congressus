@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
-*/
+
 $page = "activate";
 include_once("header.php");
 require_once("engine/bo/UserBo.php");

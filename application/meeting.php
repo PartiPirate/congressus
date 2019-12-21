@@ -586,6 +586,16 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</fieldset>
 	</form>
 
+	<form data-template-id="approval-form" action="" class="template form-horizontal">
+		<fieldset>
+			<div class="form-group">
+				<div class="col-md-12 propositions">
+
+				</div>
+			</div>
+		</fieldset>
+	</form>
+
 	<ul>
 		<li data-template-id="old-task" id="task-${tas_id}"
 			class="template list-group-item task"
@@ -945,6 +955,17 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</div>
 	</div>
 
+	<div data-template-id="approvalProposition" class="proposition" style="width: 100%; background-color: #eeeeee; color: #111111; border-radius: 4px; margin-top: 5px; margin-bottom: 5px;" data-id="${mpr_id}" data-power="0">
+		<span style="padding-left: 5px; ">${mpr_label}</span>
+		<div class="btn-group" style="width: 100%; margin: 2px; ">
+			<?php 	$approvals = array(1, 2);
+					$nbItems = count($approvals);
+					foreach($approvals as $judgeIndex => $judgementMajorityItem) {?>
+				<div class="btn btn-default judgement" style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_approval_" . $judgementMajorityItem); ?></div>
+			<?php	} ?>
+		</div>
+	</div>
+
 	<div data-template-id="tag" class="tag pull-left badge" style="text-align: left; margin-right: 5px; margin-top: 4px; height: 18px; " data-tag-id="${tag_id}" data-motion-id="${mot_id}" >
 		<span class="" style="text-align: left; position: relative; top: -1px;">${tag_label}</span>
 		<span class="text-danger btn-remove-tag glyphicon glyphicon-remove"	style="display: none;" title="<?php echo lang("meeting_removeTag"); ?>"></span>
@@ -1118,6 +1139,17 @@ foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
 ?>
 
 var majority_judgement_translations = <?=json_encode($translatons)?>
+
+
+<?php
+
+$translatons = array();
+$translatons[] = lang("motion_approval_" . 1, false);
+$translatons[] = lang("motion_approval_" . 2, false);
+
+?>
+
+var approval_translations = <?php echo json_encode($translatons); ?>
 
 var isPeopleReady = false;
 var isAgendaReady = false;

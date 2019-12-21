@@ -20,6 +20,8 @@
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
 
+/* global approval_translations */
+
 /* global updateChart2 */
 
 /* global initBordaChart */
@@ -157,6 +159,19 @@ function computeMotion(motion) {
 	
 					var newHtml = "&nbsp;(" + jmLabel + " / " + percent + "%)";
 				}
+				else if (winLimit == -3) {
+					var jmWinning = data.propositions[index].jm_median_power;
+					
+					var percent = 0;
+					var jmLabel = approval_translations[0];
+
+					if (jmWinning) {
+						percent = Math.round(data.propositions[index].jm_sum_proportion_powers[jmWinning] * 10000) / 100.;
+						jmLabel = approval_translations[jmWinning - 1];
+					}
+	
+					var newHtml = "&nbsp;(" + jmLabel + " / " + percent + "%)";
+				}
 				
 				var explanations = JSON.parse(data.propositions[index].mpr_explanation);
 //				console.log(explanations);
@@ -243,7 +258,7 @@ function computeMotion(motion) {
 				motion.data("datahash", datahash);
 			}
 		}
-		else if (winLimit == -2) { // Majority Judgement
+		else if (winLimit == -2 || winLimit == -3) { // Majority Judgement && Approval
 			initJMChart(motion);
 
 			var chartData = {};
@@ -253,7 +268,9 @@ function computeMotion(motion) {
 
 			var datahash = "";
 
-			for(var index = majority_judgement_translations.length - 1; index >= 0; --index) {
+			let translations = winLimit == -2 ? majority_judgement_translations : approval_translations;
+
+			for(var index = translations.length - 1; index >= 0; --index) {
 				var dataset = {
 					data: [
 					],
@@ -263,7 +280,7 @@ function computeMotion(motion) {
 					],
 					borderColor: [
 					],
-					label: majority_judgement_translations[index]
+					label: translations[index]
 				};
 	
 				chartData.datasets.push(dataset);
@@ -277,16 +294,16 @@ function computeMotion(motion) {
 
 				datahash += shortenLabel(data.propositions[index].mpr_label, 20);
 
-				for(var jndex = majority_judgement_translations.length - 1; jndex >= 0; --jndex) {
+				for(var jndex = translations.length - 1; jndex >= 0; --jndex) {
 					var percent = data.propositions[index].jm_proportion_powers[jndex + 1] * 100;
-					chartData.datasets[majority_judgement_translations.length - jndex - 1].data.push(percent);
+					chartData.datasets[translations.length - jndex - 1].data.push(percent);
 
-					var hue = (majority_judgement_translations.length == 1 ? 0 : 120 * jndex / (majority_judgement_translations.length - 1));
-					chartData.datasets[majority_judgement_translations.length - jndex - 1].backgroundColor.push("hsla(" + hue + ", 70%, 70%, 0.25)");
-					chartData.datasets[majority_judgement_translations.length - jndex - 1].borderWidth.push(2);
-					chartData.datasets[majority_judgement_translations.length - jndex - 1].borderColor.push("hsla(" + hue + ", 70%, 70%, 1)");
+					var hue = (translations.length == 1 ? 0 : 120 * jndex / (translations.length - 1));
+					chartData.datasets[translations.length - jndex - 1].backgroundColor.push("hsla(" + hue + ", 70%, 70%, 0.25)");
+					chartData.datasets[translations.length - jndex - 1].borderWidth.push(2);
+					chartData.datasets[translations.length - jndex - 1].borderColor.push("hsla(" + hue + ", 70%, 70%, 1)");
 
-					datahash += data.percent;
+					datahash += percent;
 				}
 			}
 

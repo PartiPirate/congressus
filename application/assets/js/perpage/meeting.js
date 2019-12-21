@@ -21,6 +21,7 @@
 /* global bootbox */
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
+/* global approval_translations */
 /* global showdown */
 /* gloabl areVotesAnonymous */
 /* gloabl computeMotion */
@@ -38,6 +39,7 @@
 /* global motion_expired */
 
 var judgmentVoteIsMandatory = false;
+var approval_values = [1, 2];
 
 keyupTimeoutId = null;
 
@@ -934,6 +936,17 @@ function addVotes(votes, proposition, motion) {
 				}
 			}
 		}
+		else if (motionWinLimit == -3) {
+			for(var jmIndex = 0; jmIndex < approval_values.length; ++jmIndex) {
+				var jmValue = approval_values[jmIndex];
+				if (jmValue == vote.vot_power && vote.vot_power != 0) {
+					if (voteLi.find(".power").text() != approval_translations[jmIndex]) {
+						voteLi.find(".power").text(approval_translations[jmIndex]);
+					}
+					break;
+				}
+			}
+		}
 		else if (voteLi.find(".power").text() != vote.vot_power) {
 			voteLi.find(".power").text(vote.vot_power);
 		}
@@ -1077,14 +1090,25 @@ function vote(event) {
 	        className: "not-large-dialog"
 		});
 	}
-	else if (motionWinLimit == -2) {
+	else if (motionWinLimit == -2 || motionWinLimit == -3) {
 
-		dialog = $("form[data-template-id=majority-judgment-form]").template("use", {data: {}});
+		if (motionWinLimit == -2) {
+			dialog = $("form[data-template-id=majority-judgment-form]").template("use", {data: {}});
+		}
+		else if (motionWinLimit == -3) {
+			dialog = $("form[data-template-id=approval-form]").template("use", {data: {}});
+		}
+
 		var propositions = motion.find(".proposition");
 		var propositionsHolder = dialog.find(".propositions");
 
 		propositions.each(function() {
-			var propositionHolder = $("div[data-template-id=judgementProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
+			if (motionWinLimit == -2) {
+				var propositionHolder = $("div[data-template-id=judgementProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
+			}
+			else if (motionWinLimit == -3) {
+				var propositionHolder = $("div[data-template-id=approvalProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
+			}
 
 			propositionHolder.find(".judgement").click(function() {
 				proposition.find(".judgement").removeClass("active");

@@ -273,6 +273,21 @@ foreach($sortedMotions as $motionId => $motion) {
 				</div>
 			</div>
 	<?php 		} 
+				else if ($motion["mot_win_limit"] == -3) {
+					if ($index != 0) echo "<br>";
+				?>
+			<?php echo $proposition["mpr_label"]; ?><br>
+			<div class="proposition" style="width: 100%; border-radius: 4px; padding: 2px;" data-expired="<?php echo (($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false"); ?>" data-id="<?php echo $proposition["mpr_id"]; ?>" data-power="<?php echo ($proposition["vot_power"] ? $proposition["vot_power"] : 0); ?>">
+				<div class="btn-group" style="width: 100%; margin: 2px;">
+					<?php 	$approvals = array(1, 2);
+							$nbItems = count($approvals);
+							foreach($approvals as $judgeIndex => $judgementMajorityItem) {?>
+						<div class="btn btn-default judgement" 
+							style="width: <?php echo 100 / $nbItems; ?>%; color: #111111; background: hsl(<?php echo 120 * (0 + ($judgeIndex / ($nbItems - 1))); ?>, 70%, 70%);" type="button" data-power="<?php echo $judgementMajorityItem; ?>"><?php echo lang("motion_approval_" . $judgementMajorityItem); ?></div>				
+					<?php	} ?>
+				</div>
+			</div>
+	<?php 		} 
 				else if ($motion["mot_win_limit"] == -1) {
 				?>
 			<div class="btn btn-default proposition text-center" data-expired="<?php echo (($motion["mot_deadline"] && $motion["mot_deadline_expired"]) ? "true" : "false"); ?>"
@@ -323,7 +338,8 @@ foreach($sortedMotions as $motionId => $motion) {
 		<ul class="list-group" style="margin-bottom: 0">
 <?php
 	foreach($propositions as $index => $proposition) { ?>
-		<li class="list-group-item" data-proposition-id="<?=$proposition["mpr_id"]?>"><?=$proposition["mpr_label"]?> <span class="badge pull-right"><?=($proposition["vot_power"] ? ($motion["mot_win_limit"] == -2 ? lang("motion_majorityJudgment_" . $proposition["vot_power"]) : $proposition["vot_power"]) : "")?></span></li>
+		<li class="list-group-item" data-proposition-id="<?=$proposition["mpr_id"]?>"><?=$proposition["mpr_label"]?> <span class="badge pull-right">
+			<?=($proposition["vot_power"] ? ($motion["mot_win_limit"] == -2 ? lang("motion_majorityJudgment_" . $proposition["vot_power"]) : ($motion["mot_win_limit"] == -3 ? lang("motion_approval_" . $proposition["vot_power"]) : $proposition["vot_power"])) : "")?></span></li>
 <?php
 	} ?>
 	

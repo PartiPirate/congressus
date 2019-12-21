@@ -282,6 +282,7 @@ $lang["export_open"] = "Ouvrir dans une nouvelle page";
 $lang["export_iframes"] = "Merci d'activer les iframes";
 $lang["export_send"] = "Envoyer";
 
+$lang["motion_ballot_majority_-3"] = "Approbation";
 $lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"] = "La meilleure";
@@ -296,6 +297,10 @@ $lang["motion_majorityJudgment_4"] = "Assez bien";
 $lang["motion_majorityJudgment_5"] = "Bien";
 $lang["motion_majorityJudgment_6"] = "Très bien";
 
+$lang["motion_approval_1"] = "Non";
+$lang["motion_approval_2"] = "Oui";
+
+$lang["motion_ballot_majority_-3_help"] = "Pour chacune des propositions, dîtes si vous approuvez ou non. La ou les propositions gagnantes sont celles qui ont le meilleur taux d'approbation.";
 $lang["motion_ballot_majority_-2_help"] = "Pour chacune des propositions, rendez votre jugement qualitatif. Une décision prise à l'aide du jugement majoritaire permet de qualifier chacune des propositions par rapport à elle-même et non dans un système de concurrence ou de préférence. Toutefois quand vous commencer à rendre votre jugement, toutes les propositions doivent être jugées, à défaut le jugement est &laquo;À rejeter&raquo;.\n\nLa ou les propositions gagnantes sont celles qui ont le meilleur taux d'adhésion.";
 $lang["motion_ballot_majority_-1_help"] = "Classez les propositions par ordre de préférence (la plus acceptable pour vous en haut). Le vote Borda est un vote préférentiel permettant de trouver la proposition la plus soutenue parmi toutes celles proposées.";
 $lang["motion_ballot_majority_0_help"]  = "La proposition qui a le plus de voix gagne.";

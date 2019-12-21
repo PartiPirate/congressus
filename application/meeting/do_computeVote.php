@@ -264,7 +264,7 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
         //    unset($propositions[$index]["votes"]);
         }
     }
-    else if ($motion["mot_win_limit"] == -2) { // JM
+    else if ($motion["mot_win_limit"] == -2 || $motion["mot_win_limit"] == -3) { // JM or Approval
         $defaultJmArray = array(0);
         for($index = 0; $index < count($config["congressus"]["ballot_majority_judgment"]); $index++) {
             $defaultJmArray[] = 0;
@@ -289,16 +289,16 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
                 }
 
                 $propositions[$index]["votes"][$jndex]["vot_real_power"] = $defaultJmArray;
-    
+
                 $jmVoteValue = $vote["vot_power"];
                 $votePower = $delegations["powers"][$vote["vot_member_id"]]["power"] / $delegations["theme"]["the_voting_power"];
-    
+
                 $propositions[$index]["votes"][$jndex]["vot_real_power"][$jmVoteValue] = $votePower;
                 $propositions[$index]["jm_powers"][$jmVoteValue] += $votePower;
                 $propositions[$index]["jm_powers"][0] += $votePower;
-    
+
                 $explainedVote = array("neutral" => $propositions[$index]["mpr_neutral"], "power" => $jmVoteValue, "memberLabel" => GaletteBo::showIdentity($vote), "memberId" => $vote["vot_member_id"], "votePower" => $delegations["powers"][$vote["vot_member_id"]]["power"], "jmPower" => $jmVoteValue);
-    
+
                 $propositions[$index]["mpr_explanation"]["votes"][] = $explainedVote;
             }
     
@@ -365,6 +365,7 @@ if (!$json || (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true")) {
                 $propositions[0]["mpr_winning"] = 1;
                 $propositions[0]["mpr_explanation"]["winning"] = 1;
                 break;
+            case -3: // Approval, TODO can have more than one winner
             case -2: // JM, TODO can have more than one winner
         //        echo "Jugement majoritaire\n"; 
                 usort($propositions, "sortPropositionsOnJMPower");

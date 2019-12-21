@@ -282,7 +282,7 @@ function initJMChart(motionContainer) {
 	                else {
 	                    tooltipEl.classList.add('no-transform');
 	                }
-	
+
 	                function getBody(bodyItem) {
 	                    return bodyItem.lines;
 	                }

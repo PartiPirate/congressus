@@ -334,6 +334,7 @@ function setAgendaMotion(id, motions) {
 				motionActions.find(".btn-motion-limits.btn-motion-limits").hide();
 				motionContainer.find(".btn-motion-add-tag").hide();
 				motionContainer.find(".btn-remove-tag").hide();
+				motionActions.find(".btn-set-deadline").hide();
 			}
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
 

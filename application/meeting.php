@@ -103,43 +103,47 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 				<div class="panel-body">
 
 					<!-- Start time -->
-					<div class="start-date-time" style="height: 21px;">
+					<div class="start-date-time" style="min-height: 21px;">
 						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateStart"); ?>
-						<span class="mee_start datetime-control">
-							<?php echo lang("meeting_the"); ?>
-							<span class="date-control">
-								<span class="span-date read-data"><?php echo @$start->format(lang("date_format"))?></span>
-								<input style="display:none; height: 20px; width: 130px;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
+						<div style="display: inline-block;">
+							<span class="mee_start datetime-control">
+								<?php echo lang("meeting_the"); ?>
+								<span class="date-control">
+									<span class="span-date read-data"><?php echo @$start->format(lang("date_format"))?></span>
+									<input style="display:none; height: 20px; width: 130px; border-radius: 4px; border: 1px solid;" class="input-date" type="date" value="<?php echo @$start->format("Y-m-d"); ?>" />
+								</span>
+								<?php echo lang("meeting_at"); ?>
+								<span class="time-control">
+									<span class="span-time read-data"><?php echo @$start->format(lang("time_format"))?></span>
+									<input style="display:none; height: 20px; border-radius: 4px; border: 1px solid;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
+								</span>
 							</span>
-							<?php echo lang("meeting_at"); ?>
-							<span class="time-control">
-								<span class="span-time read-data"><?php echo @$start->format(lang("time_format"))?></span>
-								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$start->format("H:i"); ?>" />
-							</span>
-						</span>
-						<button style="display: none;" id="update-start-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none;" id="save-start-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
-						<button style="display: none;" id="cancel-start-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="update-start-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="save-start-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="cancel-start-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						</div>
 					</div>
 
 					<!-- End time -->
-					<div class="end-date-time" style="height: 21px;">
+					<div class="end-date-time" style="min-height: 21px;">
 						<span class="glyphicon glyphicon-time"></span> <?php echo lang("meeting_dateEnd"); ?>
-						<span class="mee_finish datetime-control">
-							<?php echo lang("meeting_the"); ?>
-							<span class="date-control">
-								<span class="span-date read-data"><?php echo @$end->format(lang("date_format"))?></span>
-								<input style="display:none; height: 20px; width: 130px;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
+						<div style="display: inline-block;">
+							<span class="mee_finish datetime-control">
+								<?php echo lang("meeting_the"); ?>
+								<span class="date-control">
+									<span class="span-date read-data"><?php echo @$end->format(lang("date_format"))?></span>
+									<input style="display:none; height: 20px; width: 130px; border-radius: 4px; border: 1px solid;" class="input-date" type="date" value="<?php echo @$end->format("Y-m-d"); ?>" />
+								</span>
+								<?php echo lang("meeting_at"); ?>
+								<span class="time-control">
+									<span class="span-time read-data"><?php echo @$end->format(lang("time_format"))?></span>
+									<input style="display:none; height: 20px; border-radius: 4px; border: 1px solid;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
+								</span>
 							</span>
-							<?php echo lang("meeting_at"); ?>
-							<span class="time-control">
-								<span class="span-time read-data"><?php echo @$end->format(lang("time_format"))?></span>
-								<input style="display:none; height: 20px;" class="input-time" type="time" value="<?php echo @$end->format("H:i"); ?>" />
-							</span>
-						</span>
-						<button style="display: none;" id="update-end-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none;" id="save-end-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
-						<button style="display: none;" id="cancel-end-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="update-end-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="save-end-btn" type="button" class="btn btn-xs btn-success save-btn"><i class="fa fa-save" aria-hidden="true"></i></button>
+							<button style="display: none; margin-top: -5px;" id="cancel-end-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						</div>
 					</div>
 
 				</div>
@@ -161,8 +165,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
 							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 						</select>
-						<button style="display: none;" id="update-president-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none;" id="cancel-president-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" id="update-president-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" id="cancel-president-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 					<!-- Secretary -->
@@ -176,8 +180,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							<optgroup class="connected" label="<?php echo lang("meeting_connected"); ?>"></optgroup>
 							<optgroup class="unknown" label="<?php echo lang("meeting_unknown"); ?>"></optgroup>
 						</select>
-						<button style="display: none;" id="update-secretary-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none;" id="cancel-secretary-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" id="update-secretary-btn" type="button" class="btn btn-xs btn-default update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" id="cancel-secretary-btn" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 					
 				</div>
@@ -192,7 +196,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<div id="location" style="height: 21px;" data-type="<?php echo $meeting["loc_type"];?>">
 						<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
 						<span class="location-type"><?php echo $meeting["loc_type"];?></span>
-						<button style="display: none;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</div>
 
 					<?php if (($meeting["loc_type"] == "mumble") AND ($meeting["loc_channel"] !== "")) {?>
@@ -295,8 +299,8 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 							<option value="1"><?php echo lang("mee_synchro_vote_1"); ?></option>
 						</select>
 
-						<button style="display: none; margin-top: -2px;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none; margin-top: -2px;" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; margin-top: -5px;" type="button" class="btn btn-xs btn-danger cancel-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 
 				</div>
@@ -1065,16 +1069,16 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 
 <!-- meeting -->
 
-<script src="assets/js/perpage/meeting_time.js"></script>
-<script src="assets/js/perpage/meeting_agenda.js"></script>
-<script src="assets/js/perpage/meeting_people.js"></script>
-<script src="assets/js/perpage/meeting_motion.js"></script>
-<script src="assets/js/perpage/meeting_events.js"></script>
-<script src="assets/js/perpage/meeting_timer.js"></script>
-<script src="assets/js/perpage/meeting_export.js"></script>
-<script src="assets/js/perpage/meeting_charts.js"></script>
-<script src="assets/js/perpage/meeting_forms.js"></script>
-<script src="assets/js/perpage/location_form.js"></script>
+<script src="assets/js/perpage/meeting_time.js?<?=filemtime("assets/js/perpage/meeting_time.js")?>"></script>
+<script src="assets/js/perpage/meeting_agenda.js?<?=filemtime("assets/js/perpage/meeting_agenda.js")?>"></script>
+<script src="assets/js/perpage/meeting_people.js?<?=filemtime("assets/js/perpage/meeting_people.js")?>"></script>
+<script src="assets/js/perpage/meeting_motion.js?<?=filemtime("assets/js/perpage/meeting_motion.js")?>"></script>
+<script src="assets/js/perpage/meeting_events.js?<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
+<script src="assets/js/perpage/meeting_timer.js?<?=filemtime("assets/js/perpage/meeting_timer.js")?>"></script>
+<script src="assets/js/perpage/meeting_export.js?<?=filemtime("assets/js/perpage/meeting_export.js")?>"></script>
+<script src="assets/js/perpage/meeting_charts.js?<?=filemtime("assets/js/perpage/meeting_charts.js")?>"></script>
+<script src="assets/js/perpage/meeting_forms.js?<?=filemtime("assets/js/perpage/meeting_forms.js")?>"></script>
+<script src="assets/js/perpage/location_form.js?<?=filemtime("assets/js/perpage/location_form.js")?>"></script>
 
 <script>
 var mumble_count = "<?php echo count($mumble);?>";

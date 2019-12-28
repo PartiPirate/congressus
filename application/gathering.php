@@ -287,7 +287,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 						<span class="glyphicon glyphicon-flag" style=""></span> <?php //echo lang("createMeeting_base_type"); ?>
 						<?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?>
 					</div>
-					<div id="meeting-status-panel">
+					<div id="meeting-status-panel" class="text-center">
 						<div>
 							<button style="display: none;" class="margin-top-5 btn btn-primary btn-waiting-meeting"><?php  echo lang("meeting_waiting"); ?></button>
 							<button style="display: none;" class="margin-top-5 btn btn-danger  btn-delete-meeting"><?php   echo lang("meeting_delete"); ?></button>

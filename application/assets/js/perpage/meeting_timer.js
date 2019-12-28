@@ -57,9 +57,11 @@ function tweakTimerPerformance() {
         getPeopleTimer.set({time: newGetPeopleTimerInterval});
     }
 
-    var newGetEventsTimerInterval = Math.round(getEventsTimerInterval * performanceTweak);
-    if (newGetEventsTimerInterval != getEventsTimer.intervalTime) {
-        getEventsTimer.set({time: newGetEventsTimerInterval});
+    if (typeof getEvents != "undefined") {
+        var newGetEventsTimerInterval = Math.round(getEventsTimerInterval * performanceTweak);
+        if (newGetEventsTimerInterval != getEventsTimer.intervalTime) {
+            getEventsTimer.set({time: newGetEventsTimerInterval});
+        }
     }
 }
 
@@ -76,8 +78,10 @@ $(function() {
 	pingTimer = $.timer(ping);
 	pingTimer.set({ time : 40000, autostart : true });
 
-	getEventsTimer = $.timer(getEvents);
-	getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+    if (typeof getEvents != "undefined") {
+    	getEventsTimer = $.timer(getEvents);
+    	getEventsTimer.set({ time : getEventsTimerInterval, autostart : true });
+    }
 
 	performanceTimer = $.timer(tweakTimerPerformance);
 	performanceTimer.set({ time : 10000, autostart : true });

@@ -130,7 +130,7 @@ function getUserPropertyValue($property) {
 	return null;
 }
 
-if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
+if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER["SCRIPT_FILENAME"])== "construction.php"  OR basename($_SERVER["SCRIPT_FILENAME"])== "gathering.php" OR basename($_SERVER["SCRIPT_FILENAME"])== "export_discourse.php") {
 	require_once("engine/bo/MeetingBo.php");
 
 	$meetingBo = MeetingBo::newInstance($connection, $config);
@@ -147,12 +147,16 @@ if ((basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php") OR basename($_SERVER
 		exit();
 	}
 	
-	if (basename($_SERVER["SCRIPT_FILENAME"])== "meeting.php" && $meeting["mee_type"] == "construction") {
+	if ((basename($_SERVER["SCRIPT_FILENAME"]) == "meeting.php" || basename($_SERVER["SCRIPT_FILENAME"]) == "gathering.php") && $meeting["mee_type"] == "construction") {
 		header("Location: construction.php?id=" . $meetingId);
 		exit();
 	}
-	else if (basename($_SERVER["SCRIPT_FILENAME"])== "construction.php" && $meeting["mee_type"] == "meeting") {
+	else if ((basename($_SERVER["SCRIPT_FILENAME"]) == "construction.php" || basename($_SERVER["SCRIPT_FILENAME"]) == "gathering.php") && $meeting["mee_type"] == "meeting") {
 		header("Location: meeting.php?id=" . $meetingId);
+		exit();
+	}
+	else if ((basename($_SERVER["SCRIPT_FILENAME"]) == "construction.php" || basename($_SERVER["SCRIPT_FILENAME"]) == "meeting.php") && $meeting["mee_type"] == "gathering") {
+		header("Location: gathering.php?id=" . $meetingId);
 		exit();
 	}
 }

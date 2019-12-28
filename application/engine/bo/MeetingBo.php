@@ -25,8 +25,16 @@ class MeetingBo {
 	var $TABLE = "meetings";
 	var $ID_FIELD = "mee_id";
 
-	const TYPE_MEETING = "meeting";
+	const TYPE_MEETING		= "meeting";
 	const TYPE_CONSTRUCTION = "construction";
+	const TYPE_GATHERING	= "gathering";
+
+	const STATUS_OPEN			= "open";
+	const STATUS_CLOSED 		= "closed";
+	const STATUS_TEMPLATE		= "template";
+	const STATUS_WAITING		= "waiting";
+	const STATUS_DELETED		= "deleted";
+	const STATUS_CONSTRUCTION	= "construction";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;

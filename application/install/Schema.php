@@ -105,7 +105,7 @@ $schema["tables"]["logs"]["fields"]["log_data"] = array("type" => "varchar", "si
 $schema["tables"]["meetings"] = array("fields" => array(), "indexes" => array());
 $schema["tables"]["meetings"]["fields"]["mee_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["meetings"]["fields"]["mee_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
-$schema["tables"]["meetings"]["fields"]["mee_type"] = array("type" => "enum", "size" => "'meeting','construction'", "null" => false, "default" => "meeting");
+$schema["tables"]["meetings"]["fields"]["mee_type"] = array("type" => "enum", "size" => "'meeting','construction','gathering'", "null" => false, "default" => "meeting");
 $schema["tables"]["meetings"]["fields"]["mee_class"] = array("type" => "enum", "size" => "'event-important','event-success','event-warning','event-info','event-inverse','event-special'", "null" => false);
 $schema["tables"]["meetings"]["fields"]["mee_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["meetings"]["fields"]["mee_status"] = array("type" => "enum", "size" => "'construction','open','closed','waiting','deleted','template'", "null" => false, "default" => "construction");

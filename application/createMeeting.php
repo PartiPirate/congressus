@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -35,12 +35,14 @@ $memcache = openMemcacheConnection();
 $memcacheKey = "createMeetingMeetings";
 $json = $memcache->get($memcacheKey);
 
+$meetingTypes = array(MeetingBo::TYPE_MEETING, MeetingBo::TYPE_CONSTRUCTION, MeetingBo::TYPE_GATHERING);
+
 if (!$json || true) {
 	$filters = array();
-    $filters["with_status"] = array("open", "closed", "template");
+    $filters["with_status"] = array(MeetingBo::STATUS_OPEN, MeetingBo::STATUS_CLOSED, MeetingBo::STATUS_TEMPLATE);
 	$meetings = $meetingBo->getByFilters($filters);
 	
-	$sortedMeetings = array("template_meeting" => array(), "template_construction" => array(), "meeting" => array(), "construction" => array());
+	$sortedMeetings = array("template_meeting" => array(), "template_construction" => array(), "template_gathering" => array(), "meeting" => array(), "construction" => array());
 	foreach($meetings as $meeting) {
 		$superType = ($meeting["mee_status"] == "template" ? "template_" : "") . $meeting["mee_type"];
 		$sortedMeetings[$superType][] = $meeting;
@@ -124,19 +126,18 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 			<label for="mee_tyoe" class="col-md-4 control-label"><?php echo lang("createMeeting_base_type"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="mee_type" name="mee_type">
-					<option value="meeting"><?php echo lang("createMeeting_base_type_meeting"); ?></option>
-					<option value="construction"><?php echo lang("createMeeting_base_type_construction"); ?></option>
+<?php	foreach($meetingTypes as $meetingType) {	?>
+					<option value="<?=$meetingType?>"><?=lang("createMeeting_base_type_$meetingType")?></option>
+<?php	} ?>					
 				</select>
 			</div>
 		</div>
 
-		<div class="well well-sm type-meeting type-explanation" style="display: none;">
-			<p><?php echo lang("createMeeting_type_meeting_explanation"); ?></p>
+<?php	foreach($meetingTypes as $meetingType) {	?>
+		<div class="well well-sm type-<?=$meetingType?> type-explanation" style="display: none;">
+			<p><?=lang("createMeeting_type_".$meetingType."_explanation")?></p>
 		</div>
-
-		<div class="well well-sm type-construction type-explanation" style="display: none;">
-			<p><?php echo lang("createMeeting_type_construction_explanation"); ?></p>
-		</div>
+<?php	} ?>					
 
 		<div class="row text-center">
 			<button class="btn btn-primary show-notice" type="button" ><?php echo lang("common_next"); ?></button>

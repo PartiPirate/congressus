@@ -54,6 +54,11 @@ $meeting["mee_type"] = $_REQUEST["mee_type"];
 $meeting["mee_datetime"] = $_REQUEST["mee_date"] . ' ' . $_REQUEST["mee_time"];
 $meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
 
+if ($meeting["mee_type"] == MeetingBo::TYPE_GATHERING) {
+    $mee_status = MeetingBo::STATUS_WAITING;
+}
+
+
 $meetingBo->save($meeting);
 
 print_r($meeting);

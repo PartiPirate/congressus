@@ -96,9 +96,14 @@ function computeMotion(motion) {
 	var motionId = motion.data("id");
 //	console.log("computeMotion " + motionId);
 
-	$.post("meeting/do_computeVote.php", {motionId: motionId, save: false}, function(data) {
+	var motionId = motion.data("id");
+	var retrieved = motion.data("retrieved");
+
+	m_computeVote(motionId, false, !retrieved, function(data) {
+//	$.post("meeting/do_computeVote.php", {motionId: motionId, save: false}, function(data) {
 		motion.find(".number-of-voters").text(data.motion.mot_number_of_voters);
-		
+		motion.data("retrieved", true);
+
 		if (data.delegations) {
 			motion.data("delegation-powers", data.delegations.powers);
 		}
@@ -370,15 +375,15 @@ function computeMotion(motion) {
 		}
 
 		orderPropositions(data.motion, data.propositions);
-	}, "json");
+	});
 }
 
 function dumpMotion(motion) {
 	var motionId = motion.data("id");
 
-	$.post("meeting/do_computeVote.php", {motionId: motionId, save: true}, function(data) {
+	m_computeVote(motionId, true, false, function(data) {
 		orderPropositions(data.motion, data.propositions);
-	}, "json");
+	});
 
 }
 

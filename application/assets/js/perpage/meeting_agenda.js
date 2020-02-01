@@ -27,6 +27,7 @@
 /* global keyupTimeoutId */
 /* global toMarkdownWithEmoji */
 /* global resizeWindow */
+/* global locations */
 
 var preventAgendaHandling = false;
 var AGENDA_MAX_HEIGHT = 300;
@@ -348,8 +349,8 @@ function updateMeeting(meeting) {
 	}
 	$(".synchro-vote select").val(meeting.mee_synchro_vote);
 
-	if ($("#location .location-type").text() != meeting.loc_type) {
-		$("#location .location-type").text(meeting.loc_type);
+	if ($("#location .location-type").html() != locations[meeting.loc_type]) {
+		$("#location .location-type").html(locations[meeting.loc_type]);
 	}
 
 	if (meeting.loc_type == "discord") {
@@ -445,7 +446,8 @@ function updateAgenda() {
 	}
 	
 	var meetingId = $(".meeting").data("id");
-	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+//	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+	m_getAgenda(meetingId, function(data) {
 		var parent = $("#meeting-agenda>ul");
 		parent.find("li").addClass("to-delete");
 //		parent.children().remove();
@@ -473,7 +475,7 @@ function updateAgenda() {
 		isAgendaReady = true;
 		testMeetingReady();
 
-	}, "json");
+	});
 }
 
 function addMeetingHandlers() {
@@ -674,7 +676,8 @@ function changeMeetingHandler() {
 	$("#add-agenda-from-modal #firstChatArea").val("").keyup();
 	$("#add-agenda-from-modal #firstChatDiv").hide();
 
-	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+//	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+	m_getAgenda(meetingId, function(data) {
 		var option = $("<option value=\"\" disabled=\"disabled\" selected=\"selected\"></option>");
 		option.data("agenda", agenda);
 
@@ -696,7 +699,7 @@ function changeMeetingHandler() {
 		if (data.agendas.length) {
 			$("#add-agenda-from-modal #agendaSelectDiv").show();
 		}
-	}, "json")
+	});
 }
 
 function changeAgendaHandler() {
@@ -714,7 +717,8 @@ function changeAgendaHandler() {
 	$("#add-agenda-from-modal #motionSelectDiv").hide();
 	motionSelect.children().remove();
 	
-	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: 0}, function(data) {
+//	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: 0}, function(data) {
+	m_getAgendaPoint(meetingId, agendaId, 0, function(data) {
 		var option = $("<option value=\"\" disabled=\"disabled\" selected=\"selected\"></option>");
 		option.data("motion", motion);
 
@@ -742,7 +746,7 @@ function changeAgendaHandler() {
 		if (data.motions.length) {
 			$("#add-agenda-from-modal #motionSelectDiv").show();
 		}
-	}, "json");
+	});
 }
 
 function changeMotionHandler() {

@@ -26,6 +26,7 @@ $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 $showAdmin = false;
 $authoritatives = array();
+$authorityAdmins = array();
 
 if ($isAdmin && !isset($group)) {
 	$group = array("gro_id" => 0, "gro_themes" => array(), "gro_label" => "Nouveau groupe", "gro_contact_type" => "none", "gro_contact" => "");

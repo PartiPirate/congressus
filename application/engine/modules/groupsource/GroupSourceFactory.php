@@ -54,7 +54,6 @@ class GroupSourceFactory {
     }
 
     static function fixPing(&$pings, &$usedPings, &$people, $member, $now) {
-
 		$found = false;
 		// Search into $pings
 		foreach($pings as $index => $ping) {

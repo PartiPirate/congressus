@@ -23,8 +23,8 @@
 /* global majority_judgement_translations */
 /* global approval_translations */
 /* global showdown */
-/* gloabl areVotesAnonymous */
-/* gloabl computeMotion */
+/* global areVotesAnonymous */
+/* global computeMotion */
 
 /* I18N */
 
@@ -276,7 +276,7 @@ function setAgendaMotion(id, motions) {
 			motionActions.children("button").removeClass("disabled");
 
 			motionContainer.data("status", motion.mot_status);
-			motionContainer.data("anonymous", motion.mot_anonymous);
+			motionContainer.data("anonymous", (motion.mot_anonymous && motion.mot_anonymous != "0") ? true : false);
 			motionContainer.data("win-limit", motion.mot_win_limit);
 
 			if (!hasRight(getUserId(), "handle_motion")) {
@@ -338,7 +338,7 @@ function setAgendaMotion(id, motions) {
 			}
 			motionActions.find(".btn-motion-limits.btn-motion-limit-" + motion.mot_win_limit).addClass("active").show();
 
-			if (motion.mot_anonymous) {
+			if (motion.mot_anonymous && motion.mot_anonymous != "0") {
 				motionActions.find(".btn-motion-anonymous").addClass("active");
 			}
 			else {
@@ -784,7 +784,8 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 		absoluteRequestId = requestId;
 	}
 
-	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: requestId}, function(data) {
+//	$.get("meeting_api.php?method=do_getAgendaPoint", {id: meetingId, pointId: agendaId, requestId: requestId}, function(data) {
+	m_getAgendaPoint(meetingId, agendaId, requestId, function(data) {
 		if (data.ko) {
 			$("#agenda_point").hide();
 			return;
@@ -876,7 +877,7 @@ function _updateAgendaPoint(meetingId, agendaId, absolute) {
 
 		initObject();
 		initObject = function() {};
-	}, "json");
+	});
 }
 
 function updateAgendaPoint() {
@@ -1070,6 +1071,14 @@ function vote(event) {
                 		var power = dialog.find(".power").val();
                 		if (power > maxPower) return;
 
+						m_vote(motion.data("id"), proposition.data("id"), power, function(data) {
+                			if (data.ok) {
+                				addVotes([data.vote], proposition, motion);
+								if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+								computeMotion(motion);
+                			}
+                		});
+/*
                 		$.post("meeting_api.php?method=do_vote", {"motionId": motion.data("id"),
                 										"propositionId": proposition.data("id"),
                 										"power": power}, function(data) {
@@ -1079,6 +1088,7 @@ function vote(event) {
 								computeMotion(motion);
                 			}
                 		}, "json");
+*/                		
                     }
 	            },
 	            close: {
@@ -1112,7 +1122,7 @@ function vote(event) {
 			}
 
 			propositionHolder.find(".judgement").click(function() {
-				proposition.find(".judgement").removeClass("active");
+				propositionHolder.find(".judgement").removeClass("active");
 				$(this).addClass("active");
 	
 				propositionHolder.data("power", $(this).data("power"));
@@ -1145,10 +1155,19 @@ function vote(event) {
 	                		var proposition = motion.find(".proposition[data-id="+$(this).data("id")+"]");
 							var propositionJM = $(this);
 
+/*
 							var form = {"motionId": motion.data("id"),
 										"propositionId": proposition.data("id"),
 										"power": propositionJM.data("power")};
-
+*/
+							m_vote(motion.data("id"), proposition.data("id"), propositionJM.data("power"), function(data) {
+	                			if (data.ok) {
+	                				addVotes([data.vote], proposition, motion);
+									if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+									computeMotion(motion);
+	                			}
+	                		});
+/*
 	                		$.post("meeting_api.php?method=do_vote", form, function(data) {
 	                			if (data.ok) {
 	                				addVotes([data.vote], proposition, motion);
@@ -1156,7 +1175,7 @@ function vote(event) {
 									computeMotion(motion);
 	                			}
 	                		}, "json");
-
+*/
 							++index;
 
 						});
@@ -1247,6 +1266,14 @@ function vote(event) {
 	                		var power = (propositionHolders.length - index) * maxPower;
 	                		var proposition = motion.find(".proposition[data-id="+$(this).data("proposition-id")+"]");
 
+							m_vote(motion.data("id"), proposition.data("id"), power, function(data) {
+	                			if (data.ok) {
+	                				addVotes([data.vote], proposition, motion);
+									if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+									computeMotion(motion);
+	                			}
+	                		});
+/*
 	                		$.post("meeting_api.php?method=do_vote", {"motionId": motion.data("id"),
 	                										"propositionId": proposition.data("id"),
 	                										"power": power}, function(data) {
@@ -1256,7 +1283,7 @@ function vote(event) {
 									computeMotion(motion);
 	                			}
 	                		}, "json");
-
+*/
 							++index;
 
 						});

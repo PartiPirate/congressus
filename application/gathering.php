@@ -368,14 +368,16 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 
 <!-- meeting -->
 
-<script src="assets/js/perpage/meeting.js?<?=filemtime("assets/js/perpage/meeting.js")?>"></script>
-<script src="assets/js/perpage/meeting_time.js?<?=filemtime("assets/js/perpage/meeting_time.js")?>"></script>
-<script src="assets/js/perpage/meeting_agenda.js?<?=filemtime("assets/js/perpage/meeting_agenda.js")?>"></script>
-<script src="assets/js/perpage/meeting_people.js?<?=filemtime("assets/js/perpage/meeting_people.js")?>"></script>
-<script src="assets/js/perpage/meeting_motion.js?<?=filemtime("assets/js/perpage/meeting_motion.js")?>"></script>
-<script src="assets/js/perpage/meeting_timer.js?<?=filemtime("assets/js/perpage/meeting_timer.js")?>"></script>
-<script src="assets/js/perpage/meeting_forms.js?<?=filemtime("assets/js/perpage/meeting_forms.js")?>"></script>
-<script src="assets/js/perpage/location_form.js?<?=filemtime("assets/js/perpage/location_form.js")?>"></script>
+<script src="assets/js/perpage/meeting.js?r=<?=filemtime("assets/js/perpage/meeting.js")?>"></script>
+<script src="assets/js/perpage/meeting_time.js?r=<?=filemtime("assets/js/perpage/meeting_time.js")?>"></script>
+<script src="assets/js/perpage/meeting_agenda.js?r=<?=filemtime("assets/js/perpage/meeting_agenda.js")?>"></script>
+<script src="assets/js/perpage/meeting_people.js?r=<?=filemtime("assets/js/perpage/meeting_people.js")?>"></script>
+<script src="assets/js/perpage/meeting_motion.js?r=<?=filemtime("assets/js/perpage/meeting_motion.js")?>"></script>
+<script src="assets/js/perpage/meeting_timer.js?r=<?=filemtime("assets/js/perpage/meeting_timer.js")?>"></script>
+<script src="assets/js/perpage/meeting_forms.js?r=<?=filemtime("assets/js/perpage/meeting_forms.js")?>"></script>
+<script src="assets/js/perpage/meeting_wss.js?r=<?=filemtime("assets/js/perpage/meeting_wss.js")?>"></script>
+<script src="assets/js/perpage/meeting_api.js?r=<?=filemtime("assets/js/perpage/meeting_api.js")?>"></script>
+<script src="assets/js/perpage/location_form.js?r=<?=filemtime("assets/js/perpage/location_form.js")?>"></script>
 
 <script>
 var mumble_count = "<?php echo count($mumble);?>";

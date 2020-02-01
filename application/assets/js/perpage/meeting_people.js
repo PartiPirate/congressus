@@ -524,7 +524,7 @@ function updateSpeaking(people) {
 		speakingStats.speakingTimePerPerson[people.mem_nickname] = people.mem_speaking_time + people.mem_current_speaking_time;
 	}
 
-	if (people.mem_speaking) {
+	if (people.mem_speaking && people.mem_speaking != "0") {
 		var speakerLabel = $(".speaker-container[data-id=" + people.mem_id + "]");
 		
 		if (speakerLabel.length) {
@@ -548,7 +548,8 @@ function updatePeople() {
 
 //	console.log("Do get people @ " + new Date());
 
-	$.get("meeting_api.php?method=do_getPeople", {id: meetingId}, function(data) {
+//	$.get("meeting_api.php?method=do_getPeople", {id: meetingId}, function(data) {
+	m_getPeople(meetingId, function(data) {
 //		console.log("Get people @ " + new Date());
 
 		var numberOfPresents = $("#speaking-panel .number-of-presents");
@@ -768,13 +769,14 @@ function updatePeople() {
 			$("#meeting-agenda ul").sortable("enable");
 		}
 
-	}, "json");
+	});
 }
 
 function ping() {
 	var meetingId = $(".meeting").data("id");
-	$.post("meeting_api.php?method=do_ping", {id: meetingId}, function(data) {
-	}, "json");
+	var userId = getUserId();
+
+	m_ping(meetingId, userId);
 }
 
 function setSpeaking(event) {

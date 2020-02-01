@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+    Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -22,14 +22,15 @@ if (!isset($api)) exit();
 include_once("config/config.php");
 include_once("config/memcache.php");
 require_once("engine/utils/EventStackUtils.php");
+require_once("engine/utils/MeetingAPI.php");
+
+$connection = openConnection();
 
 $meetingId = $arguments["meetingId"];
 
-$data = array();
-$data["ok"] = "ok";
-$data["timestamp"] = time();
-$data["events"] = getEvents($meetingId);
-//$data["events"] = array();
+$api = new MeetingAPI($connection, $config);
 
-echo json_encode($data, JSON_NUMERIC_CHECK);
+$response = $api->getEvents($meetingId);
+
+echo json_encode($response, JSON_NUMERIC_CHECK);
 ?>

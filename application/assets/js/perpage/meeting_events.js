@@ -186,7 +186,8 @@ function showEvent(event) {
 function getEvents() {
 	var meetingId = $(".meeting").data("id");
 
-	$.post("meeting_api.php?method=do_getEvents", {meetingId : meetingId}, function(data) {
+//	$.post("meeting_api.php?method=do_getEvents", {meetingId : meetingId}, function(data) {
+	m_getEvents(meetingId, function(data) {
 		if (data.ok) {
 			for(var index = 0; index < data.events.length; ++index) {
 				var event = data.events[index];
@@ -200,7 +201,7 @@ function getEvents() {
 				lastEventTimestamp = data.events[data.events.length - 1].timestamp;
 			}
 		}
-	}, "json");
+	});
 }
 
 $(function() {

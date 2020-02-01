@@ -195,7 +195,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<!-- Location -->
 					<div id="location" style="height: 21px;" data-type="<?php echo $meeting["loc_type"];?>">
 						<span class="glyphicon glyphicon-map-marker"></span> <?php echo lang("createMeeting_place"); ?>
-						<span class="location-type"><?php echo $meeting["loc_type"];?></span>
+						<span class="location-type"><?php echo lang("loc_type_" . $meeting["loc_type"]);?></span>
 						<button style="display: none; margin-top: -5px;" type="button" class="btn btn-xs btn-default update-meeting-location-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</div>
 
@@ -740,7 +740,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 			<span class="conclusion-text"></span>
 		</li>
 
-		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" data-deadline="${mot_deadline}" class="template list-group-item motion simply-hidden">
+		<li data-template-id="motion" id="motion-${mot_id}" data-id="${mot_id}" data-retrieved="false" data-deadline="${mot_deadline}" class="template list-group-item motion simply-hidden">
 			<span class="pull-right deadline-span"></span>
 			<h4>
 				<span class="fa fa-archive"></span>
@@ -1069,16 +1069,18 @@ var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
 
 <!-- meeting -->
 
-<script src="assets/js/perpage/meeting_time.js?<?=filemtime("assets/js/perpage/meeting_time.js")?>"></script>
-<script src="assets/js/perpage/meeting_agenda.js?<?=filemtime("assets/js/perpage/meeting_agenda.js")?>"></script>
-<script src="assets/js/perpage/meeting_people.js?<?=filemtime("assets/js/perpage/meeting_people.js")?>"></script>
-<script src="assets/js/perpage/meeting_motion.js?<?=filemtime("assets/js/perpage/meeting_motion.js")?>"></script>
-<script src="assets/js/perpage/meeting_events.js?<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
-<script src="assets/js/perpage/meeting_timer.js?<?=filemtime("assets/js/perpage/meeting_timer.js")?>"></script>
-<script src="assets/js/perpage/meeting_export.js?<?=filemtime("assets/js/perpage/meeting_export.js")?>"></script>
-<script src="assets/js/perpage/meeting_charts.js?<?=filemtime("assets/js/perpage/meeting_charts.js")?>"></script>
-<script src="assets/js/perpage/meeting_forms.js?<?=filemtime("assets/js/perpage/meeting_forms.js")?>"></script>
-<script src="assets/js/perpage/location_form.js?<?=filemtime("assets/js/perpage/location_form.js")?>"></script>
+<script src="assets/js/perpage/meeting_time.js?r=<?=filemtime("assets/js/perpage/meeting_time.js")?>"></script>
+<script src="assets/js/perpage/meeting_agenda.js?r=<?=filemtime("assets/js/perpage/meeting_agenda.js")?>"></script>
+<script src="assets/js/perpage/meeting_people.js?r=<?=filemtime("assets/js/perpage/meeting_people.js")?>"></script>
+<script src="assets/js/perpage/meeting_motion.js?r=<?=filemtime("assets/js/perpage/meeting_motion.js")?>"></script>
+<script src="assets/js/perpage/meeting_events.js?r=<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
+<script src="assets/js/perpage/meeting_timer.js?r=<?=filemtime("assets/js/perpage/meeting_timer.js")?>"></script>
+<script src="assets/js/perpage/meeting_export.js?r=<?=filemtime("assets/js/perpage/meeting_export.js")?>"></script>
+<script src="assets/js/perpage/meeting_charts.js?r=<?=filemtime("assets/js/perpage/meeting_charts.js")?>"></script>
+<script src="assets/js/perpage/meeting_forms.js?r=<?=filemtime("assets/js/perpage/meeting_forms.js")?>"></script>
+<script src="assets/js/perpage/meeting_wss.js?r=<?=filemtime("assets/js/perpage/meeting_wss.js")?>"></script>
+<script src="assets/js/perpage/meeting_api.js?r=<?=filemtime("assets/js/perpage/meeting_api.js")?>"></script>
+<script src="assets/js/perpage/location_form.js?r=<?=filemtime("assets/js/perpage/location_form.js")?>"></script>
 
 <script>
 var mumble_count = "<?php echo count($mumble);?>";
@@ -1147,13 +1149,22 @@ var majority_judgement_translations = <?=json_encode($translatons)?>
 
 <?php
 
+$locations = array();
+$locations["mumble"] = lang("loc_type_mumble");
+$locations["afk"] = lang("loc_type_afk");
+$locations["irc"] = lang("loc_type_irc");
+$locations["framatalk"] = lang("loc_type_framatalk");
+$locations["discord"] = lang("loc_type_discord");
+$locations["unknown"] = lang("loc_type_unknown");
+
 $translatons = array();
 $translatons[] = lang("motion_approval_" . 1, false);
 $translatons[] = lang("motion_approval_" . 2, false);
 
 ?>
 
-var approval_translations = <?php echo json_encode($translatons); ?>
+var locations = <?php echo json_encode($locations); ?>;
+var approval_translations = <?php echo json_encode($translatons); ?>;
 
 var isPeopleReady = false;
 var isAgendaReady = false;

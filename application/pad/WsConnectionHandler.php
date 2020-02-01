@@ -6,7 +6,7 @@ require 'engine/utils/Merger.php';
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
-class PadConnectionHandler implements MessageComponentInterface {
+class WsConnectionHandler implements MessageComponentInterface {
     const WAITING = "waiting";
     const CLOSING_FRAME = "closing_frame";
     const PROCESSING = "processing";
@@ -17,8 +17,11 @@ class PadConnectionHandler implements MessageComponentInterface {
     protected $nicknames;
     protected $contents;
     protected $carets;
-    
-    protected $state = PadConnectionHandler::WAITING;
+
+
+    public $meetings = array();
+
+    protected $state = WsConnectionHandler::WAITING;
 
     public function __construct() {
         $this->pads = new \SplObjectStorage;
@@ -63,6 +66,30 @@ class PadConnectionHandler implements MessageComponentInterface {
             case "process":
                 $this->process($from, $msg, $data);
                 break;
+            case "m_attach":
+                $this->m_attach($from, $data);
+                break;
+            case "m_ping":
+                $this->m_ping($from, $data);
+                break;
+            case "m_computeVote":
+                $this->m_computeVote($from, $data);
+                break;
+            case "m_vote":
+                $this->m_vote($from, $data);
+                break;
+            case "m_getAgendaPoint":
+                $this->m_getAgendaPoint($from, $data);
+                break;
+            case "m_getAgenda":
+                $this->m_getAgenda($from, $data);
+                break;
+            case "m_getEvents":
+                $this->m_getEvents($from, $data);
+                break;
+            case "m_getPeople":
+                $this->m_getPeople($from, $data);
+                break;
             default:
                 $this->defaultHandle($from, $msg, $data);
                 break;
@@ -73,8 +100,8 @@ class PadConnectionHandler implements MessageComponentInterface {
         echo "Receive diff \n";
         
         $pad = $this->getPad($data["padId"]);
-        if ($pad->state == PadConnectionHandler::WAITING) {
-            $pad->state = PadConnectionHandler::CLOSING_FRAME;
+        if ($pad->state == WsConnectionHandler::WAITING) {
+            $pad->state = WsConnectionHandler::CLOSING_FRAME;
             
             $event = array("event" => "closingTimer", "timer" => "500");
 
@@ -159,10 +186,10 @@ class PadConnectionHandler implements MessageComponentInterface {
 
 /*
         // Send all connections that we are processing
-        $this->state = PadConnectionHandler::PROCESSING;
+        $this->state = WsConnectionHandler::PROCESSING;
 */
 
-        if ($pad->state == PadConnectionHandler::CLOSING_FRAME) {
+        if ($pad->state == WsConnectionHandler::CLOSING_FRAME) {
             // Do stuff
             echo "Processing $padId \n";
             $pad->process($this);
@@ -170,7 +197,7 @@ class PadConnectionHandler implements MessageComponentInterface {
 
 /*        
         // Send all connections that we are ready to listen again
-        $this->state = PadConnectionHandler::WAITING;
+        $this->state = WsConnectionHandler::WAITING;
 */
 
         echo "Waiting \n";
@@ -342,6 +369,290 @@ class PadConnectionHandler implements MessageComponentInterface {
         }
     }
 
+    public function getMeetingApi() {
+        require_once("language/language.php");
+        require_once("engine/utils/SessionUtils.php");
+        require_once("engine/utils/DateTimeUtils.php");
+        require_once("engine/utils/FormUtils.php");
+        require_once("engine/utils/GamifierClient.php");
+        require_once("engine/utils/MeetingAPI.php");
+        require_once("engine/utils/EventStackUtils.php");
+        require_once("engine/utils/QuorumUtils.php");
+        require_once("engine/bo/AgendaBo.php");
+        require_once("engine/bo/ChatBo.php");
+        require_once("engine/bo/ChatAdviceBo.php");
+        require_once("engine/bo/ConclusionBo.php");
+        require_once("engine/bo/GaletteBo.php");
+        require_once("engine/bo/GameEvents.php");
+        require_once("engine/bo/LocationBo.php");
+        require_once("engine/bo/MeetingBo.php");
+        require_once("engine/bo/MeetingRightBo.php");
+        require_once("engine/bo/MotionBo.php");
+        require_once("engine/bo/NoticeBo.php");
+        require_once("engine/bo/PingBo.php");
+        require_once("engine/bo/TagBo.php");
+        require_once("engine/bo/TaskBo.php");
+        require_once("engine/bo/VoteBo.php");
+
+        global $config;
+
+        $connection = openConnection();
+        $api = new MeetingAPI($connection, $config);
+
+        return $api;        
+    }
+
+    public function m_attach(ConnectionInterface $from, $data) {
+        if (!isset($this->meetings[$data["meetingId"]])) {
+            $this->meetings[$data["meetingId"]] = array("users" => array());
+        }
+
+        $this->meetings[$data["meetingId"]]["users"][$data["userId"]]= array("cnx" => $from, "lastCalls" => array("m_computeVote" => array(), "m_getAgenda" => null, "m_getAgendaPoint" => null, "m_getEvents" => null, "m_vote" => null, "m_getPeople" => null));
+
+//        $api = $this->getMeetingApi();
+//        $response = $api->ping($data["meetingId"], $data["userId"]);
+
+        echo "Connection on ".$data["meetingId"]." from ".$data["userId"]."\n";
+
+//        echo json_encode($response);
+//        echo "\n";
+    }
+
+    public function m_computeVote(ConnectionInterface $from, $data) {
+        $motionId = $data["motionId"];
+        $save = $data["save"];
+
+        $force = $data["force"];
+
+        echo "Force compute $force \n";
+
+        foreach($this->meetings as $meetingId => $meeting) {
+            $connectUserId = null;
+            foreach($meeting["users"] as $userId => $connection) {
+                if ($connection["cnx"] === $from) {
+                    $connectUserId = $userId;
+
+                    $api = $this->getMeetingApi();
+                    $response = $api->computeVote($motionId, $save);
+                    $responseHash = sha1(json_encode($response));
+
+//                    echo "Computed Hash : " . $responseHash . "\n";
+//                    echo "Previous Hash : " . $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_computeVote"] . "\n";
+
+                    if ($force || !isset($this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_computeVote"][$motionId]) || ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_computeVote"][$motionId])) {
+                        $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_computeVote"][$motionId] = $responseHash;
+
+                        $response["HASH"] = $responseHash;
+                        $response["EVENT_ID"] = $data["EVENT_ID"];
+                        $response["EVENT_SRC"] = $data["event"];
+                
+                        echo "Compute vote on ".$data["motionId"]."\n";
+                
+                        $from->send(json_encode($response));
+                    }
+                    break;
+                }
+            }
+
+            if ($connectUserId) {
+                // It's fine
+                break;
+            }
+        }
+    }
+
+    public function m_vote(ConnectionInterface $from, $data) {
+        echo "Vote on ".$data["motionId"]."\n";
+
+        $motionId = $data["motionId"];
+        $propositionId = $data["propositionId"];
+        $votePower = $data["power"];
+
+        foreach($this->meetings as $meetingId => $meeting) {
+            $connectUserId = null;
+            foreach($meeting["users"] as $userId => $connection) {
+                if ($connection["cnx"] === $from) {
+                    $connectUserId = $userId;
+
+                    $api = $this->getMeetingApi();
+                    $response = $api->vote($motionId, $propositionId, $connectUserId, $votePower);
+                    $responseHash = sha1(json_encode($response));
+
+                    if ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_vote"]) {
+                        $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_vote"] = $responseHash;
+    
+                        $response["HASH"] = $responseHash;
+                        $response["EVENT_ID"] = $data["EVENT_ID"];
+                        $response["EVENT_SRC"] = $data["event"];
+    
+                        $from->send(json_encode($response));
+                    }
+                    break;
+                }
+            }
+
+            if ($connectUserId) {
+                $push = array("event" => "motion", "motionId" => $motionId);
+
+                foreach($meeting["users"] as $userId => $connection) {
+                    $connection["cnx"]->send(json_encode($push));
+                }
+
+                // It's fine
+                break;
+            }
+        }
+    }
+
+    public function m_getEvents(ConnectionInterface $from, $data) {
+        $meetingId = $data["meetingId"];
+
+        foreach($this->meetings[$meetingId]["users"] as $userId => $connection) {
+            if ($connection["cnx"] === $from) {
+                $connectUserId = $userId;
+
+                $api = $this->getMeetingApi();
+                $response = $api->getEvents($meetingId);
+
+                $timestamp = $response["timestamp"];
+                
+                unset($response["timestamp"]);
+                $responseHash = sha1(json_encode($response));
+                $response["timestamp"] = $timestamp;
+
+                if ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getEvents"]) {
+                    $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getEvents"] = $responseHash;
+
+                    $response["HASH"] = $responseHash;
+                    $response["EVENT_ID"] = $data["EVENT_ID"];
+                    $response["EVENT_SRC"] = $data["event"];
+    
+                    $from->send(json_encode($response));
+                }
+                break;
+            }
+        }
+    }
+
+    public function m_getPeople(ConnectionInterface $from, $data) {
+        $meetingId = $data["id"];
+
+        foreach($this->meetings[$meetingId]["users"] as $userId => $connection) {
+            if ($connection["cnx"] === $from) {
+                $connectUserId = $userId;
+
+                $api = $this->getMeetingApi();
+                $response = $api->getPeople($meetingId, $connectUserId);
+                $responseHash = sha1(json_encode($response));
+
+                if ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getPeople"]) {
+                    $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getPeople"] = $responseHash;
+
+                    $response["HASH"] = $responseHash;
+                    $response["EVENT_ID"] = $data["EVENT_ID"];
+                    $response["EVENT_SRC"] = $data["event"];
+    
+                    $from->send(json_encode($response));
+                }
+                break;
+            }
+        }
+    }
+
+    public function m_getAgenda(ConnectionInterface $from, $data) {
+        $meetingId = $data["id"];
+
+        foreach($this->meetings[$meetingId]["users"] as $userId => $connection) {
+            if ($connection["cnx"] === $from) {
+                $connectUserId = $userId;
+
+                $api = $this->getMeetingApi();
+                $response = $api->getAgenda($meetingId);
+                $responseHash = sha1(json_encode($response));
+
+                if ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getAgenda"]) {
+                    $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getAgenda"] = $responseHash;
+
+                    $response["HASH"] = $responseHash;
+                    $response["EVENT_ID"] = $data["EVENT_ID"];
+                    $response["EVENT_SRC"] = $data["event"];
+    
+                    $from->send(json_encode($response));
+                }
+                break;
+            }
+        }
+    }
+
+    public function m_getAgendaPoint(ConnectionInterface $from, $data) {
+        $meetingId = $data["id"];
+        $pointId = $data["pointId"];
+        $requestId = $data["requestId"];
+
+// error_log(print_r($_REQUEST, true));
+
+        foreach($this->meetings[$meetingId]["users"] as $userId => $connection) {
+            if ($connection["cnx"] === $from) {
+                $connectUserId = $userId;
+
+                $api = $this->getMeetingApi();
+                $response = $api->getAgendaPoint($meetingId, $pointId, $connectUserId, $requestId);
+
+                unset($response["requestId"]);
+                $responseHash = sha1(json_encode($response));
+                $response["requestId"] = $data["requestId"];
+
+                if ($responseHash != $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getAgendaPoint"]) {
+                    $this->meetings[$meetingId]["users"][$userId]["lastCalls"]["m_getAgendaPoint"] = $responseHash;
+
+                    $response["HASH"] = $responseHash;
+                    $response["EVENT_ID"] = $data["EVENT_ID"];
+                    $response["EVENT_SRC"] = $data["event"];
+    
+                    $from->send(json_encode($response));
+                }
+                break;
+            }
+        }
+    }
+
+    public function m_ping(ConnectionInterface $from, $data) {
+        $meetingId = $data["id"];
+        foreach($this->meetings as $meetingId => $meeting) {
+            $connectUserId = null;
+            foreach($meeting["users"] as $userId => $connection) {
+                if ($connection["cnx"] === $from) {
+                    $connectUserId = $userId;
+                    $guestId = null;
+                    $guestName = null;
+            
+                    if (strpos("$userId", "G") !== false) {
+                        $guestId = str_replace("G", "", "$userId");
+                        $userId = null;
+                    }
+            
+                    $api = $this->getMeetingApi();
+                    $response = $api->ping($meetingId, $userId, $guestId, $guestName);
+            
+                    $response["EVENT_ID"] = $data["EVENT_ID"];
+                    $response["EVENT_SRC"] = $data["event"];
+            
+                    echo "Ping on ".$data["id"]." from ".$connectUserId."\n";
+            
+                    echo json_encode($response);
+                    echo "\n";
+            
+                    $from->send(json_encode($response));
+                    break;
+                }
+            }
+            
+            if ($connectUserId) {
+                break;
+            }
+        }
+    }
+
     public function attach(ConnectionInterface $from, $data) {
         $pad = $this->getPad($data["padId"]);
 
@@ -478,7 +789,7 @@ class Pad {
     public $id;
     public $start;
     public $head;
-    public $state = PadConnectionHandler::WAITING;
+    public $state = WsConnectionHandler::WAITING;
     
     /**
      * Array of <code>Composer</code>
@@ -494,13 +805,13 @@ class Pad {
     }
     
     public function process($handler) {
-        if ($this->state != PadConnectionHandler::CLOSING_FRAME) {
+        if ($this->state != WsConnectionHandler::CLOSING_FRAME) {
             // another process is occuring or occured
             return;
         }
 
         echo "[START] Inner process $this->id \n";
-        $this->state = PadConnectionHandler::PROCESSING;
+        $this->state = WsConnectionHandler::PROCESSING;
 
         $event = json_encode(array("event" => "processing"));
         foreach($handler->clients as $client) {
@@ -522,7 +833,7 @@ class Pad {
 
         $this->head = merge($this->head, $mergers);
 
-        $this->state = PadConnectionHandler::WAITING;
+        $this->state = WsConnectionHandler::WAITING;
 
         $event = json_encode(array("event" => "waiting", "mergedContent" => $this->head));
         foreach($handler->clients as $client) {

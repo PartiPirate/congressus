@@ -285,7 +285,7 @@ $lang["export_send"] = "Envoyer";
 $lang["motion_ballot_majority_-3"] = "Approbation";
 $lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
-$lang["motion_ballot_majority_0"] = "La meilleure";
+$lang["motion_ballot_majority_0"]  = "La meilleure";
 $lang["motion_ballot_majority_50"] = "Majorité simple";
 $lang["motion_ballot_majority_66"] = "Majorité 66%";
 $lang["motion_ballot_majority_80"] = "Majorité 80%";
@@ -308,24 +308,24 @@ $lang["motion_ballot_majority_50_help"] = "La proposition qui a plus de 50% des 
 $lang["motion_ballot_majority_66_help"] = "La proposition qui a plus de 66% des voix gagne.";
 $lang["motion_ballot_majority_80_help"] = "La proposition qui a plus de 80% des voix gagne.";
 
-$lang["motion_already_voted"] = "Vous avez déjà voté";
-$lang["motion_already_argumented"] = "Vous avez déjà argumenté";
-$lang["motion_add_source"] = "Ajouter une source"; 
-$lang["motion_trash"] = "Envoyer à la &laquo; corbeille &raquo;";
-$lang["motion_open_debate"] = "Ouvrir le &laquo; débat &raquo;";
-$lang["motion_expired"] = "Expiré";
+$lang["motion_already_voted"]       = "Vous avez déjà voté";
+$lang["motion_already_argumented"]  = "Vous avez déjà argumenté";
+$lang["motion_add_source"]          = "Ajouter une source"; 
+$lang["motion_trash"]               = "Envoyer à la &laquo; corbeille &raquo;";
+$lang["motion_open_debate"]         = "Ouvrir le &laquo; débat &raquo;";
+$lang["motion_expired"]             = "Expiré";
 
 $lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";
 $lang["trash_description"] = "La corbeille garantit la transparence du processus de la construction. Elle contient les motions qui ne respectent pas ce processus.";
 $lang["trash_no_amendment"] = "Aucun amendement dans la corbeille";
 
-$lang["calendar_prev"] = "Précédent";
+$lang["calendar_prev"]  = "Précédent";
 $lang["calendar_today"] = "Aujourd'hui";
-$lang["calendar_next"] = "Suivant";
-$lang["calendar_year"] = "Année";
+$lang["calendar_next"]  = "Suivant";
+$lang["calendar_year"]  = "Année";
 $lang["calendar_month"] = "Mois";
-$lang["calendar_week"] = "Semaine";
-$lang["calendar_day"] = "Jour";
+$lang["calendar_week"]  = "Semaine";
+$lang["calendar_day"]   = "Jour";
 
 $lang["decisions_ownactivegroups"] = "Mes groupes actifs";
 $lang["decisions_othergroups"] = "Les autres groupes";
@@ -352,12 +352,12 @@ $lang["createMeeting_convocation"] = "Convocation";
 $lang["createMeeting_agenda"] = "Ordre du jour";
 $lang["createMeeting_location"] = "Localisation";
 
-$lang["createMeeting_visualIndication_info"] = "Équipage";
+$lang["createMeeting_visualIndication_info"]      = "Équipage";
 $lang["createMeeting_visualIndication_important"] = "Équipe";
-$lang["createMeeting_visualIndication_warning"] = "Conseil";
-$lang["createMeeting_visualIndication_reversed"] = "Secrétariat";
-$lang["createMeeting_visualIndication_success"] = "Assemblée permanente";
-$lang["createMeeting_visualIndication_special"] = "Assemblée statutaire";
+$lang["createMeeting_visualIndication_warning"]   = "Conseil";
+$lang["createMeeting_visualIndication_reversed"]  = "Secrétariat";
+$lang["createMeeting_visualIndication_success"]   = "Assemblée permanente";
+$lang["createMeeting_visualIndication_special"]   = "Assemblée statutaire";
 
 $lang["createMeeting_place"]                                = "Type de lieu :";
 $lang["createMeeting_placeAddress"]                         = "Adresse du lieu :";

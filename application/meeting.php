@@ -22,6 +22,8 @@ require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/TagBo.php");
 require_once("engine/utils/bootstrap_forms.php");
 
+require_once("meeting/addAgendaFrom_motionTemplates.php");
+
 if (!$meeting) {
 	// Ask for creation
 	$meeting = array("mee_label" => lang("meeting_eventNew"));

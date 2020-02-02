@@ -52,6 +52,16 @@ $quorumFormula = phpToLanguageQuorum($quorumFormula);
                     <input type="hidden" value="<?=$meeting["mee_id"]?>" name="meetingId">
                     <fieldset>
                         <div id="quorum-formula-div" class="form-group">
+                            <label class="col-md-4 control-label"></label>
+                            <div class="col-md-8">                     
+                                <button class="btn btn-default btn-xs quorum-keyword"><?=lang("setQuorum_numberOfConnected")?></button>
+                                <button class="btn btn-default btn-xs quorum-keyword"><?=lang("setQuorum_numberOfPresents")?></button>
+                                <button class="btn btn-default btn-xs quorum-keyword"><?=lang("setQuorum_numberOfVoters")?></button>
+                                <button class="btn btn-default btn-xs quorum-keyword"><?=lang("setQuorum_numberOfNoticed")?></button>
+                                <button class="btn btn-default btn-xs quorum-keyword"><?=lang("setQuorum_numberOfPowers")?></button>
+                            </div>
+                        </div>
+                        <div id="quorum-formula-div" class="form-group">
                             <label class="col-md-4 control-label" for="quorum-formula-area"><?=lang("setQuorum_formula")?></label>
                             <div class="col-md-8">                     
                                 <textarea class="form-control autogrow" id="quorum-formula-area" name="quorum-formula" style="max-height: 200px;"><?=$quorumFormula?></textarea>

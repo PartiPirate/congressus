@@ -2184,6 +2184,11 @@ function addMeetingQuorumHanbdlers() {
 	}, function() {
 		$(this).find(".update-btn").hide();
 	});
+	
+	$(".quorum-keyword").click(function(event) {
+		event.preventDefault();
+		$("#quorum-formula-area").val($("#quorum-formula-area").val() + $(this).html());
+	});
 }
 
 function addSynchroHandlers() {

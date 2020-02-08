@@ -66,6 +66,22 @@ CREATE TABLE `galette_pictures` (
   `format` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `galette_dynamic_fields`
+--
+
+CREATE TABLE `galette_dynamic_fields` (
+  `item_id` int(10) NOT NULL DEFAULT '0',
+  `field_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `field_form` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `val_index` int(10) NOT NULL DEFAULT '0',
+  `field_val` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 --
 -- Index pour les tables exportées
 --
@@ -106,6 +122,13 @@ ALTER TABLE `galette_groups_members`
 ALTER TABLE `galette_pictures`
   ADD PRIMARY KEY (`id_adh`);
 
+--
+-- Index pour la table `galette_dynamic_fields`
+--
+ALTER TABLE `galette_dynamic_fields`
+  ADD PRIMARY KEY (`item_id`,`field_id`,`field_form`,`val_index`),
+  ADD KEY `field_id` (`field_id`);
+  
 --
 -- AUTO_INCREMENT pour les tables exportées
 --

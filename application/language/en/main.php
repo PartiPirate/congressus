@@ -80,11 +80,11 @@ $lang["menu_openMeetings"]      = "Meetings in progress";
 $lang["menu_calendar"]          = "Calendar";
 
 $lang["login_title"]            = "Log in";
-$lang["login_loginInput"]       = "Loin";
+$lang["login_loginInput"]       = "Login";
 $lang["login_passwordInput"]    = "Password";
 $lang["login_button"]           = "Log in";
 $lang["login_rememberMe"]       = "Remember me";
-$lang["register_link"]          = "or sign in";
+$lang["register_link"]          = "or register";
 $lang["forgotten_link"]         = "I forgot my password";
 
 $lang["breadcrumb_about"]           = "About";
@@ -279,6 +279,7 @@ $lang["export_open"]                = "Open in a new page";
 $lang["export_iframes"]             = "Please activate iframes";
 $lang["export_send"]                = "Send";
 
+$lang["motion_ballot_majority_-3"] = "Approbation";
 $lang["motion_ballot_majority_-2"] = "Majority judgment";
 $lang["motion_ballot_majority_-1"] = "Borda";
 $lang["motion_ballot_majority_0"]  = "The best";
@@ -358,7 +359,7 @@ $lang["createMeeting_base_type_construction"]       = "Chat and co-building";
 $lang["createMeeting_base_type_gathering"]          = "Gathering and event";
 $lang["createMeeting_base_type_template_meeting"]            = "Template of «Meeting and decision making»";
 $lang["createMeeting_base_type_template_construction"]       = "Template of «Chat and co-building»";
-$lang["createMeeting_type_meeting_explanation"]     = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Meetings and decision</em>&raquo; making are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
+$lang["createMeeting_type_meeting_explanation"]     = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Meetings and decision making</em>&raquo; are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
 $lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Chat and co-building</em>&raquo; are usually used in asynchronous mode to promote texts through approval and improvments";
 $lang["createMeeting_type_gathering_explanation"]    = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Gathering and event</em>&raquo; are usually used for people who wants to connect in real-life around an event";
 $lang["createMeeting_copy_label"]                    = "Or copy an existing meeting";

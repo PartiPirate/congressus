@@ -37,8 +37,8 @@ $lang["register_mail_content"] = "Hello {login},
 It seems that you registered yourself on Congressus. To confirm your registration, please click the link below :
 <a href='{activationUrl}'>{activationUrl}</a>
 
-L'équipe @Congressus";
-$lang["register_save"] = "Sign in";
+The @Congressus Team";
+$lang["register_save"] = "Register";
 $lang["register_validation_user_empty"] = "The user field can't be empty";
 $lang["register_validation_user_already_taken"] = "This username is already taken";
 $lang["register_validation_mail_empty"] = "The mail field can't be empty";

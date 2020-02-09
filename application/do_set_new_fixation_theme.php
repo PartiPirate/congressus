@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -21,6 +21,7 @@ require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/FixationBo.php");
 require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);
@@ -42,7 +43,11 @@ $fixationBo = FixationBo::newInstance($connection, $config);
 $theme = array();
 $theme["the_id"] = $_REQUEST["the_id"];
 
-if (!$themeBo->isMemberAdmin($theme, $sessionUserId)) {
+$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
+$isAdmin = $isAdmin || $themeBo->isMemberAdmin($theme, $sessionUserId);
+
+if (!$isAdmin) {
 	echo json_encode(array("error" => "theme_not_admin"));
 	exit();
 }

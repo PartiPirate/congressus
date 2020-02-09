@@ -84,7 +84,7 @@
 <!-- <?php echo "js/perpage/" . $page . ".js"; ?> -->
 <?php
 if (is_file("assets/js/perpage/" . $page . ".js")) {
-	echo "<script src=\"assets/js/perpage/" . $page . ".js?".filemtime("assets/js/perpage/" . $page . ".js")."\"></script>\n";
+	echo "<script src=\"assets/js/perpage/" . $page . ".js?r=".filemtime("assets/js/perpage/" . $page . ".js")."\"></script>\n";
 }
 ?>
 

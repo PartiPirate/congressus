@@ -92,7 +92,70 @@ class DelegationConditionBo {
 					WHERE
 						dco_id = :dco_id ";
 
+//		echo showQuery($query, $args);
+//		error_log("SQL : " . showQuery($query, $args));
+
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
+	}
+	
+	function getConditions($filters) {
+		$args = array();
+
+		/* LEFT */
+
+		$query = "	SELECT *
+					FROM  ".$this->personaeDatabase."dlp_delegation_conditions ";
+		$query .= "	WHERE
+						1 = 1 \n";
+
+		if (isset($filters["dco_id"])) {
+			$args["dco_id"] = $filters["dco_id"];
+			$query .= " AND dco_id = :dco_id \n";
+		}
+
+		if (isset($filters["dco_member_from"])) {
+			$args["dco_member_from"] = $filters["dco_member_from"];
+			$query .= " AND dco_member_from = :dco_member_from \n";
+		}
+
+		if (isset($filters["dco_theme_id"])) {
+			$args["dco_theme_id"] = $filters["dco_theme_id"];
+			$query .= " AND dco_theme_id = :dco_theme_id \n";
+		}
+
+		if (isset($filters["dco_theme_type"])) {
+			$args["dco_theme_type"] = $filters["dco_theme_type"];
+			$query .= " AND dco_theme_type = :dco_theme_type \n";
+		}
+
+		if (isset($filters["dco_order"])) {
+			$args["dco_order"] = $filters["dco_order"];
+			$query .= " AND dco_order = :dco_order \n";
+		}
+
+		$statement = $this->pdo->prepare($query);
+//		echo showQuery($query, $args);
+//		error_log("SQL : " . showQuery($query, $args));
+
+		$results = array();
+
+		try {
+			$statement->execute($args);
+			$results = $statement->fetchAll();
+
+			foreach($results as $index => $line) {
+				foreach($line as $field => $value) {
+					if (is_numeric($field)) {
+						unset($results[$index][$field]);
+					}
+				}
+			}
+		}
+		catch(Exception $e){
+			echo 'Erreur de requète : ', $e->getMessage();
+		}
+
+		return $results;
 	}
 }

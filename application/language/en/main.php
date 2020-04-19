@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -325,6 +325,20 @@ $lang["decisions_othergroups"]       = "Other groups";
 $lang["decisions_owninactivegroups"] = "My older inactive groups";
 
 $lang["createMeeting_datetime"]                     = "Date and time of the meeting:";
+$lang["createMeeting_isPeriodic"]                   = "Periodic";
+$lang["createMeeting_periodicity"]                  = "Periodicity :";
+$lang["createMeeting_periodicity_weekly"]           = "Weekly";
+$lang["createMeeting_periodicity_monthly"]          = "Monthly";
+$lang["createMeeting_periodicWeeks"]                = "Occurrences";
+$lang["createMeeting_periodicWeeks_first"]          = "First";
+$lang["createMeeting_periodicWeeks_second"]         = "Second";
+$lang["createMeeting_periodicWeeks_third"]          = "Third";
+$lang["createMeeting_periodicWeeks_forth"]          = "Forth";
+$lang["createMeeting_periodicWeeks_last"]           = "Last";
+$lang["createMeeting_periodicDays"]                 = "Days"; 
+$lang["createMeeting_untildate"]                    = "Until";
+$lang["createMeeting_dateProposals"]                = "Scheduled dates";
+$lang["createMeeting_labelError"]                   = "Please, enter a name for the meeting";
 $lang["createMeeting_datetimeError"]                = "Please, use a date with the format YYYY-MM-DD and a time with the format HH:MM";
 $lang["createMeeting_length"]                       = "Planned length:";
 $lang["createMeeting_length_hour"]                  = "hour";
@@ -353,7 +367,7 @@ $lang["createMeeting_visualIndication_special"]     = "Statutory Assembly";
 
 $lang["createMeeting_place"]                        = "Place type:";
 $lang["createMeeting_placeAddress"]                 = "Place address:";
-$lang["createMeeting_base_type"]                    = "Type:";
+$lang["createMeeting_base_type"]                    = "Meeting type:";
 $lang["createMeeting_base_type_meeting"]            = "Meeting and decision making";
 $lang["createMeeting_base_type_construction"]       = "Chat and co-building";
 $lang["createMeeting_base_type_gathering"]          = "Gathering and event";
@@ -389,6 +403,7 @@ $lang["save_source_title"]      = "Add a source";
 $lang["save_trash_title"]       = "Trash the motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
 $lang["preview_motion_title"]   = "Preview the motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
 $lang["trash_explanation"]      = "Explanation";
+$lang["update_source_title"]    = "Update a source";
 
 $lang["advice_pro"]         = "Agree";
 $lang["advice_doubtful"]    = "So so";

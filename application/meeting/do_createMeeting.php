@@ -45,131 +45,145 @@ $locationBo = LocationBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection, $config);
 $agendaBo = AgendaBo::newInstance($connection, $config);
 
-$meeting = array();
-$meeting["mee_label"] = $_REQUEST["mee_label"];
-$meeting["mee_class"] = $_REQUEST["mee_class"];
-$meeting["mee_secretary_member_id"] = $userId;
-$meeting["mee_meeting_type_id"] = $_REQUEST["mee_meeting_type_id"];
-$meeting["mee_type"] = $_REQUEST["mee_type"];
-$meeting["mee_datetime"] = $_REQUEST["mee_date"] . ' ' . $_REQUEST["mee_time"];
-$meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
+function createChild($parent, $entry) {
+    global $entries;
+    global $meeting;
+    global $meetingBo;
+    global $agendaBo;
+    global $offset;
+    
+    $offset++;
 
-if ($meeting["mee_type"] == MeetingBo::TYPE_GATHERING) {
-    $mee_status = MeetingBo::STATUS_WAITING;
+    foreach($entries as $existingEntry) {
+        if ($existingEntry["position"] == $entry["position"] && $existingEntry["position"] == $entry["position"]) {
+            $entry = $existingEntry;
+            break;
+        }
+    }
+
+    $agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
+    $agenda["age_order"] = time() + $offset * 10;
+    $agenda["age_active"] = 0;
+    $agenda["age_expected_duration"] = 0;
+    $agenda["age_label"] = $entry["label"];
+    $agenda["age_objects"] = "[]";
+//        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "Pas de description" : "");
+    $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "" : "");
+
+    if ($parent) {
+    	$agenda["age_parent_id"] = $parent["age_id"];
+    }
+
+    $agendaBo->save($agenda);
+
+    $entry["age_id"] = $agenda["age_id"];
+
+    foreach($entry["children"] as $child) {
+        createChild($entry, $child);
+    }
 }
 
-
-$meetingBo->save($meeting);
-
-print_r($meeting);
-
-if (isset($_REQUEST["not_target_type"]) && $_REQUEST["not_target_type"] && ((isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) || $_REQUEST["not_target_type"] == "galette_adherents")) {
-    $noticeBo = NoticeBo::newInstance($connection, $config);
-
-    $notice = array();
-
-    $notice["not_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
-	$notice["not_target_id"] = $_REQUEST["not_target_id"];
-    $notice["not_target_type"] = isset($_REQUEST["not_target_type"]) ? $_REQUEST["not_target_type"] : 0;
-	$notice["not_voting"] = isset($_REQUEST["not_voting"]) ? 1 : 0;
-
-    $noticeBo->save($notice);
-    $data["notice"] = $notice;
-}
-
-$data["ok"] = "ok";
-$data["meeting"] = $meeting;
-
-$location = array();
-$location["loc_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
-$location["loc_type"] = $_REQUEST["loc_type"];
-
-if ($location["loc_type"] == "discord") {
-    $location["loc_channel"] = $_REQUEST["loc_discord_text_channel"] . "," . $_REQUEST["loc_discord_vocal_channel"];
+if (isset($_REQUEST["mee_periodic_dates"]) && count($_REQUEST["mee_periodic_dates"])) {
+    foreach($_REQUEST["mee_periodic_dates"] as $meetingDate) {
+        $meetingDates[] = $meetingDate . ' ' . $_REQUEST["mee_time"];
+    }
 }
 else {
-    $location["loc_channel"] = $_REQUEST["loc_channel"];
+    $meetingDates[] = $_REQUEST["mee_date"] . ' ' . $_REQUEST["mee_time"];
 }
 
-$location["loc_extra"] = $_REQUEST["loc_extra"];
-$location["loc_principal"] = 1;
+foreach($meetingDates as $meetingDate) {
+    $meeting = array();
+    $meeting["mee_label"] = $_REQUEST["mee_label"];
+    $meeting["mee_class"] = $_REQUEST["mee_class"];
+    $meeting["mee_secretary_member_id"] = $userId;
+    $meeting["mee_meeting_type_id"] = $_REQUEST["mee_meeting_type_id"];
+    $meeting["mee_type"] = $_REQUEST["mee_type"];
+    $meeting["mee_datetime"] = $meetingDate;
+    $meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
+    
+    if ($meeting["mee_type"] == MeetingBo::TYPE_GATHERING) {
+        $mee_status = MeetingBo::STATUS_WAITING;
+    }
 
-$locationBo->save($location);
-
-if (isset($_REQUEST["age_lines"])) {
-    $lines = explode("\n", $_REQUEST["age_lines"]);
-
-    $entries = array();
-
-    foreach($lines as $line) {
-
-        $levelCounter = 0;
-        foreach(explode(" ", $line) as $lineWords) {
-            if (strlen($lineWords)) break;
+    $meetingBo->save($meeting);
+    
+    print_r($meeting);
+    
+    if (isset($_REQUEST["not_target_type"]) && $_REQUEST["not_target_type"] && ((isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) || $_REQUEST["not_target_type"] == "galette_adherents")) {
+        $noticeBo = NoticeBo::newInstance($connection, $config);
+    
+        $notice = array();
+    
+        $notice["not_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
+    	$notice["not_target_id"] = $_REQUEST["not_target_id"];
+        $notice["not_target_type"] = isset($_REQUEST["not_target_type"]) ? $_REQUEST["not_target_type"] : 0;
+    	$notice["not_voting"] = isset($_REQUEST["not_voting"]) ? 1 : 0;
+    
+        $noticeBo->save($notice);
+        $data["notice"] = $notice;
+    }
+    
+    $data["ok"] = "ok";
+//    $data["meeting"] = $meeting;
+    
+    $location = array();
+    $location["loc_meeting_id"] = $meeting[$meetingBo->ID_FIELD];
+    $location["loc_type"] = $_REQUEST["loc_type"];
+    
+    if ($location["loc_type"] == "discord") {
+        $location["loc_channel"] = $_REQUEST["loc_discord_text_channel"] . "," . $_REQUEST["loc_discord_vocal_channel"];
+    }
+    else {
+        $location["loc_channel"] = $_REQUEST["loc_channel"];
+    }
+    
+    $location["loc_extra"] = $_REQUEST["loc_extra"];
+    $location["loc_principal"] = 1;
+    
+    $locationBo->save($location);
+    
+    if (isset($_REQUEST["age_lines"])) {
+        $lines = explode("\n", $_REQUEST["age_lines"]);
+    
+        $entries = array();
+    
+        foreach($lines as $line) {
+    
+            $levelCounter = 0;
+            foreach(explode(" ", $line) as $lineWords) {
+                if (strlen($lineWords)) break;
+                
+                $levelCounter++;
+            }
+    
+            if (!trim($line)) continue;
+    
+            $entry = array("label" => trim($line), "level" => $levelCounter, "root" => true, "children" => array(), "position" => count($entries));
+    
+            for($index = count($entries) - 1; $index >= 0; $index--) {
+                $existingEntry = &$entries[$index];
+                if ($existingEntry["level"] < $entry["level"]) {
+                    $entry["root"] = false;
+                    $existingEntry["children"][] = $entry;
+                    break;
+                }
+            }
             
-            $levelCounter++;
+            $entries[] = $entry;
         }
+    
+        $offset = 0;
 
-        if (!trim($line)) continue;
-
-        $entry = array("label" => trim($line), "level" => $levelCounter, "root" => true, "children" => array(), "position" => count($entries));
-
-        for($index = count($entries) - 1; $index >= 0; $index--) {
-            $existingEntry = &$entries[$index];
-            if ($existingEntry["level"] < $entry["level"]) {
-                $entry["root"] = false;
-                $existingEntry["children"][] = $entry;
-                break;
-            }
-        }
-        
-        $entries[] = $entry;
-    }
-
-    $offset = 0;
-
-    function createChild($parent, $entry) {
-        global $entries;
-        global $meeting;
-        global $meetingBo;
-        global $agendaBo;
-        global $offset;
-        
-        $offset++;
-
-        foreach($entries as $existingEntry) {
-            if ($existingEntry["position"] == $entry["position"] && $existingEntry["position"] == $entry["position"]) {
-                $entry = $existingEntry;
-                break;
-            }
-        }
-  
-        $agenda = array("age_meeting_id" => $meeting[$meetingBo->ID_FIELD]);
-        $agenda["age_order"] = time() + $offset * 10;
-        $agenda["age_active"] = 0;
-        $agenda["age_expected_duration"] = 0;
-        $agenda["age_label"] = $entry["label"];
-        $agenda["age_objects"] = "[]";
-//        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "Pas de description" : "");
-        $agenda["age_description"] = ($_REQUEST["mee_type"] == "meeting" ? "" : "");
-
-        if ($parent) {
-        	$agenda["age_parent_id"] = $parent["age_id"];
-        }
-
-        $agendaBo->save($agenda);
-
-        $entry["age_id"] = $agenda["age_id"];
-
-        foreach($entry["children"] as $child) {
-            createChild($entry, $child);
+        foreach($entries as $entry) {
+            if (!$entry["root"]) continue;
+    
+            createChild(null, $entry);
         }
     }
 
-    foreach($entries as $entry) {
-        if (!$entry["root"]) continue;
-
-        createChild(null, $entry);
+    if (!isset($data["meeting"])) {
+        $data["meeting"] = $meeting;
     }
 }
 
@@ -186,6 +200,6 @@ if (isset($_REQUEST["ajax"])) {
 	echo json_encode($data, JSON_NUMERIC_CHECK);
 }
 else {
-	header("Location: ../meeting.php?id=" . $meeting[$meetingBo->ID_FIELD]);
+	header("Location: ../meeting.php?id=" . $data["meeting"][$meetingBo->ID_FIELD]);
 }
 ?>

@@ -89,8 +89,6 @@ class PersonaeThemeSource {
 		$themes = $themeBo->getThemes(array("the_id" => $notice["not_target_id"], "with_deleted" => true, "with_group_information" => true));
 		$theme = $themes[0];
 
-//		print_r($theme);
-
 		$notice["not_label"] = $theme["the_label"];
 		$notice["not_people"] = array();
 		$notice["not_children"] = array();
@@ -102,11 +100,15 @@ class PersonaeThemeSource {
 			// In most cases eligibles and voters are the same
 			$members = array();
 
-			foreach($config["modules"]["groupsources"] as $groupSourceKey) {
+			$groupSources = isset($config["modules"]["availablegroupsources"]) ? $config["modules"]["availablegroupsources"] : $config["modules"]["groupsources"];
+
+			foreach($groupSources as $groupSourceKey) {
 				$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 	        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
-	
+
 	        	if ($groupKeyLabel["key"] != $theme["the_eligible_group_type"]) continue;
+
+//				print_r($groupSource);
 
 	        	$members = $groupSource->getNoticeMembers(array("not_target_id" => $theme["the_eligible_group_id"]));
 			}

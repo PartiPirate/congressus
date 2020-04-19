@@ -56,4 +56,6 @@ $lang["conditional_end_of_delegations"] = "And this is the end of delegations (t
 $lang["conditional_add_conditional"] = "Add a delegation rule";
 $lang["conditional_default_delegations"] = "Default delegations";
 $lang["conditional_save_delegations"] = "Save delegations";
+
+$lang["conditional_conditional_label_no_delegation_on_vote"] = "No delegation if I voted";
 ?>

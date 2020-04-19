@@ -83,6 +83,11 @@ if (!$motion) {
 }
 
 $source = array();
+
+if (isset($_REQUEST["sourceId"]) && $_REQUEST["sourceId"] && $_REQUEST["sourceId"] != "0") {
+    $source["sou_id"] = $_REQUEST["sourceId"];
+}
+
 $source["sou_title"] = $_REQUEST["sourceTitle"];
 $source["sou_is_default_source"] = 0;
 $source["sou_url"] = $_REQUEST["sourceUrl"];

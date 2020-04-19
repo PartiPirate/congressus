@@ -21,7 +21,7 @@ $lang["Sunday"] = "Dimanche";
 $lang["Monday"] = "Lundi";
 $lang["Tuesday"] = "Mardi";
 $lang["Wednesday"] = "Mercredi";
-$lang["Thursday"] = "jeudi";
+$lang["Thursday"] = "Jeudi";
 $lang["Friday"] = "Vendredi";
 $lang["Saturday"] = "Samedi";
 

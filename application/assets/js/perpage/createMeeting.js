@@ -1,5 +1,5 @@
 /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -49,15 +49,18 @@ $(function() {
 			$(".mails").show();
 		}
 	};
-	
+
 	$("body").on("change", "#not_target_type", function() {
 		var type = $(this).val();
 		targetChangeHandler(type);
 	});
 
 	$("body #not_target_type").change();
+	
+	if ($("body #not_target_type option").length < 2) {
+		$(".notice-primary-sources").hide();
+	}
 });
-
 
 function addTabListeners() {
 	$(".show-notice").click(function() {
@@ -149,6 +152,11 @@ function addCopyListeners() {
 			
 			meetingForm["ajax"] = true;
 
+			meetingForm["mee_periodic_dates[]"]  = [];
+			$(".mee_periodic_date:checked").each(function() {
+				meetingForm["mee_periodic_dates[]"][meetingForm["mee_periodic_dates[]"].length] = $(this).val();
+			})
+
 			// submit
 			$.post("meeting_api.php?method=do_copyMeeting", meetingForm, function(data) {
 				if (data.ok) {
@@ -209,10 +217,146 @@ function addCreateListener() {
 	});
 }
 
+function computePeriodicDates() {
+	$("#date-proposals").children().remove();
+
+	let startDate = moment($("#mee_date").val())
+	let untilDate = moment($("#mee_until_date").val())
+
+	if (startDate.format("dddd") == "Invalid date") return;
+	if (untilDate.format("dddd") == "Invalid date") return;
+
+	do {
+//		console.log(startDate.format());
+
+		let day = startDate.format("dddd");
+		if (day == "Invalid date") return;
+
+		if ($(".btn-periodic-day.active[value='" + day.toLowerCase() + "']").length) {
+			let toAdd = false;
+			const dayOccurrenceInMonth = Math.ceil(startDate.format("D") / 7);
+
+			if ($("#mee_periodicity").val() == "monthly") {
+				if (dayOccurrenceInMonth == 1 && $(".btn-periodic-week.active[value=first]").length) { toAdd = true; }
+				else if (dayOccurrenceInMonth == 2 && $(".btn-periodic-week.active[value=second]").length) { toAdd = true; }
+				else if (dayOccurrenceInMonth == 3 && $(".btn-periodic-week.active[value=third]").length) { toAdd = true; }
+				else if (dayOccurrenceInMonth == 4 && $(".btn-periodic-week.active[value=forth]").length) { toAdd = true; }
+
+				if ($(".btn-periodic-week.active[value=last]").length) {
+					if (dayOccurrenceInMonth == 5) {
+						toAdd = true;
+					}
+					else if (dayOccurrenceInMonth == 4 && startDate.format('M') != startDate.clone().add(7, 'd').format('M')) {
+						toAdd = true;
+					}
+				}
+			}
+			else {
+				toAdd = true;
+			}
+			
+			if (toAdd) {
+				let dateDiv = $("<div class=\"list-group-item\">" + startDate.clone().locale(sessionLanguage).format(fullDateFormat) + " <input type='checkbox' checked='checked' class='pull-right mee_periodic_date' name='mee_periodic_dates[]' value='"+startDate.clone().format("YYYY-MM-DD")+"'></div>");
+				$("#date-proposals").append(dateDiv);
+			}
+		}
+
+		startDate.add(1, 'd');
+	}
+	while (startDate.format() <= untilDate.format());
+}
+
+function addPeriodicityListeners() {
+
+	$("#mee_is_periodic").change(function() {
+		if ($(this).is(":checked")) {
+			$(".is-periodic").show("fast");
+			if ($("#mee_periodicity").val() == "monthly") {
+				$(".is-monthly-periodic").show("fast");
+				$(".is-not-monthly-periodic").hide("fast");
+	
+				$("label.is-monthly-periodic").show();
+				$("label.is-not-monthly-periodic").hide();
+			}
+			else {
+				$(".is-monthly-periodic").hide("fast");
+				$(".is-not-monthly-periodic").show("fast");
+	
+				$("label.is-monthly-periodic").hide();
+				$("label.is-not-monthly-periodic").show();
+			}
+			computePeriodicDates();
+		}
+		else {
+			$(".is-periodic").hide("fast");
+			$(".is-monthly-periodic").hide("fast");
+		}
+	});
+
+	$("#mee_date").change(function() {
+		const day = moment($(this).val()).format("dddd");
+		$(".btn-periodic-day").each(function() {
+			$(this).removeClass("active");
+			if ($(this).val() == day.toLowerCase())	 {
+				$(this).addClass("active");
+			}
+		});
+		computePeriodicDates();
+	});
+
+	$("#mee_until_date").change(function() {
+		computePeriodicDates();
+	});
+
+	$(".btn-periodicity").click(function() {
+		$(".btn-periodicity").removeClass("active");
+		$(this).addClass("active");
+
+		$("#mee_periodicity").val($(this).val());
+
+		if ($("#mee_periodicity").val() == "monthly") {
+			$(".is-monthly-periodic").show("fast");
+			$(".is-not-monthly-periodic").hide("fast");
+
+			$("label.is-monthly-periodic").show();
+			$("label.is-not-monthly-periodic").hide();
+		}
+		else {
+			$(".is-monthly-periodic").hide("fast");
+			$(".is-not-monthly-periodic").show("fast");
+
+			$("label.is-monthly-periodic").hide();
+			$("label.is-not-monthly-periodic").show();
+		}
+		computePeriodicDates();
+	});
+
+	$(".btn-periodic-week").click(function() {
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+		}
+		else {
+			$(this).addClass("active");
+		}
+		computePeriodicDates();
+	});
+
+	$(".btn-periodic-day").click(function() {
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+		}
+		else {
+			$(this).addClass("active");
+		}
+		computePeriodicDates();
+	});
+}
+
 $(function() {
 	addCreateListener();
 	addCopyListeners();
 	addTabListeners();
+	addPeriodicityListeners();
 
 	$("body").on("change", "#mee_type", function() {
 		var type = $("#mee_type").val();

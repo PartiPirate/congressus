@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -150,7 +150,7 @@ $lang["meeting_motionDelete"] = "Supprimer la motion";
 $lang["meeting_motionHas"] = "Contient au moins une motion à voter";
 $lang["meeting_motionVote"] = "Passer la motion au vote";
 $lang["meeting_motionVote2"] = "Voter la motion";
-$lang["meeting_name"] = "Nom de la réunion";
+$lang["meeting_name"] = "Titre";
 $lang["meeting_noInfluence"] = "J'ai peur d'être influencé";
 $lang["meeting_notice"] = "Convoquer";
 $lang["meeting_notice_discourse"] = "Convoquer sur Discourse"; 
@@ -331,7 +331,22 @@ $lang["decisions_ownactivegroups"] = "Mes groupes actifs";
 $lang["decisions_othergroups"] = "Les autres groupes";
 $lang["decisions_owninactivegroups"] = "Mes anciens groupes inactifs";
 
-$lang["createMeeting_datetime"] = "Date et heure de la réunion :";
+$lang["createMeeting_datetime"] = "Date et heure de convocation :";
+$lang["createMeeting_isPeriodic"] = "Périodicité";
+$lang["createMeeting_periodicity"] = ""; //= "Périodicité :";
+$lang["createMeeting_periodicity_weekly"] = "Hebdomadaire";
+$lang["createMeeting_periodicity_monthly"] = "Mensuelle";
+$lang["createMeeting_periodicWeeks"] = "Le (sélectionnez un ou plusieurs)";
+$lang["createMeeting_periodicWeeks_first"] = "Premier";
+$lang["createMeeting_periodicWeeks_second"] = "Deuxième";
+$lang["createMeeting_periodicWeeks_third"] = "Troisième";
+$lang["createMeeting_periodicWeeks_forth"] = "Quatrième";
+$lang["createMeeting_periodicWeeks_last"] = "Dernier";
+$lang["createMeeting_periodicWeeks_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Sélectionnez une ou plusieurs occurrence.";
+$lang["createMeeting_periodicDays_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> Sélectionnez un ou plusieurs jours.";
+$lang["createMeeting_periodicDays"] = "Le (sélectionnez un ou plusieurs)";
+$lang["createMeeting_untildate"] = "Jusqu'au";
+$lang["createMeeting_dateProposals"] = "Calendrier prévisionnel (Désélectionnez une date pour ne pas la retenir)";
 $lang["createMeeting_labelError"] = "Veuillez entrer un nom pour la réunion";
 $lang["createMeeting_datetimeError"] = "Veuillez entrer une date au format AAAA-MM-JJ et un horaire au format HH:MM";
 $lang["createMeeting_length"] = "Durée prévue :";
@@ -359,23 +374,24 @@ $lang["createMeeting_visualIndication_reversed"]  = "Secrétariat";
 $lang["createMeeting_visualIndication_success"]   = "Assemblée permanente";
 $lang["createMeeting_visualIndication_special"]   = "Assemblée statutaire";
 
-$lang["createMeeting_place"]                                = "Type de lieu :";
-$lang["createMeeting_placeAddress"]                         = "Adresse du lieu :";
-$lang["createMeeting_base_type"]                            = "Type :";
-$lang["createMeeting_base_type_meeting"]                    = "Réunion et prises de décision";
-$lang["createMeeting_base_type_construction"]               = "Discussion et co-construction";
+$lang["createMeeting_place"]                                = "Lieu :";
+$lang["createMeeting_place_none"]                           = "Sélectionner un lieu";
+$lang["createMeeting_placeAddress"]                         = "Adresse complète :";
+$lang["createMeeting_base_type"]                            = "Type de réunion :";
+$lang["createMeeting_base_type_meeting"]                    = "Compte-rendu et prises de décision";
+$lang["createMeeting_base_type_construction"]               = "Débat et construction";
 $lang["createMeeting_base_type_gathering"]                  = "Rencontre et événement";
-$lang["createMeeting_base_type_template_meeting"]           = "Modèles de «Réunion et prises de décision»";
-$lang["createMeeting_base_type_template_construction"]      = "Modèles de «Discussion et co-construction»";
-$lang["createMeeting_type_meeting_explanation"]             = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les &laquo;<em>réunions et prises de décision</em>&raquo; fonctionnent essentiellement en mode synchrone pour des réunions courtes mais pas seulement, le but principal étant de prendre des décisions";
-$lang["createMeeting_type_construction_explanation"]        = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les &laquo;<em>discussions et co-constructions</em>&raquo; fonctionnent essentiellement en mode asynchrone permettant de soumettre des textes à l'approbation et à l'amélioration";
-$lang["createMeeting_type_gathering_explanation"]           = "<i class='fa fa-info-circle' aria-hidden='true'></i> Les &laquo;<em>Rassemblements et événements</em>&raquo; sont utilisés par les gens qui veulent se rencontrer dans la vie réelle autour d'un évenement";
+$lang["createMeeting_base_type_template_meeting"]           = "Modèles de «Compte-rendu et prises de décision»";
+$lang["createMeeting_base_type_template_construction"]      = "Modèles de «Débat et construction»";
+$lang["createMeeting_type_meeting_explanation"]             = "<i class='fa fa-info-circle' aria-hidden='true'></i> Sélectionnez « Compte-rendu et prises de décision » pour les réunions qui nécessitent une prise de note ou l'ouverture un vote.";
+$lang["createMeeting_type_construction_explanation"]        = "<i class='fa fa-info-circle' aria-hidden='true'></i> Sélectionnez « Débat et construction » pour construire collaborativement une motion ou un texte.";
+$lang["createMeeting_type_gathering_explanation"]           = "<i class='fa fa-info-circle' aria-hidden='true'></i> Sélectionnez « Rencontre et événement » lorsque vous souhaitez organiser un événement IRL/AFK/dans la vie réelle qui ne nécessite aucune prise de note.";
 $lang["createMeeting_copy_label"]                           = "Ou copier une réunion à partir d'une réunion existante";
-$lang["createMeeting_copy_from"]                            = "Réunion source";
+$lang["createMeeting_copy_from"]                            = "Réunion source :";
 $lang["createMeeting_select_meeting"]                       = "Choisissez une réunion à copier";
 
-$lang["notice_source"] = "Source primaire";
-$lang["notice_secondary_source"] = "Source secondaire";
+$lang["notice_source"] = "Source primaire :";
+$lang["notice_secondary_source"] = "Personnes convoquées :"; // "Source secondaire :";
 $lang["notice_group"] = "Groupe";
 $lang["notice_groupGalette"] = "Groupe Galette";
 $lang["notice_themes"] = "Theme";
@@ -383,9 +399,9 @@ $lang["notice_customUsers"] = "Utilisateurs Custom";
 $lang["notice_groups"] = "Groupes convoqués";
 $lang["notice_groupAllGalette"] = "Tous les membres";
 $lang["notice_has_voting_rights"] = "a le droit de vote";
-$lang["notice_has_voting_rights_help"] = "Donne le droit de vote au groupe de personnes selectionnées pour cette réunion";
+$lang["notice_has_voting_rights_help"] = "Donner le droit de vote à ce groupe de personnes.";
 
-$lang["agenda_lines"] = "Agenda";
+$lang["agenda_lines"] = "Points à l'ordre du jour";
 $lang["agenda_lines_help"] = "Mettez un point à l'ordre du jour par ligne, ajoutez des espaces pour indenter et créer des dépendances entre les points.";
 
 $lang["mee_synchro_vote_0"] = "Votes disponibles sur l'interface de vote";
@@ -397,6 +413,7 @@ $lang["save_source_title"]    = "Ajouter une source";
 $lang["save_trash_title"]     = "Mettre à la &laquo; corbeille &raquo; la motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
 $lang["preview_motion_title"] = "Prévisualiser la motion &laquo; <span class='trash-motion-title'>{motion_title}</span> &raquo;";
 $lang["trash_explanation"]    = "Explication";
+$lang["update_source_title"]  = "Modifier une source";
 
 $lang["advice_pro"] = "D'accord";
 $lang["advice_doubtful"] = "Mitigé";

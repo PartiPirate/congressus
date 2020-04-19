@@ -95,6 +95,9 @@ class DelegationBo {
 						del_member_from = :del_member_from AND
 						del_member_to = :del_member_to ";
 
+//		echo showQuery($query, $args);
+//		error_log("SQL : " . showQuery($query, $args));
+
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($delegation);
 	}

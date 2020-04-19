@@ -176,7 +176,7 @@ else {
 
 		      <div class="form-group" id="loc_channel_form">
 		        <label for="wiki_categories" class="col-md-4 control-label"><?php echo lang("export_categories_choose"); ?> : </label>
-		        <div class="col-md-6">
+		        <div class="col-md-6" style="max-height: 380px; overflow: auto;">
 					<?php		foreach($config["mediawiki"]["categories"] as $index => $category) {?>
 							<div class="checkbox">
 								<label for="checkboxes-<?php echo $index; ?>">

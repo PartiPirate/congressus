@@ -46,6 +46,11 @@ $(function() {
 	//		discordsLink($("#loc_channel").val());
 			$('#loc_extra_group').hide();
 		}
+		else if($("#loc_type").val()==""){
+			$("#loc_channel_form").hide();
+			$("#loc_discord_form").hide();
+			$('#loc_extra_group').hide();
+		}
 		else {
 			$("#loc_discord_form").hide();
 			$("#loc_channel_form").hide();

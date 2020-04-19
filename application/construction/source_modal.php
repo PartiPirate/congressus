@@ -19,7 +19,7 @@
 
             <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo lang("common_close"); ?>"><span aria-hidden="true">&times;</span></button>
 
-            <h4 class="modal-title"><?php echo lang("save_source_title"); ?>...</h4>
+            <h4 class="modal-title"><?php echo lang("save_source_title"); ?></h4>
         </div>
         <div class="modal-body">
             
@@ -28,6 +28,7 @@
                 <input id="agendaIdInput" name="pointId" type="hidden" value="<?php echo $agenda["age_id"]; ?>" class="form-control input-md">
                 <input id="meetingIdInput" name="meetingId" type="hidden" value="<?php echo $meeting["mee_id"]; ?>" class="form-control input-md">
                 <input id="motionIdInput" name="motionId" type="hidden" value="<?php echo $motion["mot_id"]; ?>" class="form-control input-md">
+                <input id="sourceIdInput" name="sourceId" type="hidden" value="0" class="form-control input-md">
 
                 <fieldset>
                     <!-- Select Basic -->

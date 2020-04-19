@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2019 Cédric Levieux, Parti Pirate
+    Copyright 2019-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -39,10 +39,10 @@ if (!function_exists("sortPropositionsOnJMPower")) {
 if (!function_exists("sortPropositionsOnLabel")) {
 	function sortPropositionsOnLabel($a, $b) {
 		if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
-		if (strtolower(($a["mpr_label"])) == "nspp") return 1;
+		if (strtolower(($a["mpr_label"])) == lang("vote_abstain")) return 1;
 	
 		if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
-		if (strtolower(($b["mpr_label"])) == "nspp") return -1;
+		if (strtolower(($b["mpr_label"])) == lang("vote_abstain")) return -1;
 	
 		return 0;
 	}
@@ -74,6 +74,8 @@ if (!function_exists("pingSpeakingRequestCompare")) {
 		return ($pingA["pin_speaking_request"] < $pingB["pin_speaking_request"]) ? -1 : 1;
 	}
 }
+
+require_once("engine/utils/WinningMotionHook.php");
 
 class MeetingAPI {
 	var $pdo = null;
@@ -437,6 +439,28 @@ class MeetingAPI {
 		        // save if needed
 		        if ($save || false) {
 		            $motionBo->saveProposition($saveProposition);
+
+					// if the proposition is the winning one, then call the hooks
+					if ($saveProposition["mpr_winning"]) {
+						
+						// find the hooks, add them, call them with the motion and the proposition
+
+						$directoryHandler = dir("../motion_hooks/");
+						while(($fileEntry = $directoryHandler->read()) !== false) {
+							if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+								require_once("motion_hooks/" . $fileEntry);
+							}
+						}
+						$directoryHandler->close();
+
+						global $hooks;
+						
+						if ($hooks) {
+							foreach($hooks as $hookKey => $hook) {
+								$data[$hookKey] = $hook->doHook($motion, $proposition);
+							}
+						}
+					}
 		        }
 		    }
 
@@ -661,7 +685,24 @@ class MeetingAPI {
 			}
 		
 			if ($meeting["loc_type"] == "discord") {
-				include("config/discord.structure.php");
+//				include("config/discord.structure.php");
+
+				$discord_vocal_channels = array();
+				$discord_text_channels = array();
+
+				require_once("engine/bo/DiscordChannelBo.php");
+
+				$discordChannelBo = new DiscordChannelBo($this->pdo, $this->config);
+				
+				$channels = $discordChannelBo->getByFilters(array());
+				foreach($channels as $channel) {
+				    if ($channel["dch_type"] == "text") {
+				        $discord_text_channels[$channel["dch_name"]] = $channel["dch_url"];
+				    }
+				    else if ($channel["dch_type"] == "voice") {
+				        $discord_vocal_channels[$channel["dch_name"]] = $channel["dch_url"];
+				    }
+				}
 		
 				list($discord_text_channel, $discord_vocal_channel) = explode(",", $meeting["loc_channel"]);
 		
@@ -772,18 +813,6 @@ class MeetingAPI {
 		
 		//	error_log($_REQUEST["pointId"]);
 		//	error_log(print_r($agenda, true));
-
-/*		
-		    function sortPropositionsOnLabel($a, $b) {
-				if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
-				if (strtolower(($a["mpr_label"])) == "nspp") return 1;
-		
-				if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
-				if (strtolower(($b["mpr_label"])) == "nspp") return -1;
-		
-		    	return 0;
-		    }
-*/
 
 			if ($pointId == -1) {
 				$motionFilters = array("with_meeting" => true, "mee_id" => $meetingId);
@@ -985,15 +1014,18 @@ class MeetingAPI {
 		
 			$numberOfNoticed = 0;
 			$numberOfPowers = 0;
-		
+
+			$groupSources = isset($this->config["modules"]["availablegroupsources"]) ? $this->config["modules"]["availablegroupsources"] : $this->config["modules"]["groupsources"];
+
 			foreach($notices as $notice) {
-		
-				foreach($this->config["modules"]["groupsources"] as $groupSourceKey) {
+				foreach($groupSources as $groupSourceKey) {
 					$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();
 		
 		        	if ($groupKeyLabel["key"] != $notice["not_target_type"]) continue;
-		
+
+//					print_r($notice);
+
 		        	$groupSource->updateNotice($meeting, $notice, $pings, $usedPings);
 				}
 		

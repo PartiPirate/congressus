@@ -76,7 +76,7 @@ $(function() {
 	getPeopleTimer.set({ time : getPeopleTimerInterval, autostart : true });
 
 	pingTimer = $.timer(ping);
-	pingTimer.set({ time : 40000, autostart : true });
+	pingTimer.set({ time : 30000, autostart : true });
 
     if (typeof getEvents != "undefined") {
     	getEventsTimer = $.timer(getEvents);
@@ -87,5 +87,5 @@ $(function() {
 	performanceTimer.set({ time : 10000, autostart : true });
 
 	agendaMemberTimer = $.timer(checkAgendaMembers);
-	agendaMemberTimer.set({ time : 60000, autostart : true });
+	agendaMemberTimer.set({ time : 30000, autostart : true });
 });

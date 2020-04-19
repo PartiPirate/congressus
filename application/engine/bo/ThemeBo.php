@@ -148,6 +148,9 @@ class ThemeBo {
 
 		if (!isset($filters["with_deleted"])) {
 			$query .= " AND the_deleted = 0 \n";
+			if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {
+				$query .= " AND (gro_deleted = 0 OR gro_deleted IS NULL) \n";
+			}
 		}
 
 		if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {

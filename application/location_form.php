@@ -26,6 +26,7 @@
 			<label for="loc_type" class="col-md-4 control-label"><?php echo lang("createMeeting_place"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="loc_type" name="loc_type">
+					<option value=""><?php echo lang("createMeeting_place_none"); ?></option>
 <?php 	if (isset($config["mumble"]["usable"]) && $config["mumble"]["usable"]) { ?>
 					<option value="mumble"><?php echo lang("loc_type_mumble"); ?></option>
 <?php	} ?>

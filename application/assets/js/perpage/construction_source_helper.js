@@ -38,31 +38,31 @@ function sourceSelectHandler(container, $this) {
 
 			break;
 		default: 
-		container.find("#sourceUrlDiv").hide();
+			container.find("#sourceUrlDiv").hide();
 	}
 }
 
-function sourceUrlHandler(container, $this) {
+function sourceUrlHandler(container, $this, callback) {
 	var source = container.find("#sourceSelect").val();
 	var url = $this.val();
 
 	if (source == "leg_article") {
-		legifranceArticleRequester(url, container);
+		legifranceArticleRequester(url, container, callback);
 	}
 	else if (source == "leg_text") {
-		legifranceTextRequester(url, container);
+		legifranceTextRequester(url, container, callback);
 	}
 	else if (source == "wiki_text") {
-		wikiTextRequester(url, container);
+		wikiTextRequester(url, container, callback);
 	}
 	else if (source == "congressus_motion") {
-		congressusMotionRequester(url, container);
+		congressusMotionRequester(url, container, callback);
 	}
 }
 
 var articles = null;
 
-function legifranceTextRequester(url, container) {
+function legifranceTextRequester(url, container, callback) {
 	$.get("construction/getLegifranceText.php", {"url":url}, function(data) {
 		if (data.status == "ok") {
 			container.find("#sourceTitleDiv").show();
@@ -88,10 +88,12 @@ function legifranceTextRequester(url, container) {
 			container.find("#sourceContentDiv").hide();
 			container.find("#sourceArticlesDiv").hide();
 		}
+
+		if (callback) callback();
 	}, "json");
 }
 
-function wikiTextRequester(url, container) {
+function wikiTextRequester(url, container, callback) {
 	$.get("construction/getWikiText.php", {"url":url}, function(data) {
 		if (data.status == "ok") {
 			container.find("#sourceTitleDiv").show();
@@ -119,10 +121,12 @@ function wikiTextRequester(url, container) {
 			container.find("#sourceContentDiv").hide();
 			container.find("#sourceArticlesDiv").hide();
 		}
+
+		if (callback) callback();
 	}, "json");
 }
 
-function legifranceArticleRequester(url, container) {
+function legifranceArticleRequester(url, container, callback) {
 	$.get("construction/getLegifranceArticle.php", {"url":url}, function(data) {
 		if (data.status == "ok") {
 			container.find("#sourceTitleDiv").show();
@@ -136,10 +140,12 @@ function legifranceArticleRequester(url, container) {
 			container.find("#sourceContentDiv").hide();
 			container.find("#sourceArticlesDiv").hide();
 		}
+
+		if (callback) callback();
 	}, "json");
 }
 
-function congressusMotionRequester(url, container) {
+function congressusMotionRequester(url, container, callback) {
 	$.get("construction/getCongressusMotion.php", {"url":url}, function(data) {
 		if (data.status == "ok") {
 			container.find("#sourceTitleDiv").show();
@@ -153,6 +159,8 @@ function congressusMotionRequester(url, container) {
 			container.find("#sourceContentDiv").hide();
 			container.find("#sourceArticlesDiv").hide();
 		}
+		
+		if (callback) callback();
 	}, "json");
 }
 

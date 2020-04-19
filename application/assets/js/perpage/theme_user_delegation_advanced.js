@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
 	This file is part of Congressus.
 
@@ -73,7 +73,7 @@ function checkRemoveButtons() {
 }
 
 function addConditionHandler() {
-    $("body").on("click", ".condition-container .add-condition-btn", function() {
+    $("#delegation-advanced").on("click", ".condition-container .add-condition-btn", function() {
         var condition = $(this).parents(".condition");
         var conditionContainer = $(this).parents(".condition-container");
         
@@ -86,7 +86,7 @@ function addConditionHandler() {
 }
 
 function addDelegationHandler() {
-    $("body").on("click", ".delegation-container .add-delegation-btn", function() {
+    $("#delegation-advanced").on("click", ".delegation-container .add-delegation-btn", function() {
         var delegation = $(this).parents(".delegation");
         var delegationContainer = $(this).parents(".delegation-container");
         
@@ -98,7 +98,7 @@ function addDelegationHandler() {
 }
 
 function removeConditionHandler() {
-    $("body").on("click", ".condition-container .remove-condition-btn", function() {
+    $("#delegation-advanced").on("click", ".condition-container .remove-condition-btn", function() {
         var condition = $(this).parents(".condition");
         var conditionContainer = $(this).parents(".condition-container");
 
@@ -111,7 +111,7 @@ function removeConditionHandler() {
 }
 
 function removeDelegationHandler() {
-    $("body").on("click", ".delegation-container .remove-delegation-btn", function() {
+    $("#delegation-advanced").on("click", ".delegation-container .remove-delegation-btn", function() {
         var delegation = $(this).parents(".delegation");
         var delegationContainer = $(this).parents(".delegation-container");
 
@@ -123,7 +123,7 @@ function removeDelegationHandler() {
 }
 
 function addConditionDelegationHandler() {
-    $("body").on("click", "#add-conditional-delegation-btn", function() {
+    $("#delegation-advanced").on("click", "#add-conditional-delegation-btn", function() {
         var delegationContainer = $("#conditional-delegetation-container");
         var delegations = delegationContainer.find(".conditional-delegation")
         var delegation = delegations.eq(delegations.length - 1);
@@ -136,7 +136,7 @@ function addConditionDelegationHandler() {
 }
 
 function removeConditionDelegationHandler() {
-    $("body").on("click", "#conditional-delegetation-container .remove-conditional-delegation-btn", function() {
+    $("#delegation-advanced").on("click", "#conditional-delegetation-container .remove-conditional-delegation-btn", function() {
         var conditionalDelegation = $(this).parents(".conditional-delegation");
         var conditionalDelegationContainer = $(this).parents("#conditional-delegetation-container");
 
@@ -148,7 +148,7 @@ function removeConditionDelegationHandler() {
 }
 
 function changeOperatorHandler() {
-    $("body").on("change", "select[name=operator-select]", function() {
+    $("#delegation-advanced").on("change", "select[name=operator-select]", function() {
         var option = $(this).find("option:selected");
         var needValue = (("" + option.data("need-value")) == "true");
 
@@ -181,7 +181,7 @@ function changeOperatorHandler() {
 }
 
 function changeFieldHandler() {
-    $("body").on("change", "select[name=field-select]", function() {
+    $("#delegation-advanced").on("change", "select[name=field-select]", function() {
         var option = $(this).find("option:selected");
         var type = option.data("type");
 
@@ -199,7 +199,7 @@ function changeFieldHandler() {
 }
 
 function addSaveDelegationHandler() {
-    $("body").on("click", "#save-delegations-btn", function() {
+    $("#delegation-advanced").on("click", "#save-delegations-btn", function() {
         var delegation = {"conditionals" : []};
 
         var dumpDelegations = function(delegationContainer) {
@@ -254,6 +254,7 @@ function addSaveDelegationHandler() {
 
         $("#conditional-delegetation-container .conditional-delegation").each(function() {
             var conditionalDelegation = {};
+            conditionalDelegation["label"] = $(this).find("input[name=conditional-delegation-label-input]").val();
             conditionalDelegation["conditions"] = dumpConditions($(this).find(".condition-container"));
             conditionalDelegation["delegations"] = dumpDelegations($(this).find(".delegation-container"));
 

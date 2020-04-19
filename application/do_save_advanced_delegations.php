@@ -46,8 +46,8 @@ else {
 $themeId = intval($_REQUEST["del_theme_id"]);
 $themeType = $_REQUEST["del_theme_type"];
 
-$delegationBo = DelegationBo::newInstance($connection);
-$delegationConditionBo = DelegationConditionBo::newInstance($connection);
+$delegationBo = DelegationBo::newInstance($connection, $config);
+$delegationConditionBo = DelegationConditionBo::newInstance($connection, $config);
 $groupBo = GroupBo::newInstance($connection, $config);
 $themeBo = ThemeBo::newInstance($connection, $config);
 
@@ -104,6 +104,7 @@ foreach($delegations["conditionals"] as $conditionalDelegation) {
 	*/
 	$condition = array();
 	$condition["dco_order"] = $order;
+	$condition["dco_label"] = $conditionalDelegation["label"];
 	$condition["dco_end_of_delegation"] = $conditionalDelegation["endOfDelegation"];
 	$condition["dco_conditions"] = json_encode($conditionalDelegation["conditions"]);
 	$condition["dco_member_from"] = $sessionUserId;

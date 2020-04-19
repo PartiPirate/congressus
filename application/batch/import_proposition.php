@@ -79,7 +79,7 @@ if ($fh) {
 
 	$prop = array();
 	$prop["mpr_motion_id"] = $motionId;
-	$prop["mpr_label"] = "NSPP";
+	$prop["mpr_label"] = lang("vote_abstain");
 	$prop["mpr_neutral"] = 1;
 
 	$motionBo->saveProposition($prop);

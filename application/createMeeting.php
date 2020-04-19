@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -91,6 +91,27 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 		<div class="alert alert-danger simply-hidden" id="label-error-alert">
 			<?php echo lang("createMeeting_labelError"); ?>
 		</div>
+		
+
+		<div class="form-group">
+			<label for="mee_tyoe" class="col-md-4 control-label"><?php echo lang("createMeeting_base_type"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="mee_type" name="mee_type">
+<?php	foreach($meetingTypes as $meetingType) {	?>
+					<option value="<?=$meetingType?>"><?=lang("createMeeting_base_type_$meetingType")?></option>
+<?php	} ?>					
+				</select>
+			</div>
+		</div>
+
+<?php	foreach($meetingTypes as $meetingType) {	?>
+		<div class="well well-sm type-<?=$meetingType?> type-explanation" style="display: none;">
+			<p><?=lang("createMeeting_type_".$meetingType."_explanation")?></p>
+		</div>
+<?php	} ?>					
+
+		
+		
 		<div class="form-group">
 			<label for="mee_date" class="col-md-4 control-label"><?php echo lang("createMeeting_datetime"); ?></label>
 			<div class="col-md-2">
@@ -102,6 +123,7 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 					placeholder="hh:mm" id="mee_time" name="mee_time" />
 			</div>
 		</div>
+
 		<div class="alert alert-danger simply-hidden" id="date-time-error-alert">
 			<?php echo lang("createMeeting_datetimeError"); ?>
 		</div>
@@ -123,21 +145,89 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 		</div>
 
 		<div class="form-group">
-			<label for="mee_tyoe" class="col-md-4 control-label"><?php echo lang("createMeeting_base_type"); ?></label>
+			<div class="col-md-4 text-right">
+				<input type="checkbox" name="mee_is_periodic" id="mee_is_periodic" style="position: relative; top: 8px;"
+					placeholder="" class=""
+					value="1"/>
+			</div>
 			<div class="col-md-4">
-				<select class="form-control input-md" id="mee_type" name="mee_type">
-<?php	foreach($meetingTypes as $meetingType) {	?>
-					<option value="<?=$meetingType?>"><?=lang("createMeeting_base_type_$meetingType")?></option>
-<?php	} ?>					
-				</select>
+				<label class="form-control labelForCheckbox" for="mee_is_periodic"><?php echo lang("createMeeting_isPeriodic"); ?></label>
 			</div>
 		</div>
 
-<?php	foreach($meetingTypes as $meetingType) {	?>
-		<div class="well well-sm type-<?=$meetingType?> type-explanation" style="display: none;">
-			<p><?=lang("createMeeting_type_".$meetingType."_explanation")?></p>
+		<div class="form-group is-periodic" style="display: none;">
+			<label for="mee_periodicity" class="col-md-4 control-label"><?=lang("createMeeting_periodicity")?></label>
+			<div class="col-md-8">
+				<input id="mee_periodicity" name="mee_periodicity"
+					value="weekly" type="hidden">
+				<div id="mee_periodicity-btns" class="btn-group" role="group" aria-label="...">
+					<button value="weekly"  type="button" class="btn btn-periodicity btn-default active"><?=lang("createMeeting_periodicity_weekly")?></button>
+					<button value="monthly" type="button" class="btn btn-periodicity btn-default 	   "><?=lang("createMeeting_periodicity_monthly")?></button>
+				</div>
+			</div>
 		</div>
-<?php	} ?>					
+
+		<div class="form-group is-monthly-periodic" style="display: none;">
+			<label for="mee_periodic_weeks" class="col-md-4 control-label"><?=lang("createMeeting_periodicWeeks")?></label>
+			<div class="col-md-8">
+				<input id="mee_periodic_weeks" name="mee_periodic_weeks"
+					value="monthly" type="hidden">
+				<div id="mee_periodic_weeks-btns" class="btn-group" role="group" aria-label="...">
+					<button value="first"  type="button" class="btn btn-periodic-week btn-default"><?=lang("createMeeting_periodicWeeks_first")?></button>
+					<button value="second" type="button" class="btn btn-periodic-week btn-default"><?=lang("createMeeting_periodicWeeks_second")?></button>
+					<button value="third"  type="button" class="btn btn-periodic-week btn-default"><?=lang("createMeeting_periodicWeeks_third")?></button>
+					<button value="forth"  type="button" class="btn btn-periodic-week btn-default"><?=lang("createMeeting_periodicWeeks_forth")?></button>
+					<button value="last"   type="button" class="btn btn-periodic-week btn-default"><?=lang("createMeeting_periodicWeeks_last")?></button>
+				</div>
+			</div>
+		</div>
+
+<!--
+		<div class="well well-sm is-monthly-periodic" style="display: none;">
+			<p><?=lang("createMeeting_periodicWeeks_explanation")?></p>
+		</div>
+-->
+
+		<div class="form-group is-periodic" style="display: none;">
+			<label for="mee_periodic_days" class="col-md-4 control-label is-monthly-periodic"></label>
+			<label for="mee_periodic_days" class="col-md-4 control-label is-not-monthly-periodic"><?=lang("createMeeting_periodicDays")?></label>
+			<div class="col-md-8">
+				<input id="mee_periodic_days" name="mee_periodic_days"
+					value="[]" type="hidden">
+				<div id="mee_periodic_days-btns" class="btn-group" role="group" aria-label="...">
+					<button value="monday"		type="button" class="btn btn-periodic-day btn-default"><?=lang("Monday")?></button>
+					<button value="tuesday" 	type="button" class="btn btn-periodic-day btn-default"><?=lang("Tuesday")?></button>
+					<button value="wednesday"	type="button" class="btn btn-periodic-day btn-default"><?=lang("Wednesday")?></button>
+					<button value="thursday"	type="button" class="btn btn-periodic-day btn-default"><?=lang("Thursday")?></button>
+					<button value="friday"		type="button" class="btn btn-periodic-day btn-default"><?=lang("Friday")?></button>
+					<button value="saturday"	type="button" class="btn btn-periodic-day btn-default"><?=lang("Saturday")?></button>
+					<button value="sunday"		type="button" class="btn btn-periodic-day btn-default"><?=lang("Sunday")?></button>
+				</div>
+			</div>
+		</div>
+
+<!--
+		<div class="well well-sm is-periodic" style="display: none;">
+			<p><?=lang("createMeeting_periodicDays_explanation")?></p>
+		</div>
+-->
+
+		<div class="form-group is-periodic" style="display: none;">
+			<label for="mee_until_date" class="col-md-4 control-label"><?php echo lang("createMeeting_untildate"); ?></label>
+			<div class="col-md-2">
+				<input type="date" class="form-control input-md"
+					placeholder="aaaa-mm-jj" id="mee_until_date" name="mee_until_date" />
+			</div>
+		</div>
+
+		<div class="form-group is-periodic" style="display: none;">
+			<label for="mee_until_date" class="col-md-4 control-label"><?php echo lang("createMeeting_dateProposals"); ?> :</label>
+			<div class="col-md-8">
+				<div class="list-group" id="date-proposals">
+					
+				</div>
+			</div>
+		</div>
 
 		<div class="row text-center">
 			<button class="btn btn-primary show-notice" type="button" ><?php echo lang("common_next"); ?></button>
@@ -177,7 +267,7 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 <!-- NOTICE -->
 	<div role="tabpanel" class="tab-pane padding-top-5" id="notice">
 
-		<div class="form-group">
+		<div class="form-group notice-primary-sources">
 			<label for="not_target_type" class="col-md-4 control-label"><?php echo lang("notice_source"); ?></label>
 			<div class="col-md-4">
 				<select class="form-control input-md" id="not_target_type" name="not_target_type">
@@ -215,7 +305,7 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 
 		<div class="form-group">
 			<div class="col-md-4 text-right">
-				<input type="checkbox" name="not_voting" id="not_voting"
+				<input type="checkbox" name="not_voting" id="not_voting" style="position: relative; top: 8px;"
 					placeholder="" class=""
 					value="1"/>
 			</div>
@@ -223,7 +313,6 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 				<label class="form-control labelForCheckbox" for="not_voting"><?php echo lang("notice_has_voting_rights"); ?> <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="<?php echo lang("notice_has_voting_rights_help"); ?>"></span></label>
 			</div>
 		</div>
-
 
 		<div class="row text-center">
 			<button class="btn btn-primary show-agenda" type="button" ><?php echo lang("common_next"); ?></button>

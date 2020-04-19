@@ -21,6 +21,6 @@ $lang["vote_yes"]       = "Oui";
 $lang["vote_no"]        = "Non";
 $lang["vote_pro"]       = "Pour";
 $lang["vote_against"]   = "Contre";
-$lang["vote_abstain"]   = "NSPP";
+$lang["vote_abstain"]   = "Ne se prononce pas";
 
 ?>

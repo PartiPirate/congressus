@@ -590,6 +590,12 @@ function addFreeFixedHandlers() {
 
 $(function() {
 
+	$("#del_no_delegation_on_vote").change(function() {
+		$.post("do_end_delegation.php", $("#votingForm").serialize(), function(data) {
+			console.log(data);
+		});
+	});
+
 	$("#the_eligible_group_type").change(function() {
 		var groupType = $(this).val();
 

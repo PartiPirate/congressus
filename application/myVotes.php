@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -110,10 +110,10 @@ function sortPropositions($a, $b) {
 
     	if ($a["vot_power"] == 0) {
     		if (strtolower(($a["mpr_label"])) == "oui" || strtolower(($a["mpr_label"])) == "pour") return -1;
-    		if (strtolower(($a["mpr_label"])) == "nspp") return 1;
+    		if (strtolower(($a["mpr_label"])) == lang("vote_abstain")) return 1;
 
     		if (strtolower(($b["mpr_label"])) == "oui" || strtolower(($b["mpr_label"])) == "pour") return 1;
-    		if (strtolower(($b["mpr_label"])) == "nspp") return -1;
+    		if (strtolower(($b["mpr_label"])) == lang("vote_abstain")) return -1;
     	}
 
     	return 0;

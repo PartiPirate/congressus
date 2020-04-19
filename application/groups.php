@@ -84,7 +84,7 @@ foreach($groups as $groupId => $group) {
 	<?php echo getBreadcrumb(); ?>
 -->
 
-	<div class="col-md-3 group-container-div invisible-scrollbar">
+	<div class="col-md-3 group-container-div invisible-scrollbar" style="max-height: calc(100vh - 170px); overflow-y: auto;">
 		<ul class="group-list group-container-list">
 <?php
 	$class = "";

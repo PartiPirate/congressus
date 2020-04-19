@@ -396,11 +396,11 @@ include("construction/pieChart.php");
 					</div>
 					<div class="motion-title-wrapper" style="font-size: larger; height: 38px;">
 						<p class="text-info" style="display: inline-block;" id="motion-title"><?php echo $motion["mot_title"]; ?></p>
-<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>						
+<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 						<input style="width: calc(100% - 250px); display: none;" id="motion-title-input" name="motion-title-input" type="text" class="form-control input-md">
-						<button style="display: none;" id="update-title-btn" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-						<button style="display: none;" id="save-title-btn" type="button" class="btn btn-xs btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
-						<button style="display: none;" id="cancel-title-btn" type="button" class="btn btn-xs btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button style="display: none; position: relative; top: -4px;" id="update-title-btn" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+						<button style="display: none; position: relative; top: -4px;" id="save-title-btn" type="button" class="btn btn-xs btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+						<button style="display: none; position: relative; top: -4px;" id="cancel-title-btn" type="button" class="btn btn-xs btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
 <?php	} ?>						
 					</div>
 					<div style="font-size: smaller;">
@@ -1144,8 +1144,15 @@ include("construction/pieChart.php");
 	<?php
 				foreach($sources as $src) {
 	?>
-						<li class="list-group-item" data-id="<?php echo $src["sou_id"]; ?>">
-							<?php echo lang("source_icon_" . $src["sou_type"]); ?> <a href="<?php echo $src["sou_url"]; ?>"><?php echo $src["sou_title"]; ?></a> <a href="<?php echo $src["sou_url"]; ?>" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+						<li class="list-group-item" data-id="<?=$src["sou_id"]?>" data-json="<?=str_replace("\"", "&quot;", json_encode($src))?>">
+							<?=lang("source_icon_" . $src["sou_type"])?> 
+							<a href="<?=$src["sou_url"]?>"><?=$src["sou_title"]?></a> 
+							<a href="<?=$src["sou_url"]?>" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+
+<?php 					if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
+							<button style="display: none; position: relative; top: -8px; margin-bottom: -10px;" type="button" class="btn btn-xs btn-default update-source-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+<?php					} ?>						
+
 						</li>
 	<?php 		} ?>			
 
@@ -1200,12 +1207,12 @@ include("construction/pieChart.php");
 <script>
 </script>
 <?php include("footer.php");?>
-<script src="assets/js/perpage/order_list_helper.js"></script>
-<script src="assets/js/perpage/construction_source_helper.js"></script>
-<script src="assets/js/perpage/construction_source_save.js"></script>
-<script src="assets/js/perpage/construction_motion_save.js"></script>
-<script src="assets/js/perpage/construction_motion_authorship.js"></script>
-<script src="assets/js/perpage/meeting_events.js"></script>
+<script src="assets/js/perpage/order_list_helper.js?r=<?=filemtime("assets/js/perpage/order_list_helper.js")?>"></script>
+<script src="assets/js/perpage/construction_source_helper.js?r=<?=filemtime("assets/js/perpage/order_list_helper.js")?>"></script>
+<script src="assets/js/perpage/construction_source_save.js?r=<?=filemtime("assets/js/perpage/construction_source_save.js")?>"></script>
+<script src="assets/js/perpage/construction_motion_save.js?r=<?=filemtime("assets/js/perpage/construction_motion_save.js")?>"></script>
+<script src="assets/js/perpage/construction_motion_authorship.js?r=<?=filemtime("assets/js/perpage/construction_motion_authorship.js")?>"></script>
+<script src="assets/js/perpage/meeting_events.js?r=<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
 <script>
 sourceEnabled = false;
 var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
@@ -1227,6 +1234,8 @@ var userLanguage = '<?php echo SessionUtils::getLanguage($_SESSION); ?>';
 
 var common_edit = "<?php echo lang("common_edit"); ?>";
 var common_close = "<?php echo lang("common_close"); ?>";
+var common_create = "<?php echo lang("common_create"); ?>";
+var common_modify = "<?php echo lang("common_modify"); ?>";
 
 var meeting_speakingAsk = "<?php echo strtolower(lang("meeting_speakingAsk")); ?>";
 var meeting_speaking = "<?php echo lang("meeting_speaking"); ?>";
@@ -1248,6 +1257,9 @@ var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
 
 var speakingTimesChartTitle = "Temps de parole par personne";
+
+var save_source_title = <?=json_encode(lang("save_source_title"))?>;
+var update_source_title = <?=json_encode(lang("update_source_title"))?>;
 
 <?php
 

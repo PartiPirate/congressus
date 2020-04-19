@@ -122,6 +122,19 @@
 		Mes délégations : <span id="delegations"></span><br />
 		Pouvoir de délégation restant : <span id="delegative-remaining-power">2</span><br />
 
+<?php
+		$noDelegationIfIVoted = false;
+		foreach($delegations as $delegation) {
+			if ($delegation["dco_id"] && ($delegation["dco_order"] == -1 || $delegation["dco_order"] == 0) && $delegation["dco_end_of_delegation"] && $delegation["dco_conditions"] == "[]") {
+				$noDelegationIfIVoted = true;
+			}
+		}
+?>
+
+		Quand je vote, mes délégations ne sont pas prises en compte : <input type="checkbox" id="del_no_delegation_on_vote" name="del_no_delegation_on_vote" value="1" <?=($noDelegationIfIVoted ? "checked=checked" : "")?>><br />
+
+		<hr>
+
 		<input type="hidden" name="del_theme_id" id="del_theme_id" value="<?php echo $theme["the_id"]; ?>" />
 		<input type="hidden" name="del_theme_type" id="del_theme_type" value="dlp_themes" />
 		<input type="hidden" name="del_member_from" id="del_member_from" value="<?php echo $sessionUserId; ?>" />

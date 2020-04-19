@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2017 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -17,36 +17,49 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-class LocationBo {
+class DiscordChannelBo {
 	var $pdo = null;
 	var $config = null;
 
-	var $TABLE = "locations";
-	var $ID_FIELD = "loc_id";
+	var $TABLE = "discord_channels";
+	var $ID_FIELD = "dch_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
 		$this->pdo = $pdo;
 	}
 
-	static function newInstance($pdo, $config) {
-		return new LocationBo($pdo, $config);
+	static function newInstance($pdo, $config = null) {
+		return new DiscordChannelBo($pdo, $config);
 	}
 
-	function create(&$location) {
-		return BoHelper::create($location, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
+	function create(&$discordChannel) {
+		return BoHelper::create($discordChannel, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
-	function update($location) {
-		return BoHelper::update($location, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
+	function update($discordChannel) {
+		return BoHelper::update($discordChannel, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
-	function save(&$location) {
- 		if (!isset($location[$this->ID_FIELD]) || !$location[$this->ID_FIELD]) {
-			$this->create($location);
+	function save(&$discordChannel) {
+ 		if (!isset($discordChannel[$this->ID_FIELD]) || !$discordChannel[$this->ID_FIELD]) {
+			$this->create($discordChannel);
 		}
 
-		$this->update($location);
+		$this->update($discordChannel);
+	}
+
+	function delete($discordChannel) {
+		$query = "	DELETE FROM $this->TABLE ";
+
+		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
+
+		//		echo showQuery($query, $discordChannel);
+
+		$args = array($this->ID_FIELD => $discordChannel[$this->ID_FIELD]);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
 	}
 
 	function getById($id) {
@@ -75,15 +88,26 @@ class LocationBo {
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
-		if (isset($filters["loc_meeting_id"])) {
-			$args["loc_meeting_id"] = $filters["loc_meeting_id"];
-			$queryBuilder->where("loc_meeting_id = :loc_meeting_id");
+		if (isset($filters["dch_server_id"])) {
+			$args["dch_server_id"] = $filters["dch_server_id"];
+			$queryBuilder->where("dch_server_id = :dch_server_id");
 		}
 
-		if (isset($filters["loc_like_channel"])) {
-			$args["loc_like_channel"] = "%" . $filters["loc_like_channel"] . "%";
-			$queryBuilder->where("loc_channel LIKE :loc_like_channel");
+		if (isset($filters["dch_channel_id"])) {
+			$args["dch_channel_id"] = $filters["dch_channel_id"];
+			$queryBuilder->where("dch_channel_id = :dch_channel_id");
 		}
+
+		if (!isset($filters["with_deleted"])) {
+			$queryBuilder->where("dch_deleted = 0");
+		}
+
+		if (!isset($filters["with_invisible"])) {
+			$queryBuilder->where("dch_visible = 1");
+		}
+
+//		$queryBuilder->orderBy("dch_type")->orderBy("dch_name");
+		$queryBuilder->orderBy("dch_type");
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);

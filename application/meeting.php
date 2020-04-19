@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -983,6 +983,7 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
 <?php	include("meeting/addTag_modal.php"); ?>
+<?php	include("meeting/closeMeeting_modal.php"); ?>
 <?php	include("meeting/setQuorum_modal.php"); ?>
 <?php	include("meeting/setMotionDeadline_modal.php"); ?>
 

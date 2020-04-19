@@ -483,6 +483,7 @@ function addMeetingHandlers() {
 
 	$("#meeting-status-panel .btn-delete-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "deleted"},
 				function(data) {}, "json");
@@ -490,6 +491,7 @@ function addMeetingHandlers() {
 
 	$("#meeting-status-panel .btn-template-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "template"},
 				function(data) {}, "json");
@@ -497,6 +499,7 @@ function addMeetingHandlers() {
 
 	$("#meeting-status-panel .btn-waiting-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "waiting"},
 				function(data) {}, "json");
@@ -504,17 +507,26 @@ function addMeetingHandlers() {
 
 	$("#meeting-status-panel .btn-open-meeting").click(function() {
 		if (!hasWritingRight(getUserId())) return;
+
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "open"},
 				function(data) {}, "json");
 	});
 
-	$("#meeting-status-panel .btn-close-meeting").click(function() {
+	$("#close-meeting-modal .btn-confirm-meeting-close").click(function() {
 		if (!hasWritingRight(getUserId())) return;
 
 		var meetingId = $(".meeting").data("id");
 		$.post("meeting_api.php?method=do_changeMeeting", {meetingId: meetingId, property: "mee_status", text: "closed"},
-				function(data) {}, "json");
+				function(data) {
+					$("#close-meeting-modal").modal("hide");
+				}, "json");
+	});
+
+	$("#meeting-status-panel .btn-close-meeting").click(function() {
+		if (!hasWritingRight(getUserId())) return;
+
+		$("#close-meeting-modal").modal("show");
 	});
 
 	$("#meeting_rights_list").on("click", "input", function() {

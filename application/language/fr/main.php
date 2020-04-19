@@ -33,6 +33,7 @@ $lang["yesterday"] = "hier";
 $lang["common_ask_for_modification"] = "Demander modification";
 $lang["common_back"]     = "Retour";
 $lang["common_connect"]  = "Connecter";
+$lang["common_cancel"]   = "Annuler";
 $lang["common_close"]    = "Fermer";
 $lang["common_create"]   = "Créer";
 $lang["common_modify"]   = "Modifier";
@@ -53,8 +54,8 @@ $lang["common_next"]     = "Suivant";
 $lang["common_previous"] = "Précédent";
 $lang["common_preview"]  = "Previsualiser";
 $lang["common_vote"]     = "Voter";
-$lang["common_reset"]     = "Remise à zéro";
-$lang["common_abstain"]     = "S'abstenir";
+$lang["common_reset"]    = "Remise à zéro";
+$lang["common_abstain"]  = "S'abstenir";
 
 $lang["common_proposition_pro"] = "Pour";
 $lang["common_proposition_against"] = "Contre";
@@ -221,8 +222,11 @@ $lang["meeting_next_point"] = "Point suivant";
 $lang["meeting_previous_point"] = "Point précédent";
 $lang["meeting_godown_point"] = "Descendre";
 
-$lang["addAgendaFrom_title"] = "Ajouter un point d'agenda à partir d'une source";
-$lang["addTag_title"] = "Gestion des libellés de la motion";
+$lang["addAgendaFrom_title"]        = "Ajouter un point d'agenda à partir d'une source";
+$lang["addTag_title"]               = "Gestion des libellés de la motion";
+$lang["closeMeeting_title"]         = "Confirmation de la fermeture de la séance";
+$lang["closeMeeting_confirm"]       = "Confirmer la fermeture";
+$lang["closeMeeting_explanation"]   = "La confirmation de la fermeture de la réunion limite les actions aux seuls secrétaire et président de séance.";
 
 $lang["setQuorum_title"]             = "Gestion du quorum de la réunion";
 $lang["setQuorum_formula"]           = "Formule";

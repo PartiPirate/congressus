@@ -117,10 +117,10 @@
 		</table>
 		<?php }?>
 
-		<h3>Mes délégations</h3>
+		<h3><?=lang("delegation_my_delegations_title")?></h3>
 
-		Mes délégations : <span id="delegations"></span><br />
-		Pouvoir de délégation restant : <span id="delegative-remaining-power">2</span><br />
+		<?=lang("delegation_my_delegations_mine")?> <span id="delegations"></span><br />
+		<?=lang("delegation_my_delegations_remaining_power")?> <span id="delegative-remaining-power">2</span><br />
 
 <?php
 		$noDelegationIfIVoted = false;
@@ -131,7 +131,7 @@
 		}
 ?>
 
-		Quand je vote, mes délégations ne sont pas prises en compte : <input type="checkbox" id="del_no_delegation_on_vote" name="del_no_delegation_on_vote" value="1" <?=($noDelegationIfIVoted ? "checked=checked" : "")?>><br />
+		<?=lang("delegation_my_delegations_none_if_i_voted")?> <input type="checkbox" id="del_no_delegation_on_vote" name="del_no_delegation_on_vote" value="1" <?=($noDelegationIfIVoted ? "checked=checked" : "")?>><br />
 
 		<hr>
 

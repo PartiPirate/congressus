@@ -156,7 +156,7 @@ class MeetingAPI {
 		    }
 		    
 		//    $data["propositionsAtStart"] = $propositions;
-		    
+
 		    $votes = array();
 		    
 		    foreach($propositions as $index => $proposition) {
@@ -194,18 +194,22 @@ class MeetingAPI {
 		    
 		    $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting["mee_id"]));
 		    
-		//    print_r($notices);
+//		    print_r($notices);
+
 		    
 		    foreach($notices as $notice) {
 		        if (!$notice["not_voting"]) continue;
 		        if ($notice["not_target_type"] == "dlp_themes") {
 		
 		            $delegations = $personaeClient->getNoticePowers($notice["not_target_id"], $motion, $votes);
-		/*
-		            echo "<!--\n";
-		            print_r($delegations);
-		            echo "\n-->";
-		*/    
+
+//					return $data;
+
+//		            echo "<!--\n";
+//		            print_r($delegations);
+//		            echo "\n-->";
+
+//					return $data;
 		//            $data["response"] = $delegations; // TODO compute in a better way
 		        }
 		        else if ($notice["not_target_type"] == "galette_adherents") {
@@ -250,7 +254,9 @@ class MeetingAPI {
 		            }
 		        }
 		    }
-		
+
+//			return $data;
+
 		//    $data["notices"] = $notices;
 		    
 		    /*

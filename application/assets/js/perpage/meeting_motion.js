@@ -100,6 +100,7 @@ function computeMotion(motion) {
 	var retrieved = motion.data("retrieved");
 
 	m_computeVote(motionId, false, !retrieved, function(data) {
+
 //	$.post("meeting/do_computeVote.php", {motionId: motionId, save: false}, function(data) {
 		motion.find(".number-of-voters").text(data.motion.mot_number_of_voters);
 		motion.data("retrieved", true);

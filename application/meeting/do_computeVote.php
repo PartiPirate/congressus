@@ -52,6 +52,7 @@ $api = new MeetingAPI($connection, $config);
 
 $motionId = intval($_REQUEST["motionId"]);
 $save = (isset($_REQUEST["save"]) && $_REQUEST["save"] == "true");
+
 $data = $api->computeVote($motionId, $save);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

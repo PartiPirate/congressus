@@ -92,6 +92,12 @@ $data = array("ok" => "ok");
 $delegations = $delegationBo->getDelegations($filter);
 if (count($delegations)) {
 	$delegation = $delegations[0];
+	
+	foreach($delegation as $key => $value) {
+		if (substr($key, 0, 4) != "del_") {
+			unset($delegation[$key]);
+		}
+	}
 	$exists = true;
 }
 

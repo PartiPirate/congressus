@@ -19,6 +19,8 @@
 
 if (!isset($api)) exit();
 
+//exit();
+
 include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");

@@ -446,6 +446,10 @@ class MeetingAPI {
 		        if ($save || false) {
 		            $motionBo->saveProposition($saveProposition);
 
+					$chatBo = ChatBo::newInstance($this->pdo, $this->config);
+
+					$chats = $chatBo->getByFilters(array("cha_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
+
 					// if the proposition is the winning one, then call the hooks
 					if ($saveProposition["mpr_winning"]) {
 						
@@ -463,7 +467,7 @@ class MeetingAPI {
 						
 						if ($hooks) {
 							foreach($hooks as $hookKey => $hook) {
-								$data[$hookKey] = $hook->doHook($motion, $proposition);
+								$data[$hookKey] = $hook->doHook($agenda, $motion, $proposition, $chats);
 							}
 						}
 					}

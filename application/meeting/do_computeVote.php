@@ -38,6 +38,7 @@ require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/NoticeBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/bo/TagBo.php");
+require_once("engine/bo/ChatBo.php");
 require_once("language/language.php");
 
 require_once("engine/utils/PersonaeClient.php");

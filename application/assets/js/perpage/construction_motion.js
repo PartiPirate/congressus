@@ -328,6 +328,8 @@ function addDiffListeners() {
 }
 
 function toMarkdownWithEmoji(source) {
+//	return source;
+	
 	source = emojione.shortnameToImage(source);
 
 	const regex = /^(=+)([^=]*)(=*)$/gm;
@@ -349,7 +351,7 @@ function toMarkdownWithEmoji(source) {
 		source = source.replace(search, replace);
 	}
 
-	var converter = new showdown.Converter();
+	var converter = new showdown.Converter({tables: true});
 	source = converter.makeHtml(source);
 
 	return source;

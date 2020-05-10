@@ -754,3 +754,12 @@ ul.givers-list {
       width: 1300px;
   }
 }
+
+.motion-entry table td, .motion-entry table th {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+.motion-entry table {
+    border: 1px solid #ddd;
+}

@@ -186,3 +186,12 @@ select {
       width: 1300px;
   }
 }
+
+.motion-entry table td, .motion-entry table th {
+    padding: 5px;
+    border: 1px solid rgba(0,0,0,0.6);
+}
+
+.motion-entry table {
+    border: 1px solid rgba(0,0,0,0.6);
+}

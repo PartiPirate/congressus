@@ -31,9 +31,10 @@ require_once("engine/bo/SourceBo.php");
 require_once("engine/bo/UserBo.php");
 require_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/Parsedown.php");
+require_once("engine/utils/ParsedownExtra.php");
 require_once("engine/emojione/autoload.php");
 
-$Parsedown = new Parsedown();
+$Parsedown = new ParsedownExtra();
 $emojiClient = new Emojione\Client(new Emojione\Ruleset());
 
 function showDate($date) {

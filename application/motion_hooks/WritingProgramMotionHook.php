@@ -94,8 +94,8 @@ class WritingProgramMotionHook implements WinningMotionHook {
             }
         }
 
-        $from = array(" ", ", ", ",", "à", "â", "é", "è", "ê", "ù", "ô", "î");
-        $to   = array("_", ""  , "" , "a", "a", "e", "e", "e", "u", "o", "i");
+        $from = array(" ", "’", "'", ", ", ",", "à", "â", "é", "è", "ê", "ù", "ô", "î");
+        $to   = array("_", "_", "_", " " , " ", "a", "a", "e", "e", "e", "u", "o", "i");
 
         $path     = str_replace($from, $to, $path);
         $filename = str_replace($from, $to, $filename);

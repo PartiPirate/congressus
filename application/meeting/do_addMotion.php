@@ -82,6 +82,10 @@ $motion["mot_status"] = "construction";
 $motion["mot_deleted"] = "0";
 $motion["mot_author_id"] = $userId;
 
+if (isset($_REQUEST["mot_win_limit"])) {
+    $motion["mot_win_limit"] = $_REQUEST["mot_win_limit"];
+}
+
 $motionBo->save($motion);
 
 if (!isset($_REQUEST["noProposition"])) {

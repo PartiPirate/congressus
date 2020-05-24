@@ -42,8 +42,6 @@ class WritingProgramMotionHook implements WinningMotionHook {
 
         if (!$isProgram) return "not a program point";
 
-        if (strtolower($proposition["mpr_label"]) != "oui" && strtolower($proposition["mpr_label"]) != "pour") return "not a yes";
-
         $json["SCORE"] = round($proposition["proportion_power"] * 100, 2) . "%";
 
         $description = $agenda["age_description"];

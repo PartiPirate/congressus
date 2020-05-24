@@ -364,6 +364,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 						<ul class="dropdown-menu" role="menu" aria-labelledby="meetings-menu">
 					<?php 	if ($isConnected) {?>
 							<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+							<li <?php if ($page == "createQuick") echo 'class="active"'; ?>><a href="createQuick.php"><?php echo lang("menu_createQuick"); ?><?php if ($page == "createQuick") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 							<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	}?>
 							<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>

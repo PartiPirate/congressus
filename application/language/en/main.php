@@ -66,6 +66,7 @@ $lang["congressus_title"] = "Congressus";
 
 $lang["menu_administration"]    = "Administration";
 $lang["menu_createMeeting"]     = "Create a meeting";
+$lang["menu_createQuick"]       = "Create a quick consultation";
 $lang["menu_decisions"]         = "Decisions";
 $lang["menu_groupMeetings"]     = "Group meetings";
 $lang["menu_index"]             = "Home";
@@ -92,6 +93,7 @@ $lang["breadcrumb_about"]           = "About";
 $lang["breadcrumb_administration"]  = "Administration";
 $lang["breadcrumb_connect"]         = $lang["common_connect"];
 $lang["breadcrumb_createMeeting"]   = "Create a meeting";
+$lang["breadcrumb_createQuick"]     = "Create a quick consultation";
 $lang["breadcrumb_decisions"]       = "Decisions";
 $lang["breadcrumb_forgotten"]       = "I forgot my password";
 $lang["breadcrumb_groupMeetings"]   = "Group meetings";
@@ -283,6 +285,7 @@ $lang["export_open"]                = "Open in a new page";
 $lang["export_iframes"]             = "Please activate iframes";
 $lang["export_send"]                = "Send";
 
+$lang["motion_ballot_majority_-4"] = "Approbation-3";
 $lang["motion_ballot_majority_-3"] = "Approbation";
 $lang["motion_ballot_majority_-2"] = "Majority judgment";
 $lang["motion_ballot_majority_-1"] = "Borda";
@@ -298,7 +301,16 @@ $lang["motion_majorityJudgment_4"] = "Good enough";
 $lang["motion_majorityJudgment_5"] = "Good";
 $lang["motion_majorityJudgment_6"] = "Perfect";
 
-$lang["motion_ballot_majority_-2_help"] = "For each of the propositions, make your qualitative judgment. A decision taken using the majority judgment qualifies each of the proposals in relation to itself and not in a system of competition or preference. The winning proposal (s) have the best membership rate.";
+$lang["motion_approval_1"] = "No";
+$lang["motion_approval_2"] = "Yes";
+
+$lang["motion_maybe_1"] = "No";
+$lang["motion_maybe_2"] = "Maybe";
+$lang["motion_maybe_3"] = "Yes";
+
+$lang["motion_ballot_majority_-4_help"] = "For each proposition, say whether you agree or not, or even hesitate between the two. The winning proposal(s) are the ones with the best approval rate.";
+$lang["motion_ballot_majority_-3_help"] = "For each of the proposals, say whether you approve or not. The winning proposal(s) are the ones with the best approval rate.";
+$lang["motion_ballot_majority_-2_help"] = "For each of the propositions, make your qualitative judgment. A decision taken using the majority judgment qualifies each of the proposals in relation to itself and not in a system of competition or preference. The winning proposal(s) have the best membership rate.";
 $lang["motion_ballot_majority_-1_help"] = "Rank the proposals in order of preference (most acceptable to you at the top). The Borda vote is a preferential vote to find the most supported proposal among all those proposed.";
 $lang["motion_ballot_majority_0_help"]  = "The proposal with the most votes wins.";
 $lang["motion_ballot_majority_50_help"] = "The proposal that has more than 50% of the votes wins.";
@@ -377,12 +389,21 @@ $lang["createMeeting_base_type_construction"]       = "Chat and co-building";
 $lang["createMeeting_base_type_gathering"]          = "Gathering and event";
 $lang["createMeeting_base_type_template_meeting"]            = "Template of «Meeting and decision making»";
 $lang["createMeeting_base_type_template_construction"]       = "Template of «Chat and co-building»";
-$lang["createMeeting_type_meeting_explanation"]     = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Meetings and decision making</em>&raquo; are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
+$lang["createMeeting_type_meeting_explanation"]      = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Meetings and decision making</em>&raquo; are usually used in synchronous mode for short meetings but not only, the main purpose is to take décisions";
 $lang["createMeeting_type_construction_explanation"] = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Chat and co-building</em>&raquo; are usually used in asynchronous mode to promote texts through approval and improvments";
 $lang["createMeeting_type_gathering_explanation"]    = "<i class='fa fa-info-circle' aria-hidden='true'></i> &laquo;<em>Gathering and event</em>&raquo; are usually used for people who wants to connect in real-life around an event";
 $lang["createMeeting_copy_label"]                    = "Or copy an existing meeting";
 $lang["createMeeting_copy_from"]                     = "Source meeting";
 $lang["createMeeting_select_meeting"]                = "Select a meeting to copy";
+
+$lang["createMeeting_dateError"]        = "Choose some dates to vote in date-time matrix";
+$lang["createMeeting_propositionError"] = "Set some propositions to vote";
+$lang["createMeeting_typeError"]        = "Choose a type of proposition and set some of them";
+$lang["createQuick_end_datetime"]       = "Date and time of the end of the consultation:";
+$lang["createQuick_motion_description"] = "Description of the consultation:";
+$lang["createQuick_type_proposition"]   = "Propositions";
+$lang["createQuick_type_date"]          = "Dates";
+$lang["createQuick_types"]              = "Choose between &laquo;<em>Propositions</em>&raquo; and &laquo;<em>Dates</em>&raquo; to add choices in different construct mode";
 
 $lang["notice_source"]           = "Primary source";
 $lang["notice_secondary_source"] = "Secondary source";
@@ -413,6 +434,7 @@ $lang["advice_pro"]         = "Agree";
 $lang["advice_doubtful"]    = "So so";
 $lang["advice_against"]     = "Against";
 
+$lang["loc_type_"]          = "On congressus"; 
 $lang["loc_type_mumble"]    = "On mumble";
 $lang["loc_type_afk"]       = "In a physical place";
 $lang["loc_type_irc"]       = "On irc";

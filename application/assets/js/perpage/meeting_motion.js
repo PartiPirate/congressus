@@ -21,6 +21,7 @@
 /* global majority_judgement_translations */
 
 /* global approval_translations */
+/* global maybe_translations */
 
 /* global updateChart2 */
 
@@ -178,6 +179,19 @@ function computeMotion(motion) {
 	
 					var newHtml = "&nbsp;(" + jmLabel + " / " + percent + "%)";
 				}
+				else if (winLimit == -4) {
+					var jmWinning = data.propositions[index].jm_median_power;
+					
+					var percent = 0;
+					var jmLabel = maybe_translations[0];
+
+					if (jmWinning) {
+						percent = Math.round(data.propositions[index].jm_sum_proportion_powers[jmWinning] * 10000) / 100.;
+						jmLabel = maybe_translations[jmWinning - 1];
+					}
+	
+					var newHtml = "&nbsp;(" + jmLabel + " / " + percent + "%)";
+				}
 				
 				var explanations = JSON.parse(data.propositions[index].mpr_explanation);
 //				console.log(explanations);
@@ -264,7 +278,7 @@ function computeMotion(motion) {
 				motion.data("datahash", datahash);
 			}
 		}
-		else if (winLimit == -2 || winLimit == -3) { // Majority Judgement && Approval
+		else if (winLimit == -2 || winLimit == -3 || winLimit == -4) { // Majority Judgement && Approval
 			initJMChart(motion);
 
 			var chartData = {};
@@ -274,7 +288,7 @@ function computeMotion(motion) {
 
 			var datahash = "";
 
-			let translations = winLimit == -2 ? majority_judgement_translations : approval_translations;
+			let translations = winLimit == -2 ? majority_judgement_translations : (winLimit == -4 ? maybe_translations : approval_translations);
 
 			for(var index = translations.length - 1; index >= 0; --index) {
 				var dataset = {

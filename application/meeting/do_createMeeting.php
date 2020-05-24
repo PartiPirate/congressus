@@ -101,14 +101,14 @@ foreach($meetingDates as $meetingDate) {
     $meeting["mee_type"] = $_REQUEST["mee_type"];
     $meeting["mee_datetime"] = $meetingDate;
     $meeting["mee_expected_duration"] = $_REQUEST["mee_expected_duration"];
-    
+
     if ($meeting["mee_type"] == MeetingBo::TYPE_GATHERING) {
         $mee_status = MeetingBo::STATUS_WAITING;
     }
 
     $meetingBo->save($meeting);
     
-    print_r($meeting);
+//    print_r($meeting);
     
     if (isset($_REQUEST["not_target_type"]) && $_REQUEST["not_target_type"] && ((isset($_REQUEST["not_target_id"]) && $_REQUEST["not_target_id"]) || $_REQUEST["not_target_type"] == "galette_adherents")) {
         $noticeBo = NoticeBo::newInstance($connection, $config);
@@ -197,6 +197,12 @@ if (isset($config["gamifier"]["url"])) {
 }
 
 if (isset($_REQUEST["ajax"])) {
+    $data["url"] = "meeting.php?id=" . $data["meeting"][$meetingBo->ID_FIELD];
+    
+    if (isset($_REQUEST["quick"]) && $_REQUEST["quick"]) {
+        $data["url"] = "myVotes.php?meetingId=" . $data["meeting"][$meetingBo->ID_FIELD];
+    }
+
 	echo json_encode($data, JSON_NUMERIC_CHECK);
 }
 else {

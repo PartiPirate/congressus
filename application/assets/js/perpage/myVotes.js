@@ -495,7 +495,7 @@ function addVoteHandlers(motion) {
 
 	var method = motion.data("method");
 
-	if (method == "-2" || method == "-3") {
+	if (method == "-2" || method == "-3" || method == "-4") {
 		addMajorityJudgmentHandlers(motion);
 	}
 	else if (method == "-1") {

@@ -404,7 +404,7 @@ foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
 
 ?>
 
-var majority_judgement_translations = <?php echo json_encode($translatons); ?>
+var majority_judgement_translations = <?=json_encode($translatons)?>;
 
 <?php
 
@@ -414,7 +414,18 @@ $translatons[] = lang("motion_approval_" . 2, false);
 
 ?>
 
-var approval_translations = <?php echo json_encode($translatons); ?>
+var approval_translations = <?=json_encode($translatons)?>;
+
+<?php
+
+$translatons = array();
+$translatons[] = lang("motion_maybe_" . 1, false);
+$translatons[] = lang("motion_maybe_" . 2, false);
+$translatons[] = lang("motion_maybe_" . 3, false);
+
+?>
+
+var maybe_translations = <?=json_encode($translatons)?>;
 
 </script>
 

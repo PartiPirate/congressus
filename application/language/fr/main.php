@@ -66,6 +66,7 @@ $lang["congressus_title"] = "Congressus";
 
 $lang["menu_administration"] = "Administration";
 $lang["menu_createMeeting"]  = "Créer une réunion";
+$lang["menu_createQuick"]    = "Créer une consultation rapide";
 $lang["menu_decisions"]      = "Décisions";
 $lang["menu_groupMeetings"]  = "Réunions d'instance";
 $lang["menu_index"]          = "Accueil";
@@ -92,6 +93,7 @@ $lang["breadcrumb_about"]          = "À Propos";
 $lang["breadcrumb_administration"] = "Administration";
 $lang["breadcrumb_connect"]        = "Se connecter";
 $lang["breadcrumb_createMeeting"]  = "Créer une réunion";
+$lang["breadcrumb_createQuick"]    = "Créer une consultation rapide";
 $lang["breadcrumb_decisions"]      = "Décisions";
 $lang["breadcrumb_forgotten"]      = "J'ai oublié mon mot de passe";
 $lang["breadcrumb_groupMeetings"]  = "Réunions d'instance";
@@ -286,6 +288,7 @@ $lang["export_open"] = "Ouvrir dans une nouvelle page";
 $lang["export_iframes"] = "Merci d'activer les iframes";
 $lang["export_send"] = "Envoyer";
 
+$lang["motion_ballot_majority_-4"] = "Approbation-3";
 $lang["motion_ballot_majority_-3"] = "Approbation";
 $lang["motion_ballot_majority_-2"] = "Jugement Majoritaire";
 $lang["motion_ballot_majority_-1"] = "Borda";
@@ -304,6 +307,11 @@ $lang["motion_majorityJudgment_6"] = "Très bien";
 $lang["motion_approval_1"] = "Non";
 $lang["motion_approval_2"] = "Oui";
 
+$lang["motion_maybe_1"] = "Non";
+$lang["motion_maybe_2"] = "Peut-être";
+$lang["motion_maybe_3"] = "Oui";
+
+$lang["motion_ballot_majority_-4_help"] = "Pour chacune des propositions, dîtes si vous approuvez ou non, voire que vous hésitez entre les deux. La ou les propositions gagnantes sont celles qui ont le meilleur taux d'approbation.";
 $lang["motion_ballot_majority_-3_help"] = "Pour chacune des propositions, dîtes si vous approuvez ou non. La ou les propositions gagnantes sont celles qui ont le meilleur taux d'approbation.";
 $lang["motion_ballot_majority_-2_help"] = "Pour chacune des propositions, rendez votre jugement qualitatif. Une décision prise à l'aide du jugement majoritaire permet de qualifier chacune des propositions par rapport à elle-même et non dans un système de concurrence ou de préférence. Toutefois quand vous commencer à rendre votre jugement, toutes les propositions doivent être jugées, à défaut le jugement est &laquo;À rejeter&raquo;.\n\nLa ou les propositions gagnantes sont celles qui ont le meilleur taux d'adhésion.";
 $lang["motion_ballot_majority_-1_help"] = "Classez les propositions par ordre de préférence (la plus acceptable pour vous en haut). Le vote Borda est un vote préférentiel permettant de trouver la proposition la plus soutenue parmi toutes celles proposées.";
@@ -394,6 +402,15 @@ $lang["createMeeting_copy_label"]                           = "Ou copier une ré
 $lang["createMeeting_copy_from"]                            = "Réunion source :";
 $lang["createMeeting_select_meeting"]                       = "Choisissez une réunion à copier";
 
+$lang["createMeeting_dateError"]        = "Choisissez des dates pour voter dans la matrice date-heure";
+$lang["createMeeting_propositionError"] = "Définissez quelques propositions pour voter";
+$lang["createMeeting_typeError"]        = "Choisissez un type de proposition et définissez certaines d'entre elles";
+$lang["createQuick_end_datetime"]       = "Date et heure de la fin de la consultation :";
+$lang["createQuick_motion_description"] = "Description de la consultation :";
+$lang["createQuick_type_proposition"]   = "Propositions";
+$lang["createQuick_type_date"]          = "Dates";
+$lang["createQuick_types"]              = "Choisissez parmi &laquo;<em>Propositions</em>&raquo; et &laquo;<em>Dates</em>&raquo; pour ajouter des choix dans des modes de construction différents";
+
 $lang["notice_source"] = "Source primaire :";
 $lang["notice_secondary_source"] = "Personnes convoquées :"; // "Source secondaire :";
 $lang["notice_group"] = "Groupe";
@@ -423,12 +440,13 @@ $lang["advice_pro"] = "D'accord";
 $lang["advice_doubtful"] = "Mitigé";
 $lang["advice_against"] = "Pas d'accord";
 
-$lang["loc_type_mumble"] = "Sur mumble";
-$lang["loc_type_afk"] = "En espace réel";
-$lang["loc_type_irc"] = "Sur irc";
+$lang["loc_type_"]          = "Sur congressus"; 
+$lang["loc_type_mumble"]    = "Sur mumble";
+$lang["loc_type_afk"]       = "En espace réel";
+$lang["loc_type_irc"]       = "Sur irc";
 $lang["loc_type_framatalk"] = "Sur framatalk";
-$lang["loc_type_discord"] = "Sur discord";
-$lang["loc_type_unknown"] = "à un endroit inconnu";
+$lang["loc_type_discord"]   = "Sur discord";
+$lang["loc_type_unknown"]   = "à un endroit inconnu";
 
 $lang["construction_arguments"]     = "Arguments";
 $lang["construction_amendments"]    = "Amendements";

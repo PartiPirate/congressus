@@ -76,6 +76,13 @@ if (!function_exists("pingSpeakingRequestCompare")) {
 }
 
 require_once("engine/utils/WinningMotionHook.php");
+require_once("engine/utils/DateTimeUtils.php");
+
+include_once("config/discourse.config.php");
+require_once("engine/discourse/DiscourseAPI.php");
+
+include_once("config/mediawiki.config.php");
+include_once("config/mediawiki.php");
 
 class MeetingAPI {
 	var $pdo = null;
@@ -322,7 +329,7 @@ class MeetingAPI {
 		        //    unset($propositions[$index]["votes"]);
 		        }
 		    }
-		    else if ($motion["mot_win_limit"] == -2 || $motion["mot_win_limit"] == -3) { // JM or Approval
+		    else if ($motion["mot_win_limit"] == -2 || $motion["mot_win_limit"] == -3 || $motion["mot_win_limit"] == -4) { // JM or Approval
 		        $defaultJmArray = array(0);
 		        for($index = 0; $index < count($this->config["congressus"]["ballot_majority_judgment"]); $index++) {
 		            $defaultJmArray[] = 0;
@@ -361,7 +368,13 @@ class MeetingAPI {
 		            }
 		    
 		            for($jndex = count($propositions[$index]["jm_powers"]) - 1; $jndex > 0; $jndex--) {
-		                $propositions[$index]["jm_proportion_powers"][$jndex] = $propositions[$index]["jm_powers"][$jndex] / $propositions[$index]["jm_powers"][0];
+		            	if ($propositions[$index]["jm_powers"][0]) {
+			                $propositions[$index]["jm_proportion_powers"][$jndex] = $propositions[$index]["jm_powers"][$jndex] / $propositions[$index]["jm_powers"][0];
+		            	}
+		            	else {
+		            		$propositions[$index]["jm_proportion_powers"][$jndex] = 0;
+		            	}
+
 		                $propositions[$index]["jm_sum_proportion_powers"][$jndex] = $propositions[$index]["jm_proportion_powers"][$jndex];
 		                
 		                if (isset($propositions[$index]["jm_sum_proportion_powers"][$jndex + 1])) {
@@ -401,6 +414,7 @@ class MeetingAPI {
 		                $propositions[0]["mpr_winning"] = 1;
 		                $propositions[0]["mpr_explanation"]["winning"] = 1;
 		                break;
+		            case -4: // Approval-3 / Maybe, TODO can have more than one winner
 		            case -3: // Approval, TODO can have more than one winner
 		            case -2: // JM, TODO can have more than one winner
 		        //        echo "Jugement majoritaire\n"; 

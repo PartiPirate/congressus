@@ -22,6 +22,7 @@
 /* global majority_judgement_values */
 /* global majority_judgement_translations */
 /* global approval_translations */
+/* global maybe_translations */
 /* global showdown */
 /* global areVotesAnonymous */
 /* global computeMotion */
@@ -40,6 +41,7 @@
 
 var judgmentVoteIsMandatory = false;
 var approval_values = [1, 2];
+var maybe_values = [1, 2, 3];
 
 keyupTimeoutId = null;
 
@@ -949,6 +951,17 @@ function addVotes(votes, proposition, motion) {
 				}
 			}
 		}
+		else if (motionWinLimit == -4) {
+			for(var jmIndex = 0; jmIndex < maybe_values.length; ++jmIndex) {
+				var jmValue = maybe_values[jmIndex];
+				if (jmValue == vote.vot_power && vote.vot_power != 0) {
+					if (voteLi.find(".power").text() != maybe_translations[jmIndex]) {
+						voteLi.find(".power").text(maybe_translations[jmIndex]);
+					}
+					break;
+				}
+			}
+		}
 		else if (voteLi.find(".power").text() != vote.vot_power) {
 			voteLi.find(".power").text(vote.vot_power);
 		}
@@ -1101,13 +1114,16 @@ function vote(event) {
 	        className: "not-large-dialog"
 		});
 	}
-	else if (motionWinLimit == -2 || motionWinLimit == -3) {
+	else if (motionWinLimit == -2 || motionWinLimit == -3 || motionWinLimit == -4) {
 
 		if (motionWinLimit == -2) {
 			dialog = $("form[data-template-id=majority-judgment-form]").template("use", {data: {}});
 		}
 		else if (motionWinLimit == -3) {
 			dialog = $("form[data-template-id=approval-form]").template("use", {data: {}});
+		}
+		else if (motionWinLimit == -4) {
+			dialog = $("form[data-template-id=maybe-form]").template("use", {data: {}});
 		}
 
 		var propositions = motion.find(".proposition");
@@ -1119,6 +1135,9 @@ function vote(event) {
 			}
 			else if (motionWinLimit == -3) {
 				var propositionHolder = $("div[data-template-id=approvalProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
+			}
+			else if (motionWinLimit == -4) {
+				var propositionHolder = $("div[data-template-id=maybeProposition]").template("use", {data: {mpr_label: $(this).find(".proposition-label").text(), mpr_id: $(this).data("id")}});
 			}
 
 			propositionHolder.find(".judgement").click(function() {

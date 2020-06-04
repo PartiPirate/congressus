@@ -46,7 +46,7 @@ $delegationCondition["dco_theme_type"] = $_REQUEST["del_theme_type"];
 $delegationCondition["dco_member_from"] = $sessionUserId;
 $delegationCondition["dco_order"] = -1;
 $delegationCondition["dco_end_of_delegation"] = true;
-$delegationCondition["dco_conditions"] = "[]";
+$delegationCondition["dco_conditions"] = "[{\"interaction\":\"if\",\"field\":\"voter_me\",\"operator\":\"do_vote\",\"value\":\"\"}]";
 
 $conditions = $delegationConditionBo->getConditions($delegationCondition);
 

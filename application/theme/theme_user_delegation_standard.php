@@ -125,7 +125,7 @@
 <?php
 		$noDelegationIfIVoted = false;
 		foreach($delegations as $delegation) {
-			if ($delegation["dco_id"] && ($delegation["dco_order"] == -1 || $delegation["dco_order"] == 0) && $delegation["dco_end_of_delegation"] && $delegation["dco_conditions"] == "[]") {
+			if ($delegation["dco_id"] && ($delegation["dco_order"] == -1 || $delegation["dco_order"] == 0) && $delegation["dco_end_of_delegation"] && $delegation["dco_conditions"] == "[{\"interaction\":\"if\",\"field\":\"voter_me\",\"operator\":\"do_vote\",\"value\":\"\"}]") {
 				$noDelegationIfIVoted = true;
 			}
 		}

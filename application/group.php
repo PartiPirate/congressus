@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -29,7 +29,7 @@ $authoritatives = array();
 $authorityAdmins = array();
 
 if ($isAdmin && !isset($group)) {
-	$group = array("gro_id" => 0, "gro_themes" => array(), "gro_label" => "Nouveau groupe", "gro_contact_type" => "none", "gro_contact" => "");
+	$group = array("gro_id" => 0, "gro_themes" => array(), "gro_label" => "Nouveau groupe", "gro_contact_type" => "none", "gro_contact" => "", "gro_tasker_type" => "", "gro_tasker_project_id" => "");
 }
 
 if ($isConnected) {
@@ -208,8 +208,8 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 						<input type="hidden" name="action" value="add_authority" />
 						<input type="hidden" name="gau_group_id" id="gau_group_id" value="<?=$group["gro_id"]?>" />
 
-						<label class="col-md-4 control-label" for="gau_authoritative_id">Groupe d'utilisateurs à ajouter : </label>
-						<div class="col-md-6">
+						<label class="col-md-3 control-label" for="gau_authoritative_id">Groupe d'utilisateurs à ajouter : </label>
+						<div class="col-md-7">
 							<select name="gau_authoritative_id" id="gau_authoritative_id" class="form-control input-md">
 								<option value=""></option>
 								<option value="0">Tous les membres</option>
@@ -233,6 +233,76 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 			</div>
 		</div>
 	</div>
+
+	<div id="tasks" <?php if (!$group["gro_id"]) {?>style="display: none;"<?php } ?>>
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				Gestion des tâches&nbsp;
+			</div>
+			<div class="panel-body">
+
+				<form id="saveTaskForm" action="do_save_group.php" method="post" class="form-horizontal">
+					<fieldset>
+						<input type="hidden" name="gro_id" id="task_gro_id" value="<?=$group["gro_id"]?>" />
+
+						<div class="form-group">
+
+							<label class="col-md-3 control-label" for="gro_tasker_type">Gestionnaire de tâches : </label>
+							<div class="col-md-3">
+								<select name="gro_tasker_type" id="gro_tasker_type" class="form-control input-md">
+									<option value="none"></option>
+<?php
+		$directoryHandler = dir("task_hooks/");
+
+		while(($fileEntry = $directoryHandler->read()) !== false) {
+			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+				require_once("task_hooks/" . $fileEntry);
+			}
+		}
+		$directoryHandler->close();
+		
+		$types = array("none");
+		
+		foreach($taskHooks as $taskHook) {
+			$taskHookType = $taskHook->getType();
+			$types[] = $taskHookType;
+?>
+									<option value="<?=$taskHookType?>" <?=(($taskHook->getType() == $group["gro_tasker_type"]) ? "selected='selected'" : "")?>><?=$taskHook->getType()?></option>
+<?php
+		}
+?>
+								</select>
+							</div>
+
+							<label class="col-md-3 control-label" for="gro_tasker_project_id">Projet : </label>
+							<div class="col-md-3">
+								<select name="gro_tasker_project_id" id="gro_tasker_project_id" class="form-control input-md">
+									<option class="<?=implode(" ", $types)?>" value=""></option>
+
+<?php
+		foreach($taskHooks as $taskHook) {
+			$projects = $taskHook->getProjects();
+
+			foreach($projects as $project) {
+?>
+									<option class="<?=$taskHookType?>" value="<?=$project["id"]?>" <?=(($project["id"] == $group["gro_tasker_project_id"]) ? "selected='selected'" : "")?>><?=$project["name"]?></option>
+<?php
+			}
+		}
+?>
+								</select>
+							</div>
+
+						</div>
+
+					</fieldset>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
 
 	<div id="admins" <?php if (!$group["gro_id"]) {?>style="display: none;"<?php } ?>>
 		<div class="panel panel-primary theme <?php echo $class ?>">

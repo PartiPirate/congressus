@@ -266,6 +266,11 @@ class GroupBo {
 			$query .= " AND gro_id = :gro_id \n";
 		}
 
+		if (isset($filters["the_id"])) {
+			$args["the_id"] = $filters["the_id"];
+			$query .= " AND the_id = :the_id \n";
+		}
+
 		$query .= "	ORDER BY gro_label, the_label ";
 
 		$statement = $this->pdo->prepare($query);
@@ -283,28 +288,32 @@ class GroupBo {
 					$groupId = $line["gro_id"];
 				}
 
-				$groups[$groupId]["gro_id"] = $line["gro_id"];
-				$groups[$groupId]["gro_label"] = $line["gro_label"];
-				$groups[$groupId]["gro_contact"] = $line["gro_contact"];
-				$groups[$groupId]["gro_contact_type"] = $line["gro_contact_type"];
+				$groups[$groupId]["gro_id"] 				= $line["gro_id"];
+				$groups[$groupId]["gro_label"]				= $line["gro_label"];
+				$groups[$groupId]["gro_contact"]			= $line["gro_contact"];
+				$groups[$groupId]["gro_contact_type"]		= $line["gro_contact_type"];
+				$groups[$groupId]["gro_tasker_type"]		= $line["gro_tasker_type"];
+				$groups[$groupId]["gro_tasker_project_id"]	= $line["gro_tasker_project_id"];
 
 				if (!isset($groups[$groupId]["gro_themes"])) {
 					$groups[$groupId]["gro_themes"] = array();
 				}
 
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_id"] = $line["the_id"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"] = $line["the_label"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_power"] = $line["the_voting_power"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_method"] = $line["the_voting_method"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_delegate_only"] = $line["the_delegate_only"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"] = $line["gth_power"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_id"]					= $line["the_id"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"]				= $line["the_label"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_power"]		= $line["the_voting_power"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_voting_method"]		= $line["the_voting_method"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_delegate_only"]		= $line["the_delegate_only"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_tasker_type"] 		= $line["the_tasker_type"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_tasker_project_id"]	= $line["the_tasker_project_id"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"]				= $line["gth_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["fix_until_date"] = $line["fix_until_date"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["id_adh"] = $line["fme_member_id"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["pseudo_adh"] = $line["pseudo_adh"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["nom_adh"] = $line["nom_adh"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["prenom_adh"] = $line["prenom_adh"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["email_adh"] = $line["email_adh"];
-				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["fme_power"] = $line["fme_power"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["id_adh"]		= $line["fme_member_id"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["pseudo_adh"]	= $line["pseudo_adh"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["nom_adh"]		= $line["nom_adh"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["prenom_adh"]	= $line["prenom_adh"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["email_adh"]	= $line["email_adh"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["fme_power"]	= $line["fme_power"];
 			}
 
 			return $groups;

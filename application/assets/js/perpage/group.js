@@ -13,6 +13,39 @@ function clearKeyup() {
 	}
 }
 
+function saveTaskGroupFormHandlers() {
+//	$("#saveGroupForm").change(saveGroup);
+
+/*
+	$("#saveTaskForm input[type=text]").keyup(function() {
+
+		if ($(this).attr("id") == "gro_label") {
+			groupLabelChanged = true;
+		}
+
+		clearKeyup();
+		keyupTimeoutId = setTimeout(saveTask, 1500);
+	});
+
+	$("#saveTaskForm input[type=checkbox]").change(function() {
+		saveTask();
+	});
+
+	$("#saveTaskForm select").change(function() {
+		saveTask();
+	});
+*/
+
+	$("#saveTaskForm select#gro_tasker_type").change(function() {
+		saveGroupProperty($("#saveTaskForm #task_gro_id").val(), "gro_tasker_type", $(this).val());
+	});
+
+	$("#saveTaskForm select#gro_tasker_project_id").change(function() {
+		saveGroupProperty($("#saveTaskForm #task_gro_id").val(), "gro_tasker_project_id", $(this).val());
+	});
+
+}
+
 function saveGroupFormHandlers() {
 //	$("#saveGroupForm").change(saveGroup);
 
@@ -264,6 +297,31 @@ function saveGroup() {
 	}, "json");
 }
 
+function saveGroupProperty(id, property, value) {
+	const myform = {gro_id: id, property: property, value: value};
+
+	$.post("do_save_group_property.php", myform, function(data) {
+		$("#success_group_groupAlert").parents(".container").show();
+		$("#success_group_groupAlert").show().delay(2000).fadeOut(1000, function() {
+			$(this).parents(".container").hide();
+		});
+	}, "json");
+}
+
+function changeGroupProjectHandler() {
+	$("#gro_tasker_type").change(function() {
+		const projectType = $(this).val();
+		$("#gro_tasker_project_id option").hide();
+		$("#gro_tasker_project_id option." + projectType).show();
+
+		if (!$("#gro_tasker_project_id option:selected").hasClass(projectType)) {
+			$("#gro_tasker_project_id").val("");
+			$("#gro_tasker_project_id").change();
+		}
+	});
+	
+	$("#gro_tasker_type").change();
+}
 
 $(function() {
 	
@@ -296,5 +354,7 @@ $(function() {
 	adminFormHandlers();
 	authoritativeFormHandlers();
 	saveGroupFormHandlers();
+	saveTaskGroupFormHandlers();
+	changeGroupProjectHandler();
 	changeContactMethod();
 });

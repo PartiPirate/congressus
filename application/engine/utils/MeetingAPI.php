@@ -76,6 +76,7 @@ if (!function_exists("pingSpeakingRequestCompare")) {
 }
 
 require_once("engine/utils/WinningMotionHook.php");
+require_once("engine/utils/TaskHook.php");
 require_once("engine/utils/DateTimeUtils.php");
 
 include_once("config/discourse.config.php");
@@ -211,11 +212,11 @@ class MeetingAPI {
 		            $delegations = $personaeClient->getNoticePowers($notice["not_target_id"], $motion, $votes);
 
 //					return $data;
-
-//		            echo "<!--\n";
-//		            print_r($delegations);
-//		            echo "\n-->";
-
+/*
+		            echo "<!--\n";
+		            print_r($delegations);
+		            echo "\n-->";
+*/
 //					return $data;
 		//            $data["response"] = $delegations; // TODO compute in a better way
 		        }
@@ -1174,5 +1175,28 @@ class MeetingAPI {
 		//$data["events"] = array();
 		
 		return $data;
+	}
+
+	function getTaskHooks() {
+	
+		$directoryHandler = dir("../task_hooks/");
+
+		while(($fileEntry = $directoryHandler->read()) !== false) {
+			if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+				require_once("task_hooks/" . $fileEntry);
+			}
+		}
+		$directoryHandler->close();
+		
+		global $taskHooks;
+		
+		return $taskHooks;
+/*						
+						if ($hooks) {
+							foreach($hooks as $hookKey => $hook) {
+								$data[$hookKey] = $hook->doHook($agenda, $motion, $proposition, $chats);
+							}
+						}
+*/						
 	}
 }

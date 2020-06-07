@@ -55,8 +55,38 @@ if ($task) {
 	$now = getNow();
 	$task["tas_finish_datetime"] = $now->format("Y-m-d H:i:s");
 	$task["tas_status"] = $_REQUEST["status"];
-
 	$taskBo->save($task);
+
+    $task = $taskBo->getById($task[$taskBo->ID_FIELD]);
+
+    // Handle hooks
+    if ($task["tas_informations"]) {
+        $taskInformations = json_decode($task["tas_informations"], true);
+
+    	$directoryHandler = dir("task_hooks/");
+    
+    	while(($fileEntry = $directoryHandler->read()) !== false) {
+    		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+    			require_once("task_hooks/" . $fileEntry);
+    		}
+    	}
+    	$directoryHandler->close();
+
+    	foreach($taskHooks as $taskHook) {
+            foreach($taskInformations as $information) {
+                if ($information["type"] == $taskHook->getType()) {
+                    if ($task["tas_status"] == "finish") {
+                        $taskHook->setTaskDone($information);
+                    }
+                    else {
+                        $taskHook->setTaskCanceled($information);
+                    }
+                    break;
+                }
+            }
+    	}
+    }
+	// End of handle hooks
 
 	$data["task"] = $task;
 

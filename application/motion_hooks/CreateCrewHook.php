@@ -27,7 +27,7 @@ require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/FixationBo.php");
 
-class CreateCrewwHook implements WinningMotionHook {
+class CreateCrewHook implements WinningMotionHook {
 
     function doHook($agenda, $motion, $proposition, $chats) {
         global $config;
@@ -176,12 +176,12 @@ class CreateCrewwHook implements WinningMotionHook {
         $untilDate = getNow();
         $untilDate->add(new DateInterval('P1Y'));
 
-        $memberFixation = new array("fix_until_date" => $untilDate->format('Y-m-d'), "fix_theme_id" => $memberTheme["the_id"], "" => "dlp_themes");
+        $memberFixation = array("fix_until_date" => $untilDate->format('Y-m-d'), "fix_theme_id" => $memberTheme["the_id"], "" => "dlp_themes");
         $fixationBo->save($memberFixation);
         $memberTheme = array("the_id" => $memberTheme["the_id"], "the_current_fixation_id" => $memberFixation["fix_id"]);
         $themeBo->save($memberTheme);
 
-        $captainFixation = new array("fix_until_date" => $untilDate->format('Y-m-d'), "fix_theme_id" => $captainTheme["the_id"], "" => "dlp_themes");
+        $captainFixation = array("fix_until_date" => $untilDate->format('Y-m-d'), "fix_theme_id" => $captainTheme["the_id"], "" => "dlp_themes");
         $fixationBo->save($captainFixation);
         $captainTheme = array("the_id" => $captainTheme["the_id"], "the_current_fixation_id" => $captainFixation["fix_id"]);
         $themeBo->save($captainTheme);
@@ -269,6 +269,6 @@ global $hooks;
 
 if (!$hooks) $hooks = array();
 
-$hooks["cch"] = new CreateCrewwHook();
+$hooks["cch"] = new CreateCrewHook();
 
 ?>

@@ -62,6 +62,39 @@ if ($task) {
 // 	}
 
 	$taskBo->save($task);
+    $task = $taskBo->getById($task[$taskBo->ID_FIELD]);
+
+    // Handle hooks
+    if ($task["tas_informations"]) {
+        $taskInformations = json_decode($task["tas_informations"], true);
+
+    	$directoryHandler = dir("task_hooks/");
+    
+    	while(($fileEntry = $directoryHandler->read()) !== false) {
+    		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+    			require_once("task_hooks/" . $fileEntry);
+    		}
+    	}
+    	$directoryHandler->close();
+
+    	foreach($taskHooks as $taskHook) {
+            foreach($taskInformations as $information) {
+                if ($information["type"] == $taskHook->getType()) {
+
+                    if ($_REQUEST["property"] == "tas_label") {
+                        $information["description"] = $task["tas_label"];
+                    }
+
+                    $taskHook->updateTask($information);
+
+                    break;
+                }
+            }
+    	}
+    }
+	// End of handle hooks
+
+
 
 	$data["task"] = $task;
 	

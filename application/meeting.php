@@ -612,6 +612,14 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 		</fieldset>
 	</form>
 
+	<div data-template-id="task-information" class="task-information" style="height: 20px;">
+		<div class="col-md-3"><a href="${url}" target="_blank">${subject}</a></div>
+		<div class="col-md-3"><a href="${projectUrl}" target="_blank">${project}</a></div>
+		<div class="col-md-2">${status}</div>
+		<div class="col-md-2">${assigned}</div>
+		<div class="col-md-2">${progress}%</div>
+	</div>
+
 	<ul>
 		<li data-template-id="old-task" id="task-${tas_id}"
 			class="template list-group-item task"

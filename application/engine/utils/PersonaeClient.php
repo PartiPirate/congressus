@@ -57,6 +57,10 @@ class PersonaeClient {
 		echo $getUrl;
 		echo "\n---<br>\n";
 
+		echo "---<br>\n";
+		print_r($fieldsString);
+		echo "\n---<br>\n";
+
 		return array();
 */
 		//open connection

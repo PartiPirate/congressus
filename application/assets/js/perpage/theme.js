@@ -588,6 +588,21 @@ function addFreeFixedHandlers() {
 	});
 }
 
+function changeThemeProjectHandler() {
+	$("#the_tasker_type").change(function() {
+		const projectType = $(this).val();
+		$("#the_tasker_project_id option").hide();
+		$("#the_tasker_project_id option." + projectType).show();
+
+		if (!$("#the_tasker_project_id option:selected").hasClass(projectType)) {
+			$("#the_tasker_project_id").val("");
+			$("#the_tasker_project_id").change();
+		}
+	});
+	
+	$("#the_tasker_type").change();
+}
+
 $(function() {
 
 	$("#del_no_delegation_on_vote").change(function() {
@@ -675,6 +690,7 @@ $(function() {
 	newFixationFormHandlers();
 	fixationHandlers();
 	deleteThemeFormHandlers();
+	changeThemeProjectHandler();
 	toggleAdmins();
 	toggleElecteds();
 	changeVotingMethod();

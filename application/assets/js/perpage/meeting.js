@@ -1810,9 +1810,22 @@ function updateTasks() {
 				var taskLi = $("#tasks-list li[data-id=" + task.tas_id + "]");
 				if (taskLi.length == 0) {
 					taskLi = $("li[data-template-id=old-task]").template("use", {data: {tas_id: task.tas_id, tas_agenda_id: task.tas_agenda_id, tas_meeting_id: task.tas_meeting_id}});
+
 					taskLi.find("*").tooltip({placement: "right"});
 					$("#tasks-list").append(taskLi);
 				}
+
+				if (task.tas_informations) {
+					taskLi.children(".task-information").remove();
+					
+					for(var jndex = 0; jndex < task.tas_informations.length; ++jndex) {
+						const information = task.tas_informations[jndex].information;
+						
+						const taskInformationDiv = $("div[data-template-id=task-information]").template("use", {data: information});
+						taskLi.append(taskInformationDiv);
+					}
+				}
+
 
 				taskLi.removeClass("to-remove");
 

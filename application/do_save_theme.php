@@ -85,6 +85,10 @@ $theme["the_voting_group_id"] = $_REQUEST["the_voting_group_id"];
 
 $theme["the_discourse_group_labels"] = $_REQUEST["the_discourse_group_labels"];
 
+$theme["the_tasker_type"] = $_REQUEST["the_tasker_type"];
+$theme["the_tasker_project_id"] = $_REQUEST["the_tasker_project_id"];
+
+
 // Discord exports
 $theme["the_discord_export"] = isset($_REQUEST["the_discord_export"]) ? 1 : 0;
 

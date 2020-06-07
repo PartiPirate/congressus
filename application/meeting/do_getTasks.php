@@ -47,6 +47,37 @@ if (!$meeting) {
 $notices = $noticeBo->getByFilters(array("not_meeting_id" => $meeting[$meetingBo->ID_FIELD]));
 $tasks = $taskBo->getByFilters(array("notices" => $notices, "only_open" => true));
 
+foreach($tasks as &$task) {
+    // Handle hooks
+    if ($task["tas_informations"]) {
+        $taskInformations = json_decode($task["tas_informations"], true);
+
+    	$directoryHandler = dir("task_hooks/");
+    
+    	while(($fileEntry = $directoryHandler->read()) !== false) {
+    		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+    			require_once("task_hooks/" . $fileEntry);
+    		}
+    	}
+    	$directoryHandler->close();
+
+    	foreach($taskHooks as $taskHook) {
+            foreach($taskInformations as &$information) {
+                if ($information["type"] == $taskHook->getType()) {
+
+                    $returnInformation = $taskHook->getTaskInformation($information);
+                    
+                    $information["information"] = $returnInformation;
+
+                    break;
+                }
+            }
+    	}
+        $task["tas_informations"] = $taskInformations;
+    }
+	// End of handle hooks
+}
+
 $data["tasks"] = $tasks;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

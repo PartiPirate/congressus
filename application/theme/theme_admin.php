@@ -328,6 +328,70 @@
 	</div>
 </div>
 
+<div id="tasks" <?php if (!$theme["the_id"]) {?>style="display: none;"<?php } ?>>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			Gestion des tâches&nbsp;
+		</div>
+		<div class="panel-body">
+
+				<fieldset>
+
+					<div class="form-group">
+
+						<label class="col-md-3 control-label" for="the_tasker_type">Gestionnaire de tâches : </label>
+						<div class="col-md-3">
+							<select name="the_tasker_type" id="the_tasker_type" class="form-control input-md">
+								<option value="none"></option>
+<?php
+	$directoryHandler = dir("task_hooks/");
+
+	while(($fileEntry = $directoryHandler->read()) !== false) {
+		if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
+			require_once("task_hooks/" . $fileEntry);
+		}
+	}
+	$directoryHandler->close();
+	
+	$types = array("none");
+	
+	foreach($taskHooks as $taskHook) {
+		$taskHookType = $taskHook->getType();
+		$types[] = $taskHookType;
+?>
+								<option value="<?=$taskHookType?>" <?=(($taskHook->getType() == $theme["the_tasker_type"]) ? "selected='selected'" : "")?>><?=$taskHook->getType()?></option>
+<?php
+	}
+?>
+							</select>
+						</div>
+
+						<label class="col-md-3 control-label" for="the_tasker_project_id">Projet : </label>
+						<div class="col-md-3">
+							<select name="the_tasker_project_id" id="the_tasker_project_id" class="form-control input-md">
+								<option class="<?=implode(" ", $types)?>" value=""></option>
+
+<?php
+	foreach($taskHooks as $taskHook) {
+		$projects = $taskHook->getProjects();
+
+		foreach($projects as $project) {
+?>
+								<option class="<?=$taskHookType?>" value="<?=$project["id"]?>" <?=(($project["id"] == $theme["the_tasker_project_id"]) ? "selected='selected'" : "")?>><?=$project["name"]?></option>
+<?php
+		}
+	}
+?>
+							</select>
+						</div>
+
+					</div>
+
+				</fieldset>
+		</div>
+	</div>
+</div>
+
 </form>
 
 <div class="method external_results">

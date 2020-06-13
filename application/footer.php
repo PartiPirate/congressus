@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -17,6 +17,11 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 ?>
+
+<?php
+    include("connect_modal.php");
+?>
+
 
 <div class="watermark">
     <div class="watermark-inside"></div>    
@@ -64,13 +69,60 @@
 <script src="assets/js/emojione.min.js"></script>
 <script src="assets/js/emojione.helper.js"></script>
 <script src="assets/js/social.js"></script>
+<script src="assets/js/events.js"></script>
 
 <!-- JS pad -->
 <script>
-    var PAD_WS = <?php echo json_encode($config["server"]["pad"]["ws_url"]); ?>;
+var PAD_WS = <?php echo json_encode($config["server"]["pad"]["ws_url"]); ?>;
+var disconnectedAlertId = null;
+
+const alert_disconnected = <?=json_encode(lang("alert_disconnected"))?>;
+const alert_connected    = <?=json_encode(lang("alert_connected"))?>;
+
+function showConnectInlineModal() {
+    $("#connect-modal .error-div").hide();
+    $("#connect-modal").modal("show");
+}
+
+function reconnectShowAlert() {
+    if (disconnectedAlertId) {
+        removeEventAlert(disconnectedAlertId);
+        disconnectedAlertId = null;
+    }
+    addEventAlert(alert_connected, "success", 5000);
+}
+
+$(function() {
     
-	var nopTimer = $.timer(function() { $.get("nop.php", function(data) {}, "json"); });
+	var nopTimer = $.timer(function() { $.get("nop.php", function(data) {
+	    if (!data.user && $(".logoutLink").length && !disconnectedAlertId)  {
+	        disconnectedAlertId = addEventAlert(alert_disconnected, "danger");
+	    }
+	    else if (data.user && disconnectedAlertId) {
+	        reconnectShowAlert();
+	    }
+	}, "json"); });
 	nopTimer.set({ time : 60000, autostart : true });
+
+    $("#connect-modal .btn-connect-inline").click(function() {
+        $("#connect-modal .error-div").hide();
+        $.post("do_login.php", $("#connect-modal form").serialize(), function(data) {
+            if (data.ok) {
+                $("#connect-modal").modal("hide");
+    	        reconnectShowAlert();
+            }
+            else {
+                // show error
+                $("#connect-modal .error-div").show();
+            }
+        }, "json");
+    });
+    
+    $("body").on("click", ".form-alert .show-connect-modal-link", function(event) {
+        event.preventDefault();
+        showConnectInlineModal();
+    });
+});
 
 </script>
 <script src="assets/js/caret.js"></script>

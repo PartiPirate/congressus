@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -19,15 +19,18 @@
 
 $lang["breadcrumb_connect"] = "Se connecter";
 
-$lang["connect_guide"] = "Bienvenue sur l'écran de connexion de Congressus";
-$lang["connect_form_legend"] = "Connexion";
-$lang["connect_form_loginInput"] = "Identifiant";
-$lang["connect_form_loginHelp"] = "Votre identifiant Galette ou votre email";
+$lang["connect_guide"]              = "Bienvenue sur l'écran de connexion de Congressus";
+$lang["connect_form_legend"]        = "Connexion";
+$lang["connect_form_loginInput"]    = "Identifiant";
+$lang["connect_form_loginHelp"]     = "Votre identifiant Galette ou votre email";
 $lang["connect_form_passwordInput"] = "Mot de passe";
-$lang["connect_form_passwordHelp"] = "Votre mot de passe Galette";
+$lang["connect_form_passwordHelp"]  = "Votre mot de passe Galette";
 
-$lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
-$lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
+$lang["error_login_ban"]          = "Votre IP a été bloquée pour 10mn.";
+$lang["error_login_bad"]          = "Vérifier vos identifiants, l'identification a échouée.";
 $lang["error_login_bad_internal"] = "Votre compte peut ne pas être activé.";
+
+$lang["alert_disconnected"] = "Vous avez été déconnecté.<br> Voulez-vous vous <a href='#' class='show-connect-modal-link'>reconnecter</a> ?";
+$lang["alert_connected"]    = "Vous êtes de nouveau connecté";
 
 ?>

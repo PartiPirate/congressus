@@ -1,5 +1,5 @@
 /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -17,23 +17,12 @@
     along with Congressus.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* global $ */
+/* global computeEventPositions */
+/* global addEventAlert */
 
 var lastEventTimestamp = 0;
 var isWriting = " is writing";
 
-function computeEventPositions() {
-	var margin = 5;
-	var currentPosition = 60;
-
-	$(".congressus-event").each(function() {
-		var eventAlert = $(this);
-
-		eventAlert.css({"bottom" : currentPosition + "px"});
-
-		currentPosition += (eventAlert.height() + margin + 16);
-
-	});
-}
 
 function getEventText(event) {
 	if (event.text) return event.text;
@@ -171,6 +160,8 @@ function showEvent(event) {
 
 	var text = getEventText(event);
 
+	addEventAlert(text, eventClass, 5000);
+/*
 	var eventAlert = $("<p style='width: 350px; height: 55px; z-index: 1000; position: fixed; right: 10px;' class='congressus-event form-alert simply-hidden bg-" + eventClass + "'>" + text + "</p>");
 	var body = $("body");
 	body.append(eventAlert);
@@ -181,6 +172,7 @@ function showEvent(event) {
 		$(this).remove();
 		computeEventPositions();
 	});
+*/	
 }
 
 function getEvents() {

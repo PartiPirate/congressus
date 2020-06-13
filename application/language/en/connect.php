@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -19,15 +19,18 @@
 
 $lang["breadcrumb_connect"] = "Connect";
 
-$lang["connect_guide"] = "Welcome on the connexion screen of Congressus";
-$lang["connect_form_legend"] = "Connexion";
-$lang["connect_form_loginInput"] = "Login";
-$lang["connect_form_loginHelp"] = "Your Galette's login or your email";
+$lang["connect_guide"]              = "Welcome on the connexion screen of Congressus";
+$lang["connect_form_legend"]        = "Connexion";
+$lang["connect_form_loginInput"]    = "Login";
+$lang["connect_form_loginHelp"]     = "Your Galette's login or your email";
 $lang["connect_form_passwordInput"] = "Password";
-$lang["connect_form_passwordHelp"] = "Your Galette's password";
+$lang["connect_form_passwordHelp"]  = "Your Galette's password";
 
-$lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
-$lang["error_login_bad"] = "Check your credentials, the identification failed.";
+$lang["error_login_ban"]          = "Your IP has been blocked for 10mn.";
+$lang["error_login_bad"]          = "Check your credentials, the identification failed.";
 $lang["error_login_bad_internal"] = "Your account may not have been activated yet.";
+
+$lang["alert_disconnected"] = "You have been disconnected.<br> Would you like to <a href='#' class='show-connect-modal-link'>reconnect</a> yourself ?";
+$lang["alert_connected"]    = "You are connected, again";
 
 ?>

@@ -679,6 +679,10 @@ function addTitleListeners() {
 	});
 }
 
+function getMotionId() {
+	return $("input[name=motionId]").val();
+}
+
 var previousMotionText = "";
 var previousExplanation = "";
 

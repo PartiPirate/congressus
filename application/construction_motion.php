@@ -246,16 +246,16 @@ $jsonMotion = $motion;
 
 	<ol class="breadcrumb">
 		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"]; ?></a></li>
+		<li><a href="construction.php?id=<?=$meeting["mee_id"]?>"><?php echo $meeting["mee_label"]; ?></a></li>
 		
 <?php	if ($agenda["age_parent_id"])	 { ?>
-		<li><a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $parentAgenda["age_id"]; ?>"><?php echo $parentAgenda["age_label"]; ?></a></li>
+		<li><a href="construction.php?id=<?=$meeting["mee_id"]?>&agendaId=<?php echo $parentAgenda["age_id"]; ?>"><?php echo $parentAgenda["age_label"]; ?></a></li>
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>"><?php echo $parentMotion["mot_title"]; ?></a></li>
 		<li><a href="?motionId=<?php echo $parentMotion["mot_id"]; ?>#amendments">Amendements</a></li>
 <?php	} else { ?>
 		<li>
 			<div class="dropdown" style="display: inline-block;">
-				<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
+				<a href="construction.php?id=<?=$meeting["mee_id"]?>&agendaId=<?php echo $agenda["age_id"]; ?>"><?php echo $agenda["age_label"]; ?></a>
 				<?php	if (count($allAgendas) > 1) { ?>
 				<span class="caret dropdown-toggle" data-toggle="dropdown" style="top: -3px; position: relative;"></span>
 				<div class="dropdown-menu" style="padding: 5px">
@@ -264,7 +264,7 @@ $jsonMotion = $motion;
 								if ($currentAgenda["age_id"] == $agenda["age_id"]) { ?>
 					<?php echo $currentAgenda["age_label"]; ?>
 					<?php		} else { ?>
-					<a href="construction.php?id=<?php echo $meeting["mee_id"]; ?>&agendaId=<?php echo $currentAgenda["age_id"]; ?>" style="white-space: nowrap;"><?php echo $currentAgenda["age_label"]; ?></a>
+					<a href="construction.php?id=<?=$meeting["mee_id"]?>&agendaId=<?php echo $currentAgenda["age_id"]; ?>" style="white-space: nowrap;"><?php echo $currentAgenda["age_label"]; ?></a>
 					<?php		}	?>
 					<br>
 					<?php	}	?>
@@ -536,8 +536,8 @@ include("construction/pieChart.php");
 <?php	if (($meeting["mee_status"] != "closed")) { ?>
 						<div id="motion-buttons-bar" class="" data-voting-power="<?php echo $votingPower; ?>">
 							<form>
-								<input type="hidden" name="meetingId" value="<?php echo $meeting["mee_id"]; ?>">
-								<input type="hidden" name="motionId"  value="<?php echo  $motion["mot_id"]; ?>">
+								<input type="hidden" name="meetingId" value="<?=$meeting["mee_id"]?>">
+								<input type="hidden" name="motionId"  value="<?=$motion["mot_id"]?>">
 							<?php	if ($votingPower) { ?>
 							<div class="btn btn-success btn-vote <?php echo $hasPro ? "active" : "zero"; ?>" type="button">
 								<span class="glyphicon glyphicon-thumbs-up"></span> <?php echo lang("advice_pro"); ?> &nbsp;
@@ -575,19 +575,19 @@ include("construction/pieChart.php");
 
 							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
 								<span class="glyphicon glyphicon-remove"></span> <?php echo lang("common_delete"); ?> &nbsp;
 							</div>
 							<?php		} ?>
 							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-warning btn-trash-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
 								<span class="glyphicon glyphicon-trash"></span> <?php echo lang("motion_trash"); ?> &nbsp;
 							</div>
 							<?php		} ?>
 							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-info btn-open-debate-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>">
+								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
 								<i class="fa fa-comments"></i> <?php echo lang("motion_open_debate"); ?> &nbsp;
 							</div>
 							<?php		} ?>
@@ -747,10 +747,10 @@ include("construction/pieChart.php");
 								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
-									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
-									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
-									<button type="button"                            data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary btn-comment"><i class="fa fa-commenting" aria-hidden="true"></i></button>
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button"                            data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary btn-comment"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
 								<?php addShareButton("dropdownMotionShareButton-" . $chat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $chat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($chat["cha_text"]) < 60 ? $chat["cha_text"] : mb_substr($chat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
 								
@@ -812,9 +812,9 @@ include("construction/pieChart.php");
 								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
-									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
-									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 								</div>
 								<?php addShareButton("dropdownMotionShareButton-" . $childrenChat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $childrenChat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($childrenChat["cha_text"]) < 60 ? $childrenChat["cha_text"] : mb_substr($childrenChat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
 
@@ -975,10 +975,10 @@ include("construction/pieChart.php");
 								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($chat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
-									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
-									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
-									<button type="button" style=""  				 data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary"><i class="fa fa-commenting" aria-hidden="true"></i></button>
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-success <?php echo (($chatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-warning <?php echo (($chatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($chatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button" style=""  				 data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $chat["cha_id"]; ?>" class="btn btn-primary"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 								</div>
 								<?php addShareButton("dropdownMotionShareButton-" . $chat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $chat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($chat["cha_text"]) < 60 ? $chat["cha_text"] : mb_substr($chat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
 
@@ -1041,9 +1041,9 @@ include("construction/pieChart.php");
 								<div class="chat-body"><?php echo $emojiClient->shortnameToImage($Parsedown->text($childrenChat["cha_text"])); ?></div>
 
 								<div class="btn-group btn-group-xs btn-chat-group" role="group" <?php echo ($meeting["mee_status"] != "closed") ? "" : "style='display: none; '"; ?>>
-									<button type="button" data-advice="thumb_up"     data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-									<button type="button" data-advice="thumb_middle" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
-									<button type="button" data-advice="thumb_down"   data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+									<button type="button" data-advice="thumb_up"     data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-success <?php echo (($childrenChatAdviceCounters["me"] == "thumb_up") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+									<button type="button" data-advice="thumb_middle" data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-warning <?php echo (($childrenChatAdviceCounters["me"] == "thumb_middle") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-hand-left"></span></button>
+									<button type="button" data-advice="thumb_down"   data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>" data-chat-id="<?php echo $childrenChat["cha_id"]; ?>" class="btn btn-danger  <?php echo (($childrenChatAdviceCounters["me"] == "thumb_down") ? "active" : "zero"); ?>"><span class="glyphicon glyphicon-thumbs-down"></span></button>
 								</div>
 								<?php addShareButton("dropdownMotionShareButton-" . $childrenChat["cha_id"], "btn-primary btn-xs btn-share-chat", "", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"] . "&chatId=" . $childrenChat["cha_id"], $motion["mot_title"] . "\n« ".  (mb_strlen($childrenChat["cha_text"]) < 60 ? $childrenChat["cha_text"] : mb_substr($childrenChat["cha_text"], 0, 60)) .  " »\n", "congressus"); ?>
 
@@ -1170,7 +1170,7 @@ include("construction/pieChart.php");
 					</ul>
 					<div class="panel-footer">
 	<?php				if ($hasWritingRights && ($meeting["mee_status"] != "closed")) { ?>
-							<button class="btn btn-default btn-xs btn-add-source" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>"><?php echo lang("motion_add_source"); ?> <span class="fa fa-rss"></span></button>
+							<button class="btn btn-default btn-xs btn-add-source" data-meeting-id="<?=$meeting["mee_id"]?>" data-agenda-id="<?php echo $agenda["age_id"]; ?>"><?php echo lang("motion_add_source"); ?> <span class="fa fa-rss"></span></button>
 	<?php				} ?>
 					</div>
 				</div>
@@ -1216,7 +1216,7 @@ include("construction/pieChart.php");
 <script src="assets/js/perpage/meeting_events.js?r=<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
 <script>
 sourceEnabled = false;
-var meeting_id = "<?php echo $meeting["mee_id"]; ?>";
+var meeting_id = "<?=$meeting["mee_id"]?>";
 
 var getEventsTimer;
 var getEventsTimerInterval = 1500;

@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -23,6 +23,9 @@
 /* global sourceSelectHandler */
 /* global sourceUrlHandler */
 /* global sourceArticlesHandler */
+
+/* global showConnectInlineModal */
+/* global addEventAlert */
 
 var sourceEnabled = true
 
@@ -105,7 +108,17 @@ function saveMotion(event) {
 		renewPropositions(agendaId, function() {
 			// Remove the modal
 			$("#save-amendment-modal button").removeAttr("disabled");
-			$("#save-amendment-modal").modal('hide');
+
+//			console.log(data);
+
+			if (data.ko && data.message == "must_be_connected") {
+		        showConnectInlineModal();
+			}
+			else if (data.ok) {
+				$("#save-amendment-modal").modal('hide');
+			    addEventAlert("Votre amendement a bien été ajouté", "success", 5000);
+			}
+			
 		});
 	}, "json");
 }

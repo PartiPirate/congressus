@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -22,6 +22,9 @@
 /* global htmlDiff */
 /* global showdown */
 /* global emojione */
+
+/* global showConnectInlineModal */
+/* global addEventAlert */
 
 var setTimeoutId = null;
 
@@ -146,12 +149,21 @@ function addChatListeners() {
 
 		$.post("meeting_api.php?method=do_addChat", formData, function(data) {
 
-			if (data.gamifiedUser && data.gamifiedUser.data) testBadges(data.gamifiedUser.data);
-			form.find(".chat-text").val("");
+			button.removeAttr("disabled");
 
-			renewChats([type, "all"], function() {
-				button.removeAttr("disabled");
-			});
+			if (data.ko && data.message == "must_be_connected") {
+		        showConnectInlineModal();
+			}
+			else if (data.ok) {
+				if (data.gamifiedUser && data.gamifiedUser.data) testBadges(data.gamifiedUser.data);
+				form.find(".chat-text").val("");
+	
+				renewChats([type, "all"], function() {
+					button.removeAttr("disabled");
+				});
+
+			    addEventAlert("Votre argument a bien été ajouté", "success", 5000);
+			}
 
 		}, "json");
 
@@ -521,6 +533,8 @@ function addButtonsListeners() {
 
 function addUpdateMotion() {
 	$("#save-motion-btn").click(function() {
+		$("#save-motion-btn").attr("disabled", "disabled");
+
 		var motionId = $(".motion-entry").data("id");
 		var property = "mot_description";
 		var propositionId = 0;
@@ -528,13 +542,23 @@ function addUpdateMotion() {
 		previousMotionText = $("#destination").val();
 
 		$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousMotionText}, function(data) {
-			var property = "mot_explanation";
-//			previousExplanation = $("#explanation").html();
-			previousExplanation = $("#explanation").val();
 
-			$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
-				$("#save-motion-btn").attr("disabled", "disabled");
-			}, "json");
+			if (data.ko && data.message == "must_be_connected") {
+		        showConnectInlineModal();
+				$("#save-motion-btn").removeAttr("disabled");
+			}
+			else if (data.ok) {
+				var property = "mot_explanation";
+	//			previousExplanation = $("#explanation").html();
+				previousExplanation = $("#explanation").val();
+
+				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
+				    addEventAlert("Votre amendement a bien été mis à jour", "success", 5000);
+				}, "json");
+			}
+
+
+
 		}, "json");
 	});
 }

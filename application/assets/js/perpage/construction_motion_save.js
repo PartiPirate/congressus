@@ -26,6 +26,7 @@
 
 /* global showConnectInlineModal */
 /* global addEventAlert */
+/* global save_amendment_done */
 
 var sourceEnabled = true
 
@@ -116,7 +117,7 @@ function saveMotion(event) {
 			}
 			else if (data.ok) {
 				$("#save-amendment-modal").modal('hide');
-			    addEventAlert("Votre amendement a bien été ajouté", "success", 5000);
+			    addEventAlert(save_amendment_done, "success", 5000);
 			}
 			
 		});

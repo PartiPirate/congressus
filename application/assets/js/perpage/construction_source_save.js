@@ -23,7 +23,7 @@
 /* global sourceSelectHandler */
 /* global sourceUrlHandler */
 /* global sourceArticlesHandler */
-
+/* gloabl save_source_done */
 
 /* global showConnectInlineModal */
 /* global addEventAlert */
@@ -157,7 +157,7 @@ function saveSource(event) {
 			}
 			else if (data.ok) {
 				$("#save-source-modal").modal('hide');
-			    addEventAlert("Votre source a bien été ajoutée", "success", 5000);
+			    addEventAlert(save_source_done, "success", 5000);
 			}
 
 		});

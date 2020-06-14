@@ -19,7 +19,7 @@
 
             <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo lang("common_close"); ?>"><span aria-hidden="true">&times;</span></button>
 
-            <h4 class="modal-title"><?php echo lang("save_amendment_title"); ?>...</h4>
+            <h4 class="modal-title"><?php echo lang((isset($jsonMotion) ? "save_amendment_title" : "save_motion_title")); ?>...</h4>
         </div>
         <div class="modal-body">
             

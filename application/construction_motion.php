@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -1261,6 +1261,11 @@ var speakingTimesChartTitle = "Temps de parole par personne";
 
 var save_source_title = <?=json_encode(lang("save_source_title"))?>;
 var update_source_title = <?=json_encode(lang("update_source_title"))?>;
+
+var save_amendment_done = <?=json_encode(lang("save_amendment_done"))?>;
+var save_source_done = <?=json_encode(lang("save_source_done"))?>;
+var amendments_argument_save_done = <?=json_encode(lang("amendments_argument_save_done"))?>;
+var save_amendment_updated = <?=json_encode(lang(($parentMotion ? "save_amendment_updated" : "save_motion_updated")))?>;
 
 <?php
 

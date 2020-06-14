@@ -49,7 +49,7 @@
 					<li class="list-group-item text-center unsortable">
 						<i class="fa fa-archive" style="font-size: larger;"></i>
 						<br>
-						<?php echo lang($isTrash ? "trash_no_amendment" : "amendments_no_amendment"); ?>
+						<?php echo lang($isTrash ? "trash_no_amendment" : (isset($jsonMotion) ? "amendments_no_amendment" : "amendments_no_motion")); ?>
 					</li>
 <?php 		} ?>			
 
@@ -194,7 +194,9 @@ include("construction/pieChart.php");
 				else { ?>
 							<?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?> -
 							<?php echo langFormat($numberOfChats[0] < 2, "amendments_argument", "amendments_arguments", array("argument" => $numberOfChats[0])); ?> -
+							<?php if (!isset($jsonMotion)) { // if there is a motion, we can't see amendments number of an amendment?>
 							<?php echo langFormat($numberOfAmendments < 2, "amendments_amendment", "amendments_amendments", array("amendment" => $numberOfAmendments)); ?> -
+							<?php } ?>
 							<?php echo langFormat($numberOfsources < 2, "amendments_source", "amendments_sources", array("source" => $numberOfsources)); ?>
 <?php			}	?>
 						</div>
@@ -203,7 +205,7 @@ include("construction/pieChart.php");
 				</ul>
 				<div class="panel-footer">
 <?php				if ($hasWritingRights && ($meeting["mee_status"] != "closed")) { ?>
-						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?=$agenda["age_id"]?>"><?php echo lang("amendments_add_amendment"); ?> <span class="fa fa-archive"></span></button>
+						<button class="btn btn-default btn-xs btn-add-motion" data-meeting-id="<?php echo $meeting["mee_id"]; ?>" data-agenda-id="<?=$agenda["age_id"]?>"><?php echo (isset($jsonMotion) ? lang("amendments_add_amendment") : lang("amendments_add_motion")); ?> <span class="fa fa-archive"></span></button>
 <?php				} ?>
 				</div>
 			</div>

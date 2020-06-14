@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -391,7 +391,9 @@ var meeting_chatDelete = "<?php echo lang("meeting_chatDelete"); ?>";
 var meeting_conclusionDelete = "<?php echo lang("meeting_conclusionDelete"); ?>";
 var meeting_proposalDelete = "<?php echo lang("meeting_proposalDelete"); ?>";
 
-var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>
+var save_amendment_done = <?=json_encode(lang("save_motion_done"))?>;
+
+var majority_judgement_values = <?php echo json_encode($config["congressus"]["ballot_majority_judgment"]); ?>;
 
 var speakingTimesChartTitle = "Temps de parole par personne";
 

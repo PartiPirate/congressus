@@ -26,6 +26,9 @@
 /* global showConnectInlineModal */
 /* global addEventAlert */
 
+/* global save_amendment_updated */
+/* gloabl amendments_argument_save_done */
+
 var setTimeoutId = null;
 
 function renewVotes(successHandler) {
@@ -162,7 +165,7 @@ function addChatListeners() {
 					button.removeAttr("disabled");
 				});
 
-			    addEventAlert("Votre argument a bien été ajouté", "success", 5000);
+			    addEventAlert(amendments_argument_save_done, "success", 5000);
 			}
 
 		}, "json");
@@ -553,7 +556,7 @@ function addUpdateMotion() {
 				previousExplanation = $("#explanation").val();
 
 				$.post("meeting_api.php?method=do_changeMotionProperty", {motionId: motionId, propositionId: propositionId, property: property, text: previousExplanation}, function(data) {
-				    addEventAlert("Votre amendement a bien été mis à jour", "success", 5000);
+				    addEventAlert(save_amendment_updated, "success", 5000);
 				}, "json");
 			}
 

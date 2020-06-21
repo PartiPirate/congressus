@@ -82,22 +82,42 @@ function changeDateMethod() {
 
 function changeVotingMethod() {
 	$(".method").hide();
-	if ($("#the_voting_method").val()) {
-		$("." + $("#the_voting_method").val()).show();
+	
+	const votingMethod = $("#the_voting_method").val();
+	
+	if (votingMethod) {
+		$("." + votingMethod).show();
+
+		if (votingMethod == "external_results" && $("#the_free_fixed").is(":checked")) {
+			$("#the_entry_condition").parents(".form-group").hide();
+		}
 	}
 }
 
 function saveThemeFormHandlers() {
 //	$("#saveThemeForm").change(saveTheme);
 
-	$("#saveThemeForm input[type=text]").keyup(function() {
+	$("#saveThemeForm input[type=text], #saveThemeForm textarea").keyup(function() {
 		clearKeyup();
 		if ($(this).attr("id") == "the_label") themeLabelChanged = true;
 		keyupTimeoutId = setTimeout(saveTheme, 1500);
 	});
 
+	$("#saveThemeForm input[type=text], #saveThemeForm textarea").blur(function() {
+		saveTheme();
+	});
+
 	$("#saveThemeForm input[type=checkbox]").change(function() {
 		saveTheme();
+	});
+
+	$("#saveThemeForm #the_free_fixed").change(function() {
+		if (!$("#the_free_fixed").is(":checked")) {
+			$("#the_entry_condition").parents(".form-group").show();
+		}
+		else {
+			$("#the_entry_condition").parents(".form-group").hide();
+		}
 	});
 
 	$("#saveThemeForm select").change(function() {
@@ -679,6 +699,7 @@ $(function() {
 	    $(this).hide();
 	});
 
+	changeThemeProjectHandler();
 	computeDelegations(themePower);
 	addFreeFixedHandlers();
 	addCandidateFormHandlers();
@@ -690,9 +711,9 @@ $(function() {
 	newFixationFormHandlers();
 	fixationHandlers();
 	deleteThemeFormHandlers();
-	changeThemeProjectHandler();
 	toggleAdmins();
 	toggleElecteds();
 	changeVotingMethod();
 	changeDateMethod();
+	$("textarea[data-provide=markdown]").markdown();
 });

@@ -290,6 +290,7 @@ class GroupBo {
 
 				$groups[$groupId]["gro_id"] 				= $line["gro_id"];
 				$groups[$groupId]["gro_label"]				= $line["gro_label"];
+				$groups[$groupId]["gro_description"]		= $line["gro_description"];
 				$groups[$groupId]["gro_contact"]			= $line["gro_contact"];
 				$groups[$groupId]["gro_contact_type"]		= $line["gro_contact_type"];
 				$groups[$groupId]["gro_tasker_type"]		= $line["gro_tasker_type"];

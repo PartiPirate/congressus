@@ -49,7 +49,7 @@ function saveTaskGroupFormHandlers() {
 function saveGroupFormHandlers() {
 //	$("#saveGroupForm").change(saveGroup);
 
-	$("#saveGroupForm input[type=text]").keyup(function() {
+	$("#saveGroupForm input[type=text], #saveGroupForm textarea").keyup(function() {
 
 		if ($(this).attr("id") == "gro_label") {
 			groupLabelChanged = true;
@@ -57,6 +57,15 @@ function saveGroupFormHandlers() {
 
 		clearKeyup();
 		keyupTimeoutId = setTimeout(saveGroup, 1500);
+	});
+
+	$("#saveGroupForm input[type=text], #saveGroupForm textarea").blur(function() {
+
+		if ($(this).attr("id") == "gro_label") {
+			groupLabelChanged = true;
+		}
+
+		saveGroup();
 	});
 
 	$("#saveGroupForm input[type=checkbox]").change(function() {
@@ -353,8 +362,9 @@ $(function() {
 	excludeHandlers();
 	adminFormHandlers();
 	authoritativeFormHandlers();
-	saveGroupFormHandlers();
-	saveTaskGroupFormHandlers();
 	changeGroupProjectHandler();
+	saveGroupFormHandlers();
+	$("textarea[data-provide=markdown]").markdown();
+	saveTaskGroupFormHandlers();
 	changeContactMethod();
 });

@@ -18,6 +18,10 @@
 */
 include_once("header.php");
 
+require_once("engine/utils/Parsedown.php");
+require_once("engine/utils/ParsedownExtra.php");
+require_once("engine/emojione/autoload.php");
+
 require_once("engine/bo/GaletteBo.php");
 
 $groupFilters = array();
@@ -67,10 +71,20 @@ function isInMyGroup($theme, $mygroups) {
 	return false;
 }
 
+$Parsedown = new ParsedownExtra();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
+
 ?>
 
 <div class="container group-container theme-showcase" role="main">
-	<?php echo getBreadcrumb(); ?>
+	<?=getBreadcrumb()?>
+
+<?php	if($group["gro_description"]) { ?>
+	<div class="well well-sm">
+		<?=$emojiClient->shortnameToImage($Parsedown->text($group["gro_description"]))?>
+	</div>
+<?php	} ?>
+
 
 <?php
 foreach($group["gro_themes"] as $themeId => $theme) {
@@ -164,7 +178,14 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 							<div class="col-md-3">
 								<input type="text" name="gro_label" id="gro_label"
 									placeholder="" class="form-control input-md"
-									value="<?php echo $group["gro_label"]; ?>"/>
+									value="<?=$group["gro_label"]?>"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-3 control-label" for="gro_description">Description : </label>
+							<div class="col-md-9">                     
+								<textarea class="form-control" id="gro_description" name="gro_description" data-provide="markdown" data-hidden-buttons="cmdPreview"><?=$group["gro_description"]?></textarea>
 							</div>
 						</div>
 

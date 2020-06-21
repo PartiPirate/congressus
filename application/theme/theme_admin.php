@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -77,8 +77,6 @@
 							value="<?php echo $theme["the_dilution"]; ?>" />
 						<span class="input-group-addon" id="dilution-addon">%</span>
 					</div>
-					
-					
 				</div>
 			</div>
 			
@@ -197,6 +195,12 @@
 						value="1"/>
 				</div>
 			</div>
+			<div class="form-group method external_results">
+				<label class="col-md-4 control-label" for="the_entry_condition">Condition d'entrée : </label>
+				<div class="col-md-8 text-right">
+					<textarea class="form-control" id="the_entry_condition" name="the_entry_condition" data-provide="markdown" data-hidden-buttons="cmdPreview"><?=$theme["the_entry_condition"]?></textarea>
+				</div>
+			</div>
 		</fieldset>
 	</div>
 </div>
@@ -223,18 +227,18 @@
 						<option class="dlp_groups" value="0" >Veuillez choisir un groupe</option>
 				<?php 	foreach($groups as $listGroup) {?>
 						<option class="dlp_groups"
-							value="<?php echo $listGroup["gro_id"]; ?>"
+							value="<?=$listGroup["gro_id"]?>"
 						<?php  if ($theme["the_eligible_group_type"] == "dlp_groups" && $theme["the_eligible_group_id"] == $listGroup["gro_id"]) {?>
 							selected="selected"
 						<?php 	}?>
 
-						><?php echo $listGroup["gro_label"]; ?></option>
+						><?=$listGroup["gro_label"]?></option>
 				<?php 	}?>
 
 						<option class="dlp_themes" value="0" >Veuillez choisir un theme</option>
 				<?php 	foreach($themes as $listTheme) {?>
 						<option class="dlp_themes"
-							value="<?php echo $listTheme["the_id"]; ?>"
+							value="<?=$listTheme["the_id"]?>"
 
 						<?php  if ($theme["the_eligible_group_type"] == "dlp_themes" && $theme["the_eligible_group_id"] == $listTheme["the_id"]) {?>
 							selected="selected"

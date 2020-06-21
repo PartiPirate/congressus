@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -16,6 +16,14 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+require_once("engine/utils/Parsedown.php");
+require_once("engine/utils/ParsedownExtra.php");
+require_once("engine/emojione/autoload.php");
+
+$Parsedown = new ParsedownExtra();
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
+
 ?>
 
 <!-- User part -->
@@ -62,9 +70,15 @@
 <br>
 <?php	
 	}
+	else if (!$theme["the_free_fixed"] && $theme["the_voting_method"] == "external_results" && $theme["the_entry_condition"]) { ?>
+	<div class="well well-sm">
+		<?=$emojiClient->shortnameToImage($Parsedown->text($theme["the_entry_condition"]))?>
+	</div>
+<?php	
+	}
 ?>
 
-<?php if (($isElegible && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"])) {?>
+<?php if (($isElegible && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"]) && $theme["the_voting_method"] != "external_results") {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
 		<?php echo lang("theme_delegation_label"); ?>&nbsp;

@@ -79,7 +79,7 @@ $emojiClient = new Emojione\Client(new Emojione\Ruleset());
 <div class="container group-container theme-showcase" role="main">
 	<?=getBreadcrumb()?>
 
-<?php	if($group["gro_description"]) { ?>
+<?php	if(!$showAdmin && $group["gro_description"]) { ?>
 	<div class="well well-sm">
 		<?=$emojiClient->shortnameToImage($Parsedown->text($group["gro_description"]))?>
 	</div>
@@ -158,6 +158,94 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 }
 ?>
 
+<?php
+	if (!$showAdmin) {
+		$fixation = null;
+		$principalEntryTheme = null;
+
+		if ($group["gro_entry_theme_id"]) {
+			foreach($group["gro_themes"] as $themeId => $theme) { 
+				if ($themeId == $group["gro_entry_theme_id"]) {
+					$principalEntryTheme = $theme;
+					
+					$isVoting = false;
+					$isElegible = false;
+					if ($isConnected) {
+						$isVoting = count($groupBo->getMyGroups(array("the_id" => $themeId, "userId" => $sessionUserId, "state" => "voting"))) > 0;
+						$isElegible = count($groupBo->getMyGroups(array("the_id" => $themeId, "userId" => $sessionUserId, "state" => "eligible"))) > 0;
+					}
+
+					$isFixed = false;
+
+					$fixation = $principalEntryTheme["fixation"];
+
+					if ($fixation) {
+						foreach($fixation["members"] as $memberId => $member) {
+							if ($memberId == $sessionUserId) {
+								$isFixed = true;
+								break;
+							}
+						}
+					}
+
+					break;
+				}
+			}
+		}
+
+		if ($fixation && !$isFixed && $isElegible && $principalEntryTheme["the_free_fixed"] == 1) {?>
+	
+<div class="row">
+	<div class="col-md-12">
+		<a href="#" id="free-theme-enter-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $principalEntryTheme["the_id"]; ?>"><?php echo lang("theme_free_entry"); ?></a>
+	</div>
+</div>
+<br>
+
+<?php	
+		}
+		else if ($fixation && $isFixed && $isElegible && $principalEntryTheme["the_free_fixed"] == 1) { ?>
+
+<div class="row">
+	<div class="col-md-12">
+		<a href="#" id="free-theme-exit-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $principalEntryTheme["the_id"]; ?>"><?php echo lang("theme_free_exit"); ?></a>
+	</div>
+</div>
+<br>
+
+<?php	
+		}
+		else if (!$principalEntryTheme["the_free_fixed"] && $principalEntryTheme["the_voting_method"] == "external_results" && $principalEntryTheme["the_entry_condition"]) { ?>
+	<div class="well well-sm">
+		<?=$emojiClient->shortnameToImage($Parsedown->text($principalEntryTheme["the_entry_condition"]))?>
+	</div>
+
+<?php	
+		}
+	}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php if ($isAdmin && $showAdmin) {?>
 
 	<div id="information">
@@ -209,6 +297,17 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 									value="<?php echo $group["gro_contact"]; ?>"/>
 							</div>
 						</div>
+
+						<div class="form-group">
+							<label class="col-md-3 control-label" for="gro_entry_theme_id">Thème principal : </label>
+							<div class="col-md-3">
+								<select name="gro_entry_theme_id" id="gro_entry_theme_id" class="form-control input-md">
+									<option value="0"></option>
+<?php	foreach($group["gro_themes"] as $themeId => $theme) { ?>
+									<option value="<?=$theme["the_id"]?>" <?=($theme["the_id"] == $group["gro_entry_theme_id"] ? "selected=selected" : "")?>><?=$theme["the_label"]?></option>
+<?php	} ?>
+								</select>
+							</div>			
 
 					</fieldset>
 
@@ -458,7 +557,10 @@ groupAuthoritatives[groupAuthoritatives.length] = {	gau_authoritative_name: "<?p
 
 <div class="lastDiv"></div>
 
+
 <?php include("footer.php");?>
+
+<script src="assets/js/perpage/theme_entry.js?r=<?=filemtime("assets/js/perpage/theme_entry.js")?>"></script>
 
 </body>
 </html>

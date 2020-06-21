@@ -190,7 +190,8 @@ foreach($groups as $groupId => $lgroup) {
 
 <?php include("footer.php");?>
 
-<script src="assets/js/perpage/theme_user_delegation_advanced.js"></script>
+<script src="assets/js/perpage/theme_user_delegation_advanced.js?r=<?=filemtime("assets/js/perpage/theme_user_delegation_advanced.js")?>"></script>
+<script src="assets/js/perpage/theme_entry.js?r=<?=filemtime("assets/js/perpage/theme_entry.js")?>"></script>
 
 </body>
 </html>

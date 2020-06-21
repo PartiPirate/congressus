@@ -1,5 +1,5 @@
 /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -568,46 +568,6 @@ function addDelegativeHandlers() {
 	});
 }
 
-function addFreeFixedHandlers() {
-	$("#free-theme-enter-btn").click(function(event) {
-		event.preventDefault();
-		event.stopPropagation();
-
-		const themeId = $(this).data("theme-id");
-
-		$.post("do_free_enter.php", {the_id : themeId, action: "add_member"}, function(data) {
-			if (data.ok) {
-				if (typeof updateGroupTree != "undefined") {
-					updateGroupTree();
-					openThemeUrl("theme.php?id=" + themeId);
-				}
-				else {
-					window.location.reload();
-				}
-			}
-		}, "json");
-	});
-
-	$("#free-theme-exit-btn").click(function(event) {
-		event.preventDefault();
-		event.stopPropagation();
-
-		const themeId = $(this).data("theme-id");
-
-		$.post("do_free_enter.php", {the_id : themeId, action: "remove_member"}, function(data) {
-			if (data.ok) {
-				if (typeof updateGroupTree != "undefined") {
-					updateGroupTree();
-					openThemeUrl("theme.php?id=" + themeId);
-				}
-				else {
-					window.location.reload();
-				}
-			}
-		}, "json");
-	});
-}
-
 function changeThemeProjectHandler() {
 	$("#the_tasker_type").change(function() {
 		const projectType = $(this).val();
@@ -701,7 +661,6 @@ $(function() {
 
 	changeThemeProjectHandler();
 	computeDelegations(themePower);
-	addFreeFixedHandlers();
 	addCandidateFormHandlers();
 	addDelegativeHandlers();
 	setDelegationPowerHandlers();

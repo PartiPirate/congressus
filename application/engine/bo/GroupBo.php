@@ -291,6 +291,7 @@ class GroupBo {
 				$groups[$groupId]["gro_id"] 				= $line["gro_id"];
 				$groups[$groupId]["gro_label"]				= $line["gro_label"];
 				$groups[$groupId]["gro_description"]		= $line["gro_description"];
+				$groups[$groupId]["gro_entry_theme_id"]		= $line["gro_entry_theme_id"];
 				$groups[$groupId]["gro_contact"]			= $line["gro_contact"];
 				$groups[$groupId]["gro_contact_type"]		= $line["gro_contact_type"];
 				$groups[$groupId]["gro_tasker_type"]		= $line["gro_tasker_type"];
@@ -307,6 +308,8 @@ class GroupBo {
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_delegate_only"]		= $line["the_delegate_only"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_tasker_type"] 		= $line["the_tasker_type"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_tasker_project_id"]	= $line["the_tasker_project_id"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_entry_condition"]		= $line["the_entry_condition"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_free_fixed"]			= $line["the_free_fixed"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"]				= $line["gth_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["fix_until_date"] = $line["fix_until_date"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["members"][$line["fme_member_id"]]["id_adh"]		= $line["fme_member_id"];

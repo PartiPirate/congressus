@@ -56,6 +56,13 @@ if (!$isAdmin) {
 $group["gro_label"] = $_REQUEST["gro_label"];
 $group["gro_description"] = $_REQUEST["gro_description"];
 
+if ($_REQUEST["gro_entry_theme_id"]) {
+	$group["gro_entry_theme_id"] = $_REQUEST["gro_entry_theme_id"];
+}
+else {
+	$group["gro_entry_theme_id"] = null;
+}
+
 $group["gro_contact_type"] = isset($_REQUEST["gro_contact_type"]) ? $_REQUEST["gro_contact_type"] : null;
 $group["gro_contact"] = isset($_REQUEST["gro_contact"]) ? $_REQUEST["gro_contact"] : null;
 

@@ -444,8 +444,8 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 					<li><a class="logoutLink" href="do_logout.php" title="<?php echo lang("menu_logout"); ?>"
 						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>
 					<?php 	} else { ?>
-					<li><a id="loginLink" href="connect.php" title="<?php echo lang("menu_login"); ?>"
-						data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
+					<li><a id="loginLink" href="connect.php" title="<?=lang("menu_login")?>"
+						data-toggle="tooltip" data-placement="left"><?=lang("menu_login")?> <span class="glyphicon glyphicon-log-in"></span><span class="sr-only">Login</span> </a></li>
 					<?php 	}?>
 				</ul>
 				<?php 	if ($isAdministrator) {?>

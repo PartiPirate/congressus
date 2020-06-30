@@ -10,6 +10,6 @@ services:
     ports:
       - "8813:80"
     volumes:
-      - /home/admin/www/congressus/config:/var/www/html/config
+      - ./config:/var/www/html/config
     links:
       - memcached

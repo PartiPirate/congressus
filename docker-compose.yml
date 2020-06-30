@@ -1,0 +1,15 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.6-alpine
+    ports:
+      - "11212:11211"
+
+  congressus:
+    image: congressus:0.1
+    ports:
+      - "8813:80"
+    volumes:
+      - /home/admin/www/congressus/config:/var/www/html/config
+    links:
+      - memcached

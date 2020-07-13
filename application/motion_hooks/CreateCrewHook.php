@@ -58,7 +58,7 @@ class CreateCrewHook implements WinningMotionHook {
         $operatingCode = $converter->parseString($agenda["age_description"]);
 
         // L'Assemblée Permanente valide la création de l'équipage "Spatial"
-        $crewRegex = '/"([a-zA-Z]*)"/m';
+        $crewRegex = '/"([a-zA-Z0-9\ ]*)"/m';
         preg_match_all($crewRegex, $motion["mot_title"], $matches, PREG_SET_ORDER, 0);
 
         if (!isset($matches[0][1])) return "can't find crew name";
@@ -192,6 +192,8 @@ class CreateCrewHook implements WinningMotionHook {
 
         // Create text channel on discord in the good category
 
+        $discordChannel = mb_strtolower(str_replace(" ", "-", $crewName));
+
         $discordCategory = "🤝 équipages thématiques 🤝";
         switch($crewType) {
             case "événementiel":
@@ -203,7 +205,7 @@ class CreateCrewHook implements WinningMotionHook {
         }
 
         //{"action":"create","type":"channel","label":"bouya","category":"Salons textuels","topic":"My Topic","rights":["DENY_ALL"]}
-        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "channel", "label" => $crewName, "category" => $discordCategory, "rights" => array("DENY_ALL")));
+        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "channel", "label" => $discordChannel, "category" => $discordCategory, "rights" => array("DENY_ALL")));
         $message["mes_message"] = json_encode($message["mes_message"]);
         $messageBo->save($message);
 
@@ -212,7 +214,7 @@ class CreateCrewHook implements WinningMotionHook {
         // Create member role on discord
 
         //{"action":"create","type":"role","label":"bouya","color":"#3498DB","permissions":[{"channel":"Bouya","rights":["ALLOW_MESSAGE_MANAGE"]}]}
-        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "role", "label" => "Équipage " . $crewName, "color" => "#3498DB", "permissions" => array(array("channel" => $crewName, "rights" => array()))));
+        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "role", "label" => "Équipage " . $crewName, "color" => "#3498DB", "permissions" => array(array("channel" => $discordChannel, "rights" => array()))));
         $message["mes_message"] = json_encode($message["mes_message"]);
         $messageBo->save($message);
 
@@ -220,7 +222,7 @@ class CreateCrewHook implements WinningMotionHook {
 
         // Create captain role on discord
 
-        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "role", "label" => $crewName . " - Capitaine", "color" => "#206694", "permissions" => array(array("channel" => $crewName, "rights" => array("ALLOW_MESSAGE_MANAGE")))));
+        $message = array("mes_to" => "discord", "mes_message" => array("action" => "create", "type" => "role", "label" => $crewName . " - Capitaine", "color" => "#206694", "permissions" => array(array("channel" => $discordChannel, "rights" => array("ALLOW_MESSAGE_MANAGE")))));
         $message["mes_message"] = json_encode($message["mes_message"]);
         $messageBo->save($message);
 
@@ -234,7 +236,7 @@ class CreateCrewHook implements WinningMotionHook {
                             "mes_message" => array(
                                 "action" => "addinchannel", 
                                 "type" => "role", 
-                                "channel" => $crewName, 
+                                "channel" => $discordChannel, 
                                 "role" => "Pirates", 
                                 "rights" => array("ALLOW_MESSAGE_READ", "ALLOW_MESSAGE_WRITE", "ALLOW_MESSAGE_EMBED_LINKS", "ALLOW_MESSAGE_ATTACH_FILES", "ALLOW_MESSAGE_HISTORY", "ALLOW_MESSAGE_MENTION_EVERYONE", "ALLOW_MESSAGE_EXT_EMOJI", "ALLOW_MESSAGE_ADD_REACTION")
                             )
@@ -251,7 +253,7 @@ class CreateCrewHook implements WinningMotionHook {
                             "mes_message" => array(
                                 "action" => "create", 
                                 "type" => "message", 
-                                "channel" => $crewName, 
+                                "channel" => $discordChannel, 
                                 "isPinned" => true,
                                 "content" => "Le code de fonctionnement : https://wiki.partipirate.org/Equipage:$crewName/code_de_fonctionnement"
                             )

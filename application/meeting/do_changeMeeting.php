@@ -23,6 +23,7 @@ require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/LocationBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 require_once("engine/utils/DateTimeUtils.php");
 require_once("engine/utils/LogUtils.php");
 require_once("engine/utils/QuorumUtils.php");
@@ -37,6 +38,8 @@ addLog($_SERVER, $_SESSION, null, $_POST);
 
 $connection = openConnection();
 $userId = SessionUtils::getUserId($_SESSION);
+$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $userId))) > 0;
 
 $meetingBo = MeetingBo::newInstance($connection, $config);
 $locationBo = LocationBo::newInstance($connection, $config);
@@ -56,7 +59,7 @@ if (false) {
 	exit();
 }
 
-if (($userId != $meeting["mee_president_member_id"]) && ($userId != $meeting["mee_secretary_member_id"])) {
+if (($userId != $meeting["mee_president_member_id"]) && ($userId != $meeting["mee_secretary_member_id"]) && !$isAdmin) {
 	echo json_encode(array("ko" => "ko", "message" => "meeting_not_accessible"));
 	exit();
 }

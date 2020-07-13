@@ -26,8 +26,15 @@ $meetingBo = MeetingBo::newInstance($connection, $config);
 $noticeBo = NoticeBo::newInstance($connection, $config);
 
 $userId = SessionUtils::getUserId($_SESSION);
+$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $userId))) > 0;
 
-$secretaryMeetings = $meetingBo->getByFilters(array("mee_secretary_member_id" => $userId));
+$filters = array();
+if (!$isAdmin) {
+	$filters["mee_secretary_member_id"] = $userId;
+}
+
+$secretaryMeetings = $meetingBo->getByFilters($filters);
 
 $meetings = array();
 $meetings = array_merge($meetings, $secretaryMeetings);
@@ -51,21 +58,21 @@ if ($config["server"]["timezone"]) {
 ?>
 
 <div class="container theme-showcase meeting-container" role="main"
-	data-id="<?php echo @$meeting[$meetingBo->ID_FIELD]; ?>"
-	data-user-id="<?php echo $userId ? $userId : "G" . $guestId; ?>"
+	data-id="<?=@$meeting[$meetingBo->ID_FIELD]?>"
+	data-user-id="<?=$userId ? $userId : "G" . $guestId?>"
 	>
 	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-		<li class="active"><?php echo lang("breadcrumb_myMeetings"); ?></li>
+		<li><a href="index.php"><?=lang("breadcrumb_index")?></a></li>
+		<li class="active"><?=lang("breadcrumb_myMeetings")?></li>
 	</ol>
 
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs" role="tablist">
 <?php 	$active = "active";
 		foreach($statusMeetings as $status => $meetings) {?>
-		<li role="presentation" class="<?php echo $active; ?>">
-			<a href="#<?php echo $status; ?>" aria-controls="<?php echo $status; ?>" role="tab" data-toggle="tab"><?php echo lang("myMeetings_$status"); ?>
-				<?php if (count($meetings)) {?><span class="badge"><?php echo count($meetings); ?></span><?php }?>
+		<li role="presentation" class="<?=$active?>">
+			<a href="#<?=$status?>" aria-controls="<?=$status?>" role="tab" data-toggle="tab"><?=lang("myMeetings_$status")?>
+				<?php if (count($meetings)) {?><span class="badge"><?=count($meetings)?></span><?php }?>
 			</a>
 		</li>
 <?php 		$active = "";
@@ -76,7 +83,7 @@ if ($config["server"]["timezone"]) {
 	<div class="tab-content">
 <?php 	$active = "active";
 		foreach($statusMeetings as $status => $meetings) {?>
-		<div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="<?php echo $status; ?>">
+		<div role="tabpanel" class="tab-pane <?=$active?>" id="<?=$status?>">
 
 <?php 		if (count($meetings)) {?>
 			<table class="table">
@@ -131,9 +138,9 @@ if ($config["server"]["timezone"]) {
 					}
 ?>
 					<tr>
-						<td><a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>"><?php echo $meeting["mee_label"] ? $meeting["mee_label"] : "-"; ?></a></td>
-						<td><?php echo lang("createMeeting_base_type_" . $meeting["mee_type"]); ?></td>
-						<td><?php echo implode(", ", $groupLabels); ?></td>
+						<td><a href="meeting.php?id=<?=$meeting["mee_id"]?>"><?=$meeting["mee_label"] ? $meeting["mee_label"] : "-"?></a></td>
+						<td><?=lang("createMeeting_base_type_" . $meeting["mee_type"])?></td>
+						<td><?=implode(", ", $groupLabels)?></td>
 						<td><?php
 								$start = new DateTime($meeting["mee_datetime"]);
 
@@ -152,19 +159,19 @@ if ($config["server"]["timezone"]) {
 							?></td>
 						<td>
 							<?php // echo $status; ?>
-<?php				if ($status == "construction" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-primary btn-xs btn-waiting-meeting" data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_waiting"); ?></button>
-						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+<?php				if ($status == "construction" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]) || $isAdmin)) { ?>
+						<button class="btn btn-primary btn-xs btn-waiting-meeting" data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_waiting")?></button>
+						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_delete")?></button>
 <?php				} ?>
-<?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-success btn-xs btn-open-meeting"    data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_open"); ?></button>
-						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_delete"); ?></button>
+<?php				if ($status == "waiting" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]) || $isAdmin)) { ?>
+						<button class="btn btn-success btn-xs btn-open-meeting"    data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_open")?></button>
+						<button class="btn btn-danger  btn-xs btn-delete-meeting"  data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_delete")?></button>
 <?php				} ?>
-<?php				if ($status == "open" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]))) { ?>
-						<button class="btn btn-danger  btn-xs btn-close-meeting"   data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_close"); ?></button>
+<?php				if ($status == "open" && (($userId == $meeting["mee_secretary_member_id"]) || ($userId == $meeting["mee_president_member_id"]) || $isAdmin)) { ?>
+						<button class="btn btn-danger  btn-xs btn-close-meeting"   data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_close")?></button>
 <?php				} ?>
 <?php				if ($status == "template") { ?>
-						<button class="btn btn-info    btn-xs btn-copy-meeting"    data-status="<?php echo $status; ?>" data-meeting-id="<?php echo $meeting["mee_id"]; ?>"><?php echo lang("meeting_copy"); ?></button>
+						<button class="btn btn-info    btn-xs btn-copy-meeting"    data-status="<?=$status?>" data-meeting-id="<?=$meeting["mee_id"]?>"><?=lang("meeting_copy")?></button>
 <?php				} ?>
 						</td>
 					</tr>
@@ -173,7 +180,7 @@ if ($config["server"]["timezone"]) {
 			</table>
 <?php 		} else {?>
 <br>
-			<div class="well"><?php echo lang("meeting_empty"); ?></div>
+			<div class="well"><?=lang("meeting_empty")?></div>
 <?php 		}?>
 
 

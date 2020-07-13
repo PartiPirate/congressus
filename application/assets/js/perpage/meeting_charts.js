@@ -64,7 +64,7 @@ function updateChart2(motionContainer, data) {
 }
 
 function shortenLabel(label, length) {
-	var newLabel = label;
+	var newLabel = "" + label;
 
 	if (label && label.length > length) {
 		newLabel = label.substring(0, Math.round(length / 2) - 2).trim();
@@ -72,7 +72,7 @@ function shortenLabel(label, length) {
 		newLabel += label.substring(label.length - Math.round(length / 2) + 1).trim();
 	}
 
-	return newLabel;
+	return "" + newLabel;
 }
 
 function initPercentChart(motionContainer) {

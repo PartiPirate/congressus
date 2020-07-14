@@ -347,12 +347,14 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					-
 					<i class="fa fa-archive"></i> <?php echo lang("meeting_number_of_voters"); ?>
 					<span class="number-of-voters">0</span>
+					<?php	if (array_key_exists("mee_quorum", $meeting)) { ?>
 					<span class="quorum-container" title="">
 						-
 						<i class="fa fa-bell-o"></i> <span><?php echo lang("meeting_quorum"); ?></span>
 						<span class="quorum">0</span>
 						<button style="display: none; margin-top: -6px" type="button" class="btn btn-xs btn-default show-quorum-modal-btn update-btn"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 					</span>
+					<?php	} ?>
 				</div>
 			</div>
 		</div>
@@ -1010,7 +1012,10 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 <?php	include("meeting/addAgendaFrom_modal.php"); ?>
 <?php	include("meeting/addTag_modal.php"); ?>
 <?php	include("meeting/closeMeeting_modal.php"); ?>
-<?php	include("meeting/setQuorum_modal.php"); ?>
+<?php	if (array_key_exists("mee_quorum", $meeting)) {
+			include("meeting/setQuorum_modal.php"); 
+		}
+?>
 <?php	include("meeting/setMotionDeadline_modal.php"); ?>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="start-meeting-modal">

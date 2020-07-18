@@ -1,0 +1,26 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.6-alpine
+
+  congressus:
+    image: congressus:0.7-fpm
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - ./application:/var/www/html
+      - ./config:/var/www/html/config
+    links:
+      - memcached
+
+  nginx:
+    volumes:
+      - './congressus-fpm.conf:/etc/nginx/conf.d/default.conf:rw'
+    volumes_from:
+      - congressus
+    links:
+      - 'congressus:fpm'
+    ports:
+      - '8813:80'
+    image: nginx

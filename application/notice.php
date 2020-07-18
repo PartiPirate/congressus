@@ -95,3 +95,13 @@ foreach($config["modules"]["groupsources"] as $groupSourceKey) {
 
 
 	</form>
+	
+<script>
+$(function() {
+	$("body #not_target_type").change();
+	
+	if ($("body #not_target_type option").length < 2) {
+		$("body #not_target_type option").parents(".form-group").hide();
+	}
+});
+</script>

@@ -87,8 +87,8 @@ if ($location["loc_type"] == "mumble") {
 else if ($location["loc_type"] == "discord") {
 	include("config/discord.structure.php");
 
-	echo $location["loc_channel"];
-	echo "\n";
+//	echo $location["loc_channel"];
+//	echo "\n";
 
 	list($discord_text_channel, $discord_vocal_channel) = explode(",", $location["loc_channel"]);
 	

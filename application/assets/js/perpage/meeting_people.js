@@ -662,6 +662,13 @@ function updatePeople() {
 			$(".btn-add-motion, .btn-add-task").hide();
 		}
 
+		if (isGuest()) {
+			$(".btn-add-chat, .btn-add-conclusion, .action-footer").hide();
+		}
+		else {
+			$(".btn-add-chat, .btn-add-conclusion, .action-footer").show();
+		}
+
 		if (hasWritingRight(userId) || userId == getSpeakingUserId()) {
 			$(".btn-remove-speaker").show().removeAttr("disabled");
 		}

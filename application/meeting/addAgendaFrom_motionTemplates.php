@@ -102,6 +102,18 @@ $motionTemplates["Motion programmatique"][] = $motionTemplate;
 
 // --- //
 
+$motionTemplates["Motion réglementaire"] = array();
+
+$motionTemplate = array();
+$motionTemplate["title"] = "L'Assemblée Permanente valide la modification du règlement intérieur avec l'amendement &quot;Nom du texte&quot;";
+$motionTemplate["description"] = "Pour accéder à l'amendement, cliquez sur le point à l'ordre du jour dont il est question ici en pied de page.";
+$motionTemplate["replace"] = "[{&quot;src&quot;:&quot;Nom du texte&quot;,&quot;val&quot;:&quot;title&quot;,&quot;rmv&quot;:[]}]";
+$motionTemplate["label"] = "Amendement réglementaire";
+$motionTemplates["Motion réglementaire"][] = $motionTemplate;
+
+
+// --- //
+
 $motionTemplates["Motion statutaire"] = array();
 
 $motionTemplate = array();

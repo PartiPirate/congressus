@@ -25,7 +25,9 @@ $host = $arguments["memcached_host_input"];
 $port = $arguments["memcached_port_input"];
 
 try {
-	$memcache = new Memcache();
+	$memcache = new Memcached();
+	$memcache->addServer($host, $port, 100);
+
 	$connected = @$memcache->connect($host, $port);
 
 	if ($connected) {

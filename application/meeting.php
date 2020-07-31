@@ -615,11 +615,11 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 	</form>
 
 	<div data-template-id="task-information" class="task-information" style="height: 20px;">
-		<div class="col-md-3"><a href="${url}" target="_blank">${subject}</a></div>
-		<div class="col-md-3"><a href="${projectUrl}" target="_blank">${project}</a></div>
-		<div class="col-md-2">${status}</div>
-		<div class="col-md-2">${assigned}</div>
-		<div class="col-md-2">${progress}%</div>
+		<div class="col-md-6"><a href="${url}" target="_blank" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="${subject}">${subject}</a></div>
+		<div class="col-md-2"><a href="${projectUrl}" target="_blank" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="${project}">${project}</a></div>
+		<div class="col-md-1"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="${status}">${status}</span></div>
+		<div class="col-md-2"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="${assigned}">${assigned}</span></div>
+		<div class="col-md-1"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="${progress}">${progress}%</span></div>
 	</div>
 
 	<ul>

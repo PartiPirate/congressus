@@ -480,8 +480,10 @@ $lang["source_icon_congressus_motion"] = '<i class="fa fa-balance-scale" aria-hi
 $lang["source_icon_forum"] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 $lang["source_icon_pdf"] = '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>';
 
-$lang["amendment_delete_co_author"] = "Supprime ce co-auteur";
-$lang["amendment_exchange_co_author"] = "Échange ce co-auteur avec l'auteur principal de cet amendement";
+$lang["amendment_delete_co_author"]     = "Supprime ce co-auteur";
+$lang["amendment_exchange_co_author"]   = "Échange ce co-auteur avec l'auteur principal de cet amendement";
+$lang["amendment_accept_co_author"]     = "Accepte ce co-auteur";
+$lang["amendment_refuse_co_author"]     = "Refuse ce co-auteur";
 
 $lang["amendment_explanation"] = "Exposé des motifs : ";
 $lang["amendment_description"] = "Contenu de la proposition : ";

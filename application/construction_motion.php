@@ -99,7 +99,7 @@ $isCoAuthor = false;
 $coAuthors = $coAuthorBo->getByFilters(array("cau_object_type" => "motion", "cau_object_id" => $motionId));
 foreach($coAuthors as $coAuthor) {
 	
-	if ($coAuthor["cau_user_id"] == $userId) {
+	if ($coAuthor["cau_user_id"] == $userId && (!isset($coAuthor["cau_status"]) || $coAuthor["cau_status"] == "authoring")) {
 		$isCoAuthor = true;
 		break;
 	}
@@ -335,7 +335,7 @@ $jsonMotion = $motion;
 			
 			$votes = $voteBo->getByFilters(array("mot_id" => $motionId, "mot_agenda_id" => $agenda[$agendaBo->ID_FIELD]));
 ?>			
-			<div class="panel panel-default motion-entry" data-id="<?php echo $motion["mot_id"]; ?>">
+			<div class="panel panel-default motion-entry" data-id="<?=$motion["mot_id"]?>" data-agenda-id="<?=$motion["mot_agenda_id"]?>" data-meeting-id="<?=$meeting["mee_id"]?>">
 				<div class="panel-heading no-caret">
 <?php
 
@@ -404,18 +404,47 @@ include("construction/pieChart.php");
 						<button style="display: none; position: relative; top: -4px;" id="cancel-title-btn" type="button" class="btn btn-xs btn-danger"><i class="fa fa-close" aria-hidden="true"></i></button>
 <?php	} ?>						
 					</div>
-					<div style="font-size: smaller;">
+					<div id="motion-authors" style="font-size: smaller;">
 						<?php 	if ($author) { ?>
 							<span data-author-id="<?php echo $author["id_adh"]; ?>" class="motion-author"><?php echo GaletteBo::showIdentity($author); ?></span>
-						<?php 	}	?>
-						<?php	if (count($coAuthors) && $author) echo " - "; ?>
-						<?php	$separator = "";
-								foreach($coAuthors as $coAuthor) { 
+						<?php 	}	
+
+								if (count($coAuthors) && $author) echo " - "; 
+
+								$separator = "";
+								$requestStatus = "none";
+
+								foreach($coAuthors as $coAuthor) {
+									if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] == "refused") {
+										if ($coAuthor["cau_user_id"] == $userId) $requestStatus = "refused";
+										continue;
+									}
+									if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] == "asking" && $coAuthor["cau_user_id"] == $userId) $requestStatus = "pending";
+									if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] == "asking" && (!$isCoAuthor && $motion["mot_author_id"] != $userId)) continue;
+
 									echo $separator;
 									echo GaletteBo::showIdentity($coAuthor);
+
+									if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] == "asking") { ?>
+										<button style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px;" 
+											type="button" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" class="btn btn-xs btn-default accept-co-author-btn" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_accept_co_author"); ?>"><i class="fa fa-check" aria-hidden="true"></i></button>
+						<?php		}
+
 									$separator = ", ";
 								}
-						?>
+
+								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn">Demander l'authoring <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+						<?php	}
+								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "pending") { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled">Demande en attente <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+						<?php	} ?>
+						
+						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
+									<button id="show-motion-co-authors-btn" type="button" class="btn btn-default btn-xs" title="<?php echo lang("construction_motion_coauthors"); ?>" 
+										style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px; display: none;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+						<?php	} ?>
+
 					</div>
 					<div class="counters" style="font-size: smaller;">
 						<a href="#voting-members-panel" class="go-to"><?php echo langFormat($voteCounters[0] < 2, "amendments_vote", "amendments_votes", array("vote" => $voteCounters[0])); ?></a> -
@@ -440,11 +469,6 @@ include("construction/pieChart.php");
 						<button id="show-both-panels-btn" type="button" class="btn btn-default active" title="<?php echo lang("construction_motion_both"); ?>"><i class="fa fa-arrows-h" aria-hidden="true"></i></button>
 						<button id="show-right-panel-btn" type="button" class="btn btn-default" title="<?php echo lang("construction_motion_right"); ?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 						<button id="save-motion-btn" type="button" class="btn btn-success" disabled="disabled" title="<?php echo lang("construction_motion_save"); ?>"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-					</div>
-						<?php	} ?>
-						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
-					<div class="btn-group btn-authors-group" role="group">
-						<button id="show-motion-co-authors-btn" type="button" class="btn btn-default" title="<?php echo lang("construction_motion_coauthors"); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 					</div>
 						<?php	} ?>
 						<?php 	if ($hasWritingRights) { ?>

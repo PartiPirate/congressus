@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -23,6 +23,10 @@ class CoAuthorBo {
 
 	var $TABLE = "co_authors";
 	var $ID_FIELD = "cau_id";
+
+	const ASKING = "asking";
+	const AUTHORING = "authoring";
+	const REFUSED = "refused";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;

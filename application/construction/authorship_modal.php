@@ -15,7 +15,10 @@
     content: ", ";
 }
 
-.co-author .delete-co-author-btn:hover, .co-author .exchange-co-author-btn:hover {
+.co-author .delete-co-author-btn:hover, 
+.co-author .refuse-co-author-btn:hover, 
+.co-author .accept-co-author-btn:hover, 
+.co-author .exchange-co-author-btn:hover {
     cursor: pointer;
 }
 
@@ -65,8 +68,14 @@
                     <?php
                         foreach($coAuthors as $coAuthor) {
                             ?><span class="co-author co-author-<?php echo $coAuthor["cau_id"]; ?>"> 
+                    <?php   if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] == "asking") { ?>
+                                    <i class="fa fa-times text-danger refuse-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_refuse_co_author"); ?>"></i> 
+                                    <i class="fa fa-check text-success accept-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_accept_co_author"); ?>"></i> 
+                    <?php   }
+                            else { ?>
                                     <i class="fa fa-times text-danger delete-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_delete_co_author"); ?>"></i> 
                                     <i class="fa fa-exchange text-primary exchange-co-author-btn" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_exchange_co_author"); ?>"></i> 
+                    <?php   } ?>                                    
                                     <span class="nickname"><?php echo GaletteBo::showPseudo($coAuthor); ?></span>
                                 </span><?php
                         }

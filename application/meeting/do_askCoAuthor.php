@@ -45,7 +45,6 @@ $connection = openConnection();
 $agendaBo   = AgendaBo::newInstance($connection, $config);
 $meetingBo  = MeetingBo::newInstance($connection, $config);
 $motionBo   = MotionBo::newInstance($connection, $config);
-$userBo     = UserBo::newInstance($connection, $config);
 $coAuthorBo = CoAuthorBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["meetingId"];
@@ -83,45 +82,17 @@ if (!$motion) {
 	exit();
 }
 
-$userData = $_REQUEST["userData"];
-
-// TODO Search by pseudo, email and id
-
 //$memberId = intval($userData);
 
-$member = $userBo->getByPseudo($userData);
-if (!$member) {
-    $member = $userBo->getByMail($userData);
-}
-if (!$member) {
-    $member = $userBo->getById($userData);
-}
+$coAuthor = array();
+$coAuthor["cau_user_id"] = $userId;
+$coAuthor["cau_object_type"] = "motion";
+$coAuthor["cau_object_id"] = $motion[$motionBo->ID_FIELD];
+$coAuthor["cau_status"] = CoAuthorBo::ASKING;
 
-if (!$member) {
-    $data["ko"] = "ko";
-    $data["message"] = "motion_cant_add_coauthor";
-}
-else {
-    $coAuthor = array();
-    $coAuthor["cau_user_id"] = $member["id_adh"];
-    $coAuthor["cau_object_type"] = "motion";
-    $coAuthor["cau_object_id"] = $motion[$motionBo->ID_FIELD];
-    $coAuthor["cau_status"] = CoAuthorBo::AUTHORING;
+$coAuthorBo->save($coAuthor);
 
-    $coAuthorBo->save($coAuthor);
-    
-    if ($coAuthor["cau_id"]) {
-    //    $coAuthorBo->getById($coAuthor["cau_id"]);
-        $coAuthor["pseudo_adh"] = htmlspecialchars(utf8_encode($member["pseudo_adh"] ? $member["pseudo_adh"] : $member["nom_adh"] . ' ' . $member["prenom_adh"]), ENT_SUBSTITUTE);
-    
-        $data["ok"] = "ok";
-        $data["coAuthor"] = $coAuthor;
-    }
-    else {
-        $data["ko"] = "ko";
-        $data["message"] = "motion_cant_add_coauthor";
-    }
-}
+$data = array("ok" => "ok", "coAuthor" => $coAuthor);
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

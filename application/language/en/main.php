@@ -467,8 +467,10 @@ $lang["authorship_title"]           = "Co-authors managment";
 $lang["authorship_add_co_author"]   = "Add a co-author";
 $lang["authorship_co_authors"]      = "Co-authors";
 
-$lang["amendment_delete_co_author"]     = "Delete co-auteur";
+$lang["amendment_delete_co_author"]     = "Delete co-author";
 $lang["amendment_exchange_co_author"]   = "Exchange this co-author with the principal author of this amendment";
+$lang["amendment_accept_co_author"]     = "Accept co-author";
+$lang["amendment_refuse_co_author"]     = "Refuse co-author";
 
 $lang["amendment_explanation"]          = "Amendment explanation: ";
 $lang["amendment_description"]          = "Amendment content: ";

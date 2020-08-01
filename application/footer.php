@@ -95,7 +95,7 @@ function reconnectShowAlert() {
 $(function() {
     
 	var nopTimer = $.timer(function() { $.get("nop.php", function(data) {
-	    if (!data.user && $(".logoutLink").length && !disconnectedAlertId)  {
+	    if (!data.user && $(".logoutLink").length == 2 && !disconnectedAlertId)  {
 	        disconnectedAlertId = addEventAlert(alert_disconnected, "danger");
 	    }
 	    else if (data.user && disconnectedAlertId) {

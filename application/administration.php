@@ -149,11 +149,101 @@ include_once("config/discourse.structure.php");
 				<div class="row text-center">
 					<button id="btn-ping-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_ping_database"); ?></button>
 					<button id="btn-create-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_create_database"); ?></button>
-					<button id="btn-deploy-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
+					<button id="btn-test-database" class="btn btn-primary" type="button" disabled="disabled"><?php echo lang("administration_test_database"); ?></button>
+					<button id="btn-deploy-database" class="btn btn-primary btn-deploy-database" type="button" disabled="disabled"><?php echo lang("administration_deploy_database"); ?></button>
 				</div>
 
 			</div>
 		</div>
+
+
+
+
+
+
+
+<style>
+@media (min-width: 1024px) {
+  #check-database-modal .modal-dialog {
+      width: 900px;
+  }
+}
+
+@media (min-width: 1600px) {
+  #check-database-modal .modal-dialog {
+      width: 1300px;
+  }
+}
+</style>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="check-database-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo lang("common_close"); ?>"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title"><?php echo lang("administration_test_database_title"); ?>...</h4>
+      </div>
+      <div class="modal-body">
+          
+        <form class="form-horizontal">
+            <fieldset id="check-database-fieldset">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Table</th>
+							<th>Colonne</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="check-database-tbody"></tbody>
+				</table>
+
+            </fieldset>
+        </form>          
+          
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang("common_close"); ?></button>
+        <button type="button" class="btn btn-primary btn-deploy-database"><?php echo lang("administration_deploy_database"); ?></button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<div id="memcached-panel" class="panel panel-default">
 			<div class="panel-heading">

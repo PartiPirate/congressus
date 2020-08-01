@@ -127,7 +127,8 @@ $(function() {
 
 			if (data.ok) {
 				$("#administration_ping_successAlert").show().delay(2000).fadeOut(1000);
-				$("#btn-deploy-database").prop("disabled", false);
+				$("#btn-test-database").prop("disabled", false);
+				$(".btn-deploy-database").prop("disabled", false);
 			}
 			else {
 				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
@@ -149,7 +150,7 @@ $(function() {
 
 			if (data.ok) {
 				$("#administration_create_successAlert").show().delay(2000).fadeOut(1000);
-				$("#btn-deploy-database").prop("disabled", false);
+				$(".btn-deploy-database").prop("disabled", false);
 				$("#btn-create-database").prop("disabled", true);
 			}
 			else {
@@ -159,20 +160,96 @@ $(function() {
 
 		}, "json");
 	}
-	
+
+	var testDatabase = function() {
+		$("#btn-test-database").prop("disabled", true);
+		$(".btn-deploy-database").prop("disabled", true);
+
+		$.post("administration_api.php?method=do_deployDatabase&dry=", $("#administration-form").serialize(), function(data) {
+
+			if (data.ok) {
+//				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);
+//				$(".btn-deploy-database").prop("disabled", true);
+
+				$("#check-database-tbody").html("");
+
+				let tableDivs = "";
+				let errorCount = 0;
+				
+
+				for(let table in data.tables) {
+					const tableInformations = data.tables[table];
+
+					var trs = [];
+
+					if (tableInformations["status"] == "exists") {
+						for(let fieldName in tableInformations["compare"]["modify"]) {
+							trs.push("<td>" + fieldName + "</td><td><i class='text-warning fa fa-refresh' title='Modification de la colonne : "+ tableInformations["compare"]["modify"][fieldName]["attributes"].join(', ')+"'><i></td>");
+							errorCount++;
+						}
+						for(let fieldName in tableInformations["compare"]["add"]) {
+							trs.push("<td>" + fieldName + "</td><td><i class='text-success fa fa-plus' title='Ajout de la colonne'><i></td>");
+							errorCount++;
+						}
+						for(let fieldName in tableInformations["compare"]["delete"]) {
+							trs.push("<td>" + fieldName + "</td><td><i class='text-danger fa fa-ban' title='Suppression de la colonne'><i></td>");
+							errorCount++;
+						}
+					}
+					else if (tableInformations["status"] == "created") {
+						tableDivs += "<tr><td>" + table + "</td><td></td><td><i class='text-success fa fa-plus' title='Ajout de la table'><i></td></tr>";
+						errorCount++;
+					}
+					else {
+					}
+
+					for(let index = 0; index < trs.length; ++index) {
+						tableDivs += "<tr>";
+
+						if (index == 0) {
+							tableDivs += "<td rowspan='" + trs.length + "'>" + table + "</td>";
+						}
+
+						tableDivs += trs[index];
+
+						tableDivs += "</tr>";
+					}
+				}
+
+				if (errorCount) {
+					$("#check-database-tbody").html(tableDivs);
+					$("#check-database-modal").modal("show");
+				}
+				else {
+					addEventAlert("La bdd est carrée", "success", 2000);
+				}
+			}
+			else {
+				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
+			}
+
+			$("#btn-test-database").prop("disabled", false);
+			$(".btn-deploy-database").prop("disabled", false);
+
+		}, "json");
+	}
+
 	var deployDatabase = function() {
-		$("#btn-deploy-database").prop("disabled", true);
+		$("#btn-test-database").prop("disabled", true);
+		$(".btn-deploy-database").prop("disabled", true);
 		
 		$.post("administration_api.php?method=do_deployDatabase", $("#administration-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);
-//				$("#btn-deploy-database").prop("disabled", true);
+//				$(".btn-deploy-database").prop("disabled", true);
 			}
 			else {
 				$("#administration_ping_" + data.error + "Alert").show().delay(2000).fadeOut(1000);
-				$("#btn-deploy-database").prop("disabled", false);
 			}
+
+			$("#btn-test-database").prop("disabled", false);
+			$(".btn-deploy-database").prop("disabled", false);
 
 		}, "json");
 	}
@@ -215,9 +292,14 @@ $(function() {
 		createDatabase();
 	});
 
-	$("#btn-deploy-database").click(function(event) {
+	$(".btn-deploy-database").click(function(event) {
 		event.preventDefault();
 		deployDatabase();
+	});
+
+	$("#btn-test-database").click(function(event) {
+		event.preventDefault();
+		testDatabase();
 	});
 
 	$("#btn-administration-save").click(function(event) {

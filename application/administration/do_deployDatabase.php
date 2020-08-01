@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2018-2019 Cédric Levieux, Parti Pirate
+    Copyright 2018-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -26,6 +26,86 @@ function tableExists($pdo, $table) {
 	$results = $statement->fetchAll();
 	
 	return count($results) > 0;
+}
+
+function getTableConfiguration($pdo, $database, $table) {
+//SELECT * FROM information_schema.`COLUMNS` where TABLE_SCHEMA = 'congressus' and table_name = 'meetings'	
+
+	$query = "SELECT * FROM information_schema.columns  where TABLE_SCHEMA = '$database' and table_name = '$table' order by ordinal_position";
+	
+//	echo $query;
+
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+
+	$results = $statement->fetchAll();
+	$columns = array();
+
+	foreach($results as $line) {
+		$column = array();
+		$column["type"] = $line["DATA_TYPE"];
+		$column["null"] = ($line["IS_NULLABLE"] == "YES");
+		$column["size"] = $line["COLUMN_TYPE"];
+		if ($line["COLUMN_KEY"] == "PRI") $column["primary"] = true;
+		if (strpos($line["EXTRA"], "auto_increment") !== false) $column["autoincrement"] = 1;
+		if ($line["COLUMN_DEFAULT"] !== null)  $column["default"] = $line["COLUMN_DEFAULT"];
+		if ($line["COLUMN_COMMENT"])  $column["comment"] = $line["COLUMN_COMMENT"];
+
+		$column["size"] = str_replace($column["type"], "", $column["size"]);
+
+		if (!$column["size"]) {
+			unset($column["size"]);
+		}
+		else {
+			$column["size"] = substr($column["size"], 1, strlen($column["size"]) - 2);
+		}
+
+		$columns[$line["COLUMN_NAME"]] = $column;
+	}
+	
+	return $columns;
+}
+
+function compareFieldStructure($plannedStructure, $actualStructure) {
+	$results = array("equal" => array(), "add" => array(), "modify" => array(), "delete" => array());
+
+	if (isset($plannedStructure["fields"])) $plannedStructure = $plannedStructure["fields"];
+
+	foreach($plannedStructure as $fieldName => $fieldStructure) {
+		// not present in the actual database, so add it
+		if (!isset($actualStructure[$fieldName])) {
+			$results["add"][$fieldName] = $fieldStructure;
+			continue;
+		}
+		
+		// present in the actual database, equal or modify ?
+		foreach($fieldStructure as $key => $value) {
+			if (!isset($actualStructure[$fieldName][$key])) {
+				if (!isset($results["modify"][$fieldName])) $results["modify"][$fieldName] = $fieldStructure;
+				$results["modify"][$fieldName]["attributes"][] = $key;
+				continue;
+			}
+
+			if ($actualStructure[$fieldName][$key] != $value) {
+				if (!isset($results["modify"][$fieldName])) $results["modify"][$fieldName] = $fieldStructure;
+				$results["modify"][$fieldName]["attributes"][] = $key;
+				continue;
+			}
+		}
+
+		if (!isset($results["modify"][$fieldName])) {
+				$results["equal"][$fieldName] = $fieldStructure;
+		}
+	}
+
+	foreach($actualStructure as $fieldName => $fieldStructure) {
+		// not present in the planned database, so delete it ?
+		if (!isset($plannedStructure[$fieldName])) {
+			$results["delete"][$fieldName] = $fieldStructure;
+		}
+	}
+
+	return $results;
 }
 
 function createTable($pdo, $table, $structure) {
@@ -104,9 +184,11 @@ function createIndex($pdo, $table, $type, $fields, $indexName = null) {
 	return $query;
 }
 
-function createAutoIncrement($pdo, $table, $field, $fieldStructure) {
-	
-	$query = "ALTER TABLE `$table`\n\tMODIFY ";
+function alterColumn($pdo, $table, $field, $fieldStructure, $action) {
+
+	$action = strtoupper($action);
+
+	$query = "ALTER TABLE `$table`\n\t" . $action . " ";
 	
 	$query .= "`$field` "; 
 	$query .= $fieldStructure["type"]; 
@@ -127,6 +209,7 @@ function createAutoIncrement($pdo, $table, $field, $fieldStructure) {
 	}
 
 	$query .= " AUTO_INCREMENT";
+
 
 	if (isset($fieldStructure["comment"])) {
 		$query .= " COMMENT '" . $fieldStructure["comment"] . "'";
@@ -150,6 +233,9 @@ $login = $arguments["database_login_input"];
 $password = $arguments["database_password_input"];
 $database = $arguments["database_database_input"];
 
+$dry = isset($_REQUEST["database_dry"]);
+$dry = true;
+
 $dns = 'mysql:host='.$host.';dbname=' . $database;
 if (isset($config["database"]["port"])) {
 	$dns .= ";port=" . $config["database"]["port"];
@@ -166,42 +252,55 @@ try {
 
 	foreach($schema["tables"] as $tableName => $table) {
 		// test if the table exists
-		
+
 		if (!tableExists($pdo, $tableName)) {
 			// create the table
 //			$data["tables"][$tableName]["sql"] = createTable($pdo, $tableName, $table);
-			createTable($pdo, $tableName, $table);
+			if (!$dry) createTable($pdo, $tableName, $table);
 
-			$data["tables"][$tableName]["statuts"] = "created";
+			$data["tables"][$tableName]["status"] = "created";
 			$data["tables"][$tableName]["errorCode"] = $pdo->errorCode();
+
+			foreach($table["fields"] as $fieldName => $fieldStructure) {
+				// add auto increment
+				if (isset($fieldStructure["autoincrement"]) && $fieldStructure["autoincrement"]) {
+					if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "modify");
+				}
+			}
 		}
 		else {
-			$data["tables"][$tableName]["statuts"] = "exists";
+			$data["tables"][$tableName]["status"] = "exists";
+			
+			$actualConfiguration = getTableConfiguration($pdo, $database, $tableName);
+			$data["tables"][$tableName]["actualConfiguration"] = $actualConfiguration;
+			$comparison = compareFieldStructure($table, $actualConfiguration);
+			$data["tables"][$tableName]["compare"] = $comparison;
+
+			foreach($comparison["add"]  as $fieldName => $fieldStructure) {
+				if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "add");
+			}
+
+			foreach($comparison["modify"]  as $fieldName => $fieldStructure) {
+				if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "modify");
+			}
 		}
 
 		// add primary key
 		foreach($table["fields"] as $fieldName => $fieldStructure) {
 			$primary = array();
-			
+
 			if (isset($fieldStructure["primary"]) && $fieldStructure["primary"]) {
 				$primary[] = $fieldName;
 			}
-			
+
 			if (count($primary)) {
-				createIndex($pdo, $tableName, "PRIMARY", $primary);
+				if (!$dry) createIndex($pdo, $tableName, "PRIMARY", $primary);
 			}
 		}
 		
 		// add indexes
 		foreach($table["indexes"] as $indexName => $fields) {
-			createIndex($pdo, $tableName, "INDEX", $fields, $indexName);
-		}
-
-		foreach($table["fields"] as $fieldName => $fieldStructure) {
-			// add auto increment
-			if (isset($fieldStructure["autoincrement"]) && $fieldStructure["autoincrement"]) {
-				createAutoIncrement($pdo, $tableName, $fieldName, $fieldStructure);
-			}
+			if (!$dry) createIndex($pdo, $tableName, "INDEX", $fields, $indexName);
 		}
 	}
 

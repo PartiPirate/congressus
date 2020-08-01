@@ -59,7 +59,11 @@ $lang["administration_account"]             = "Administrator's login";
 $lang["administration_account_login"]       = "Login Administrator";
 $lang["administration_account_password"]    = "Password Administrator";
 
-$lang["administration_ping_database"]       = "Test";
+$lang["administration_ping_database"]   = "Test";
+$lang["administration_create_database"] = "Create";
+$lang["administration_test_database"]   = "Differ";
+$lang["administration_deploy_database"] = "Deploy";
+$lang["administration_test_database_title"] = "Required operations on the database";
 
 $lang["administration_alert_ok"]                        = "The configuration has been updated";
 $lang["administration_alert_ping_ok"]                   = "The database's configuration is good";

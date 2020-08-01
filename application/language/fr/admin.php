@@ -53,10 +53,14 @@ $lang["administration_mail_from_name"] = "Nom From";
 $lang["administration_account"] = "Identifiant de l'administrateur";
 $lang["administration_account_login"] = "Login Administrateur";
 $lang["administration_account_password"] = "Password Administrateur";
-$lang["administration_ping_memcached"] = "Tester";
-$lang["administration_ping_database"] = "Tester";
+$lang["administration_ping_memcached"]  = "Tester";
+
+$lang["administration_ping_database"]   = "Tester";
 $lang["administration_create_database"] = "Créer";
+$lang["administration_test_database"]   = "Différences";
 $lang["administration_deploy_database"] = "Déployer";
+$lang["administration_test_database_title"] = "Opérations nécessaires sur la base de données";
+
 $lang["administration_mail_test_adress"] = "Adresse où envoyer un mail de test : ";
 $lang["administration_mail_test"] = "Envoyer";
 $lang["administration_congressus_ballot_majorities"] = "Modalité de vote";

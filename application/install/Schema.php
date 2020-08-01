@@ -27,11 +27,11 @@ $schema["tables"]["agendas"]["fields"]["age_meeting_id"] = array("type" => "bigi
 $schema["tables"]["agendas"]["fields"]["age_parent_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["agendas"]["fields"]["age_order"] = array("type" => "bigint", "size" => 20, "null" => false, "default" => "1");
 $schema["tables"]["agendas"]["fields"]["age_active"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
-$schema["tables"]["agendas"]["fields"]["age_expected_duration"] = array("type" => "int", "size" => 11, "null" => false, "default" => "60", "comment" => "value in minutes");
-$schema["tables"]["agendas"]["fields"]["age_duration"] = array("type" => "int", "size" => 11, "null" => false, "default" => "0", "comment" => "value in minutes");
-$schema["tables"]["agendas"]["fields"]["age_label"] = array("type" => "varchar", "size" => 255, "null" => false, "default" => "");
+$schema["tables"]["agendas"]["fields"]["age_expected_duration"] = array("type" => "int", "size" => 11, "null" => true, "comment" => "value in minutes");
+$schema["tables"]["agendas"]["fields"]["age_duration"] = array("type" => "int", "size" => 11, "null" => true, "comment" => "value in minutes");
+$schema["tables"]["agendas"]["fields"]["age_label"] = array("type" => "varchar", "size" => 255, "null" => true);
 $schema["tables"]["agendas"]["fields"]["age_objects"] = array("type" => "text", "null" => true);
-$schema["tables"]["agendas"]["fields"]["age_description"] = array("type" => "text", "null" => false, "default" => "");
+$schema["tables"]["agendas"]["fields"]["age_description"] = array("type" => "text", "null" => true);
 $schema["tables"]["agendas"]["indexes"]["age_meeting_id"] = array("age_meeting_id");
 $schema["tables"]["agendas"]["indexes"]["age_parent_id"] = array("age_parent_id");
 $schema["tables"]["agendas"]["indexes"]["age_order"] = array("age_order");
@@ -57,7 +57,7 @@ $schema["tables"]["chats"]["indexes"]["cha_type"] = array("cha_type");
 $schema["tables"]["chats"]["indexes"]["cha_datetime"] = array("cha_datetime");
 
 $schema["tables"]["chat_advices"] = array("fields" => array(), "indexes" => array());
-$schema["tables"]["chat_advices"]["fields"]["cat_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["chat_advices"]["fields"]["cad_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["chat_advices"]["fields"]["cad_chat_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["chat_advices"]["fields"]["cad_user_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["chat_advices"]["fields"]["cad_advice"] = array("type" => "enum", "size" => "'thumb_up','thumb_down','thumb_middle'", "null" => true);
@@ -65,10 +65,11 @@ $schema["tables"]["chat_advices"]["indexes"]["cad_chat_id"] = array("cad_chat_id
 $schema["tables"]["chat_advices"]["indexes"]["cad_user_id"] = array("cad_user_id");
 
 $schema["tables"]["co_authors"] = array("fields" => array(), "indexes" => array());
-$schema["tables"]["co_authors"]["fields"]["con_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
-$schema["tables"]["co_authors"]["fields"]["cad_user_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["co_authors"]["fields"]["cau_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["co_authors"]["fields"]["cau_user_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["co_authors"]["fields"]["cau_object_type"] = array("type" => "enum", "size" => "'motion'", "null" => true);
 $schema["tables"]["co_authors"]["fields"]["cau_object_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["co_authors"]["fields"]["cau_status"] = array("type" => "enum", "size" => "'refused','asking','authoring'", "null" => false, "default" => "authoring");
 $schema["tables"]["co_authors"]["indexes"]["cau_user_id"] = array("cau_user_id");
 $schema["tables"]["co_authors"]["indexes"]["cau_object_type"] = array("cau_object_type");
 $schema["tables"]["co_authors"]["indexes"]["cau_object_id"] = array("cau_object_id");
@@ -146,8 +147,8 @@ $schema["tables"]["motions"]["fields"]["mot_deleted"] = array("type" => "tinyint
 $schema["tables"]["motions"]["fields"]["mot_status"] = array("type" => "enum", "size" => "'construction','voting','resolved'", "null" => false, "default" => "construction");
 $schema["tables"]["motions"]["fields"]["mot_deadline"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["motions"]["fields"]["mot_tag_ids"] = array("type" => "varchar", "size" => 2048, "null" => false, "default" => "[]");
-$schema["tables"]["motions"]["fields"]["mot_pinned"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0", "comment" => 'set to 1 to force the anymous mode during the vote');
-$schema["tables"]["motions"]["fields"]["mot_anonymous"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
+$schema["tables"]["motions"]["fields"]["mot_pinned"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
+$schema["tables"]["motions"]["fields"]["mot_anonymous"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0", "comment" => 'Set to 1 to force the anymous mode during the vote');
 $schema["tables"]["motions"]["fields"]["mot_type"] = array("type" => "enum", "size" => "'yes_no','a_b_c'", "null" => false, "default" => "yes_no");
 $schema["tables"]["motions"]["fields"]["mot_win_limit"] = array("type" => "int", "size" => 11, "null" => false, "default" => "50", "comment" => "The percent needed by a proposition to win");
 $schema["tables"]["motions"]["fields"]["mot_title"] = array("type" => "varchar", "size" => 255, "null" => true);
@@ -168,7 +169,7 @@ $schema["tables"]["motion_propositions"]["fields"]["mpr_motion_id"] = array("typ
 $schema["tables"]["motion_propositions"]["fields"]["mpr_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["motion_propositions"]["fields"]["mpr_winning"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motion_propositions"]["fields"]["mpr_neutral"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
-$schema["tables"]["motion_propositions"]["fields"]["mpr_explanation"] = array("type" => "text", "null" => true);
+$schema["tables"]["motion_propositions"]["fields"]["mpr_explanation"] = array("type" => "longtext", "null" => true);
 $schema["tables"]["motion_propositions"]["indexes"]["mpr_motion_id"] = array("age_meeting_id");
 
 $schema["tables"]["notices"] = array("fields" => array(), "indexes" => array());
@@ -222,10 +223,11 @@ $schema["tables"]["tasks"]["fields"]["tas_agenda_id"] = array("type" => "bigint"
 $schema["tables"]["tasks"]["fields"]["tas_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["tasks"]["fields"]["tas_label"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["tasks"]["fields"]["tas_status"] = array("type" => "varchar", "size" => 255, "null" => true);
-$schema["tables"]["tasks"]["fields"]["tas_target_type"] = array("type" => "enum", "size" => "'galette_adherents','galette_groups','dlp_themes','dlp_groups','con_external','all_members','cus_users'", "null" => false);
+$schema["tables"]["tasks"]["fields"]["tas_target_type"] = array("type" => "enum", "size" => "'galette_adherents','galette_groups','dlp_themes','dlp_groups','galette_adherent','con_external','all_members','cus_users'", "null" => false);
 $schema["tables"]["tasks"]["fields"]["tas_target_id"] = array("type" => "bigint", "size" => 20, "null" => false);
 $schema["tables"]["tasks"]["fields"]["tas_start_datetime"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["tasks"]["fields"]["tas_finish_datetime"] = array("type" => "datetime", "null" => true);
+$schema["tables"]["tasks"]["fields"]["tas_informations"] = array("type" => "text", "null" => true);
 $schema["tables"]["tasks"]["indexes"]["tas_agenda_id"] = array("tas_agenda_id");
 $schema["tables"]["tasks"]["indexes"]["tas_deleted"] = array("tas_deleted");
 $schema["tables"]["tasks"]["indexes"]["tas_target_type"] = array("tas_target_type");
@@ -263,7 +265,7 @@ $schema["tables"]["customizer_properties"]["indexes"]["cpr_customizer_id"] = arr
 $schema["tables"]["customizer_properties"]["indexes"]["cpr_key"] = array("cpr_key");
 
 $schema["tables"]["tags"] = array("fields" => array(), "indexes" => array());
-$schema["tables"]["tags"]["fields"]["tag_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
+$schema["tables"]["tags"]["fields"]["tag_id"] = array("type" => "bigint", "size" => 11, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["tags"]["fields"]["tag_server_id"] = array("type" => "bigint", "size" => 20, "null" => false, "default" => "0");
 $schema["tables"]["tags"]["fields"]["tag_deleted"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["tags"]["fields"]["tag_label"] = array("type" => "varchar", "size" => 255, "null" => true);

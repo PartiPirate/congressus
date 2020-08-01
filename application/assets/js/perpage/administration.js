@@ -165,7 +165,7 @@ $(function() {
 		$("#btn-test-database").prop("disabled", true);
 		$(".btn-deploy-database").prop("disabled", true);
 
-		$.post("administration_api.php?method=do_deployDatabase&dry=", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_deployDatabase&database_dry=", $("#administration-form").serialize(), function(data) {
 
 			if (data.ok) {
 //				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);

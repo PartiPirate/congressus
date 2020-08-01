@@ -60,6 +60,11 @@ function getTableConfiguration($pdo, $database, $table) {
 			$column["size"] = substr($column["size"], 1, strlen($column["size"]) - 2);
 		}
 
+		if (isset($column["default"]) && $column["default"] && $column["default"][0] == "'") {
+			$column["default"] = substr($column["default"], 1, strlen($column["default"]) - 2);
+			$column["default"] = str_replace("''", "'", $column["default"]);
+		}
+
 		$columns[$line["COLUMN_NAME"]] = $column;
 	}
 	
@@ -88,7 +93,7 @@ function compareFieldStructure($plannedStructure, $actualStructure) {
 
 			if ($actualStructure[$fieldName][$key] != $value) {
 				if (!isset($results["modify"][$fieldName])) $results["modify"][$fieldName] = $fieldStructure;
-				$results["modify"][$fieldName]["attributes"][] = $key;
+				$results["modify"][$fieldName]["attributes"][] = $key . " " . $actualStructure[$fieldName][$key] . " vs " . $value;
 				continue;
 			}
 		}
@@ -119,7 +124,7 @@ function createTable($pdo, $table, $structure) {
 		$query .= $fieldStructure["type"];
 
 		if (isset($fieldStructure["size"])) {
-			$query .= " (" . $fieldStructure["size"] . ")";
+			$query .= "(" . $fieldStructure["size"] . ")";
 		}
 
 		if ($fieldStructure["null"]) {
@@ -190,11 +195,15 @@ function alterColumn($pdo, $table, $field, $fieldStructure, $action) {
 
 	$query = "ALTER TABLE `$table`\n\t" . $action . " ";
 	
-	$query .= "`$field` "; 
+	$query .= "`$field` ";
+	
+	if ($action != "ADD") {
+		$query .= "`$field` "; 
+	}
 	$query .= $fieldStructure["type"]; 
 
 	if (isset($fieldStructure["size"])) {
-		$query .= " (" . $fieldStructure["size"] . ")";
+		$query .= "(" . $fieldStructure["size"] . ")";
 	}
 
 	if ($fieldStructure["null"]) {
@@ -208,8 +217,9 @@ function alterColumn($pdo, $table, $field, $fieldStructure, $action) {
 		$query .= " DEFAULT '" . $fieldStructure["default"] . "'";
 	}
 
-	$query .= " AUTO_INCREMENT";
-
+	if (isset($fieldStructure["autoincrement"]) && $fieldStructure["autoincrement"]) {
+		$query .= " AUTO_INCREMENT";
+	}
 
 	if (isset($fieldStructure["comment"])) {
 		$query .= " COMMENT '" . $fieldStructure["comment"] . "'";
@@ -219,7 +229,9 @@ function alterColumn($pdo, $table, $field, $fieldStructure, $action) {
 
 	$statement = $pdo->prepare($query);
 	$statement->execute();
-	
+
+//	echo $query . "\n";
+
 	return $query;
 }
 
@@ -234,7 +246,9 @@ $password = $arguments["database_password_input"];
 $database = $arguments["database_database_input"];
 
 $dry = isset($_REQUEST["database_dry"]);
-$dry = true;
+
+//$dry = true;
+//echo "Dry : $dry\n";
 
 $dns = 'mysql:host='.$host.';dbname=' . $database;
 if (isset($config["database"]["port"])) {
@@ -264,7 +278,7 @@ try {
 			foreach($table["fields"] as $fieldName => $fieldStructure) {
 				// add auto increment
 				if (isset($fieldStructure["autoincrement"]) && $fieldStructure["autoincrement"]) {
-					if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "modify");
+					if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "change");
 				}
 			}
 		}
@@ -281,7 +295,7 @@ try {
 			}
 
 			foreach($comparison["modify"]  as $fieldName => $fieldStructure) {
-				if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "modify");
+				if (!$dry) alterColumn($pdo, $tableName, $fieldName, $fieldStructure, "change");
 			}
 		}
 

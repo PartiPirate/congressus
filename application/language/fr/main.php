@@ -482,6 +482,8 @@ $lang["source_icon_pdf"] = '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>'
 
 $lang["amendment_delete_co_author"]     = "Supprime ce co-auteur";
 $lang["amendment_exchange_co_author"]   = "Échange ce co-auteur avec l'auteur principal de cet amendement";
+$lang["amendment_ask_authoring"]        = "Demander à devenir co-auteur";
+$lang["amendment_waiting_authoring"]    = "Demande en attente";
 $lang["amendment_accept_co_author"]     = "Accepte ce co-auteur";
 $lang["amendment_refuse_co_author"]     = "Refuse ce co-auteur";
 

@@ -469,6 +469,8 @@ $lang["authorship_co_authors"]      = "Co-authors";
 
 $lang["amendment_delete_co_author"]     = "Delete co-author";
 $lang["amendment_exchange_co_author"]   = "Exchange this co-author with the principal author of this amendment";
+$lang["amendment_ask_authoring"]        = "Ask co-authoring";
+$lang["amendment_waiting_authoring"]    = "Pending request";
 $lang["amendment_accept_co_author"]     = "Accept co-author";
 $lang["amendment_refuse_co_author"]     = "Refuse co-author";
 

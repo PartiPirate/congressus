@@ -409,7 +409,7 @@ include("construction/pieChart.php");
 							<span data-author-id="<?php echo $author["id_adh"]; ?>" class="motion-author"><?php echo GaletteBo::showIdentity($author); ?></span>
 						<?php 	}	
 
-								if (count($coAuthors) && $author) echo " - "; 
+								ob_start();
 
 								$separator = "";
 								$requestStatus = "none";
@@ -429,21 +429,28 @@ include("construction/pieChart.php");
 										<button style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px;" 
 											type="button" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" class="btn btn-xs btn-default accept-co-author-btn" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_accept_co_author"); ?>"><i class="fa fa-check" aria-hidden="true"></i></button>
 						<?php		}
-
 									$separator = ", ";
 								}
 
-								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn">Demander l'authoring <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+								$content = ob_get_contents();
+								ob_end_clean();
+								
+								if ($content && $author) echo " - "; 
+								if ($content) echo $content;
+
+								if ($userId && !$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn"><?=lang("amendment_ask_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
 						<?php	}
 								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "pending") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled">Demande en attente <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
-						<?php	} ?>
-						
-						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled"><?=lang("amendment_waiting_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+						<?php	} 
+								if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 									<button id="show-motion-co-authors-btn" type="button" class="btn btn-default btn-xs" title="<?php echo lang("construction_motion_coauthors"); ?>" 
 										style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px; display: none;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 						<?php	} ?>
+						
+						
+						
 
 					</div>
 					<div class="counters" style="font-size: smaller;">

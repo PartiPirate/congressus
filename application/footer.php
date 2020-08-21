@@ -73,7 +73,7 @@
 
 <!-- JS pad -->
 <script>
-var PAD_WS = <?php echo json_encode($config["server"]["pad"]["ws_url"]); ?>;
+var PAD_WS = <?=json_encode(isset($config["server"]["pad"]["ws_url"]) ? $config["server"]["pad"]["ws_url"] : "")?>;
 var disconnectedAlertId = null;
 
 const alert_disconnected = <?=json_encode(lang("alert_disconnected"))?>;
@@ -139,6 +139,14 @@ if (is_file("assets/js/perpage/" . $page . ".js")) {
 	echo "<script src=\"assets/js/perpage/" . $page . ".js?r=".filemtime("assets/js/perpage/" . $page . ".js")."\"></script>\n";
 }
 ?>
+
+<script>
+$(function() {
+    const spacing = '10px'; 
+    const styles = `padding: ${spacing}; background-color: #222222; color: #8814CC; font-weight: bold; border: 1px solid #222222; font-size: 2em;`; 
+    console.log(<?=json_encode(lang("console_congressus_welcome"))?>, styles);
+});
+</script>
 
 <!--
 <style>

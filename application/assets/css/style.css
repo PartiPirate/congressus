@@ -763,3 +763,12 @@ ul.givers-list {
 .motion-entry table {
     border: 1px solid #ddd;
 }
+
+.toggle-group > label {
+	line-height: 18px;
+}
+
+div.toggle {
+    position: relative;
+    top: -3px;
+}

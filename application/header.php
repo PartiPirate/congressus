@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2019 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -16,7 +16,9 @@
     You should have received a copy of the GNU General Public License
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

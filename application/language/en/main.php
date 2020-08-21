@@ -638,4 +638,5 @@ $lang["install_autodestruct"] = "Autodestruction";
 
 $lang["about_footer"] = "About";
 $lang["congressus_footer"] = "<a href=\"https://github.com/PartiPirate/congressus\" target=\"_blank\">Congressus</a> is an application provided by <a href=\"https://www.partipirate.org\" target=\"_blank\">Parti Pirate</a>";
+$lang["console_congressus_welcome"] = "%cWelcome on Congressus console - If you know what you are doing, stay. Otherwise, click the F12 key.";
 ?>

@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -28,6 +28,7 @@ $lang["administration_server_line_prod"]            = "Production";
 $lang["administration_server_timezone"]             = "Timezone";
 $lang["administration_server_timezone_none"]        = "None";
 $lang["administration_server_timezone_europeparis"] = "Europe/Paris";
+$lang["administration_server_salt"]                 = "Salt";
 
 $lang["administration_database"]            = "Database settings";
 $lang["administration_database_host"]       = "Database host";
@@ -37,10 +38,17 @@ $lang["administration_database_login"]      = "Login Database";
 $lang["administration_database_password"]   = "Password Database";
 $lang["administration_database_galette"]    = "Galette Database";
 $lang["administration_database_personae"]   = "Personae Database";
+$lang["administration_database_dialect"]    = "Dialect";
+$lang["administration_ping_database"]       = "Test";
+$lang["administration_create_database"]     = "Create";
+$lang["administration_test_database"]       = "Differ";
+$lang["administration_deploy_database"]     = "Deploy";
+$lang["administration_test_database_title"] = "Required operations on the database";
 
 $lang["administration_memcached"]       = "Memcached settings";
 $lang["administration_memcached_host"]  = "Memcached host";
 $lang["administration_memcached_port"]  = "Memcached port";
+$lang["administration_ping_memcached"]  = "Test";
 
 $lang["administration_mail"]                    = "Mail settings";
 $lang["administration_mail_host"]               = "SMTP Host";
@@ -59,18 +67,23 @@ $lang["administration_account"]             = "Administrator's login";
 $lang["administration_account_login"]       = "Login Administrator";
 $lang["administration_account_password"]    = "Password Administrator";
 
-$lang["administration_ping_database"]   = "Test";
-$lang["administration_create_database"] = "Create";
-$lang["administration_test_database"]   = "Differ";
-$lang["administration_deploy_database"] = "Deploy";
-$lang["administration_test_database_title"] = "Required operations on the database";
+$lang["administration_mail_test_adress"]    = "Email address to send a test email : ";
+$lang["administration_mail_test"]           = "Send";
 
 $lang["administration_alert_ok"]                        = "The configuration has been updated";
-$lang["administration_alert_ping_ok"]                   = "The database's configuration is good";
+$lang["administration_alert_memcached_ok"]              = "The memcached configuration is good";
+$lang["administration_alert_memcached_no_host"]         = "Unknown host";
+$lang["administration_alert_ping_ok"]                   = "The database configuration is good";
 $lang["administration_alert_ping_no_host"]              = "Unknown host";
 $lang["administration_alert_ping_bad_credentials"]      = "Bad credentials";
 $lang["administration_alert_ping_no_database"]          = "Unknown database";
-$lang["administration_congressus_ballot_majorities"]    = "Modalité de vote";
+$lang["administration_alert_create_ok"]                 = "Création de la base de données effectuée avec succès";
+$lang["administration_alert_deploy_ok"]                 = "Déploiement de la base de données effectuée avec succès";
+$lang["administration_alert_mail_ok"]                   = "La configuration mail est bonne";
+$lang["administration_alert_mail_bad_credentials"]      = "Mauvais compte";
+$lang["administration_alert_mail_no_host"]              = "No host configuration";
+$lang["administration_congressus_ballot_majorities"]    = "Voting methods";
+$lang["administration_congressus_ballot_majority_judgment"] = "Majority judgement";
 
 $lang["administration_discourse"]           = "Discourse";
 $lang["administration_discourse_api_key"]   = "API Key";
@@ -87,16 +100,20 @@ $lang["administration_mediawiki_password"]      = "Password";
 $lang["administration_mediawiki_base"]          = "MediaWiki base URL";
 $lang["administration_mediawiki_categories"]    = "Catégories connues";
 
-$lang["administration_modules"] = "User modules";
-$lang["administration_modules_authenticator"] = "Authentication";
-$lang["administration_modules_authenticator_internal"] = "Internal";
-$lang["administration_modules_authenticator_galette"] = "Galette";
-$lang["administration_modules_authenticator_custom"] = "Custom";
-$lang["administration_modules_groups"] = "Groupe sources";
-$lang["administration_modules_groups_personaegroups"] = "Personae Groups";
-$lang["administration_modules_groups_personaethemes"] = "Personae Themes";
-$lang["administration_modules_groups_galettegroups"]  = "Galette Groups";
+$lang["administration_modules"]                         = "User modules";
+$lang["administration_modules_authenticator"]           = "Authentication";
+$lang["administration_modules_authenticator_internal"]  = "Internal";
+$lang["administration_modules_authenticator_galette"]   = "Galette";
+$lang["administration_modules_authenticator_custom"]    = "Custom";
+$lang["administration_modules_usersource"]              = "User source";
+$lang["administration_modules_usersource_internal"]     = "Internal";
+$lang["administration_modules_usersource_galette"]      = "Galette";
+$lang["administration_modules_usersource_custom"]       = "Custom";
+$lang["administration_modules_groups"]                  = "Groupe sources";
+$lang["administration_modules_groups_personaegroups"]   = "Personae Groups";
+$lang["administration_modules_groups_personaethemes"]   = "Personae Themes";
+$lang["administration_modules_groups_galettegroups"]    = "Galette Groups";
 $lang["administration_modules_groups_galetteallmembers"] = "All Galette members";
-$lang["administration_modules_groups_customgroups"] = "Custom Group";
+$lang["administration_modules_groups_customgroups"]     = "Custom Group";
 
 ?>

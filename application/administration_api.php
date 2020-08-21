@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -22,6 +22,8 @@ error_reporting(E_ALL);
 
 session_start();
 
+require_once("language/language.php");
+
 $method = $_GET["method"];
 
 //error_log("Administration API Method : $method");
@@ -42,7 +44,6 @@ if (!$_SESSION["administrator"]) {
 	echo json_encode(array("error" => "not_enough_rights"));
 	exit();
 }
-
 
 $arguments = $_POST;
 $api = true;

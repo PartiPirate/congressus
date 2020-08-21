@@ -36,12 +36,19 @@ function discourseApi($url, $api_key, $protocol) {
 $categories_all = array();
 
 try {
-    if ($config["discourse"]["exportable"]) {
+    if (isset($config["discourse"]["exportable"]) && $config["discourse"]["exportable"]) {
         $discourseApi = discourseApi($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
-    
+
+/*    
+        print_r($discourseApi);
+        print_r($discourseApi->getSite());
+*/
+
         $categories = $discourseApi->getSite()->apiresult->categories;
     
         foreach ($categories as $category) {
+//            echo $category->id . " " . $category->name . "<br>";
+            
             if (isset($category->parent_category_id)){
                 $categories_all[$category->parent_category_id]['subcategory'][$category->id]['id'] = $category->id;
                 $categories_all[$category->parent_category_id]['subcategory'][$category->id]['slug'] = $category->slug;
@@ -71,6 +78,8 @@ try {
                 }
             }
         }
+        
+//        print_r($categories_all);
     }
 }
 catch (Exception $e) {

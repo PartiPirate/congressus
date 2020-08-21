@@ -175,16 +175,29 @@ include("construction/pieChart.php");
 							</div>
 						</div>
 						<div style="font-size: smaller;">
-							<?php 	if ($author) { ?>
-								<?php echo GaletteBo::showIdentity($author); ?>
-							<?php 	}	?>
-							<?php	if (count($amendmentCoAuthors) && $author) echo " - "; ?>
-							<?php	$separator = "";
+							<?php 	if ($author) { 
+										echo GaletteBo::showIdentity($author);
+								 	}	?>
+
+							<?php	
+
+									ob_start();							
+							
+									$separator = "";
 									foreach($amendmentCoAuthors as $coAuthor) { 
+										if (isset($coAuthor["cau_status"]) && $coAuthor["cau_status"] != "authoring") continue;
+
 										echo $separator;
 										echo GaletteBo::showIdentity($coAuthor);
 										$separator = ", ";
 									}
+									
+									$content = ob_get_contents();
+									ob_end_clean();
+
+									if ($content && $author) echo " - "; 
+									if ($content) echo $content;
+
 							?>
 						</div>
 						<div style="font-size: smaller;">

@@ -177,9 +177,7 @@ include("construction/pieChart.php");
 						<div style="font-size: smaller;">
 							<?php 	if ($author) { 
 										echo GaletteBo::showIdentity($author);
-								 	}	?>
-
-							<?php	
+								 	}
 
 									ob_start();							
 							
@@ -191,7 +189,7 @@ include("construction/pieChart.php");
 										echo GaletteBo::showIdentity($coAuthor);
 										$separator = ", ";
 									}
-									
+
 									$content = ob_get_contents();
 									ob_end_clean();
 

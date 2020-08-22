@@ -40,12 +40,20 @@ include_once("config/discourse.structure.php");
 
 $directoryHandler = dir("config/configurators/");
 
+$entries = array();
 while(($fileEntry = $directoryHandler->read()) !== false) {
 	if($fileEntry != '.' && $fileEntry != '..' && strpos($fileEntry, ".php")) {
-		require_once("config/configurators/" . $fileEntry);
+		$entries[] = $fileEntry;
+//		require_once("config/configurators/" . $fileEntry);
 	}
 }
 $directoryHandler->close();
+
+asort($entries);
+
+foreach($entries as $fileEntry) {
+	require_once("config/configurators/" . $fileEntry);
+}
 
 //print_r($configurators);
 
@@ -146,26 +154,35 @@ function getConfigValue($config, $path) {
 					</div>
 
 <?php				}
-					else  if ($field["type"] == "checkboxes") { ?>
+					else  if ($field["type"] == "checkboxes" || $field["type"] == "tree") { ?>
 					<div class="col-md-<?=(isset($field["width"]) ? $field["width"] : 4)?>">
-<?php					foreach($field["values"] as $index => $value)	{ ?>
-						<label for="<?=str_replace("[]", "_" . $index, $field["id"])?>" class="checkbox-inline">
-							<input id="<?=str_replace("[]", "_" . $index, $field["id"])?>" name="<?=$field["id"]?>" 
+<?php					$checkboxIndex = -1;
+						foreach($field["values"] as $index => $value)	{ 
+							$checkboxIndex++;
+?>
+						<label for="<?=str_replace("[]", "_" . $checkboxIndex, $field["id"])?>" class="checkbox-inline">
+							<input id="<?=str_replace("[]", "_" . $checkboxIndex, $field["id"])?>" name="<?=$field["id"]?>" 
 								<?=(in_array($value["value"], getConfigValue($config, $field["path"]))) ?  "checked='checked'" : ""?>
 								type="checkbox" value="<?=$value["value"]?>">
 							<?=isLanguageKey($value["label"]) ? lang($value["label"]) : $value["label"]?>
 						</label>
 
-<?php						if (isset($value["values"])) {
-								foreach($value["values"] as $index => $ivalue)	{ ?>
-						<label for="<?=str_replace("[]", "_" . $index, $field["id"])?>" class="checkbox-inline">
-							<input id="<?=str_replace("[]", "_" . $index, $field["id"])?>" name="<?=$field["id"]?>" 
-								<?=(in_array($ivalue["value"], getConfigValue($config, $field["path"]))) ?  "checked='checked'" : ""?>
-								type="checkbox" value="<?=$ivalue["value"]?>">
-							<?=isLanguageKey($ivalue["label"]) ? lang($ivalue["label"]) : $ivalue["label"]?>
-						</label>
-<?php 							}
-							}?>
+<?php						if (isset($value["values"]) || $field["type"] == "tree") {
+
+?>						<div id="sub_checkboxes_<?=$checkboxIndex?>" class="sub_checkboxes"> <?php
+
+								foreach($value["values"] as $index => $ivalue)	{ 
+									$checkboxIndex++;
+?>
+							<label for="<?=str_replace("[]", "_" . $checkboxIndex, $field["id"])?>" class="checkbox-inline">
+								<input id="<?=str_replace("[]", "_" . $checkboxIndex, $field["id"])?>" name="<?=$field["id"]?>" 
+									<?=(in_array($ivalue["value"], getConfigValue($config, $field["path"]))) ?  "checked='checked'" : ""?>
+									type="checkbox" value="<?=$ivalue["value"]?>">
+								<?=isLanguageKey($ivalue["label"]) ? lang($ivalue["label"]) : $ivalue["label"]?>
+							</label>
+<?php 							} ?>
+						</div>
+<?php						}?>
 <?php 					} ?>
 					</div>
 <?php				}

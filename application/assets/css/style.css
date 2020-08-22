@@ -772,3 +772,7 @@ div.toggle {
     position: relative;
     top: -3px;
 }
+
+.sub_checkboxes {
+    padding-left: 50px;
+}

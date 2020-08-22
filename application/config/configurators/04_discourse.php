@@ -46,18 +46,16 @@ $panel["fields"][] = $field;
 
 $panel["fields"][] = array("type" => "separator");
 
-$field = array("label" => "administration_discourse_allowed_categories", "width" => 10, "type" => "checkboxes", "id" => "allowed_categories_input[]", "path" => "discourse/allowed_categories", "position" => "", "values" => array());
+$field = array("label" => "administration_discourse_allowed_categories", "width" => 10, "type" => "tree", "id" => "allowed_categories_input[]", "path" => "discourse/allowed_categories", "position" => "", "values" => array());
 
 require_once("config/discourse.structure.php");
 
 foreach ($categories_all as $category) {
-    $value = array("value" => $category['id'], "label" => $category['name']);
+    $value = array("value" => $category['id'], "label" => $category['name'], "values" => array());
 
 //    print_r(array("value" => $category['id'], "label" => $category['name']));
 
 	if (isset($category['subcategory'])) {
-	    $value["values"] = array();
-
         foreach ($category['subcategory'] as $subcategoy) {
             $value["values"][] = array("value" => $subcategoy['id'], "label" => $subcategoy['name']);
         }

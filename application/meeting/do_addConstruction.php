@@ -24,9 +24,11 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/SourceBo.php");
+require_once("engine/bo/UserBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/EventStackUtils.php");
 
@@ -42,10 +44,11 @@ $memcache = openMemcacheConnection();
 
 $connection = openConnection();
 
-$agendaBo = AgendaBo::newInstance($connection, $config);
+$agendaBo  = AgendaBo::newInstance($connection, $config);
 $meetingBo = MeetingBo::newInstance($connection, $config);
-$motionBo = MotionBo::newInstance($connection, $config);
-$sourceBo = SourceBo::newInstance($connection, $config);
+$motionBo  = MotionBo::newInstance($connection, $config);
+$sourceBo  = SourceBo::newInstance($connection, $config);
+$userBo    = UserBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["meetingId"];
 
@@ -120,7 +123,6 @@ $agenda["age_objects"] = json_encode($agenda["age_objects"]);
 $agendaBo->save($agenda);
 
 $data["ok"] = "ok";
-$data["motion"] = $motion;
 
 if ($gamifierClient) {
     $events = array();
@@ -146,6 +148,100 @@ $motionBo->saveProposition($proposition);
 
 $memcacheKey = "do_getAgendaPoint_$pointId";
 $memcache->delete($memcacheKey);
+
+if ($meeting["mee_chat_plugin"] == "discourse") {
+    $configuration = json_decode($meeting["mee_chat_configuration"], true);
+
+    if (isset($configuration["category"]) && $configuration["category"]) { // we add a new topic
+
+/***** UPGRADE THIS PART ******/
+
+include_once("config/discourse.config.php");
+require_once("engine/discourse/DiscourseAPI.php");
+
+$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+
+$author = null;
+if ($motion["mot_author_id"]) {
+	$author = $userBo->getById($motion["mot_author_id"]);
+}
+
+$now = getNow();
+$month = $now->format("Y-m");
+
+$discourse_category = $configuration["category"];
+$discourse_title = "Débats $month : " . $motion["mot_title"]; // TODO Upgrade this
+
+$discourse_content = "";
+$discourse_content .= "# Exposé des motifs\n\n";
+$discourse_content .= $motion["mot_explanation"];
+$discourse_content .= "\n\n# Contenu de la proposition\n\n";
+$discourse_content .= $motion["mot_description"];
+
+$discourse_content .= "\n\n---\n\n";
+$discourse_content .= "Lien vers Congressus : ".$config["server"]["base"]."construction_motion.php?motionId=" . $motion["mot_id"] . "
+
+Rapporteur : @" . GaletteBo::showIdentity($author);  // TODO Upgrade that
+
+$new_topic = $discourseApi->createTopic($discourse_title, "Initial post will be updated" , $discourse_category, $config["discourse"]["user"], 0);
+$postId = $new_topic->apiresult->id;
+
+//$discourse_content = str_replace("%", "&percnt;", $discourse_content);
+
+$updateTopic = $discourseApi->updatePost($discourse_content, $postId, $config["discourse"]["user"]);
+$content = $discourse_content;
+
+$data["update_retry"] = 0;
+
+//while($updateTopic->http_code == 400 && $data["update_retry"] < 10) {
+
+if ($updateTopic->http_code == 400) {
+	set_time_limit(10);
+	sleep(2);
+	$data["update_retry"]++;
+	
+	$discourse_content = str_replace("%", "POURCENT", $discourse_content);
+
+	$updateTopic = $discourseApi->updatePost($discourse_content, $postId, $config["discourse"]["user"]);
+}
+
+$cutPosition = -1;
+
+while($updateTopic->http_code == 400) {
+	set_time_limit(10);
+	sleep(2);
+	$data["update_retry"]++;
+	
+	$cutPosition = strrpos($content, "\n");
+	
+	$content = substr($content, 0, $cutPosition);
+	$updateTopic = $discourseApi->updatePost($content . "\n\n---\n\nUn problème est survenu", $postId, $config["discourse"]["user"]);
+}
+
+$topicId = isset($new_topic->apiresult->topic_id) ? $new_topic->apiresult->topic_id : 0;
+
+// We try to put what missed in the first call
+if ($cutPosition !== -1) {
+	$content = substr($discourse_content, $cutPosition + 1);
+	$data["missing"] = $content;
+	$discourseApi->createPost($content, $topicId, $config["discourse"]["user"]);
+}
+
+/***** UPGRADE THIS PART ******/
+
+
+$motion["mot_external_chat_id"] = $topicId;
+$motionBo->save($motion);
+
+
+
+
+
+    }
+}
+
+$data["motion"] = $motion;
+
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

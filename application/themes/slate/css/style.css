@@ -195,3 +195,26 @@ select {
 .motion-entry table {
     border: 1px solid rgba(0,0,0,0.6);
 }
+
+aside.quote .title {
+    border-left: 5px solid #7a8288;
+    background-color: #2e3338;
+    color: #7a8288;
+}
+
+aside.quote blockquote {
+    border-left: 5px solid #7a8288;
+	background-color: #2e3338;
+}
+
+.cooked table tr {
+    border-bottom: 1px solid #111;
+}
+
+.cooked p {
+    margin: 10px 0 10px;
+}
+
+.cooked>*:first-child {
+    margin-top: 0;
+}

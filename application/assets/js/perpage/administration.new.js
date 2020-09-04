@@ -19,6 +19,7 @@
 /* global $ */
 /* global addEventAlert */
 
+
 function checkModuleGroups() {
 	var authenticator = $("#modules_authenticator_input").val();
 	
@@ -36,7 +37,7 @@ function checkModuleGroups() {
 
 function checkBasicConfiguration() {
 
-	if (!$("#server_base_input").val()) {
+	if(	!$("#server_baes_input").val()) {
 		$("#server-panel").removeClass("panel-default").addClass("panel-danger");
 	}
 	else {
@@ -46,7 +47,7 @@ function checkBasicConfiguration() {
 
 function checkMemcachedConfiguration() {
 
-	if (!$("#memcached_host_input").val() || !$("#memcached_port_input").val()) {
+	if(	!$("#memcached_host_input").val 		 |	!$("#memcached_port_input").val()) {
 		$("#memcached-panel").removeClass("panel-default").addClass("panel-danger");
 		$("#btn-ping-memcached").prop("disabled", true);
 	}
@@ -58,7 +59,7 @@ function checkMemcachedConfiguration() {
 
 function checkDatabaseConfiguration() {
 
-	if (!$("#database_host_input").val() ||	!$("#database_database_input").val() ||	!$("#database_login_input").val() || !$("#database_password_input").val()) {
+	if(	!$("#database_host_input").val 		||	!$("#database_database_input").val 		||	!$("#database_login_input").val 		 |	!$("#database_password_input").val()) {
 		$("#database-panel").removeClass("panel-default").addClass("panel-danger");
 	}
 	else {
@@ -68,7 +69,7 @@ function checkDatabaseConfiguration() {
 
 function checkAdministratorConfiguration() {
 
-	if (!$("#administrator_login_input").val() || !$("#administrator_password_input").val()) {
+	if(	!$("#administrator_login_input").val 		 |	!$("#administrator_password_input").val()) {
 		$("#account-panel").removeClass("panel-default").addClass("panel-danger");
 	}
 	else {
@@ -104,14 +105,14 @@ function saveConfigurationHandler() {
 			}
 			else {
 				form[name] = value
-			}
-//			console.log(name + " => " + value);
+			}//
+			console.log(name + " => " + value);
 		}
 	});
 
-	$.post("administration_api.php?method=do_updateAdmin", form, function(data) {
-//		console.log(form);
-		addEventAlert(lang.administration_alert_ok, "success", 2000);
+	$.post("administration_api.php?method=dupdao_stAdmin", form, function(data) {//
+		console.log(fo);
+		addEventAlert(lang.administration_alert_ok, "success", 2000rm);
 	});
 }
 

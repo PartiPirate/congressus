@@ -42,6 +42,7 @@ class DiscourseAPI
         $paramArray['api_key'] = $this->_apiKey;
         $paramArray['api_username'] = $apiUser;
         $paramArray['show_emails'] = 'true';
+
         $ch = curl_init();
         $url = sprintf(
             '%s://%s%s?%s',
@@ -50,10 +51,14 @@ class DiscourseAPI
             $reqString,
             http_build_query($paramArray)
         );
+        
+//        echo $url;
+//        echo "\n<br>\n";
+        
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $HTTPMETHOD );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $body = curl_exec($ch);
         $rc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -61,11 +66,14 @@ class DiscourseAPI
         $resObj->http_code = $rc;
 	// Only return valid json
         $json = json_decode($body);
-	if (json_last_error() == JSON_ERROR_NONE) {
-        	$resObj->apiresult = $json;
-	} else {
-		$resObj->apiresult = $body;
-	}
+
+    	if (json_last_error() == JSON_ERROR_NONE) {
+            	$resObj->apiresult = $json;
+    	} 
+    	else {
+    		$resObj->apiresult = $body;
+    	}
+
         return $resObj;
     }
 
@@ -323,7 +331,10 @@ class DiscourseAPI
 
     function getUsernameByEmail($email)
     {
-        $users = $this->_getRequest("/admin/users/list/active.json?filter=".urlencode($email));
+        $users = $this->_getRequest("/admin/users/list/active.json", array("filter" => $email));
+        
+//        print_r($users);
+        
         foreach($users->apiresult as $user) {
             if($user->email === $email) {
                 return $user->username;

@@ -120,6 +120,8 @@ $schema["tables"]["meetings"]["fields"]["mee_datetime"] = array("type" => "datet
 $schema["tables"]["meetings"]["fields"]["mee_expected_duration"] = array("type" => "int", "size" => 11, "null" => false, "default" => "60", "comment" => 'value in minutes');
 $schema["tables"]["meetings"]["fields"]["mee_start_time"] = array("type" => "datetime", "null" => true);
 $schema["tables"]["meetings"]["fields"]["mee_finish_time"] = array("type" => "datetime", "null" => true);
+$schema["tables"]["meetings"]["fields"]["mee_chat_plugin"] = array("type" => "enum", "size" => "'internal','discourse'", "null" => false, "default" => "internal");
+$schema["tables"]["meetings"]["fields"]["mee_chat_configuration"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["meetings"]["indexes"]["mee_meeting_type_id"] = array("mee_meeting_type_id");
 $schema["tables"]["meetings"]["indexes"]["mee_deleted"] = array("mee_deleted");
 $schema["tables"]["meetings"]["indexes"]["mee_president_member_id"] = array("mee_president_member_id");
@@ -156,6 +158,7 @@ $schema["tables"]["motions"]["fields"]["mot_description"] = array("type" => "tex
 $schema["tables"]["motions"]["fields"]["mot_explanation"] = array("type" => "text", "null" => true);
 $schema["tables"]["motions"]["fields"]["mot_trashed"] = array("type" => "tinyint", "size" => 4, "null" => false, "default" => "0");
 $schema["tables"]["motions"]["fields"]["mot_trash_explanation"] = array("type" => "text", "null" => true);
+$schema["tables"]["motions"]["fields"]["mot_external_chat_id"] = array("type" => "varchar", "size" => 128, "null" => true);
 $schema["tables"]["motions"]["indexes"]["mot_author_id"] = array("mot_author_id");
 $schema["tables"]["motions"]["indexes"]["mot_deleted"] = array("mot_deleted");
 $schema["tables"]["motions"]["indexes"]["mot_agenda_id"] = array("mot_agenda_id");

@@ -409,7 +409,7 @@ include("construction/pieChart.php");
 							<span data-author-id="<?php echo $author["id_adh"]; ?>" class="motion-author"><?php echo GaletteBo::showIdentity($author); ?></span>
 						<?php 	}	
 
-								ob_start();
+								if (count($coAuthors) && $author) echo " - "; 
 
 								$separator = "";
 								$requestStatus = "none";
@@ -429,28 +429,21 @@ include("construction/pieChart.php");
 										<button style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px;" 
 											type="button" data-co-author-id="<?php echo $coAuthor["cau_id"]; ?>" class="btn btn-xs btn-default accept-co-author-btn" data-toggle="tooltip" data-placement="top" title="<?php echo lang("amendment_accept_co_author"); ?>"><i class="fa fa-check" aria-hidden="true"></i></button>
 						<?php		}
+
 									$separator = ", ";
 								}
 
-								$content = ob_get_contents();
-								ob_end_clean();
-								
-								if ($content && $author) echo " - "; 
-								if ($content) echo $content;
-
-								if ($userId && !$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn"><?=lang("amendment_ask_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn">Demander l'authoring <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
 						<?php	}
 								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "pending") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled"><?=lang("amendment_waiting_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
-						<?php	} 
-								if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled">Demande en attente <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+						<?php	} ?>
+						
+						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>
 									<button id="show-motion-co-authors-btn" type="button" class="btn btn-default btn-xs" title="<?php echo lang("construction_motion_coauthors"); ?>" 
 										style="position: relative; top: -4px; margin-top: -6px; margin-bottom: -6px; display: none;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 						<?php	} ?>
-						
-						
-						
 
 					</div>
 					<div class="counters" style="font-size: smaller;">
@@ -689,6 +682,115 @@ include("construction/pieChart.php");
 		<!-- Tab panes -->
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="arguments" style="padding-top: 15px;">
+
+<?php		if (isset($motion["mot_external_chat_id"]) && $motion["mot_external_chat_id"]) { 
+
+				include_once("config/discourse.config.php");
+				require_once("engine/discourse/DiscourseAPI.php");
+
+				$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+				$topic = $discourseApi->getTopic($motion["mot_external_chat_id"]);
+				
+				$numberOfArguments = 0;
+
+				$closed = $topic->apiresult->closed;
+
+				foreach($topic->apiresult->post_stream->posts as $chat) {
+					if (!$chat->cooked) continue; // technical post
+					
+					$numberOfArguments++;
+				}				
+?>
+				<div class="col-md-12 discourse-chats">
+					<div class="panel panel-default">
+						<div class="panel-heading"><p class="text-info discourse-counter">
+							<select class="pull-right select-order order-chats form-control" style="width: 300px; margin-top: -3px; height: 26px; padding: 3px 6px; font-size: 12px;">
+								<option value="older"><?php echo lang("chats_order_older"); ?></option>
+								<option value="newer"><?php echo lang("chats_order_newer"); ?></option>
+<!--								
+								<option value="absolute-pro"><?php echo lang("chats_order_absolute_pro"); ?></option>
+								<option value="relative-pro"><?php echo lang("chats_order_relative_pro"); ?></option>
+								<option value="absolute-against"><?php echo lang("chats_order_absolute_against"); ?></option>
+								<option value="relative-against"><?php echo lang("chats_order_relative_against"); ?></option>
+-->								
+							</select>
+
+							<span class="counter">
+							<?php echo langFormat($numberOfArguments < 2, "amendments_neutral_argument", "amendments_neutral_arguments", array("argument" => $numberOfArguments)); ?>
+							</span>
+						</p></div>
+						<ul class="list-group list-chats objects">
+<?php
+				$internalOrder = 0;
+
+				foreach($topic->apiresult->post_stream->posts as $chat) {
+					if (!$chat->cooked) continue; // technical post
+?>
+							<li class="list-group-item discourse-chat"
+								data-internal-order="<?=$internalOrder++?>"
+								data-older="-<?=$chat->post_number?>"
+								data-newer="<?=$chat->post_number?>"
+							>
+								<div>
+									<div class="pull-left" style="margin: 2px 5px 2px 5px; width: 42px; text-align: center;">
+										<img src="https://discourse.partipirate.org/<?=str_replace("{size}", "64", $chat->avatar_template)?>" class="img-circle pull-left" style="max-width: 32px; max-height: 32px;" 
+											 data-toggle="tooltip" data-placement="top" title="<?php echo $chat->username; //echo GaletteBo::showIdentity($chat); ?>">
+									</div>
+									<?=$chat->username?> 
+									<br>
+									<?php $date = getDateTime($chat->created_at, new DateTimeZone('UTC')); echo showDate($date); ?>
+								</div>
+								<div class="clearfix"></div>
+								<div class="chat-body cooked"><?=$chat->cooked;?></div>
+							</li>
+<?php
+				}
+?>
+						</ul>
+
+<?php		if (!$closed && $userId) {?>
+
+						<div class="panel-body">
+		
+							<form class="form-horizontal" data-chat-type="discourse">
+								<fieldset>
+		
+									<input type="hidden" name="id" value="<?php echo $motion["mee_id"]; ?>">
+									<input type="hidden" name="motionId" value="<?php echo $motion["mot_id"]; ?>">
+									<input type="hidden" name="pointId" value="<?php echo $motion["mot_agenda_id"]; ?>">
+									<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+									<input type="hidden" name="type" class="chat-type" value="discourse">
+		
+									<!-- Form Name -->
+									<!--<legend>Form Name</legend>-->
+									
+									<!-- Textarea -->
+									<div class="form-group">
+										<div class="col-md-12">
+											<textarea class="form-control chat-text autogrow" name="startingText" data-provide="markdown" data-hidden-buttons="cmdPreview" placeholder="<?php echo lang("amendments_argument_answer"); ?>"></textarea>
+										</div>
+									</div>
+									
+									<!-- Button -->
+									<div class="form-group">
+										<div class="col-md-12">
+											<button class="btn btn-primary btn-chat-send" <?php echo ($meeting["mee_status"] != "closed") ? "" : "disabled='disabled'"; ?>><?php echo lang("construction_argument_send"); ?></button>
+										</div>
+									</div>
+									
+								</fieldset>
+							</form>
+		
+						</div>
+
+<?php		}?>
+
+					</div>
+				</div>
+
+<?php		}
+			else { // internal chat ?>
+
 				<div class="col-md-6 pro-chats">
 					<div class="well">
 	
@@ -1147,7 +1249,12 @@ include("construction/pieChart.php");
 						</ul>
 					</div>
 				</div>
+
+<?php	} ?>
+
 			</div>
+
+
 
 			<div class="clearfix"></div>
 

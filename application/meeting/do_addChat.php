@@ -25,6 +25,7 @@ include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/utils/DateTimeUtils.php");
 
@@ -92,6 +93,53 @@ if (substr($userId, 0, 1) == "G") {
 }
 else {
 	$chat["cha_member_id"] = $userId;
+}
+
+if ($chat["cha_type"] == "discourse") {
+
+	include_once("config/discourse.config.php");
+	require_once("engine/discourse/DiscourseAPI.php");
+
+	$motionBo = MotionBo::newInstance($connection, $config);
+	$motion = $motionBo->getById($chat["cha_motion_id"]);
+
+	$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+	$topic = $discourseApi->getTopic($motion["mot_external_chat_id"]);
+
+	$queryBuilder = QueryFactory::getInstance($config["database"]["dialect"]);
+
+	$userSource = UserSourceFactory::getInstance($config["modules"]["usersource"]);
+	$userSource->selectQuery($queryBuilder, $config);
+	
+	$queryBuilder->where("id_adh = :memberId");
+	
+	$query = $queryBuilder->constructRequest();
+	$statement = $connection->prepare($query);
+	
+	$statement->execute(array("memberId" => $userId));
+	$results = $statement->fetchAll();
+
+	if (!count($results)) {
+		$data["ko"] = "ko";
+		$data["member"] = "user_dont_exist";
+		echo json_encode($data, JSON_NUMERIC_CHECK);
+		exit();
+	}
+
+	$data["ok"] = "ok";
+	$data["user"] = $results[0]["email_adh"];
+
+	$discourseUser = $discourseApi->getUserByEmail($data["user"]);
+
+	$data["discourse_user"] = $discourseUser;
+
+	$response = $discourseApi->createPost($chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username);
+
+	$data["response"] = $response;
+
+	echo json_encode($data, JSON_NUMERIC_CHECK);
+
+	exit();
 }
 
 $chatBo->save($chat);

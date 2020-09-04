@@ -823,3 +823,9 @@ aside.quote .title img {
 .cooked table tr {
     border-bottom: 1px solid #eee;
 }
+
+.cooked img.emoji {
+    width: 16px;
+    position: relative;
+    top: -3px;
+}

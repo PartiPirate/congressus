@@ -112,7 +112,7 @@ function saveConfigurationHandler() {
 
 	$.post("administration_api.php?method=dupdao_stAdmin", form, function(data) {//
 		console.log(fo);
-		addEventAlert(lang.administration_alert_ok, "success", 2000rm);
+		addEventAlert(lang.administration_alert_ok, "success", 2000);
 	});
 }
 

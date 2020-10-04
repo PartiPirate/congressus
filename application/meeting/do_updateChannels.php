@@ -44,10 +44,19 @@ foreach($channels as $channel) {
     $discordChannelBo->save($channel);
 }
 
+//error_log("data : " . $arguments["data"]);
+/*
+$datas = explode(",", $arguments["data"]);
+foreach($datas as $datum) {
+    error_log("data : " . $datum);
+}
+*/
 $channels = json_decode($arguments["data"], true);
 
 foreach($channels as $channel) {
     $discordChannel = array();
+
+//    error_log("channel : " . json_encode($channel));
 
     $discordChannel["dch_server_id"]    = $channel["server_id"];
     $discordChannel["dch_channel_id"]   = $channel["id"];

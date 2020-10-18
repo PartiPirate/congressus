@@ -2032,35 +2032,7 @@ function toMarkdownWithEmoji(source) {
 		source = source.replace(search, replace);
 	}
 
-	var converter = new showdown.Converter();
-	source = converter.makeHtml(source);
-
-	return source;
-}
-
-function toMarkdownWithEmoji(source) {
-	source = emojione.shortnameToImage(source);
-
-	const regex = /^(=+)([^=]*)(=*)$/gm;
-	
-	let m;
-
-	var dashes = ["", "#", "##", "###", "####", "#####", "######"];
-
-	while ((m = regex.exec(source)) !== null) {
-	    // This is necessary to avoid infinite loops with zero-width matches
-	    if (m.index === regex.lastIndex) {
-	        regex.lastIndex++;
-	    }
-
-	    var search = m[1] + m[2] + m[3];
-	    var replace = dashes[m[1].length] + m[2] + dashes[m[3].length];
-//		var replace = dashes[m[1].length] + m[2];
-
-		source = source.replace(search, replace);
-	}
-
-	var converter = new showdown.Converter();
+	var converter = new showdown.Converter({tables: true});
 	source = converter.makeHtml(source);
 
 	return source;

@@ -530,14 +530,18 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 var groupAdmins = [];
 var groupAuthoritatives = [];
 
-<?php 	foreach($admins as $admin) {?>
+<?php 	
+		if (!isset($admins)) $admins = array();
+		foreach($admins as $admin) {?>
 groupAdmins[groupAdmins.length] = {	gad_member_identity: "<?php echo GaletteBo::showIdentity($admin); ?>",
 									gad_group_id : <?php echo $admin["gad_group_id"]; ?>,
 									gad_member_id : <?php echo $admin["gad_member_id"]; ?>
 								};
 <?php 	}?>
 
-<?php 	foreach($authorityAdmins as $admin) {?>
+<?php 	
+		if (!isset($authorityAdmins)) $authorityAdmins = array();
+		foreach($authorityAdmins as $admin) {?>
 groupAuthoritatives[groupAuthoritatives.length] = {	gau_authoritative_name: "<?php echo utf8_encode($admin["gau_authoritative_name"] ? $admin["gau_authoritative_name"] : "Tous les membres"); ?>",
 									gau_group_id : <?php echo $admin["gau_group_id"]; ?>,
 									gau_authoritative_id : <?php echo $admin["gau_authoritative_id"]; ?>

@@ -695,6 +695,11 @@ include("construction/pieChart.php");
 
 				$closed = $topic->apiresult->closed;
 
+				if (!$topic->apiresult->visible) {
+					$topic->apiresult->post_stream->posts = array();
+					$closed = true;
+				}
+
 				foreach($topic->apiresult->post_stream->posts as $chat) {
 					if (!$chat->cooked) continue; // technical post
 					if ($chat->hidden) continue; // hidden

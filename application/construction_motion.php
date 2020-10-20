@@ -697,7 +697,8 @@ include("construction/pieChart.php");
 
 				foreach($topic->apiresult->post_stream->posts as $chat) {
 					if (!$chat->cooked) continue; // technical post
-					
+					if ($chat->hidden) continue; // hidden
+
 					$numberOfArguments++;
 				}				
 ?>
@@ -725,6 +726,8 @@ include("construction/pieChart.php");
 
 				foreach($topic->apiresult->post_stream->posts as $chat) {
 					if (!$chat->cooked) continue; // technical post
+					if ($chat->hidden) continue; // hidden
+
 ?>
 							<li class="list-group-item discourse-chat"
 								data-internal-order="<?=$internalOrder++?>"

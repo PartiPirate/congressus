@@ -34,17 +34,19 @@ $messageBo = MessageBo::newInstance($connection, $config);
 $filters = array();
 $data = array();
 
-$messageIds = $_REQUEST["messageIds"];
-$messages = array();
-
-foreach($messageIds as $messageId) {
-	$message = array("mes_id" => $messageId, "mes_consumed" => 1);
-	$messageBo->update($message);
-
-	$messages[] = $message;
+if (isset($_REQUEST["messageIds"])) {
+    $messageIds = $_REQUEST["messageIds"];
+    $messages = array();
+    
+    foreach($messageIds as $messageId) {
+    	$message = array("mes_id" => $messageId, "mes_consumed" => 1);
+    	$messageBo->update($message);
+    
+    	$messages[] = $message;
+    }
+    
+    $data["messages"] = $messages;
 }
-
-$data["messages"] = $messages;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

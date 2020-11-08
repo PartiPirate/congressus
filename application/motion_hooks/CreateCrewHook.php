@@ -58,7 +58,7 @@ class CreateCrewHook implements WinningMotionHook {
         $operatingCode = $converter->parseString($agenda["age_description"]);
 
         // L'Assemblée Permanente valide la création de l'équipage "Spatial"
-        $crewRegex = '/"([a-zA-Z0-9\ ]*)"/m';
+        $crewRegex = '/"([a-zA-Z0-9éèêàîùôÉÈÊÀÎÙÔ\\\'\ ]*)"/m';
         preg_match_all($crewRegex, $motion["mot_title"], $matches, PREG_SET_ORDER, 0);
 
         if (!isset($matches[0][1])) return "can't find crew name";
@@ -255,7 +255,7 @@ class CreateCrewHook implements WinningMotionHook {
                                 "type" => "message", 
                                 "channel" => $discordChannel, 
                                 "isPinned" => true,
-                                "content" => "Le code de fonctionnement : https://wiki.partipirate.org/Equipage:$crewName/code_de_fonctionnement"
+                                "content" => "Le code de fonctionnement : https://wiki.partipirate.org/Equipage:".urlencode($crewName)."/code_de_fonctionnement"
                             )
                         );
         $message["mes_message"] = json_encode($message["mes_message"]);

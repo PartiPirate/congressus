@@ -107,6 +107,8 @@ function testTokens() {
     return false;
 }
 
+//echo json_encode(array("ko" => "ko"));
+//exit();
 include("meeting/$method.php");
 
 ?>

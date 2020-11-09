@@ -34,6 +34,7 @@ if (!isset($_SESSION["administrator"])) {
 @include_once("config/mail.config.php");
 @include_once("config/discourse.config.php");
 @include_once("config/mediawiki.config.php");
+@include_once("config/style.config.php");
 
 include_once("header.php");
 include_once("config/discourse.structure.php");
@@ -96,14 +97,15 @@ function getConfigValue($config, $path) {
 </ul>	
 	
 </div>
-<form id="administration-form" class="form-horizontal">
 <div class="col-md-10 tab-content">
 
 <?php	foreach($configurators as $cindex => $configurator) {
 			foreach($configurator["panels"] as $pindex => $panel) { ?>
 
-
 		<div id="<?=$panel["id"]?>-panel" role="tabpanel" class="panel panel-default tab-pane <?=((($cindex + 1) * ($pindex + 1)) == 1) ? "active" : ""?>" data-file="<?=$configurator["file"]?>" data-panel="<?=$panel["id"]?>">
+			<form id="<?=$panel["id"]?>-form" class="form-horizontal">
+			<input type="hidden" name="file" value="<?=$configurator["file"]?>">
+			<input type="hidden" name="panel" value="<?=$panel["id"]?>">
 			<div class="panel-heading">
 
 				<a disabled-data-toggle="collapse" data-target="#<?=$panel["id"]?>-panel-body" class="disabled-collapsed" href="#"><?=lang($panel["label"])?></a>
@@ -142,6 +144,13 @@ function getConfigValue($config, $path) {
 					</div>
 
 <?php				}
+					else if ($field["type"] == "text_wide") { ?>
+
+					<div class="col-md-<?=(isset($field["width"]) ? $field["width"] : 4)?>">
+						<textarea class="form-control autogrow" id="<?=$field["id"]?>" name="<?=$field["id"]?>" style="<?=isset($field["minHeight"]) ? "min-height: " . $field["minHeight"] .";" : ""?>"><?=getConfigValue($config, $field["path"])?></textarea>
+					</div>
+
+<?php				}
 					else  if ($field["type"] == "select") { ?>
 
 					<div class="col-md-<?=(isset($field["width"]) ? $field["width"] : 4)?>">
@@ -150,6 +159,32 @@ function getConfigValue($config, $path) {
 							<option <?=($value["value"] == getConfigValue($config, $field["path"])) ?  "selected='selected'" : ""?> 
 								value="<?=$value["value"]?>"><?=isLanguageKey($value["label"]) ? lang($value["label"]) : $value["label"]?></option>
 <?php 					} ?>
+						</select>
+					</div>
+
+<?php				}
+					else  if ($field["type"] == "file") { 
+						$directory = dir($field["upload"]);
+						$entries = array("" => "");
+						while (false !== ($entry = $directory->read())) {
+//							echo "$entry \n";
+							if (is_file($field["upload"] . $entry)) {
+								$entries[] = $entry;
+							}
+						}
+						$directory->close();
+						sort($entries);
+?>
+					<div class="col-md-<?=(isset($field["width"]) ? ceil($field["width"]) / 2 : 2)?>">
+						<select id="<?=$field["id"]?>" name="<?=$field["id"]?>" class="form-control">
+<?php					foreach($entries as $value)	{ ?>
+							<option <?=($value == getConfigValue($config, $field["path"])) ?  "selected='selected'" : ""?> 
+								value="<?=$value?>"><?=$value?></option>
+<?php 					} ?>
+						</select>
+					</div>
+					<div class="col-md-<?=(isset($field["width"]) ? floor($field["width"]) / 2 : 2)?>">
+							<input id="<?=$field["id"]?>-file" name="<?=$field["id"]?>-file" type="file"  class="form-control input-md">
 						</select>
 					</div>
 
@@ -190,7 +225,7 @@ function getConfigValue($config, $path) {
 					<div class="col-md-<?=(isset($field["width"]) ? $field["width"] : 4)?>">
 <?php					$values = getConfigValue($config, $field["path"]);
 						$value = trim(implode("\n", $values));?>
-						<textarea class="form-control" rows="10" id="<?=str_replace("[]", "_" . $index, $field["id"])?>" name="<?=$field["id"]?>"><?=$value?></textarea>
+						<textarea class="form-control autogrow" style="min-height: 100px; max-height: 300px;" rows="10" id="<?=str_replace("[]", "_" . $index, $field["id"])?>" name="<?=$field["id"]?>"><?=$value?></textarea>
 					</div>
 <?php				}
 
@@ -233,6 +268,7 @@ function getConfigValue($config, $path) {
 
 
 			</div>
+			</form>
 		</div>
 
 
@@ -240,7 +276,6 @@ function getConfigValue($config, $path) {
 		} ?>
 
 </div>
-</form>
 
 	<?php echo addAlertDialog("administration_save_successAlert", 				lang("administration_alert_ok"), "success"); ?>
 

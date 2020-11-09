@@ -128,6 +128,9 @@ $(function() {
 <script src="assets/js/caret.js"></script>
 <script src="assets/js/merger.js"></script>
 <script src="assets/js/pad.js"></script>
+<?php	if (@$config["style"]["extra_js"]) { ?>
+<script src="assets/js/<?=$config["style"]["extra_js"]?>"></script>
+<?php 	} ?>
 
 <!--
 <script src="assets/js/pagination.js"></script>
@@ -171,3 +174,14 @@ $(function() {
 
 <div class="gaypride"></div>
 -->
+
+<?php	if (@$config["style"]["extra_style"]) { ?>
+<style>
+<?=$config["style"]["extra_style"]?>
+</style>
+<?php	} ?>
+<?php	if (@$config["style"]["extra_javascript"]) { ?>
+<script>
+<?=$config["style"]["extra_javascript"]?>
+</script>
+<?php	} ?>

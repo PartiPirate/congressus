@@ -27,6 +27,7 @@ error_reporting(E_ALL);
 require_once("install/Installer.php");
 
 require_once("config/database.php");
+@include_once("config/style.config.php");
 require_once("language/language.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/UserPropertyBo.php");
@@ -318,6 +319,10 @@ else {
 <link href="assets/css/bootstrap-markdown.min.css" rel="stylesheet">
 <link href="assets/css/emojione.helper.css" rel="stylesheet">
 
+<?php	if (@$config["style"]["extra_css"]) { ?>
+<link href="assets/css/<?=$config["style"]["extra_css"]?>" rel="stylesheet">
+<?php 	} ?>
+
 <?php
 $themeProperty = getUserPropertyValue("theme");
 
@@ -342,11 +347,11 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#otb-navbar-collapse">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php"><img src="assets/images/logo_voile_fond.svg"
+				<a class="navbar-brand" href="index.php"><img src="assets/images/<?=@$config["style"]["logo_path"] ? $config["style"]["logo_path"] : "logo_voile_fond.svg"?>"
 					alt="Logo Congressus"
 					style="position: relative; top: -14px; width: 48px; height: 48px; "
 					data-toggle="tooltip" data-placement="bottom"
-					title="Congressus" /> </a>
+					title="Congressus" /></a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->

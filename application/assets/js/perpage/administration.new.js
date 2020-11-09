@@ -81,6 +81,9 @@ function saveConfigurationHandler() {
 	const panel = $(this).parents(".panel");
 	const form = {};
 
+	var formData = new FormData(panel.children("form")[0]);
+
+
 	form["file"] = panel.data("file");
 	form["panel"] = panel.data("panel");
 
@@ -110,10 +113,70 @@ function saveConfigurationHandler() {
 		}
 	});
 
-	$.post("administration_api.php?method=dupdao_stAdmin", form, function(data) {//
-		console.log(fo);
+/*
+	$.post("administration_api.php?method=do_updateAdmin", form, function(data) {//
+		console.log(form);
 		addEventAlert(lang.administration_alert_ok, "success", 2000);
 	});
+*/
+
+//	var formData = new FormData(uploadAttachmentForm[0]);
+
+	$.ajax({
+		url: "administration_api.php?method=do_updateAdmin",  //Server script to process data
+		type: 'POST',
+		xhr: function () {  // Custom XMLHttpRequest
+
+			var myXhr = $.ajaxSettings.xhr();
+//			myXhr["seed"] = uploadSeed++;
+
+//			that.xhrs[myXhr["seed"]] = myXhr;
+
+			if (myXhr.upload) { // Check if upload property exists
+
+//				that.initUpload(fieldId, elementId, myXhr, options.file.files[options.count]);
+
+				myXhr.upload.addEventListener('progress', function (e) {
+
+//					that.uploadHandlingFunction(e, fieldId, elementId, myXhr, that);
+
+				}, false); // For handling the progress of the upload
+				myXhr.onreadystatechange = function () {
+/*
+					if (myXhr.readyState == 4) {
+						that.finishUpload(fieldId, myXhr);
+					}
+*/					
+				};
+			}
+			return myXhr;
+		},
+		//Ajax events
+		success: function (data) {
+			console.log(form);
+			addEventAlert(lang.administration_alert_ok, "success", 2000);
+
+			return;
+		},
+		data: formData,
+		dataType: "json",
+		cache: false,
+		contentType: false,
+		processData: false
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 $(function() {
@@ -124,7 +187,7 @@ $(function() {
 	var testMail = function() {
 		$("#btn-mail-test").prop("disabled", true);
 
-		$.post("administration_api.php?method=do_testMail", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_testMail", $("#mail-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_mail_successAlert").show().delay(2000).fadeOut(1000);
@@ -141,7 +204,7 @@ $(function() {
 	var pingMemcached = function() {
 		$("#btn-ping-memcached").prop("disabled", true);
 
-		$.post("administration_api.php?method=do_pingMemcached", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_pingMemcached", $("#memcached-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_memcached_successAlert").show().delay(2000).fadeOut(1000);
@@ -158,7 +221,7 @@ $(function() {
 	var pingDatabase = function() {
 		$("#btn-ping-database").prop("disabled", true);
 		
-		$.post("administration_api.php?method=do_pingDatabase", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_pingDatabase", $("#database-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_ping_successAlert").show().delay(2000).fadeOut(1000);
@@ -181,7 +244,7 @@ $(function() {
 	var createDatabase = function() {
 		$("#btn-create-database").prop("disabled", true);
 		
-		$.post("administration_api.php?method=do_createDatabase", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_createDatabase", $("#database-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_create_successAlert").show().delay(2000).fadeOut(1000);
@@ -200,7 +263,7 @@ $(function() {
 		$("#btn-test-database").prop("disabled", true);
 		$(".btn-deploy-database").prop("disabled", true);
 
-		$.post("administration_api.php?method=do_deployDatabase&database_dry=", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_deployDatabase&database_dry=", $("#database-form").serialize(), function(data) {
 
 			if (data.ok) {
 //				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);
@@ -273,7 +336,7 @@ $(function() {
 		$("#btn-test-database").prop("disabled", true);
 		$(".btn-deploy-database").prop("disabled", true);
 		
-		$.post("administration_api.php?method=do_deployDatabase", $("#administration-form").serialize(), function(data) {
+		$.post("administration_api.php?method=do_deployDatabase", $("#database-form").serialize(), function(data) {
 
 			if (data.ok) {
 				$("#administration_deploy_successAlert").show().delay(2000).fadeOut(1000);
@@ -376,4 +439,4 @@ $(function() {
 
 	// hide starting visible alerts
 	$(".alert:visible").delay(5000).fadeOut(1000);
-})
+});

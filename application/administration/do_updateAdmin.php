@@ -56,12 +56,16 @@ if(!isset($config)) {
 
 EOD;
 
+print_r($arguments);
+
 if (file_exists("config/" . $arguments["file"])) {
 	require_once("config/" . $arguments["file"]);
 }
 else {
 	$config = array();
 }
+
+print_r($_FILES);
 
 foreach($configurators as $cindex => $configurator) {
 	if ($configurator["file"] == $arguments["file"]) {
@@ -97,7 +101,15 @@ foreach($configurators as $cindex => $configurator) {
 						else if ($field["type"] == "concat") {
 							$value = explode("\n", $value[0]);
 						}
-						
+						else if ($field["type"] == "file") {
+							if (isset($_FILES[$key . "-file"])) {
+								if ($_FILES[$key . "-file"]["error"] == 0) {
+									$value = $_FILES[$key . "-file"]["name"];
+
+									move_uploaded_file($_FILES[$key . "-file"]["tmp_name"], $field["upload"] . $_FILES[$key . "-file"]["name"]);
+								}
+							}
+						}
 					}
 					else if ($isArray) {
 						$value = array();

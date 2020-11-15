@@ -92,6 +92,8 @@ $lang["links_accept"]                   = "Accept";
 $lang["links_reject"]                   = "Reject";
 $lang["links_authorized_add"]           = "Create a link";
 $lang["links_im_authorized_add"]        = "Authorize a link";
+$lang["links_no_trustlink"]             = "Vous n'avez créé aucun lien de confiance avec d'autres";
+$lang["links_no_trustlink-to_you"]      = "Aucun lien de confiance ne vous a été accordé";
 
 $lang["meeting_action"]         = "Action on the meeting";
 $lang["meeting_agenda_point"]   = "Ongoing topics: ";

@@ -80,7 +80,7 @@ $toYouLinks = $trustLinkBo->getByFilters(array("tli_to_member_id" => $userId));
 			$explanation = implode(", ", $explainRights);
 ?>
 			<tr>
-				<td style="width: 20px;"><img src="getAvatar.php?userId=<?=$link["tli_to_member_id"]?>"  style="max-width: 16px; max-height: 16px; position: relative; top: -2px;"></td>
+				<td style="width: 20px;"><img src="getAvatar.php?userId=<?=$link["tli_to_member_id"]?>" class="img-circle" style="max-width: 16px; max-height: 16px; position: relative; top: -2px;"></td>
 				<td style="width: 150px;"><?=GaletteBo::showIdentity($link)?></td>
 				<td><?=$explanation?></td>
 				<td style="width: 150px;">
@@ -106,6 +106,9 @@ $toYouLinks = $trustLinkBo->getByFilters(array("tli_to_member_id" => $userId));
 ?>
 				</td>
 			</tr>
+<?php	} ?>
+<?php	if (!count($yourLinks)) { ?>
+			<tr><td><?=lang("links_no_trustlink")?></td></tr>	
 <?php	} ?>
 		</table>
 	</div>
@@ -152,7 +155,7 @@ $toYouLinks = $trustLinkBo->getByFilters(array("tli_to_member_id" => $userId));
 			$explanation = implode(", ", $explainRights);
 ?>
 			<tr>
-				<td style="width: 20px;"><img src="getAvatar.php?userId=<?=$link["tli_from_member_id"]?>" style="max-width: 16px; max-height: 16px; position: relative; top: -2px;"></td>
+				<td style="width: 20px;"><img src="getAvatar.php?userId=<?=$link["tli_from_member_id"]?>" class="img-circle" style="max-width: 16px; max-height: 16px; position: relative; top: -2px;"></td>
 				<td style="width: 150px;"><?=GaletteBo::showIdentity($link)?></td>
 				<td><?=$explanation?></td>
 				<td style="width: 150px;">
@@ -177,6 +180,9 @@ $toYouLinks = $trustLinkBo->getByFilters(array("tli_to_member_id" => $userId));
 ?>
 				</td>
 			</tr>
+<?php	} ?>
+<?php	if (!count($toYouLinks)) { ?>
+			<tr><td><?=lang("links_no_trustlink-to_you")?></td></tr>	
 <?php	} ?>
 		</table>
 	</div>

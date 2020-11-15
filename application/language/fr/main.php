@@ -95,6 +95,8 @@ $lang["links_reject"]                   = "Rejeter";
 $lang["links_cancel"]                   = "Arrêter";
 $lang["links_authorized_add"]           = "Créer un lien";
 $lang["links_im_authorized_add"]        = "Autoriser un lien";
+$lang["links_no_trustlink"]             = "You have not created any trustlink with others";
+$lang["links_no_trustlink-to_you"]      = "You have not been granted a trustlink";
 
 $lang["meeting_action"]           = "Action sur la réunion";
 $lang["meeting_agenda_point"]     = "Point en cours : ";

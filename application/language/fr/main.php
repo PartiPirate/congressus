@@ -64,23 +64,6 @@ $lang["common_proposition_no"] = "Non";
 
 $lang["congressus_title"] = "Congressus";
 
-$lang["menu_administration"] = "Administration";
-$lang["menu_createMeeting"]  = "Créer une réunion";
-$lang["menu_createQuick"]    = "Créer une consultation rapide";
-$lang["menu_decisions"]      = "Décisions";
-$lang["menu_groupMeetings"]  = "Réunions d'instance";
-$lang["menu_index"]          = "Accueil";
-$lang["menu_language"]       = "Langue : {language}";
-$lang["menu_login"]          = "Se connecter";
-$lang["menu_logout"]         = "Se déconnecter";
-$lang["menu_mybadges"]       = "Mes badges";
-$lang["menu_myMeetings"]     = "Mes réunions";
-$lang["menu_mypreferences"]  = "Mes préférences";
-$lang["menu_myVotes"]        = "Mes votes";
-$lang["menu_meetings"]       = "Réunions";
-$lang["menu_openMeetings"]   = "Réunions en cours";
-$lang["menu_calendar"]       = "Calendrier";
-
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
 $lang["login_passwordInput"] = "Mot de passe";
@@ -88,22 +71,6 @@ $lang["login_button"] = "Me connecter";
 $lang["login_rememberMe"] = "Se souvenir de moi";
 $lang["register_link"] = "ou m'enregistrer";
 $lang["forgotten_link"] = "J'ai oublié mon mot de passe";
-
-$lang["breadcrumb_about"]          = "À Propos";
-$lang["breadcrumb_administration"] = "Administration";
-$lang["breadcrumb_connect"]        = "Se connecter";
-$lang["breadcrumb_createMeeting"]  = "Créer une réunion";
-$lang["breadcrumb_createQuick"]    = "Créer une consultation rapide";
-$lang["breadcrumb_decisions"]      = "Décisions";
-$lang["breadcrumb_forgotten"]      = "J'ai oublié mon mot de passe";
-$lang["breadcrumb_groupMeetings"]  = "Réunions d'instance";
-$lang["breadcrumb_index"]          = "Accueil";
-$lang["breadcrumb_myVotes"]        = "Mes votes";
-$lang["breadcrumb_mybadges"]       = "Mes badges";
-$lang["breadcrumb_myMeetings"]     = "Mes réunions";
-$lang["breadcrumb_mypreferences"]  = "Mes préférences";
-$lang["breadcrumb_search"]         = "Rechercher";
-$lang["breadcrumb_calendar"]       = "Calendrier";
 
 $lang["index_guide"] = "Congressus vous permet de gérer des réunions en fonction des différents groupes que peut
 fournir l'infrastructure Galette + Personae.<br>
@@ -116,6 +83,18 @@ $lang["index_description"] = "Congressus permet de gérer des réunions en fonct
 $lang["index_open_meetings"] = "Réunions actuellement ouvertes : ";
 
 $lang["mybadges_guide"] = "Les badges que vous avez obtenus ou que vous pouvez obtenir";
+
+$lang["mylinks_guide"]                  = "Les relations de confiance que vous pouvez bâtir";
+$lang["links_authorized_authoring"]     = "est autorisé à gagner l'accès en écriture automatique à mes propositions";
+$lang["links_im_authorized_authoring"]  = "m'autorise à gagner l'accès en écriture automatique à ses propositions";
+$lang["links_asking"]                   = "en attente";
+$lang["links_refused"]                  = "refusé";
+$lang["links_link"]                     = "accepté";
+$lang["links_accept"]                   = "Accepter";
+$lang["links_reject"]                   = "Rejeter";
+$lang["links_cancel"]                   = "Arrêter";
+$lang["links_authorized_add"]           = "Créer un lien";
+$lang["links_im_authorized_add"]        = "Autoriser un lien";
 
 $lang["meeting_action"]           = "Action sur la réunion";
 $lang["meeting_agenda_point"]     = "Point en cours : ";

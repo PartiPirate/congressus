@@ -434,10 +434,10 @@ include("construction/pieChart.php");
 								}
 
 								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "none") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn">Demander l'authoring <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default ask-authoring-btn"><?=lang("amendment_ask_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
 						<?php	}
 								if (!$isCoAuthor && $motion["mot_author_id"] != $userId && $requestStatus == "pending") { ?>
-									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled">Demande en attente <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+									<button style="position: relative; top: -3px;" type="button" class="btn btn-xs btn-default" disabled="disabled"><?=lang("amendment_waiting_authoring")?> <i class="fa fa-pencil-square" aria-hidden="true"></i></button>
 						<?php	} ?>
 						
 						<?php 	if ($isCoAuthor || ($motion["mot_author_id"] == $userId)) { ?>

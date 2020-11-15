@@ -26,6 +26,7 @@ require_once("engine/bo/AgendaBo.php");
 require_once("engine/bo/CoAuthorBo.php");
 require_once("engine/bo/MeetingBo.php");
 require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/TrustLinkBo.php");
 require_once("engine/bo/UserBo.php");
 require_once("engine/bo/VoteBo.php");
 require_once("engine/utils/EventStackUtils.php");
@@ -46,6 +47,7 @@ $agendaBo   = AgendaBo::newInstance($connection, $config);
 $meetingBo  = MeetingBo::newInstance($connection, $config);
 $motionBo   = MotionBo::newInstance($connection, $config);
 $coAuthorBo = CoAuthorBo::newInstance($connection, $config);
+$trustLinkBo = TrustLinkBo::newInstance($connection, $config);
 
 $meetingId = $_REQUEST["meetingId"];
 
@@ -88,7 +90,23 @@ $coAuthor = array();
 $coAuthor["cau_user_id"] = $userId;
 $coAuthor["cau_object_type"] = "motion";
 $coAuthor["cau_object_id"] = $motion[$motionBo->ID_FIELD];
-$coAuthor["cau_status"] = CoAuthorBo::ASKING;
+
+$trustLinks = $trustLinkBo->getByFilters(array("tli_from_member_id" => $motion["mot_author_id"], "tli_to_member_id" => $userId, "tli_status" => TrustLinkBo::LINK));
+
+$trusted = false;
+
+if (count($trustLinks)) {
+    $rights = json_decode($trustLinks[0]["tli_rights"], true);
+
+    $trusted = isset($rights["authoring"]) && $rights["authoring"];
+}
+
+if ($trusted) {
+    $coAuthor["cau_status"] = CoAuthorBo::AUTHORING;
+}
+else {
+    $coAuthor["cau_status"] = CoAuthorBo::ASKING;
+}
 
 $coAuthorBo->save($coAuthor);
 

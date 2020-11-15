@@ -67,6 +67,12 @@ $gamifiedUser = null;
 
 $connection = openConnection();
 
+$page = $_SERVER["SCRIPT_NAME"];
+if (strrpos($page, "/") !== false) {
+	$page = substr($page, strrpos($page, "/") + 1);
+}
+$page = str_replace(".php", "", $page);
+
 if (SessionUtils::getUserId($_SESSION)) {
 	$sessionUser = SessionUtils::getUser($_SESSION);
 	$sessionUserId = SessionUtils::getUserId($_SESSION);
@@ -88,18 +94,18 @@ if (SessionUtils::getUserId($_SESSION)) {
 	$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
 	$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
 }
+else {
+	if ($page == "mypreferences" || $page == "myLinks") {
+		header("Location: index.php");
+		exit();
+	}
+}
 
 if (isset($_SESSION["administrator"]) && $_SESSION["administrator"]) {
 	$isAdministrator = true;
 }
 
 $language = SessionUtils::getLanguage($_SESSION);
-
-$page = $_SERVER["SCRIPT_NAME"];
-if (strrpos($page, "/") !== false) {
-	$page = substr($page, strrpos($page, "/") + 1);
-}
-$page = str_replace(".php", "", $page);
 
 if ($page == "administration" && !$isAdministrator) {
 	header('Location: index.php');
@@ -435,11 +441,13 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 
 					<?php 	if ($isConnected || $isAdministrator) {?>
 					<?php 	if ($isConnected) {?>
-					<li class="dropdown"><a href="#" class="dropdown-toggle nickname-link" data-nickname="<?php echo GaletteBo::showIdentity($sessionUser); ?>" data-toggle="dropdown" role="button" aria-expanded="false"><img src="getAvatar.php" class="img-circle" style="max-width: 32px; max-height: 32px; margin: -20px 0 -20px 0;" 
-								 data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($sessionUser); ?>"><?php echo GaletteBo::showIdentity($sessionUser); ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
+					<li class="dropdown"><a href="#" class="dropdown-toggle nickname-link" data-nickname="<?php echo GaletteBo::showIdentity($sessionUser); ?>" data-toggle="dropdown" role="button" aria-expanded="false"><img src="getAvatar.php" class="img-circle" 
+								style="max-width: 32px; max-height: 32px; margin: -20px 0 -20px 0; position: relative; top: -4px; left: -2px;" 
+								data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($sessionUser); ?>"><?php echo GaletteBo::showIdentity($sessionUser); ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
+							<li><a href="myLinks.php"><?php echo lang("menu_myLinks"); ?></a></li>
 <?php 	if ($gamifierClient) { ?>
 							<li id="mybadgesLi" class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
 <?php	} ?>

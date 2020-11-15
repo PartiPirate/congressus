@@ -21,8 +21,12 @@ class TrustLinkBo {
 	var $pdo = null;
 	var $config = null;
 
-	var $TABLE = "trustLinks";
+	var $TABLE = "trust_links";
 	var $ID_FIELD = "tli_id";
+
+	const LINK = "link";
+	const ASKING = "asking";
+	const REFUSED = "refused";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
@@ -32,6 +36,10 @@ class TrustLinkBo {
 
 	static function newInstance($pdo, $config) {
 		return new TrustLinkBo($pdo, $config);
+	}
+
+	function delete(&$trustLink) {
+		return BoHelper::delete($trustLink, $this->TABLE, $this->ID_FIELD, $this->config, $this->pdo);
 	}
 
 	function create(&$trustLink) {
@@ -70,9 +78,32 @@ class TrustLinkBo {
 		$queryBuilder->select($this->TABLE);
 		$queryBuilder->addSelect($this->TABLE . ".*");
 
-		if ($filters && isset($filters[$this->ID_FIELD])) {
+		if ($filters && isset($filters[$this->ID_FIELD]) && $filters[$this->ID_FIELD]) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
+		}
+
+		if ($filters && isset($filters["tli_from_member_id"])) {
+			$args["tli_from_member_id"] = $filters["tli_from_member_id"];
+			$queryBuilder->where("tli_from_member_id = :tli_from_member_id");
+
+			$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
+			$userSource->upgradeQuery($queryBuilder, $this->config, "tli_to_member_id");
+		}
+
+		if ($filters && isset($filters["tli_to_member_id"])) {
+			$args["tli_to_member_id"] = $filters["tli_to_member_id"];
+			$queryBuilder->where("tli_to_member_id = :tli_to_member_id");
+
+			if (!isset($filters["tli_from_member_id"])) {
+				$userSource = UserSourceFactory::getInstance($this->config["modules"]["usersource"]);
+				$userSource->upgradeQuery($queryBuilder, $this->config, "tli_from_member_id");
+			}
+		}
+
+		if ($filters && isset($filters["tli_status"])) {
+			$args["tli_status"] = $filters["tli_status"];
+			$queryBuilder->where("tli_status = :tli_status");
 		}
 
 		$queryBuilder->orderBy("tli_from_member_id");

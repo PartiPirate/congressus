@@ -279,6 +279,7 @@ $schema["tables"]["trust_links"] = array("fields" => array(), "indexes" => array
 $schema["tables"]["trust_links"]["fields"]["tli_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["trust_links"]["fields"]["tli_from_member_id"] = array("type" => "bigint", "size" => 20, "null" => true);
 $schema["tables"]["trust_links"]["fields"]["tli_to_member_id"] = array("type" => "bigint", "size" => 20, "null" => true);
+$schema["tables"]["trust_links"]["fields"]["tli_status"] = array("type" => "enum", "size" => "'asking','link','refused'", "null" => false, "default" => "asking");
 $schema["tables"]["trust_links"]["fields"]["tli_rights"] = array("type" => "varchar", "size" => 2048, "null" => true);
 $schema["tables"]["trust_links"]["indexes"]["tli_from_member_id"] = array("tli_from_member_id");
 $schema["tables"]["trust_links"]["indexes"]["tli_to_member_id"] = array("tli_to_member_id");

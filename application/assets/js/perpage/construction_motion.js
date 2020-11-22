@@ -29,6 +29,9 @@
 /* global save_amendment_updated */
 /* gloabl amendments_argument_save_done */
 
+/* gloabl motion_open_debate_success */
+/* gloabl motion_open_debate_failure */
+
 var setTimeoutId = null;
 
 function renewVotes(successHandler) {
@@ -638,10 +641,12 @@ function addOpenDebateListeners() {
 		$.post("meeting_api.php?method=do_openDebate", {meetingId: $(this).data("meeting-id"), pointId: $(this).data("agenda-point-id"), motionId: $(this).data("motion-id") }, function(data) {
 			if (data.ok) {
 				renewSources(null);
+				addEventAlert(motion_open_debate_success, "success", 2000);
 //				showAlertOK();
 			}
 			else {
 //				showAlertKO();
+				addEventAlert(motion_open_debate_failure, "warning", 2000);
 			}
 		}, "json");
 	});

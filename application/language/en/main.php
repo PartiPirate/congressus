@@ -302,7 +302,10 @@ $lang["motion_already_argumented"]  = "You already argument";
 $lang["motion_add_source"]          = "Add a source";
 $lang["motion_trash"]               = "Send to trash";
 $lang["motion_open_debate"]         = "Open a debate";
+$lang["motion_open_debate_success"] = "Le débat a été ouvert avec succès";
+$lang["motion_open_debate_failure"] = "Le débat n'a pas été ouvert";
 $lang["motion_expired"]             = "Expired";
+
 
 $lang["trash_title"]        = "Trash";
 $lang["trash_description"]  = "The trash guarantees the transparency of the construction process. It contains motions that do not respect this process."; // Todo

@@ -306,6 +306,8 @@ $lang["motion_already_argumented"]  = "Vous avez déjà argumenté";
 $lang["motion_add_source"]          = "Ajouter une source"; 
 $lang["motion_trash"]               = "Envoyer à la &laquo; corbeille &raquo;";
 $lang["motion_open_debate"]         = "Ouvrir le &laquo; débat &raquo;";
+$lang["motion_open_debate_success"] = "Le débat a été ouvert avec succès";
+$lang["motion_open_debate_failure"] = "Le débat n'a pas été ouvert";
 $lang["motion_expired"]             = "Expiré";
 
 $lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";

@@ -118,10 +118,6 @@ if ($_REQUEST["sourceUrl"] && $_REQUEST["sourceType"]) {
     $agenda["age_objects"][] = array("sourceId" => $source[$sourceBo->ID_FIELD]);
 }
 
-$agenda["age_objects"] = json_encode($agenda["age_objects"]);
-
-$agendaBo->save($agenda);
-
 $data["ok"] = "ok";
 
 if ($gamifierClient) {
@@ -234,14 +230,35 @@ $motion["mot_external_chat_id"] = $topicId;
 $motionBo->save($motion);
 
 
+	$data["discourse"] = array(); 
+	$data["discourse"]["url"] = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
+	$data["discourse"]["title"] = $discourse_title;
 
+	// add source
+	$source = array();
+	$source["sou_title"] = $discourse_title;
+	$source["sou_is_default_source"] = 0;
+	$source["sou_url"] = $data["discourse"]["url"];
+    $source["sou_articles"] = "[]";
+	$source["sou_content"] = $discourse_content;
+	$source["sou_type"] = "forum";
+	$source["sou_motion_id"] = $motion["mot_id"];
+	
+	$sourceBo->save($source);
+
+	// Add it to the agenda
+	$agenda["age_objects"][] = array("sourceId" => $source[$sourceBo->ID_FIELD]);
 
 
     }
 }
 
-$data["motion"] = $motion;
+$agenda["age_objects"] = json_encode($agenda["age_objects"]);
+$agendaBo->save($agenda);
+$agenda["age_objects"] = json_decode($agenda["age_objects"], true);
 
+$data["motion"] = $motion;
+$data["agenda"] = $agenda;
 
 echo json_encode($data, JSON_NUMERIC_CHECK);
 ?>

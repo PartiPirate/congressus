@@ -1413,37 +1413,40 @@ var save_source_done = <?=json_encode(lang("save_source_done"))?>;
 var amendments_argument_save_done = <?=json_encode(lang("amendments_argument_save_done"))?>;
 var save_amendment_updated = <?=json_encode(lang(($parentMotion ? "save_amendment_updated" : "save_motion_updated")))?>;
 
+var motion_open_debate_success = <?=json_encode(lang("motion_open_debate_success"))?>;
+var motion_open_debate_failure = <?=json_encode(lang("motion_open_debate_failure"))?>;
+
 <?php
 
-$translatons = array();
+$translations = array();
 foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
-	$translatons[] = lang("motion_majorityJudgment_" . $value, false);
+	$translations[] = lang("motion_majorityJudgment_" . $value, false);
 }
 
 ?>
 
-var majority_judgement_translations = <?=json_encode($translatons)?>;
+var majority_judgement_translations = <?=json_encode($translations)?>;
 
 <?php
 
-$translatons = array();
-$translatons[] = lang("motion_approval_" . 1, false);
-$translatons[] = lang("motion_approval_" . 2, false);
+$translations = array();
+$translations[] = lang("motion_approval_" . 1, false);
+$translations[] = lang("motion_approval_" . 2, false);
 
 ?>
 
-var approval_translations = <?=json_encode($translatons)?>;
+var approval_translations = <?=json_encode($translations)?>;
 
 <?php
 
-$translatons = array();
-$translatons[] = lang("motion_maybe_" . 1, false);
-$translatons[] = lang("motion_maybe_" . 2, false);
-$translatons[] = lang("motion_maybe_" . 3, false);
+$translations = array();
+$translations[] = lang("motion_maybe_" . 1, false);
+$translations[] = lang("motion_maybe_" . 2, false);
+$translations[] = lang("motion_maybe_" . 3, false);
 
 ?>
 
-var maybe_translations = <?=json_encode($translatons)?>;
+var maybe_translations = <?=json_encode($translations)?>;
 
 </script>
 

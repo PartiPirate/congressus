@@ -379,6 +379,10 @@ $lang["createMeeting_copy_label"]                    = "Or copy an existing meet
 $lang["createMeeting_copy_from"]                     = "Source meeting";
 $lang["createMeeting_select_meeting"]                = "Select a meeting to copy";
 
+$lang["createMeeting_arguments"]                    = "Argumentative system:";
+$lang["createMeeting_arguments_internal"]           = "Internal";
+$lang["createMeeting_arguments_discourse"]          = "Discourse";
+
 $lang["createMeeting_dateError"]        = "Choose some dates to vote in date-time matrix";
 $lang["createMeeting_propositionError"] = "Set some propositions to vote";
 $lang["createMeeting_typeError"]        = "Choose a type of proposition and set some of them";

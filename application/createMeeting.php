@@ -338,6 +338,34 @@ $templateId = isset($_REQUEST["templateId"]) ? $_REQUEST["templateId"] : -1;
 <!-- END AGENDA -->
 	<div role="tabpanel" class="tab-pane padding-top-5" id="location">
 
+		<div class="form-group mee_type_dependant mee_type_construction">
+			<label for="mee_chat_plugin" class="col-md-4 control-label"><?php echo lang("createMeeting_arguments"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="mee_chat_plugin" name="mee_chat_plugin">
+					<option value="internal"><?php echo lang("createMeeting_arguments_internal"); ?></option>
+					<option value="discourse"><?php echo lang("createMeeting_arguments_discourse"); ?></option>
+				</select>
+			</div>
+		</div>
+
+<?php
+
+@require_once("config/discourse.structure.php");
+
+?>
+
+		<div class="form-group mee_chat_dependant mee_chat_discourse">
+			<label for="mee_chat_discourse" class="col-md-4 control-label"><?php echo lang("createMeeting_arguments_discourse"); ?></label>
+			<div class="col-md-4">
+				<select class="form-control input-md" id="mee_chat_discourse_category_id" name="mee_chat_discourse_category_id">
+
+<?php				foreach($categories as $category) { ?>
+						<option value="<?=$category["id"]?>"><?=$category["name"]?></option>
+<?php				} ?>
+				</select>
+			</div>
+		</div>
+
 
 		<div class="form-group">
 			<label for="mee_meeting_type_id" class="col-md-4 control-label"><?php echo lang("createMeeting_type"); ?></label>

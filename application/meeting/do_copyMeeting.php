@@ -78,9 +78,13 @@ foreach($meetingDates as $meetingDate) {
     $meeting["mee_class"]               = $sourceMeeting["mee_class"];
     $meeting["mee_meeting_type_id"]     = $sourceMeeting["mee_meeting_type_id"];
     $meeting["mee_synchro_vote"]        = $sourceMeeting["mee_synchro_vote"];
+
     if ($sourceMeeting["mee_quorum"]) {
         $meeting["mee_quorum"]          = $sourceMeeting["mee_quorum"];
     }
+
+    $meeting["mee_chat_plugin"]         = $sourceMeeting["mee_chat_plugin"];
+    $meeting["mee_chat_configuration"]  = $sourceMeeting["mee_chat_configuration"];
 
     $meetingBo->save($meeting);
     

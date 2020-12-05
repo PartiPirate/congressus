@@ -106,6 +106,14 @@ foreach($meetingDates as $meetingDate) {
         $mee_status = MeetingBo::STATUS_WAITING;
     }
 
+    if ($meeting["mee_type"] == MeetingBo::TYPE_CONSTRUCTION) {
+        $meeting["mee_chat_plugin"]         = $_REQUEST["mee_chat_plugin"];
+
+        if ($meeting["mee_chat_plugin"] == "discourse") {
+            $meeting["mee_chat_configuration"]  = json_encode(array("category" => $_REQUEST["mee_chat_discourse_category_id"]));
+        }
+    }
+
     $meetingBo->save($meeting);
     
 //    print_r($meeting);

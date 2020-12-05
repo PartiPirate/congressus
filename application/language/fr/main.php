@@ -385,6 +385,10 @@ $lang["createMeeting_copy_label"]                           = "Ou copier une ré
 $lang["createMeeting_copy_from"]                            = "Réunion source :";
 $lang["createMeeting_select_meeting"]                       = "Choisissez une réunion à copier";
 
+$lang["createMeeting_arguments"]                    = "Système argumentatif :";
+$lang["createMeeting_arguments_internal"]           = "Interne";
+$lang["createMeeting_arguments_discourse"]          = "Discourse";
+
 $lang["createMeeting_dateError"]        = "Choisissez des dates pour voter dans la matrice date-heure";
 $lang["createMeeting_propositionError"] = "Définissez quelques propositions pour voter";
 $lang["createMeeting_typeError"]        = "Choisissez un type de proposition et définissez certaines d'entre elles";

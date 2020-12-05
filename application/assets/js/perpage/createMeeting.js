@@ -364,7 +364,23 @@ $(function() {
 		$(".type-explanation").hide();
 
 		$(".type-" + type).show();
+
+		$(".mee_type_dependant").hide();
+		$(".mee_type_" + type).show();
+
+		$(".mee_chat_dependant").hide();
+		if ($("#mee_chat_plugin").parents(".mee_type_dependant").css("display") != "none") {
+			$(".mee_chat_" + $("#mee_chat_plugin").val()).show();
+		}
 	});
+
+	$("#mee_chat_plugin").change(function() {
+		$(".mee_chat_dependant").hide();
+		if ($("#mee_chat_plugin").parents(".mee_type_dependant").css("display") != "none") {
+			$(".mee_chat_" + $("#mee_chat_plugin").val()).show();
+		}
+	});
+
 	$("#mee_id").change();
 	$("#mee_type").change();
 });

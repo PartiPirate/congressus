@@ -99,6 +99,7 @@ if ($chat["cha_type"] == "discourse") {
 
 	include_once("config/discourse.config.php");
 	require_once("engine/discourse/DiscourseAPI.php");
+    require_once("engine/utils/DiscourseUtils.php");
 
 	$motionBo = MotionBo::newInstance($connection, $config);
 	$motion = $motionBo->getById($chat["cha_motion_id"]);
@@ -133,7 +134,7 @@ if ($chat["cha_type"] == "discourse") {
 
 	$data["discourse_user"] = $discourseUser;
 
-	$response = $discourseApi->createPost($chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username);
+	$response = createDiscoursePost($discourseApi, $chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username)
 
 	$data["response"] = $response;
 

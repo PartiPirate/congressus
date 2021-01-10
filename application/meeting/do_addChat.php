@@ -95,8 +95,7 @@ else {
 	$chat["cha_member_id"] = $userId;
 }
 
-if ($chat["cha_type"] == "discourse") {
-
+if ($meeting["mee_chat_plugin"] == "discourse") {
 	include_once("config/discourse.config.php");
 	require_once("engine/discourse/DiscourseAPI.php");
     require_once("engine/utils/DiscourseUtils.php");
@@ -134,7 +133,7 @@ if ($chat["cha_type"] == "discourse") {
 
 	$data["discourse_user"] = $discourseUser;
 
-	$response = createDiscoursePost($discourseApi, $chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username)
+	$response = createDiscoursePost($discourseApi, $chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username);
 
 	$data["response"] = $response;
 

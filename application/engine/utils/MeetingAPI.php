@@ -1043,6 +1043,10 @@ class MeetingAPI {
 			$groupSources = isset($this->config["modules"]["availablegroupsources"]) ? $this->config["modules"]["availablegroupsources"] : $this->config["modules"]["groupsources"];
 
 			foreach($notices as $notice) {
+				if (!isset($notice["not_people"])) {
+					$notice["not_people"] = array();
+				}
+
 				foreach($groupSources as $groupSourceKey) {
 					$groupSource = GroupSourceFactory::getInstance($groupSourceKey);
 		        	$groupKeyLabel = $groupSource->getGroupKeyLabel();

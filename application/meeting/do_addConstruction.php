@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -150,106 +150,61 @@ if ($meeting["mee_chat_plugin"] == "discourse") {
 
     if (isset($configuration["category"]) && $configuration["category"]) { // we add a new topic
 
-/***** UPGRADE THIS PART ******/
+        /***** UPGRADE THIS PART ******/
+        
+        include_once("config/discourse.config.php");
+        require_once("engine/discourse/DiscourseAPI.php");
+        require_once("engine/utils/DiscourseUtils.php");
+        
+        $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+        
+        $author = null;
+        if ($motion["mot_author_id"]) {
+        	$author = $userBo->getById($motion["mot_author_id"]);
+        }
+        
+        $now = getNow();
+        $month = $now->format("Y-m");
+        
+        $discourseCategoryId = $configuration["category"];
+        $discourseTitle = "Débats $month : " . $motion["mot_title"]; // TODO Upgrade this
+        
+        $discourseContent = "";
+        $discourseContent .= "# Exposé des motifs\n\n";
+        $discourseContent .= $motion["mot_explanation"];
+        $discourseContent .= "\n\n# Contenu de la proposition\n\n";
+        $discourseContent .= $motion["mot_description"];
+        
+        $discourseContent .= "\n\n---\n\n";
+        $discourseContent .= "Lien vers Congressus : ".$config["server"]["base"]."construction_motion.php?motionId=" . $motion["mot_id"] . "
+        
+        Rapporteur : @" . GaletteBo::showIdentity($author);  // TODO Upgrade that
+        
+        $topicId = createDiscourseTopic($discourseApi, $discourseTitle, $discourseContent , $discourseCategoryId, $config["discourse"]["user"]);
+        
+        /***** UPGRADE THIS PART ******/
 
-include_once("config/discourse.config.php");
-require_once("engine/discourse/DiscourseAPI.php");
+        $motion["mot_external_chat_id"] = $topicId;
+        $motionBo->save($motion);
 
-$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
-
-$author = null;
-if ($motion["mot_author_id"]) {
-	$author = $userBo->getById($motion["mot_author_id"]);
-}
-
-$now = getNow();
-$month = $now->format("Y-m");
-
-$discourse_category = $configuration["category"];
-$discourse_title = "Débats $month : " . $motion["mot_title"]; // TODO Upgrade this
-
-$discourse_content = "";
-$discourse_content .= "# Exposé des motifs\n\n";
-$discourse_content .= $motion["mot_explanation"];
-$discourse_content .= "\n\n# Contenu de la proposition\n\n";
-$discourse_content .= $motion["mot_description"];
-
-$discourse_content .= "\n\n---\n\n";
-$discourse_content .= "Lien vers Congressus : ".$config["server"]["base"]."construction_motion.php?motionId=" . $motion["mot_id"] . "
-
-Rapporteur : @" . GaletteBo::showIdentity($author);  // TODO Upgrade that
-
-$new_topic = $discourseApi->createTopic($discourse_title, "Initial post will be updated" , $discourse_category, $config["discourse"]["user"], 0);
-$postId = $new_topic->apiresult->id;
-
-//$discourse_content = str_replace("%", "&percnt;", $discourse_content);
-
-$updateTopic = $discourseApi->updatePost($discourse_content, $postId, $config["discourse"]["user"]);
-$content = $discourse_content;
-
-$data["update_retry"] = 0;
-
-//while($updateTopic->http_code == 400 && $data["update_retry"] < 10) {
-
-if ($updateTopic->http_code == 400) {
-	set_time_limit(10);
-	sleep(2);
-	$data["update_retry"]++;
-	
-	$discourse_content = str_replace("%", "POURCENT", $discourse_content);
-
-	$updateTopic = $discourseApi->updatePost($discourse_content, $postId, $config["discourse"]["user"]);
-}
-
-$cutPosition = -1;
-
-while($updateTopic->http_code == 400) {
-	set_time_limit(10);
-	sleep(2);
-	$data["update_retry"]++;
-	
-	$cutPosition = strrpos($content, "\n");
-	
-	$content = substr($content, 0, $cutPosition);
-	$updateTopic = $discourseApi->updatePost($content . "\n\n---\n\nUn problème est survenu", $postId, $config["discourse"]["user"]);
-}
-
-$topicId = isset($new_topic->apiresult->topic_id) ? $new_topic->apiresult->topic_id : 0;
-
-// We try to put what missed in the first call
-if ($cutPosition !== -1) {
-	$content = substr($discourse_content, $cutPosition + 1);
-	$data["missing"] = $content;
-	$discourseApi->createPost($content, $topicId, $config["discourse"]["user"]);
-}
-
-/***** UPGRADE THIS PART ******/
-
-
-$motion["mot_external_chat_id"] = $topicId;
-$motionBo->save($motion);
-
-
-	$data["discourse"] = array(); 
-	$data["discourse"]["url"] = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
-	$data["discourse"]["title"] = $discourse_title;
-
-	// add source
-	$source = array();
-	$source["sou_title"] = $discourse_title;
-	$source["sou_is_default_source"] = 0;
-	$source["sou_url"] = $data["discourse"]["url"];
-    $source["sou_articles"] = "[]";
-	$source["sou_content"] = $discourse_content;
-	$source["sou_type"] = "forum";
-	$source["sou_motion_id"] = $motion["mot_id"];
-	
-	$sourceBo->save($source);
-
-	// Add it to the agenda
-	$agenda["age_objects"][] = array("sourceId" => $source[$sourceBo->ID_FIELD]);
-
-
+    	$data["discourse"] = array(); 
+    	$data["discourse"]["url"] = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
+    	$data["discourse"]["title"] = $discourseTitle;
+    
+    	// add source
+    	$source = array();
+    	$source["sou_title"] = $discourseTitle;
+    	$source["sou_is_default_source"] = 0;
+    	$source["sou_url"] = $data["discourse"]["url"];
+        $source["sou_articles"] = "[]";
+    	$source["sou_content"] = $discourseContent;
+    	$source["sou_type"] = "forum";
+    	$source["sou_motion_id"] = $motion["mot_id"];
+    	
+    	$sourceBo->save($source);
+    
+    	// Add it to the agenda
+    	$agenda["age_objects"][] = array("sourceId" => $source[$sourceBo->ID_FIELD]);
     }
 }
 

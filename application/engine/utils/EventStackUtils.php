@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2081 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 

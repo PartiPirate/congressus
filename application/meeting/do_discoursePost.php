@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2017 Nino Treyssat-Vincent, Parti Pirate
+    Copyright 2017-2020 Nino Treyssat-Vincent, Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -22,6 +22,8 @@ if (!isset($api)) exit();
 include_once("config/discourse.config.php");
 include_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
+require_once("engine/utils/DiscourseUtils.php");
+
 $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 require_once("engine/utils/LogUtils.php");
@@ -61,35 +63,42 @@ else if (($userId !== $meeting["mee_president_member_id"]) AND ($userId !== $mee
 	<?php die("error : not_enough_right");
 }
 
-$discourse_category = $_REQUEST["discourse_category"];
-$discourse_title = $_REQUEST["discourse_title"];
+$discourseCategoryId = $_REQUEST["discourse_category"];
+$discourseTitle = $_REQUEST["discourse_title"];
 
-if (!isset($categories[$discourse_category]['id']) OR ($categories[$discourse_category]['id'] != $discourse_category)) {
-	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_permission_description") . " ($discourse_category)</div>";
-	exit("Unauthorized discourse category ($discourse_category)");
+if (!isset($categories[$discourseCategoryId]['id']) OR ($categories[$discourseCategoryId]['id'] != $discourseCategoryId)) {
+	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_permission_description") . " ($discourseCategoryId)</div>";
+	exit("Unauthorized discourse category ($discourseCategoryId)");
 }
 
 $report = $_REQUEST["report"];
 
-$new_topic = $discourseApi->createTopic($discourse_title, $report , $discourse_category, $config["discourse"]["user"], 0);
+//$response = $discourseApi->createTopic($discourseTitle, $report , $discourseCategoryId, $config["discourse"]["user"], 0);
+
+$topicId = createDiscourseTopic($discourseApi, $discourseTitle, $report , $discourseCategoryId, $config["discourse"]["user"]);
+
 /*
 echo "POST<br>";
 print_r($_REQUEST);
 echo "<br>POST<br>";
 
 echo "<br>";
-print_r($new_topic);
+print_r($response);
 echo "<br>";
 */
-$topicId = $new_topic->apiresult->topic_id;
 
+/*
+if () {
+	
+}
 $http_code_topic = $discourseApi->getTopic($topicId)->http_code;
+*/
 
-if ($http_code_topic=="200") {
-	$topic_url = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
-	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a target='_blank' href='$topic_url'>$topic_url</a></div>";
+if ($topicId) {
+	$topicUrl = $config["discourse"]["base"] . "/t/" . $topicId . "?u=congressus";
+	echo "<div id='discourse-result' class='alert alert-success' role='alert'>" . lang("export_discourse_success") . " <a target='_blank' href='$topicUrl'>$topicUrl</a></div>";
 }
 else {
-	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_discourse_fail") . " (code http $http_code_topic)</div>";
+	echo "<div id='discourse-result' class='alert alert-danger' role='alert'>" . lang("export_discourse_fail") . "</div>";
 }
 ?>

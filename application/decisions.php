@@ -346,7 +346,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 
 <?php   if (!$skeleton) {?>
 <?php
-        $page = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
+        $currentPage = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
         $numberOfObjectsPerPage = isset($_REQUEST["numberOfObjectsPerPage"]) ? $_REQUEST["numberOfObjectsPerPage"] : 10;
         $currentObjectIndex = 0;
         $numberOfObjects = 0;
@@ -381,10 +381,10 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 
                             $numberOfObjects++;
     
-                            if ($numberOfObjects < ($page * $numberOfObjectsPerPage + 1)) {
+                            if ($numberOfObjects < ($currentPage * $numberOfObjectsPerPage + 1)) {
                                 // this object has no impact
                             } 
-                            else if ($numberOfObjects > (($page + 1) * $numberOfObjectsPerPage)) {
+                            else if ($numberOfObjects > (($currentPage + 1) * $numberOfObjectsPerPage)) {
                                 // this object has no impact
                             }
                             else {
@@ -409,33 +409,9 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 
 ?>
     		<div role="tabpanel" class="tab-pane" id="<?php echo $id; ?>">
-    		    <div class="text-center pagination-container">
-<?php   if ($page > 0) { ?>
-    		        <a class="pagination-link btn btn-info" href="?page=0" data-page="0" title="La page premiere"><i class="glyphicon glyphicon-fast-backward"></i></a>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>" title="La page précédente"><i class="glyphicon glyphicon-backward"></i></a>
-<?php   } ?>
-
-<?php   if ($page > 1) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 2?>" data-page="<?=$page - 2?>"><?=$page - 1?></a>
-<?php   } ?>
-<?php   if ($page > 0) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>"><?=$page - 0?></a>
-<?php   } ?>
-                    <!-- page en cours -->
-                    <a class="pagination-link btn btn-primary active-page"  href="?page=<?=$page    ?>" data-page="<?=$page    ?>"><?=$page + 1?></a>
-
-<?php   if ($page < $numberOfPages - 1) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>"><?=$page + 2?></a>
-<?php   } ?>
-<?php   if ($page < $numberOfPages - 2) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 2?>" data-page="<?=$page + 2?>"><?=$page + 3?></a>
-<?php   } ?>
-
-<?php   if ($page < $numberOfPages - 1) { ?>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>" title="La page suivante"><i class="glyphicon glyphicon-forward"></i></a>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$numberOfPages - 1?>" data-page="<?=$numberOfPages - 1?>" title="La page dernière"><i class="glyphicon glyphicon-fast-forward"></i></a>
-<?php   } ?>
-    		    </div>
+    		    
+<?php   include("decisions_pagination.php"); ?>
+    		    
 <?php
 
             $meetings = $voter["meetings"];
@@ -474,8 +450,8 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 
                         $currentObjectIndex++;
                         
-                        if ($currentObjectIndex < ($page * $numberOfObjectsPerPage + 1)) continue;
-                        if ($currentObjectIndex > (($page + 1) * $numberOfObjectsPerPage)) continue;
+                        if ($currentObjectIndex < ($currentPage * $numberOfObjectsPerPage + 1)) continue;
+                        if ($currentObjectIndex > (($currentPage + 1) * $numberOfObjectsPerPage)) continue;
                     ?>
                      <div>
 
@@ -597,35 +573,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
             }
 ?>
 
-    		    <div class="text-center pagination-container">
-<?php   if ($page > 0) { ?>
-    		        <a class="pagination-link btn btn-info" href="?page=0" data-page="0" title="La page premiere"><i class="glyphicon glyphicon-fast-backward"></i></a>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>" title="La page précédente"><i class="glyphicon glyphicon-backward"></i></a>
-<?php   } ?>
-
-<?php   if ($page > 1) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 2?>" data-page="<?=$page - 2?>"><?=$page - 1?></a>
-<?php   } ?>
-<?php   if ($page > 0) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>"><?=$page - 0?></a>
-<?php   } ?>
-                    <!-- page en cours -->
-                    <a class="pagination-link btn btn-primary active-page"  href="?page=<?=$page    ?>" data-page="<?=$page    ?>"><?=$page + 1?></a>
-
-<?php   if ($page < $numberOfPages - 1) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>"><?=$page + 2?></a>
-<?php   } ?>
-<?php   if ($page < $numberOfPages - 2) { ?>
-                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 2?>" data-page="<?=$page + 2?>"><?=$page + 3?></a>
-<?php   } ?>
-
-<?php   if ($page < $numberOfPages - 1) { ?>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>" title="La page suivante"><i class="glyphicon glyphicon-forward"></i></a>
-    		        <a class="pagination-link btn btn-info" href="?page=<?=$numberOfPages - 1?>" data-page="<?=$numberOfPages - 1?>" title="La page dernière"><i class="glyphicon glyphicon-fast-forward"></i></a>
-<?php   } ?>
-    		    </div>
-
-
+<?php   include("decisions_pagination.php"); ?>
 
     		</div>
 

@@ -30,12 +30,28 @@ $(function() {
     $("body").on("click", "a.pagination-link", function(e) {
         e.preventDefault();
 
+        if ($(this).find("select").length) {
+            return;
+        }
+
         const page = $(this).data("page");
         const div = $(".tab-pane.active");
         const group = div.attr("id").replace("#", "");
 
         loadGroup(group, div, 0, page)
     })
+
+    $("body").on("change", "select.page-select", function(e) {
+        e.preventDefault();
+
+        const page = $(this).find("option:selected").data("page");
+        const div = $(".tab-pane.active");
+        const group = div.attr("id").replace("#", "");
+
+        loadGroup(group, div, 0, page)
+    })
+
+
 /*
     $('li.active a[data-toggle="tab"]').each(function () {
         var newlyGroup = $(this).attr("href");

@@ -129,6 +129,28 @@ class MeetingBo {
 			$queryBuilder->join("locations", "loc_meeting_id = $this->ID_FIELD AND loc_principal = 1", null, "left");
 		}
 
+		if (isset($filters["limit_to_viewable_groups"])) {
+			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD");
+
+			$groupWheres = array();
+			foreach($filters["limit_to_viewable_groups"] as $group) {
+				switch($group["type"]) {
+					case "theme";
+						$type = "dlp_themes";
+						break;
+					case "group";
+						$type = "dlp_groups";
+						break;
+					default:
+						$type = "";
+				}
+				$groupWhere = "(not_target_type = '" . $type . "' AND not_target_id = '" . $group["id"] . "')";
+				$groupWheres[] = $groupWhere;
+			}
+
+			$queryBuilder->where("(" . implode(" OR ", $groupWheres) . ")");
+		}
+
 		if (isset($filters["by_personae_group"])) {
 			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD AND not_target_type = 'dlp_groups'");
 			//print_r($this->config);
@@ -184,7 +206,9 @@ class MeetingBo {
 
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
+//		echo "<!--";
 //		echo showQuery($query, $args);
+//		echo "-->";
 //		error_log(showQuery($query, $args));
 
 		$results = array();

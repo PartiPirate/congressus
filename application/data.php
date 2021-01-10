@@ -80,7 +80,6 @@ $statement = $connection->prepare($query);
 $statement->execute(array());
 $byMonthVoters = $statement->fetchAll();
 
-
 $queryBuilder = QueryFactory::getInstance($config["database"]["dialect"]);
 
 $queryBuilder->select("votes");
@@ -701,9 +700,70 @@ $(function() {
 
 <h2 id="transactions">Flux financier entrant</h2>
 
-<div id="transactionChartsDiv"  style="width: 100%; ">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#transactionChartsDiv" aria-controls="transactionChartsDiv" role="tab" data-toggle="tab">Chart</a></li>
+    <li role="presentation"><a href="#transactionChartsData" aria-controls="transactionChartsData" role="tab" data-toggle="tab">Data</a></li>
+  </ul>
+
+<div class="tab-content">
+<div role="tabpanel" class="tab-pane active" id="transactionChartsDiv"  style="width: 100%; ">
 <canvas id="transactionCharts" style="width: 100%; height: 600px; " width=1140 height=600></canvas>
 </div>
+<div  role="tabpanel" class="tab-pane" id="transactionChartsData"  style="width: 100%; max-height: 600px; overflow: scroll;">
+	<table class="table table-condensed table-striped table-hover">
+		<thead>
+			<tr>
+				<th style="text-align: center; min-width: 125px;">Mois</th>
+				<th style="text-align: center; width: 12.5%;">Nombre d'adhésions</th>
+				<th style="text-align: center; width: 12.5%;">Nombre de dons</th>
+				<th style="text-align: center; width: 12.5%;">Montant adhésions</th>
+				<th style="text-align: center; width: 12.5%;">Montant dons</th>
+				<th style="text-align: center; width: 12.5%;">Moyenne adhésion</th>
+				<th style="text-align: center; width: 12.5%;">Moyenne don</th>
+				<th style="text-align: center; width: 12.5%;">Total</th>
+				<th style="text-align: center; width: 12.5%;">Cumul</th>
+			</tr>
+		</thead>
+		<tbody>
+<?php	foreach($byMonthTransactions as $index => $monthTransaction) {
+			if ($monthTransaction["tra_month_date"] > $maxMonth) continue;
+			$date = getDateTime($monthTransaction["tra_month_date"]);
+
+			$monthTransaction["tra_month_total_amount"] = $monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"];
+
+			$byMonthTransactions[$index]["tra_month_cumul_amount"] = $monthTransaction["tra_month_total_amount"];
+
+			if ($index != 0 && substr($monthTransaction["tra_month_date"], 4, 3) != "-01") {
+				$byMonthTransactions[$index]["tra_month_cumul_amount"] += $byMonthTransactions[$index - 1]["tra_month_cumul_amount"];
+			}
+
+			$monthTransaction["tra_month_cumul_amount"] = $byMonthTransactions[$index]["tra_month_cumul_amount"];
+
+?>
+			<tr>
+				<td><?=html_entity_decode(dateTranslate($date->format("F Y")))?></td>
+				<td style="text-align: right;"><?=$monthTransaction["tra_month_joins"]?></td>
+				<td style="text-align: right;"><?=$monthTransaction["tra_month_donations"]?></td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_join_amount"], 2, ',', ' ')?>&euro;</td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_donation_amount"], 2, ',', ' ')?>&euro;</td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_joins"] ? $monthTransaction["tra_month_join_amount"] / $monthTransaction["tra_month_joins"] : 0, 2, ',', ' ')?>&euro;</td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_donations"] ? $monthTransaction["tra_month_donation_amount"] / $monthTransaction["tra_month_donations"] : 0, 2, ',', ' ')?>&euro;</td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_total_amount"], 2, ',', ' ')?>&euro;</td>
+				<td style="text-align: right;"><?=number_format($monthTransaction["tra_month_cumul_amount"], 2, ',', ' ')?>&euro;</td>
+			</tr>
+<?php	} ?>
+		</tbody>
+	</table>
+</div>
+</div>
+
+
+
+
+
+
 
 <script>
 $(function() {

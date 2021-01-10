@@ -1,9 +1,9 @@
 /* global $ */
 
-function loadGroup(group, div, from) {
+function loadGroup(group, div, from, page) {
 //    console.log(group);
     
-    $.get("", {id: group}, function(data) {
+    $.get("", {id: group, page: page}, function(data) {
         var previousChildren = div.children();
         var children = $(data).find("#" + group).children();
         
@@ -26,6 +26,16 @@ $(function() {
         
         loadGroup(newlyGroup.replace("#", ""), newlyDiv, 0);
     });
+    
+    $("body").on("click", "a.pagination-link", function(e) {
+        e.preventDefault();
+
+        const page = $(this).data("page");
+        const div = $(".tab-pane.active");
+        const group = div.attr("id").replace("#", "");
+
+        loadGroup(group, div, 0, page)
+    })
 /*
     $('li.active a[data-toggle="tab"]').each(function () {
         var newlyGroup = $(this).attr("href");

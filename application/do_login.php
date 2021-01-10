@@ -60,8 +60,82 @@ if ($member) {
 
 	SessionUtils::setLanguage($member["pref_lang"], $_SESSION);
 
+	$sessionUserId = $member["id_adh"];
+
 	$_SESSION["member"] = json_encode($connectedMember);
-	$_SESSION["memberId"] = $member["id_adh"];
+	$_SESSION["memberId"] = $sessionUserId;
+	
+	require_once("engine/bo/GroupBo.php");
+
+	$groupFilters = array();
+	
+	$groupBo = GroupBo::newInstance($connection, $config);
+	$groups = $groupBo->getGroups(array("for_user_only" => (isset($_GET["limit"]) ? $sessionUserId : 0)));
+	
+	foreach($groups as $index => $group) {
+		$groups[$index]["gro_is_admin"] = $groupBo->isMemberAdmin($group, $sessionUserId);
+	}
+
+	$myVotingGroups = $groupBo->getMyGroups(array("userId" => $sessionUserId, "state" => "voting"));
+	$myEligibleGroups = $groupBo->getMyGroups(array("userId" => $sessionUserId, "state" => "eligible"));
+	
+	function isInMyGroup($theme, $mygroups) {
+		foreach($mygroups as $group) {
+			foreach($group["gro_themes"] as $myTheme) {
+				if ($myTheme["the_id"] == $theme["the_id"]) return true;
+			}
+		}
+	
+		return false;
+	}
+	
+	foreach($groups as $groupId => $group) {
+		
+	//	echo "#" . @$group["gro_label"] . "#" . "<br>";
+		
+		$groups[$groupId]["memberInGroup"] = false;
+
+		foreach($groups[$groupId]["gro_themes"] as $themeId => $theme) {
+			$groups[$groupId]["gro_themes"][$themeId]["memberInTheme"] = false;
+
+			foreach($groups[$groupId]["gro_themes"][$themeId]["fixation"]["members"] as $memberId => $member) {
+				if ($memberId == $sessionUserId) {
+					$groups[$groupId]["memberInGroup"] = true;
+					$groups[$groupId]["gro_themes"][$themeId]["memberInTheme"] = true;
+				}
+			}
+
+			unset($groups[$groupId]["gro_themes"][$themeId]["fixation"]["members"]);
+		}
+	}
+
+//	print_r($groups);
+
+	require_once("engine/bo/UserPropertyBo.php");
+	
+	function getUserProperty($property) {
+		global $userProperties;
+		
+		foreach($userProperties as $userProperty) {
+			if ($userProperty["upr_property"] == $property) {
+				return $userProperty;
+			}
+		}
+		
+		return array("upr_id" => 0, "upr_user_id" => 0, "upr_property" => $property);
+	}
+
+    $userPropertyBo = UserPropertyBo::newInstance($connection, $config);
+
+    $userProperties = $userPropertyBo->getByFilters(array("upr_user_id" => $sessionUserId));
+    $property = getUserProperty("viewable_groups");
+
+	if (isset($property["upr_value"]) && $property["upr_value"]) {
+		$_SESSION["viewable_groups"] = json_decode($property["upr_value"], true);
+	}
+
+	$_SESSION["groups"] = $groups;
+
 	addLog($_SERVER, $_SESSION, null, array("result" => "ok"));
 }
 else {

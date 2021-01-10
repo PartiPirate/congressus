@@ -34,6 +34,7 @@ $lang["menu_myLinks"]        = "Mes liens";
 $lang["menu_meetings"]       = "Réunions";
 $lang["menu_openMeetings"]   = "Réunions en cours";
 $lang["menu_calendar"]       = "Calendrier";
+$lang["menu_universe"]       = "Affichage";
 
 $lang["breadcrumb_about"]          = "À Propos";
 $lang["breadcrumb_administration"] = "Administration";

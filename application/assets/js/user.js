@@ -1,5 +1,5 @@
 /*
-    Copyright 2014-2017 Cédric Levieux, Parti Pirate
+    Copyright 2014-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -107,6 +107,19 @@ $(function() {
 				window.location.reload(true);
 			} else {
 			}
+		}, "json");
+	});
+});
+
+$(function() {
+	$("body").on("change", ".viewable-group-checkbox", function() {
+		const checkedGroups = [];
+
+		$(".viewable-group-checkbox:checked").each(function() {
+			checkedGroups[checkedGroups.length] = {type: $(this).data("type"), id: $(this).data("id")};
+		});
+		
+		$.post("do_set_viewable_groups.php", {"viewable_groups": checkedGroups}, function(data) {
 		}, "json");
 	});
 });

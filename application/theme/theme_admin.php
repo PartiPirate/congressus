@@ -198,7 +198,7 @@
 			<div class="form-group method external_results">
 				<label class="col-md-4 control-label" for="the_entry_condition">Condition d'entrée : </label>
 				<div class="col-md-8 text-right">
-					<textarea class="form-control" id="the_entry_condition" name="the_entry_condition" data-provide="markdown" data-hidden-buttons="cmdPreview"><?=$theme["the_entry_condition"]?></textarea>
+					<textarea class="form-control" id="the_entry_condition" name="the_entry_condition" data-provide="markdown" data-hidden-buttons="cmdPreview"><?=@$theme["the_entry_condition"]?></textarea>
 				</div>
 			</div>
 		</fieldset>

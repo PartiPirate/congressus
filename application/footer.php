@@ -59,7 +59,7 @@
 <script src="assets/js/jquery.template.js"></script>
 <script src="assets/js/bootstrap-treeview.js"></script>
 <script src="assets/js/strings.js"></script>
-<script src="assets/js/user.js"></script>
+<script src="assets/js/user.js?r=<?=filemtime("assets/js/user.js")?>"></script>
 <script src="assets/js/window.js"></script>
 <script src="assets/js/editor.js"></script>
 <script src="assets/js/search.js"></script>

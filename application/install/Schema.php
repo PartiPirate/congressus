@@ -240,7 +240,7 @@ $schema["tables"]["user_properties"] = array("fields" => array(), "indexes" => a
 $schema["tables"]["user_properties"]["fields"]["upr_id"] = array("type" => "bigint", "size" => 20, "null" => false, "primary" => true, "autoincrement" => 1);
 $schema["tables"]["user_properties"]["fields"]["upr_user_id"] = array("type" => "bigint", "size" => 20, "null" => false);
 $schema["tables"]["user_properties"]["fields"]["upr_property"] = array("type" => "varchar", "size" => 255, "null" => false);
-$schema["tables"]["user_properties"]["fields"]["upr_value"] = array("type" => "varchar", "size" => 255, "null" => false);
+$schema["tables"]["user_properties"]["fields"]["upr_value"] = array("type" => "varchar", "size" => 2048, "null" => false);
 $schema["tables"]["user_properties"]["uniques"]["upr_user_id_property_unique"] = array("upr_user_id", "upr_property");
 
 $schema["tables"]["votes"] = array("fields" => array(), "indexes" => array());

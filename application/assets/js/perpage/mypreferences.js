@@ -103,6 +103,7 @@ function responseHandler(data) {
 }
 
 $(function() {
+/*	
 	$("#userLoginInput, #xxxInput").keyup(function() {
 		var field = $(this).attr("id");
 
@@ -118,9 +119,9 @@ $(function() {
 		var timerHandler = timers[$(this).attr("id")];
 		if (timerHandler) clearTimeout(timerHandler);
 
-		timers[$(this).attr("id")] = setTimeout(eval("verify_" + field), 500);
+		timers[$(this).attr("id")] = setTimeout(eval("verify_" + field + "()"), 500);
 	});
-
+*/
 	$('#savePreferencesButton').click(function (e) {
 		e.preventDefault();
 

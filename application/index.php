@@ -46,12 +46,20 @@ $filters = array();
 $filters["with_status"] = array("closed");
 $filters["limit"] = 7;
 
+if (count($aggragatedViewableGroups)) {
+	$filters["limit_to_viewable_groups"] = $aggragatedViewableGroups;
+}
+
 $closedMeetings = $meetingBo->getByFilters($filters);
 
 $filters = array();
 $filters["with_status"] = array("waiting");
 $filters["older_first"] = true;
 $filters["limit"] = 7;
+
+if (count($aggragatedViewableGroups)) {
+	$filters["limit_to_viewable_groups"] = $aggragatedViewableGroups;
+}
 
 $waitingMeetings = $meetingBo->getByFilters($filters);
 
@@ -174,7 +182,10 @@ echo "</pre>";
 			<div class="panel-heading"><?php echo lang("meetings_upcoming_meetings"); ?></div>
 <?php	if (count($waitingMeetings)) { ?>
 			<ul class="list-group meetings">
-<?php		foreach($waitingMeetings as $meeting) { 
+<?php		$previousMeetingId = 0;
+			foreach($waitingMeetings as $meeting) { 
+				if ($previousMeetingId == $meeting["mee_id"]) continue;
+				$previousMeetingId = $meeting["mee_id"];
 
 				$date = getDateTime($meeting["mee_datetime"]);
 				$dateFormat = $date->format(lang("date_format"));
@@ -212,7 +223,10 @@ echo "</pre>";
 			<div class="panel-heading"><?php echo lang("meetings_ongoing_meetings"); ?></div>
 <?php	if (count($meetings)) { ?>
 			<ul class="list-group meetings">
-<?php		foreach($meetings as $meeting) { 
+<?php		$previousMeetingId = 0;
+			foreach($meetings as $meeting) { 
+				if ($previousMeetingId == $meeting["mee_id"]) continue;
+				$previousMeetingId = $meeting["mee_id"];
 
 				$start = new DateTime($meeting["mee_datetime"]);
 				$end = new DateTime($meeting["mee_datetime"]);
@@ -256,7 +270,10 @@ echo "</pre>";
 			<div class="panel-heading"><?php echo lang("meetings_passed_meetings"); ?></div>
 <?php	if (count($closedMeetings)) { ?>
 			<ul class="list-group meetings">
-<?php		foreach($closedMeetings as $meeting) { 
+<?php		$previousMeetingId = 0;
+			foreach($closedMeetings as $meeting) { 
+				if ($previousMeetingId == $meeting["mee_id"]) continue;
+				$previousMeetingId = $meeting["mee_id"];
 
 				$date = getDateTime($meeting["mee_datetime"]);
 				$dateFormat = $date->format(lang("date_format"));

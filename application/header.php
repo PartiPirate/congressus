@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2020 Cédric Levieux, Parti Pirate
+    Copyright 2015-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -249,16 +249,64 @@ if (isset($motion)) {
 	}
 }
 
+$sessionGroups = isset($_SESSION["groups"]) ? $_SESSION["groups"] : array();
+$viewableGroups = isset($_SESSION["viewable_groups"]) ? $_SESSION["viewable_groups"] : array();
+
+$aggragatedViewableGroups = $viewableGroups;
+
+foreach($sessionGroups as $sessionGroup) {
+	$checked = false;
+	foreach($viewableGroups as $viewableGroup) {
+		if ($viewableGroup["type"] == "group" && $sessionGroup["gro_id"] == $viewableGroup["id"]) {
+			$checked = true;
+			break;
+		}
+	}
+
+	if ($checked) {
+		foreach($sessionGroup["gro_themes"] as $sessionTheme) {	
+			$aggragatedViewableGroups[] = array("type" => "theme", "id" => $sessionTheme["the_id"]);
+		}
+	}
+}
+
 $meetingBo = MeetingBo::newInstance($connection, $config);
 
 $filters = array();
 $filters["with_status"] = array("open");
+
+if (count($aggragatedViewableGroups)) {
+	$filters["limit_to_viewable_groups"] = $aggragatedViewableGroups;
+}
 
 if ($connection) {
 	$meetings = $meetingBo->getByFilters($filters);
 }
 else {
 	$meetings = array();
+}
+
+function renderLiMenuItem($linkPage, $linkLabel = null) {
+	if (!$linkLabel) $linkLabel = "menu_$linkPage";
+
+	global $page;
+
+	$render	= '<li ';
+
+	if ($page == $linkPage) {
+		$render .= 'class="active"';
+	}
+
+	$render .= '><a href="'.$linkPage.'.php">';
+	$render .= lang($linkLabel);
+
+	if ($page == $linkPage) {
+		$render .= ' <span class="sr-only">(current)</span>';
+	}
+
+	$render .= '</a></li>';
+	
+	return $render;
 }
 
 ?>
@@ -363,24 +411,64 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="otb-navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "calendar") echo 'class="active"'; ?>><a href="calendar.php"><?php echo lang("menu_calendar"); ?><?php if ($page == "calendar") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "decisions") echo 'class="active"'; ?>><a href="decisions.php"><?php echo lang("menu_decisions"); ?><?php if ($page == "decisions") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<li <?php if ($page == "groups") echo 'class="active"'; ?>><a href="groups.php"><?php echo lang("menu_groups"); ?><?php if ($page == "groups") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<?= renderLiMenuItem("index") ?>
+					<?= renderLiMenuItem("calendar") ?>
+					<?= renderLiMenuItem("decisions") ?>
+					<?= renderLiMenuItem("groups") ?>
 
-					<?php 	if ($isConnected) {?>
-					<li <?php if ($page == "myVotes") echo 'class="active"'; ?>><a href="myVotes.php"><?php echo lang("menu_myVotes"); ?><?php if ($page == "myVotes") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<?php 	}?>
+<?php 			if ($isConnected) { ?>
+
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="universe-menu"><?php echo lang("menu_universe"); ?> <span
+							class="caret"></span> </a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="universe-menu">
+
+<?php 				foreach($sessionGroups as $sessionGroup) {
+	
+						$checked = false;
+						foreach($viewableGroups as $viewableGroup) {
+							if ($viewableGroup["type"] == "group" && $sessionGroup["gro_id"] == $viewableGroup["id"]) {
+								$checked = true;
+								break;
+							}
+						}
+	
+						if ($sessionGroup["gro_label"]) {?>
+						<li><label for="gro_id_<?=$sessionGroup["gro_id"]?>" style="display: block; clear: both; white-space: nowrap; padding: 3px 20px 3px 3px; font-weight: normal; line-height: 1.42857143; margin: 0;"><input type="checkbox" <?=$checked ? "checked='checked'" : ""?> class="viewable-group-checkbox" data-type="group" data-id="<?=$sessionGroup["gro_id"]?>" id="gro_id_<?=$sessionGroup["gro_id"]?>" style="position: relative; top: 2px;"> <?=$sessionGroup["gro_label"]?><?php if (isset($sessionGroup["memberInGroup"]) && $sessionGroup["memberInGroup"]) { echo " <span class=\"glyphicon glyphicon-ok\" data-toggle=\"tooltip\" data-placement=\"right\"></span>"; } ?></label></li>
+<?php 					}
+						else { 
+							foreach($sessionGroup["gro_themes"] as $sessionTheme) {	
+
+								$checked = false;
+								foreach($viewableGroups as $viewableGroup) {
+									if ($viewableGroup["type"] == "theme" && $sessionTheme["the_id"] == $viewableGroup["id"]) {
+										$checked = true;
+										break;
+									}
+								}
+
+							?>
+						<li><label for="the_id_<?=$sessionTheme["the_id"]?>" style="display: block; clear: both; white-space: nowrap; padding: 3px 20px 3px 3px; font-weight: normal; line-height: 1.42857143; margin: 0;"><input type="checkbox" <?=$checked ? "checked='checked'" : ""?> class="viewable-group-checkbox" data-type="theme" data-id="<?=$sessionTheme["the_id"]?>" id="the_id_<?=$sessionTheme["the_id"]?>" style="position: relative; top: 2px;"> <?=$sessionTheme["the_label"]?><?php if (isset($sessionTheme["memberInTheme"]) && $sessionTheme["memberInTheme"]) { echo " <span class=\"glyphicon glyphicon-ok\" data-toggle=\"tooltip\" data-placement=\"right\"></span>"; } ?></label></li>
+<?php						}
+						}						
+					} ?>
+
+
+						</ul>
+					</li>
+					
+					<?= renderLiMenuItem("myVotes") ?>
+
+<?php			} ?>
 					
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="meetings-menu"><?php echo lang("menu_meetings"); ?> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="meetings-menu">
-					<?php 	if ($isConnected) {?>
-							<li <?php if ($page == "createMeeting") echo 'class="active"'; ?>><a href="createMeeting.php"><?php echo lang("menu_createMeeting"); ?><?php if ($page == "createMeeting") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-							<li <?php if ($page == "createQuick") echo 'class="active"'; ?>><a href="createQuick.php"><?php echo lang("menu_createQuick"); ?><?php if ($page == "createQuick") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-							<li <?php if ($page == "myMeetings") echo 'class="active"'; ?>><a href="myMeetings.php"><?php echo lang("menu_myMeetings"); ?><?php if ($page == "myMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
-					<?php 	}?>
-							<li <?php if ($page == "groupMeetings") echo 'class="active"'; ?>><a href="groupMeetings.php"><?php echo lang("menu_groupMeetings"); ?><?php if ($page == "groupMeetings") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+						<?php 	if ($isConnected) {
+									echo renderLiMenuItem("createMeeting");
+									echo renderLiMenuItem("createQuick");
+									echo renderLiMenuItem("myMeetings");
+								} ?>
+							<?= renderLiMenuItem("groupMeetings") ?>
 
 							<li style="display: none;" role="separator" class="divider export-divider"></li>
 
@@ -420,7 +508,7 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 ?>
 			
 					<?php 	if ($isAdministrator) {?>
-					<li <?php if ($page == "administration") echo 'class="active"'; ?>><a href="administration.php"><?php echo lang("menu_administration"); ?><?php if ($page == "administration") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+						<?= renderLiMenuItem("administration") ?>
 					<?php 	}?>
 
 				</ul>
@@ -446,8 +534,8 @@ var gamifiedUser = <?php echo ($gamifiedUser ? json_encode($gamifiedUser["data"]
 								data-toggle="tooltip" data-placement="top" title="<?php echo GaletteBo::showIdentity($sessionUser); ?>"><?php echo GaletteBo::showIdentity($sessionUser); ?> <span id="mybadgesInfoSpan" class="glyphicon glyphicon-tag text-info hidden"></span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
-							<li><a href="myLinks.php"><?php echo lang("menu_myLinks"); ?></a></li>
+							<?= renderLiMenuItem("mypreferences") ?>
+							<?= renderLiMenuItem("myLinks") ?>
 <?php 	if ($gamifierClient) { ?>
 							<li id="mybadgesLi" class=""><a href="myBadges.php"><?php echo lang("menu_mybadges"); ?></a></li>
 <?php	} ?>

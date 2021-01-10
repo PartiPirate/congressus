@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -346,13 +346,96 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 
 <?php   if (!$skeleton) {?>
 <?php
+        $page = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
+        $numberOfObjectsPerPage = isset($_REQUEST["numberOfObjectsPerPage"]) ? $_REQUEST["numberOfObjectsPerPage"] : 10;
+        $currentObjectIndex = 0;
+        $numberOfObjects = 0;
+
+        // Beginning of pagination
+
+		foreach($objects as $voterIndex => $voter) {
+		    $id = $voter["voter"]["not_target_type"] . "_" . $voter["voter"]["not_target_id"];
+
+		    if ($groupId != $id) continue; 
+
+            $meetings = $voter["meetings"];
+
+            uasort($meetings, 'meetingCompare');
+
+            foreach($meetings as $meeting) { 
+                foreach($meeting["agendas"] as $agenda) { 
+
+                    $agendaObjects = json_decode($agenda["age_objects"], true);
+                    $agendaObjects = array_reverse($agendaObjects);
+    
+                    foreach($agendaObjects as $agendaObject) {
+                        foreach($agenda["objects"] as $object) { 
+                            if (isset($agendaObject["motionId"]) && isset($object["mot_id"]) && $object["mot_id"] == $agendaObject["motionId"]) {
+                            }
+                            else if (isset($agendaObject["conclusionId"]) && isset($object["con_id"]) && $object["con_id"] == $agendaObject["conclusionId"]) {
+                            }
+                            else {
+                                // neither a conclusion neither a motion, skip it
+                                continue;
+                            }
+
+                            $numberOfObjects++;
+    
+                            if ($numberOfObjects < ($page * $numberOfObjectsPerPage + 1)) {
+                                // this object has no impact
+                            } 
+                            else if ($numberOfObjects > (($page + 1) * $numberOfObjectsPerPage)) {
+                                // this object has no impact
+                            }
+                            else {
+                                // we must show the whole object
+                                $objects[$voterIndex]["meetings"][$meeting["mee_id"]]["mee_to_be_shown"] = true;
+                                $objects[$voterIndex]["meetings"][$meeting["mee_id"]]["agendas"][$agenda["age_id"]]["age_to_be_shown"] = true;
+                            }
+                        }
+                    }
+                }
+            }
+		}
+		
+		$numberOfPages = ceil($numberOfObjects / $numberOfObjectsPerPage);
+
+        // End of pagination
+
 		foreach($objects as $voterIndex => $voter) {
 		    $id = $voter["voter"]["not_target_type"] . "_" . $voter["voter"]["not_target_id"];
 		    
-		    if ($groupId != $id) continue; 
+		    if ($groupId != $id) continue;
 
 ?>
     		<div role="tabpanel" class="tab-pane" id="<?php echo $id; ?>">
+    		    <div class="text-center pagination-container">
+<?php   if ($page > 0) { ?>
+    		        <a class="pagination-link btn btn-info" href="?page=0" data-page="0" title="La page premiere"><i class="glyphicon glyphicon-fast-backward"></i></a>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>" title="La page précédente"><i class="glyphicon glyphicon-backward"></i></a>
+<?php   } ?>
+
+<?php   if ($page > 1) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 2?>" data-page="<?=$page - 2?>"><?=$page - 1?></a>
+<?php   } ?>
+<?php   if ($page > 0) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>"><?=$page - 0?></a>
+<?php   } ?>
+                    <!-- page en cours -->
+                    <a class="pagination-link btn btn-primary active-page"  href="?page=<?=$page    ?>" data-page="<?=$page    ?>"><?=$page + 1?></a>
+
+<?php   if ($page < $numberOfPages - 1) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>"><?=$page + 2?></a>
+<?php   } ?>
+<?php   if ($page < $numberOfPages - 2) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 2?>" data-page="<?=$page + 2?>"><?=$page + 3?></a>
+<?php   } ?>
+
+<?php   if ($page < $numberOfPages - 1) { ?>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>" title="La page suivante"><i class="glyphicon glyphicon-forward"></i></a>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$numberOfPages - 1?>" data-page="<?=$numberOfPages - 1?>" title="La page dernière"><i class="glyphicon glyphicon-fast-forward"></i></a>
+<?php   } ?>
+    		    </div>
 <?php
 
             $meetings = $voter["meetings"];
@@ -363,7 +446,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                 $date = new DateTime($meeting["mee_datetime"]);
                 $date = $date->format(lang("date_format"));
             ?>
-             <div>
+             <div style="display: <?=isset($meeting["mee_to_be_shown"]) ? "block" : "none" ?>">
                  <h2><?php echo $meeting["mee_label"]; ?> du <?php echo $date; ?></h2>
                  
 <?php
@@ -373,20 +456,26 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                     $agendaObjects = array_reverse($agendaObjects);
                 
                 ?>
-                 <div>
+                 <div style="display: <?=isset($agenda["age_to_be_shown"]) ? "block" : "none" ?>">
                      <h3><?php echo $agenda["age_label"]; ?> <a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>#agenda-<?php echo $agenda["age_id"]; ?>|" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a></h3>
 
 <?php
                     foreach($agendaObjects as $agendaObject) {
                     foreach($agenda["objects"] as $object) { 
-                    
+
                         if (isset($agendaObject["motionId"]) && isset($object["mot_id"]) && $object["mot_id"] == $agendaObject["motionId"]) {
                         }
                         else if (isset($agendaObject["conclusionId"]) && isset($object["con_id"]) && $object["con_id"] == $agendaObject["conclusionId"]) {
                         }
                         else {
+                            // neither a conclusion neither a motion, skip it
                             continue;
                         }
+
+                        $currentObjectIndex++;
+                        
+                        if ($currentObjectIndex < ($page * $numberOfObjectsPerPage + 1)) continue;
+                        if ($currentObjectIndex > (($page + 1) * $numberOfObjectsPerPage)) continue;
                     ?>
                      <div>
 
@@ -498,20 +587,55 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 ?>
                      
                      
-                 </div>           
+                </div>           
 <?php
             }
 ?>
-                 
-             </div>           
+
+            </div>           
 <?php
             }
 ?>
+
+    		    <div class="text-center pagination-container">
+<?php   if ($page > 0) { ?>
+    		        <a class="pagination-link btn btn-info" href="?page=0" data-page="0" title="La page premiere"><i class="glyphicon glyphicon-fast-backward"></i></a>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>" title="La page précédente"><i class="glyphicon glyphicon-backward"></i></a>
+<?php   } ?>
+
+<?php   if ($page > 1) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 2?>" data-page="<?=$page - 2?>"><?=$page - 1?></a>
+<?php   } ?>
+<?php   if ($page > 0) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page - 1?>" data-page="<?=$page - 1?>"><?=$page - 0?></a>
+<?php   } ?>
+                    <!-- page en cours -->
+                    <a class="pagination-link btn btn-primary active-page"  href="?page=<?=$page    ?>" data-page="<?=$page    ?>"><?=$page + 1?></a>
+
+<?php   if ($page < $numberOfPages - 1) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>"><?=$page + 2?></a>
+<?php   } ?>
+<?php   if ($page < $numberOfPages - 2) { ?>
+                    <a class="pagination-link btn btn-info"                 href="?page=<?=$page + 2?>" data-page="<?=$page + 2?>"><?=$page + 3?></a>
+<?php   } ?>
+
+<?php   if ($page < $numberOfPages - 1) { ?>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$page + 1?>" data-page="<?=$page + 1?>" title="La page suivante"><i class="glyphicon glyphicon-forward"></i></a>
+    		        <a class="pagination-link btn btn-info" href="?page=<?=$numberOfPages - 1?>" data-page="<?=$numberOfPages - 1?>" title="La page dernière"><i class="glyphicon glyphicon-fast-forward"></i></a>
+<?php   } ?>
+    		    </div>
+
+
+
     		</div>
+
+
+
 <?php
             
         }
 ?>
+
 <?php } ?>
 
 

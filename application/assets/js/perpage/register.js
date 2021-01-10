@@ -156,7 +156,7 @@ $(function() {
 		var timerHandler = timers[$(this).attr("id")];
 		if (timerHandler) clearTimeout(timerHandler);
 
-		timers[$(this).attr("id")] = setTimeout(eval("verify_" + field), 500);
+		timers[$(this).attr("id")] = setTimeout(eval("verify_" + field + "()"), 500);
 	});
 
 	$('#registerButton').click(function (e) {

@@ -7,8 +7,8 @@ function loadGroup(group, div, from, page) {
         var previousChildren = div.children();
         var children = $(data).find("#" + group).children();
         
-        div.append(children);
         previousChildren.remove();
+        div.append(children);
         
         children.find('[data-toggle="tooltip"]').tooltip();
     }, "html");
@@ -39,7 +39,7 @@ $(function() {
         const group = div.attr("id").replace("#", "");
 
         loadGroup(group, div, 0, page)
-    })
+    });
 
     $("body").on("change", "select.page-select", function(e) {
         e.preventDefault();
@@ -49,8 +49,23 @@ $(function() {
         const group = div.attr("id").replace("#", "");
 
         loadGroup(group, div, 0, page)
-    })
+    });
 
+    $("body").on("click", "button.btn-explanation-toggler", function(e) {
+        e.preventDefault();
+
+        $(this).toggleClass("btn-active").find("i").toggleClass("glyphicon-folder-close").toggleClass("glyphicon-folder-open");
+        
+        const propositionId = $(this).data("proposition-id");
+        const explanationTr = $("#proposition-explanation-" + propositionId);
+        
+        if ($(this).hasClass("btn-active")) {
+            explanationTr.show();
+        }
+        else {
+            explanationTr.hide();
+        }
+    });
 
 /*
     $('li.active a[data-toggle="tab"]').each(function () {

@@ -21,12 +21,27 @@ include_once("header.php");
 require_once("engine/bo/TagBo.php");
 require_once("engine/bo/GuestBo.php");
 require_once("engine/bo/SearchBo.php");
+require_once("engine/utils/Parsedown.php");
+require_once("engine/utils/ParsedownExtra.php");
+require_once("engine/emojione/autoload.php");
+
+$emojiClient = new Emojione\Client(new Emojione\Ruleset());
+$parsedown = new ParsedownExtra();
 
 function meetingCompare($meetingA, $meetingB) {
     if ($meetingA["mee_datetime"] == $meetingB["mee_datetime"]) {
         return 0;
     }
     return ($meetingA["mee_datetime"] > $meetingB["mee_datetime"]) ? -1 : 1;
+}
+
+function sortByPower($propA, $propB) {
+    $explanationA = json_decode($propA["mpr_explanation"], true);
+    $explanationB = json_decode($propB["mpr_explanation"], true);
+
+    if ($explanationA["power"] == $explanationB["power"]) return 0;
+    
+    return $explanationA["power"] > $explanationB["power"] ? 1 : -1;
 }
 
 $skeleton = true;
@@ -113,6 +128,7 @@ foreach($propositions as $proposition) {
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]] = array();
 
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["age_id"] = $proposition["age_id"];
+        $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["age_description"] = $proposition["age_description"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["age_label"] = $proposition["age_label"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["age_objects"] = $proposition["age_objects"];
         $objects[$voterIndex]["meetings"][$proposition["mee_id"]]["agendas"][$proposition["age_id"]]["objects"] = array();
@@ -371,8 +387,10 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                     foreach($agendaObjects as $agendaObject) {
                         foreach($agenda["objects"] as $object) { 
                             if (isset($agendaObject["motionId"]) && isset($object["mot_id"]) && $object["mot_id"] == $agendaObject["motionId"]) {
+//                                if ($object["mot_win_limit"] != -3) continue;
                             }
                             else if (isset($agendaObject["conclusionId"]) && isset($object["con_id"]) && $object["con_id"] == $agendaObject["conclusionId"]) {
+                                if (!trim($object["con_text"])) continue;
                             }
                             else {
                                 // neither a conclusion neither a motion, skip it
@@ -410,10 +428,9 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 ?>
     		<div role="tabpanel" class="tab-pane" id="<?php echo $id; ?>">
     		    
-<?php   include("decisions_pagination.php"); ?>
+<?php   include("decisions/decisions_pagination.php"); ?>
     		    
 <?php
-
             $meetings = $voter["meetings"];
 
             uasort($meetings, 'meetingCompare');
@@ -422,8 +439,8 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                 $date = new DateTime($meeting["mee_datetime"]);
                 $date = $date->format(lang("date_format"));
             ?>
-             <div style="display: <?=isset($meeting["mee_to_be_shown"]) ? "block" : "none" ?>">
-                 <h2><?php echo $meeting["mee_label"]; ?> du <?php echo $date; ?></h2>
+            <div style="display: <?=isset($meeting["mee_to_be_shown"]) ? "block" : "none" ?>">
+                <h2><?php echo $meeting["mee_label"]; ?> du <?php echo $date; ?></h2>
                  
 <?php
                 foreach($meeting["agendas"] as $agenda) { 
@@ -433,132 +450,53 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                 
                 ?>
                  <div style="display: <?=isset($agenda["age_to_be_shown"]) ? "block" : "none" ?>">
-                     <h3><?php echo $agenda["age_label"]; ?> <a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>#agenda-<?php echo $agenda["age_id"]; ?>|" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a></h3>
+                    <h3><?php echo $agenda["age_label"]; ?> <a href="meeting.php?id=<?php echo $meeting["mee_id"]; ?>#agenda-<?php echo $agenda["age_id"]; ?>|" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a></h3>
 
 <?php
                     foreach($agendaObjects as $agendaObject) {
-                    foreach($agenda["objects"] as $object) { 
+                        foreach($agenda["objects"] as $object) { 
 
-                        if (isset($agendaObject["motionId"]) && isset($object["mot_id"]) && $object["mot_id"] == $agendaObject["motionId"]) {
-                        }
-                        else if (isset($agendaObject["conclusionId"]) && isset($object["con_id"]) && $object["con_id"] == $agendaObject["conclusionId"]) {
-                        }
-                        else {
-                            // neither a conclusion neither a motion, skip it
-                            continue;
-                        }
-
-                        $currentObjectIndex++;
-                        
-                        if ($currentObjectIndex < ($currentPage * $numberOfObjectsPerPage + 1)) continue;
-                        if ($currentObjectIndex > (($currentPage + 1) * $numberOfObjectsPerPage)) continue;
+                            if (isset($agendaObject["motionId"]) && isset($object["mot_id"]) && $object["mot_id"] == $agendaObject["motionId"]) {
+//                                if ($object["mot_win_limit"] != -3) continue;
+                            }
+                            else if (isset($agendaObject["conclusionId"]) && isset($object["con_id"]) && $object["con_id"] == $agendaObject["conclusionId"]) {
+                                if (!trim($object["con_text"])) continue;
+                            }
+                            else {
+                                // neither a conclusion neither a motion, skip it
+                                continue;
+                            }
+    
+                            $currentObjectIndex++;
+                            
+                            if ($currentObjectIndex < ($currentPage * $numberOfObjectsPerPage + 1)) continue;
+                            if ($currentObjectIndex > (($currentPage + 1) * $numberOfObjectsPerPage)) continue;
                     ?>
-                     <div>
+                    <div>
 
                         <ul class="list-group objects">
 
-<?php                       if (isset($object["con_id"])) { ?>
-
-                    		<li id="conclusion-<?php echo $object["con_id"]; ?>"
-                    				class="list-group-item conclusion" data-id="<?php echo $object["con_id"]; ?>">
-                    			<span class="fa fa-lightbulb-o"></span>
-                    			<span class="conclusion-text"><?php echo $object["con_text"]; ?></span>
-                    		</li>
-
-<?php                       }
-                            else if (isset($object["mot_id"])) { ?>
-
-
-                    		<li id="motion-<?php echo $object["mot_id"]; ?>" data-id="<?php echo $object["mot_id"]; ?>" class="list-group-item motion">
-                    			<h4>
-                    				<span class="fa fa-archive"></span>
-                    				<span class="motion-title"><?php echo $object["mot_title"]; ?></span>
-                    			</h4>
-                    
-                    			<div class="motion-description">
-                    				<div class="motion-description-text"><?php echo $object["mot_description"]; ?></div>
-                    			</div>
-                    
-                    			<div class="motion-propositions">
-                    			    
-<?php                           foreach($object["propositions"] as $proposition) {
-
-//                                    print_r($proposition);
-
-                                    $propositionClass = "text-danger";
-                                    if ($proposition["mpr_winning"] == "1") {
-                                        $propositionClass = "text-success";
-                                    }
-?>
-	<div id="proposition-<?php echo $proposition["mpr_id"]; ?>"
-			class="row proposition <?php echo $propositionClass; ?>" data-id="<?php echo $proposition["mpr_id"]; ?>"
-			style="margin: 2px; min-height:22px; display: block;">
-		<span class="pull-left fa fa-cube"></span>
-		<span class="pull-left proposition-label"><?php echo $proposition["mpr_label"]; ?></span>
-		<span class="pull-left powers"></span>
-		<span class="pull-left"> : </span>
-		
-		<ul class="pull-left vote-container">
-<?php   
-//		        echo $proposition["mpr_explanation"];
-		        $explanation = json_decode($proposition["mpr_explanation"], true);
-//		        print_r($explanation);
-		        if (isset($explanation["votes"])) {
-		            foreach($explanation["votes"] as $vote) { 
-		                if (!$vote["power"]) continue;
-?>
-				<li class="vote">
-        			<span class="nickname"><?php echo $vote["memberLabel"]; ?></span>
-        			<span
-        				title="Pouvoir du vote"
-        				data-toggle="tooltip" data-placement="bottom" 
-        				class="badge power">
-        			    <?php    if ($object["mot_win_limit"] == -2) { 
-        			                 echo lang("motion_majorityJudgment_" . $vote["power"]);
-        			                 echo " / ";
-        				             echo $vote["votePower"];
-        			             }
-        			             else if ($vote["votePower"]) { ?>
-        			    <?php        echo $vote["power"]; ?>
-        			    
-        			    <?php        if ($vote["votePower"] != $vote["power"]) { ?>
-        				/ <?php          echo $vote["votePower"]; ?>
-        				<?php        } ?>
-        				<?php    } else echo "0"; ?>
-        				
-        				</span>
-        		</li>
-		<?php       }
-		        }?>
-		</ul>
-	</div>
-<?php                           } ?>
-                    			    
-                    			    
-                    			</div>
-                    			<?php   if (count($object["mot_tags"])) { ?>
-                    			<div class="motion-tags">
-                    			    <?php   foreach($object["mot_tags"] as $tag) { ?>
-                    			        <span class="badge"><?php echo $tag["tag_label"]; ?></span>
-                    			    <?php   } ?>
-                    			</div>
-                    			<?php   } ?>
-                    		</li>
-
-
-<?php                       }
-                            else { ?>
-                            
-                                <?php print_r($object); ?>
-                            
-<?php                       }?>
+<?php                       
+                            if (isset($object["con_id"])) { 
+                                include("decisions/decisions_conclusion_default.php");
+                            }
+                            else if (isset($object["mot_id"])) {
+                                if (file_exists("decisions/decisions_motion_" . $groupId . ".php")) {
+                                    include("decisions/decisions_motion_" . $groupId . ".php");
+                                }
+                                else {
+                                    include("decisions/decisions_motion_default.php");
+                                }
+                            }
+                            else {
+                                print_r($object);
+                            }?>
 
                         </ul>
 
-
-                     </div>           
+                    </div>           
 <?php
-                    }
+                        }
                     }
 ?>
                      
@@ -573,7 +511,7 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
             }
 ?>
 
-<?php   include("decisions_pagination.php"); ?>
+<?php   include("decisions/decisions_pagination.php"); ?>
 
     		</div>
 
@@ -599,8 +537,30 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
 <div class="lastDiv"></div>
 
 <script>
+<?php
+
+$translatons = array();
+foreach($config["congressus"]["ballot_majority_judgment"] as $value) {
+	$translatons[] = lang("motion_majorityJudgment_" . $value, false);
+}
+
+?>
+
+var majority_judgement_translations = <?php echo json_encode($translatons); ?>
+
+<?php
+
+$translatons = array();
+$translatons[] = lang("motion_approval_" . 1, false);
+$translatons[] = lang("motion_approval_" . 2, false);
+
+?>
+
+var approval_translations = <?php echo json_encode($translatons); ?>
 </script>
 <?php include("footer.php");?>
+<script src="assets/js/perpage/meeting_charts.js"></script>
+
 
 </body>
 </html>

@@ -212,11 +212,11 @@ foreach($propositionAnalisys as $month => &$monthMotions) {
 
 <div>
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#memberChartsDiv" aria-controls="memberChartsDiv" role="tab" data-toggle="tab">Chart</a></li>
-    <li role="presentation"><a href="#memberChartsData" aria-controls="memberChartsData" role="tab" data-toggle="tab">Data</a></li>
-  </ul>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="active"><a href="#memberChartsDiv" aria-controls="memberChartsDiv" role="tab" data-toggle="tab">Chart</a></li>
+	<li role="presentation"><a href="#memberChartsData" aria-controls="memberChartsData" role="tab" data-toggle="tab">Data</a></li>
+</ul>
 
 <div class="tab-content">
 <div  role="tabpanel" class="tab-pane active" id="memberChartsDiv"  style="width: 100%; ">
@@ -701,11 +701,11 @@ $(function() {
 <h2 id="transactions">Flux financier entrant</h2>
 
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#transactionChartsDiv" aria-controls="transactionChartsDiv" role="tab" data-toggle="tab">Chart</a></li>
-    <li role="presentation"><a href="#transactionChartsData" aria-controls="transactionChartsData" role="tab" data-toggle="tab">Data</a></li>
-  </ul>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="active"><a href="#transactionChartsDiv" aria-controls="transactionChartsDiv" role="tab" data-toggle="tab">Chart</a></li>
+	<li role="presentation"><a href="#transactionChartsData" aria-controls="transactionChartsData" role="tab" data-toggle="tab">Data</a></li>
+</ul>
 
 <div class="tab-content">
 <div role="tabpanel" class="tab-pane active" id="transactionChartsDiv"  style="width: 100%; ">
@@ -727,7 +727,51 @@ $(function() {
 			</tr>
 		</thead>
 		<tbody>
-<?php	foreach($byMonthTransactions as $index => $monthTransaction) {
+<?php	
+		$totalAmount = 0;
+		$numberOfMonths = 0;
+
+		foreach($byMonthTransactions as $index => $monthTransaction) {
+			$totalAmount += $monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"];
+			$numberOfMonths++;
+		}
+
+		$avgAmount = $totalAmount / $numberOfMonths;
+
+		$standardDeviation = 0;
+
+		foreach($byMonthTransactions as $index => $monthTransaction) {
+			$standardDeviation += ($monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"] - $avgAmount) * ($monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"] - $avgAmount);
+		}
+
+		$standardDeviation = sqrt($standardDeviation) / $numberOfMonths;
+
+		$totalAmount = 0;
+		$numberOfMonths = 0;
+		$numberOfStandardDeviations = 5;
+
+		foreach($byMonthTransactions as $index => $monthTransaction) {
+			if ($monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"] > $avgAmount + $numberOfStandardDeviations * $standardDeviation) {
+				$byMonthTransactions[$index]["tra_excluded"] = 1;
+			}
+			else {
+				$byMonthTransactions[$index]["tra_excluded"] = 0;
+				$totalAmount += $monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"];
+				$numberOfMonths++;
+			}
+		}
+
+		$avgAmount2 = $totalAmount / $numberOfMonths;
+		$standardDeviation2 = 0;
+
+		foreach($byMonthTransactions as $index => $monthTransaction) {
+			if ($monthTransaction["tra_excluded"]) continue;
+			$standardDeviation2 += ($monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"] - $avgAmount2) * ($monthTransaction["tra_month_join_amount"] + $monthTransaction["tra_month_donation_amount"] - $avgAmount2);
+		}
+
+		$standardDeviation2 = sqrt($standardDeviation2) / $numberOfMonths;
+
+		foreach($byMonthTransactions as $index => $monthTransaction) {
 			if ($monthTransaction["tra_month_date"] > $maxMonth) continue;
 			$date = getDateTime($monthTransaction["tra_month_date"]);
 
@@ -742,7 +786,7 @@ $(function() {
 			$monthTransaction["tra_month_cumul_amount"] = $byMonthTransactions[$index]["tra_month_cumul_amount"];
 
 ?>
-			<tr>
+			<tr class="<?=$monthTransaction["tra_excluded"] ? "success" : ($monthTransaction["tra_month_total_amount"] > $avgAmount ? "info" : ($monthTransaction["tra_month_total_amount"] > $avgAmount2 ? "text-info" : ""))?>">
 				<td><?=html_entity_decode(dateTranslate($date->format("F Y")))?></td>
 				<td style="text-align: right;"><?=$monthTransaction["tra_month_joins"]?></td>
 				<td style="text-align: right;"><?=$monthTransaction["tra_month_donations"]?></td>
@@ -756,6 +800,18 @@ $(function() {
 <?php	} ?>
 		</tbody>
 	</table>
+	<div>
+		Montant moyen par mois : <?=number_format($avgAmount, 2, ',', ' ')?>&euro;
+	</div>
+	<div>
+		Ecart-type : <?=number_format($standardDeviation, 2, ',', ' ')?>&euro;
+	</div>
+	<div>
+		Montant moyen par mois après exclusion (après <?=$numberOfStandardDeviations?> écarts-types) : <?=number_format($avgAmount2, 2, ',', ' ')?>&euro;
+	</div>
+	<div>
+		Ecart-type après exclusion : <?=number_format($standardDeviation2, 2, ',', ' ')?>&euro;
+	</div>
 </div>
 </div>
 

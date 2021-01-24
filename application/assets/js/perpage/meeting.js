@@ -137,6 +137,7 @@ function addAgendaPointHandlers() {
 		descriptionText.hide();
 
 		$(this).find(".description-editor").show()
+		autogrowElement($(this).find(".description-editor textarea").get(0));
 		$(this).find(".description-editor textarea").focus();
 
 /*
@@ -174,7 +175,7 @@ function editorBlurHandler(event) {
 	//click on emoji, do nothing more than the emoji code
 	if ($(".emojionepicker:visible").length) return;
 
-	console.log(event);
+//	console.log(event);
 
 	var description = $("li#description");
 	var descriptionEditor = description.find(".description-editor");
@@ -217,7 +218,7 @@ function getDescriptionLi(list) {
 		description.append($("<span />", {"class": "glyphicon glyphicon-pencil", style: "display: none; float: right;"}));
 		description.append($("<p />"));
 		description.append($("<div></div>", {"class": "description-editor"}));
-		description.find("div").append("<textarea class=\"form-control\" id=\"description-text\" data-provide=\"markdown\" data-hidden-buttons=\"cmdPreview\" rows=\"5\"></textarea>");
+		description.find("div").append("<textarea class=\"form-control autogrow\" id=\"description-text\" data-provide=\"markdown\" data-hidden-buttons=\"cmdPreview\" rows=\"5\"></textarea>");
 
 		description.find("textarea").markdown().blur(editorBlurHandler);
 

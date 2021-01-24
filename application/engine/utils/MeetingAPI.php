@@ -800,6 +800,11 @@ class MeetingAPI {
 		}
 		
 		$memcacheKey = "do_getAgendaPoint_$pointId";
+
+		if ($requestId == -1) {
+			$memcache->delete($memcacheKey);
+		}
+		
 		$json = $memcache->get($memcacheKey);
 		
 		if (!$json) {

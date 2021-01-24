@@ -23,7 +23,15 @@ include_once("config/database.php");
 include_once("config/memcache.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/AgendaBo.php");
+require_once("engine/bo/ChatBo.php");
+require_once("engine/bo/ChatAdviceBo.php");
+require_once("engine/bo/ConclusionBo.php");
 require_once("engine/bo/MeetingBo.php");
+require_once("engine/bo/MotionBo.php");
+require_once("engine/bo/TaskBo.php");
+require_once("engine/bo/VoteBo.php");
+require_once("engine/utils/EventStackUtils.php");
+require_once("engine/utils/MeetingAPI.php");
 
 if (!SessionUtils::getUserId($_SESSION)) {
 	echo json_encode(array("ko" => "ko", "message" => "must_be_connected"));
@@ -84,7 +92,13 @@ $agendaBo->save($agenda);
 
 $memcache->delete($memcacheKey);
 
+$api = new MeetingAPI($connection, $config);
+$userId = SessionUtils::getUserId($_SESSION);
+$requestId = -1;
+
+$response = $api->getAgendaPoint($meetingId, $agenda["age_id"], $userId, $requestId);
+
 $data["ok"] = "ok";
 
-echo json_encode($data, JSON_NUMERIC_CHECK);
+echo json_encode($response, JSON_NUMERIC_CHECK);
 ?>

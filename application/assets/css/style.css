@@ -683,7 +683,7 @@ a[disabled] {
 
 .motion-description-text, #description p {
     max-width: calc(100% - 58px);
-    display: inline-block;
+    display: block;
     margin-right: 2px;
 }
 

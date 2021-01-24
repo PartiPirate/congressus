@@ -790,7 +790,8 @@ function addAgendaFromSaveHandler() {
 	addAgendaPointForm.parentId = $("#add-agenda-from-modal #parentAgendaIdInput").val();
 
 	addAgendaPointForm.title = $("#add-agenda-from-modal #titleInput").val();
-	addAgendaPointForm.description = toMarkdownWithEmoji($("#add-agenda-from-modal #descriptionArea").val()); // TODO remove that when well be in full markdown
+//	addAgendaPointForm.description = toMarkdownWithEmoji($("#add-agenda-from-modal #descriptionArea").val()); // TODO remove that when well be in full markdown
+	addAgendaPointForm.description = $("#add-agenda-from-modal #descriptionArea").val(); // TODO remove that when well be in full markdown
 
 	//	console.log(addAgendaPointForm);
 	//	add agenda point

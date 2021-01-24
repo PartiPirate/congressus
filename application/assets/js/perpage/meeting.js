@@ -116,7 +116,8 @@ function isPresident(id) {
 
 function addAgendaPointHandlers() {
 	$("#agenda_point .objects").on("mouseenter", "li#description", function(event) {
-		if (hasRight(getUserId(), "handle_agenda") && !$("li#description .Editor-container:visible").length) {
+//		if (hasRight(getUserId(), "handle_agenda") && !$("li#description .Editor-container:visible").length) {
+		if (hasRight(getUserId(), "handle_agenda")) {
 			$(this).find(".glyphicon-pencil").show();
 		}
 	});
@@ -125,6 +126,26 @@ function addAgendaPointHandlers() {
 		$(this).find(".glyphicon-pencil").hide();
 	});
 
+	$("#agenda_point .objects").on("click", "li#description", function(event) {
+		if (!hasRight(getUserId(), "handle_agenda")) {
+			return;
+		}
+
+		$(this).find(".glyphicon-pencil").hide();
+
+		var descriptionText = $(this).find("p");
+		descriptionText.hide();
+
+		$(this).find(".description-editor").show()
+		$(this).find(".description-editor textarea").focus();
+
+/*
+		$(this).find(".description-editor+div").show();
+		$(this).find(".description-editor+div .Editor-editor").focus();
+*/		
+	});
+
+/*	
 	$("#agenda_point .objects").on("click", "li#description", function(event) {
 		if (!hasRight(getUserId(), "handle_agenda")) {
 			return;
@@ -145,29 +166,42 @@ function addAgendaPointHandlers() {
 		$(this).find(".description-editor+div").show();
 		$(this).find(".description-editor+div .Editor-editor").focus();
 	});
+*/	
 }
 
 function editorBlurHandler(event) {
-	var description = $("li#description");
-	var editor = description.find(".description-editor+div");
+	
+	//click on emoji, do nothing more than the emoji code
+	if ($(".emojionepicker:visible").length) return;
 
-	if (editor.length == 0) return;
-	if (!editor.is(":visible")) return;
+	console.log(event);
+
+	var description = $("li#description");
+	var descriptionEditor = description.find(".description-editor");
+
+	if (descriptionEditor.length == 0) return;
+	if (!descriptionEditor.is(":visible")) return;
 
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
+	clearKeyup();
+
+/*
 	var descriptionEditor = description.find("div.description-editor");
 
 	clearKeyup();
 	// update the text into the server
 	var newText = descriptionEditor.Editor("getText");
+*/
+
+	var newText = descriptionEditor.find("textarea").val();
 
 	$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
-		description.find("p").html(newText);
+		description.find("p").html(toMarkdownWithEmoji(newText));
 		description.find("p").show();
 
-		editor.hide();
+		descriptionEditor.hide();
 	}, "json");
 }
 
@@ -180,25 +214,29 @@ function getDescriptionLi(list) {
 	if (!description.length && agendaId != -1) {
 		description = $("<li />", {id: "description", "class": "list-group-item"});
 
+		description.append($("<span />", {"class": "glyphicon glyphicon-pencil", style: "display: none; float: right;"}));
 		description.append($("<p />"));
-		description.append($("<div />", {"class": "description-editor"}));
-		description.append($("<span />", {"class": "glyphicon glyphicon-pencil", style: "display: none;"}));
+		description.append($("<div></div>", {"class": "description-editor"}));
+		description.find("div").append("<textarea class=\"form-control\" id=\"description-text\" data-provide=\"markdown\" data-hidden-buttons=\"cmdPreview\" rows=\"5\"></textarea>");
 
-		var descriptionEditor = description.find("div.description-editor");
-		descriptionEditor.Editor();
+		description.find("textarea").markdown().blur(editorBlurHandler);
+
+//		var descriptionEditor = description.find("div.description-editor");
+//		descriptionEditor.Editor();
 
 		list.append(description);
 
-		var editor = description.find(".description-editor+div");
+		var editor = description.find(".description-editor");
 		editor.hide();
+/*
 		editor.children(".Editor-editor").css({"max-height": "300px", "overflow-y": "scroll"});
-
+*/
 		description.hide().fadeIn(400);
 
-		editor.find("*[contenteditable=true]").keyup(function() {
+		description.find("textarea").keyup(function() {
 			clearKeyup();
 			keyupTimeoutId = setTimeout(function() {
-				var newText = descriptionEditor.Editor("getText");
+				var newText = description.find("textarea").val();
 
 				$.post("meeting_api.php?method=do_changeAgendaPoint", {meetingId: meetingId, pointId: agendaId, property: "age_description", text: newText}, function(data) {
 				}, "json");
@@ -211,9 +249,15 @@ function getDescriptionLi(list) {
 
 function updateDescription(description, agenda) {
 	var descriptionP = description.children("p");
+	var descriptionTextarea = description.find("textarea");
 
-	if (descriptionP.html() != $("<div />").html(agenda.age_description).html()) {
-		descriptionP.html(agenda.age_description);
+	if (descriptionTextarea.is(":visible")) return;
+
+	const newText = toMarkdownWithEmoji(agenda.age_description);
+
+	if (descriptionTextarea.val() != agenda.age_description || descriptionP.html() != newText) {
+		descriptionP.html(toMarkdownWithEmoji(agenda.age_description));
+		descriptionTextarea.val(agenda.age_description);
 	}
 }
 
@@ -2059,6 +2103,7 @@ function addMeetingLabelHandlers() {
 		$(this).parents(".breadcrumb .active").find(".save-btn").show();
 		$(this).parents(".breadcrumb .active").find(".cancel-btn").show();
 	});
+
 	$(".breadcrumb .active").find(".cancel-btn").click(function() {
 		$(this).parents(".breadcrumb .active").find("input").hide();
 		$(this).parents(".breadcrumb .active").find(".read-data").show();
@@ -2066,6 +2111,7 @@ function addMeetingLabelHandlers() {
 		$(this).parents(".breadcrumb .active").find(".cancel-btn").hide();
 		$(this).parents(".breadcrumb .active").find(".update-btn").show();
 	});
+
 	$(".breadcrumb .active").find(".save-btn").click(function() {
 		var text = $(this).parents(".breadcrumb .active").find("input").val();
 		$(this).parents(".breadcrumb .active").find(".read-data").text(text);

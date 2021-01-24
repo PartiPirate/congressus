@@ -2076,7 +2076,7 @@ function toMarkdownWithEmoji(source) {
 		source = source.replace(search, replace);
 	}
 
-	var converter = new showdown.Converter({tables: true});
+	var converter = new showdown.Converter({tables: true, strikethrough: true});
 	source = converter.makeHtml(source);
 
 	return source;

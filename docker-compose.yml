@@ -1,7 +1,15 @@
-version: '2'
+version: '3'
+
 services:
-  memcached:
-    image: memcached:1.6-alpine
+  nginx:
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./application:/application
+      - ./congressus.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - congressus
 
   congressus:
     image: congressus:0.7-fpm
@@ -9,18 +17,16 @@ services:
         context: .
         dockerfile: Dockerfile
     volumes:
-      - ./application:/var/www/html
-      - ./config:/var/www/html/config
+      - ./application:/application
     links:
       - memcached
 
-  nginx:
-    volumes:
-      - './congressus-fpm.conf:/etc/nginx/conf.d/default.conf:rw'
-    volumes_from:
-      - congressus
-    links:
-      - 'congressus:fpm'
-    ports:
-      - '8813:80'
-    image: nginx
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: r00t
+      MYSQL_DATABASE: congressus
+
+  memcached:
+    image: memcached:1.6-alpine
+

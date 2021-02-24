@@ -41,3 +41,6 @@ application/langs.php
 
 # ppeu
 application/ppeu
+
+# composer
+vendor/

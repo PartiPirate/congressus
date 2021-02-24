@@ -1,0 +1,9 @@
+{
+    "name": "partipirate/congressus",
+    "description": "A meeting management tool with decision-making based on a voting pool.",
+    "type": "project",
+    "require": {
+        "cboden/ratchet": "^0.4.3",
+        "evenement/evenement": "^3.0.1"
+    }
+}

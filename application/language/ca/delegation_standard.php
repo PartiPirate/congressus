@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2020 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -17,10 +17,9 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-$lang["language_fr"] = "Français";  // French
-$lang["language_en"] = "English";   // English
-$lang["language_de"] = "Deutsch";   // German
-$lang["language_cs"] = "český";     // Czech
-$lang["language_sv"] = "Svenska";   // Swedish
-$lang["language_ca"] = "Català";    // Catalan
-$lang["language_es"] = "Español";   // Spanish
+$lang["delegation_my_delegations_title"] = "Les meves delegacions";
+
+$lang["delegation_my_delegations_mine"] = "Les meves delegacions:";
+$lang["delegation_my_delegations_remaining_power"] = "Poder delegatiu restant:";
+$lang["delegation_my_delegations_none_if_i_voted"] = "Quan voto, les meves delegacions no es tenen en compte:";
+?>

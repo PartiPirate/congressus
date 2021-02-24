@@ -17,10 +17,6 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-$lang["language_fr"] = "Français";  // French
-$lang["language_en"] = "English";   // English
-$lang["language_de"] = "Deutsch";   // German
-$lang["language_cs"] = "český";     // Czech
-$lang["language_sv"] = "Svenska";   // Swedish
-$lang["language_ca"] = "Català";    // Catalan
-$lang["language_es"] = "Español";   // Spanish
+$lang["pgs_choose"] = "Seleccioneu un grup";
+
+?>

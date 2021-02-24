@@ -41,3 +41,8 @@ application/langs.php
 
 # ppeu
 application/ppeu
+
+# eclipse
+.settings
+.buildpath
+.project

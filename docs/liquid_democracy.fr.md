@@ -38,3 +38,29 @@ Classe Factory point d'entrée du moteur conditionnel avec trois méthodes stati
 - getConditionInstance($condition) : récupère une classe de type ICondition
 - getOperatorInstance($condition) : récupère une classe de type IOperator
 - testConditions($conditions, $context) : tests un jeu de condition avec le contexte
+
+##### testConditions
+
+Methode mettant en application l'algorithme de test des conditions :
+
+- Première boucle, sur l'ensemble des conditions, dont le but est de faire deux choses 
+    - Evaluer la condition sur le contexte (méthode `evaluateCondition` de la classe ICondition)
+    - Création des groupes conditionnels sur les mots clés (interaction) `if`, `andif` et `orif``
+
+```
+Si le titre de la motion contient A
+Et le titre de la motion contient B
+Ou si le titre de la motion contient C
+Et le titre de la motion contient D
+```
+==> Définitdeux groupes conditionnels
+
+```
+Si le titre de la motion contient A
+Et le titre de la motion contient B
+```
+ou
+```
+Si le titre de la motion contient C
+Et le titre de la motion contient D
+```

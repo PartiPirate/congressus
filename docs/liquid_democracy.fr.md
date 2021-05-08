@@ -28,3 +28,13 @@ Méthode permettant le calcul des conditions sans contexte
 ##### `computeFixationWithContext`
 
 Méthode permettant le calcul des conditions avec contexte
+
+### Moteur conditionnel
+
+#### `ConditionalFactory`
+
+Classe Factory point d'entrée du moteur conditionnel avec trois méthodes statiques : 
+
+- getConditionInstance($condition) : récupère une classe de type ICondition
+- getOperatorInstance($condition) : récupère une classe de type IOperator
+- testConditions($conditions, $context) : tests un jeu de condition avec le contexte

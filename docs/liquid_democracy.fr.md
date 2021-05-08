@@ -122,3 +122,22 @@ Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une 
 
 On cherche dans le contexte le votant sur lequel est appliqué la condition. Le test de l'opérateur est opéré sur le contexte entier.
 
+#### Les operateurs
+
+##### ContainsOperator
+
+##### DoNotContainOperator
+
+##### DoVoteOperator
+
+L'opérateur reçoit une personne en première opérande (`$value`) qui est comparé à l'ensemble des votants fourni par le contexte. La deuxième opérande n'a aucun aucun impact dans le test
+
+##### EqualsOperator
+
+##### IsAfterOperator
+
+L'opérateur reçoit une date au format iso AAAA-MM-JJ (`$value`) qui est comparé à une autre date au format iso fournit par la deuxième opérande (`$compareTo`). Si la date testée est situé après (ou à la même date) alors le test est positif (`true`).
+
+##### IsBeforeOperator
+
+L'opérateur reçoit une date au format iso AAAA-MM-JJ (`$value`) qui est comparé à une autre date au format iso fournit par la deuxième opérande (`$compareTo`). Si la date testée est situé avant (ou à la même date) alors le test est positif (`true`).

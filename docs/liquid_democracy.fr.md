@@ -64,3 +64,36 @@ ou
 Si le titre de la motion contient C
 Et le titre de la motion contient D
 ```
+
+Le moteur conditionnel *in fine* ne contient que deux niveaux : 
+
+- Un niveaux de groupes de conditions articulés entre eux
+- Chaque groupe contenants des conditions articulées entre elles
+
+Le moteur conditionnel est linéaire de gauche à droite
+
+- Deuxième boucle sur l'ensemble des groupes conditionnels 
+    - Lecture de gauche à droite sans priorité du `et` sur le `ou` des conditions dans chacun des groupes de conditions et détermination d'un booléen global
+    - Lecture de gauche à droite sans priorité du `et` sur le `ou` des résultats des conditions pour calcul d'un booléen final
+
+Un groupe de condition en 
+
+```
+Si ... A
+Et ... B
+Ou ... C
+Et ... D
+```
+
+Sera résolu comme (( A et B ) ou C ) et D
+
+Des groupe de conditions en 
+
+```
+Si ... A
+Et si ... B
+Ou si  ... C
+Et si ... D
+```
+
+Sera résolu comme (( A et B ) ou C ) et D

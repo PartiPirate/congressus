@@ -111,9 +111,14 @@ Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une 
 
 ##### MotionTagsCondition
 
+On cherche dans le contexte la motion et l'ensemble des tags qui lui est appliqué. Pour chacun des tags, jusqu'à réponse positive, l'opérateur de test est opéré sur la condition et sa valeur de comparaison.
+
 ##### MotionTitleCondition
 
 On cherche dans le contexte la motion et son titre qui est ensuite soumis à l'opérateur de test avec la valeur de comparaison fournit par la condition.
 Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
 
 ##### VoterMeCondition
+
+On cherche dans le contexte le votant sur lequel est appliqué la condition. Le test de l'opérateur est opéré sur le contexte entier.
+

@@ -16,8 +16,8 @@ Un jeu de délégation :
 #### Contexte
 
 - Espace de décision (une réunion)
-- Motion qui est votée (possiblement voir un objet moins complexe)
-- Votants
+- Motion qui est votée (possiblement voir un objet moins complexe) : `$context["motion"]`
+- Votants : `$context["voters"]`, `$context["me"]`
 
 #### Méthodes 
 
@@ -97,3 +97,23 @@ Et si ... D
 ```
 
 Sera résolu comme (( A et B ) ou C ) et D
+
+#### Les conditions 
+
+##### MotionDateCondition
+
+On cherche dans le contexte la motion et sa date de mise au vote qui est ensuite soumise à l'opérateur de test avec la valeur de comparaison fournit par la condition
+
+##### MotionDescriptionCondition
+
+On cherche dans le contexte la motion et sa description qui est ensuite soumise à l'opérateur de test avec la valeur de comparaison fournit par la condition.
+Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
+
+##### MotionTagsCondition
+
+##### MotionTitleCondition
+
+On cherche dans le contexte la motion et son titre qui est ensuite soumis à l'opérateur de test avec la valeur de comparaison fournit par la condition.
+Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
+
+##### VoterMeCondition

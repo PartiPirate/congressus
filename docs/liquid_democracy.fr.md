@@ -126,13 +126,19 @@ On cherche dans le contexte le votant sur lequel est appliqué la condition. Le 
 
 ##### ContainsOperator
 
+L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande contient la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
+
 ##### DoNotContainOperator
+
+L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande ne contient pas la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
 
 ##### DoVoteOperator
 
 L'opérateur reçoit une personne en première opérande (`$value`) qui est comparé à l'ensemble des votants fourni par le contexte. La deuxième opérande n'a aucun aucun impact dans le test
 
 ##### EqualsOperator
+
+L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande est égale la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
 
 ##### IsAfterOperator
 

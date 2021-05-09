@@ -39,6 +39,25 @@ Classe Factory point d'entrée du moteur conditionnel avec trois méthodes stati
 - getOperatorInstance($condition) : récupère une classe de type IOperator
 - testConditions($conditions, $context) : tests un jeu de condition avec le contexte
 
+##### Structure sous-jacentence
+
+```
+├── ConditionalFactory
+├── ICondition
+│   ├── MotionDateCondition
+│   ├── MotionDescriptionCondition
+│   ├── MotionTagsCondition
+│   ├── MotionTitleCondition
+│   └── VoterMeCondition
+└── IOperator
+    ├── ContainsOperator
+    ├── DoNotContainOperator
+    ├── DoVoteOperator
+    ├── EqualsOperator
+    ├── IsAfterOperator
+    └── IsBeforeOperator
+```
+
 ##### testConditions
 
 Methode mettant en application l'algorithme de test des conditions :
@@ -113,7 +132,7 @@ Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une 
 
 On cherche dans le contexte la motion et l'ensemble des tags qui lui est appliqué. Pour chacun des tags, jusqu'à réponse positive, l'opérateur de test est opéré sur la condition et sa valeur de comparaison.
 
-##### MotionTitleCondition`
+##### `MotionTitleCondition`
 
 On cherche dans le contexte la motion et son titre qui est ensuite soumis à l'opérateur de test avec la valeur de comparaison fournit par la condition.
 Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
@@ -122,7 +141,7 @@ Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une 
 
 On cherche dans le contexte le votant sur lequel est appliqué la condition. Le test de l'opérateur est opéré sur le contexte entier.
 
-#### Les operateurs
+#### Les opérateurs
 
 ##### `ContainsOperator`
 

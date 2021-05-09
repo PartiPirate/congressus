@@ -19,7 +19,7 @@ Un jeu de délégation :
 - Motion qui est votée (possiblement voir un objet moins complexe) : `$context["motion"]`
 - Votants : `$context["voters"]`, `$context["me"]`
 
-#### Méthodes 
+#### Méthodes 
 
 ##### `computeFixation`
 
@@ -53,7 +53,7 @@ Et le titre de la motion contient B
 Ou si le titre de la motion contient C
 Et le titre de la motion contient D
 ```
-==> Définitdeux groupes conditionnels
+==> Définit deux groupes conditionnels
 
 ```
 Si le titre de la motion contient A
@@ -100,50 +100,50 @@ Sera résolu comme (( A et B ) ou C ) et D
 
 #### Les conditions 
 
-##### MotionDateCondition
+##### `MotionDateCondition`
 
 On cherche dans le contexte la motion et sa date de mise au vote qui est ensuite soumise à l'opérateur de test avec la valeur de comparaison fournit par la condition
 
-##### MotionDescriptionCondition
+##### `MotionDescriptionCondition`
 
 On cherche dans le contexte la motion et sa description qui est ensuite soumise à l'opérateur de test avec la valeur de comparaison fournit par la condition.
 Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
 
-##### MotionTagsCondition
+##### `MotionTagsCondition`
 
 On cherche dans le contexte la motion et l'ensemble des tags qui lui est appliqué. Pour chacun des tags, jusqu'à réponse positive, l'opérateur de test est opéré sur la condition et sa valeur de comparaison.
 
-##### MotionTitleCondition
+##### MotionTitleCondition`
 
 On cherche dans le contexte la motion et son titre qui est ensuite soumis à l'opérateur de test avec la valeur de comparaison fournit par la condition.
 Le test est opéré sur la valeur "explosée" (tableau de sous-valeurs) par une virgule.
 
-##### VoterMeCondition
+##### `VoterMeCondition`
 
 On cherche dans le contexte le votant sur lequel est appliqué la condition. Le test de l'opérateur est opéré sur le contexte entier.
 
 #### Les operateurs
 
-##### ContainsOperator
+##### `ContainsOperator`
 
 L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande contient la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
 
-##### DoNotContainOperator
+##### `DoNotContainOperator`
 
 L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande ne contient pas la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
 
-##### DoVoteOperator
+##### `DoVoteOperator`
 
 L'opérateur reçoit une personne en première opérande (`$value`) qui est comparé à l'ensemble des votants fourni par le contexte. La deuxième opérande n'a aucun aucun impact dans le test
 
-##### EqualsOperator
+##### `EqualsOperator`
 
 L'opérateur reçoit une valeur de texte en première opérande (`$value`) qui est comparé à la valeur deuxième opérande (`$compareTo`). Le test est insible à la casse. Le test est positif si la première opérande est égale la deuxième. Si l'une des deux opérandes est vide, alors le test sera négatif.
 
-##### IsAfterOperator
+##### `IsAfterOperator`
 
 L'opérateur reçoit une date au format iso AAAA-MM-JJ (`$value`) qui est comparé à une autre date au format iso fournit par la deuxième opérande (`$compareTo`). Si la date testée est situé après (ou à la même date) alors le test est positif (`true`).
 
-##### IsBeforeOperator
+##### `IsBeforeOperator`
 
 L'opérateur reçoit une date au format iso AAAA-MM-JJ (`$value`) qui est comparé à une autre date au format iso fournit par la deuxième opérande (`$compareTo`). Si la date testée est situé avant (ou à la même date) alors le test est positif (`true`).

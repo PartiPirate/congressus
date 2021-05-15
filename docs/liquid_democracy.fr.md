@@ -21,6 +21,9 @@ Un jeu de délégation :
 
 #### Méthodes 
 
+Les méthodes de calculs s'effectuent au sein du Parti Pirate avec des membres à jour de cotisation (il y a des nettoyages présents dans le code pour éviter le contraire).
+Aucune délégation n'est supprimé du système d'information lors des processus même si elles semblent caduques (perte du droit de vote pour non renouvellement de cotisation, décès...).
+
 ##### `computeFixationWithContext`
 
 Méthode permettant le calcul des délégations avec contexte en utilisant le moteur conditionnel.
@@ -86,11 +89,13 @@ Tant qu'on a des délégations :
     - On calcul le pouvoir que le `giver` va donner en fonction de la délégation, ainsi que le pouvoir 'dilué' qui va être reçu par le `taker`. Une absence d'érosion du pouvoir permet de passer l'intégralité des points de pouvoirs entre un `giver` et un `taker`.
     - On ajoute au `taker` ce pouvoir de vote, on calcule son max de pouvoir de vote, on indique au `giver` le nombre de point qu'il a donné et on l'ajoute à l'ensemble des `givers` du `taker` pour construire l'arborescence des `givers` niveau par niveau.
     - On réajuste le niveau du `taker` en fonction du niveau le plus haut de ses `givers`
-- On réarrange les personnes en fonction de leur pouvoir final de vote
+    - On retire les délégations utilisations
+
+On réarrange finalement les personnes en fonction de leur pouvoir final de vote
 
 ##### `computeFixation`
 
-Méthode permettant le calcul des délégations sans contexte.
+Méthode permettant le calcul des délégations sans contexte. Les tests de conditions de délégations ne sont pas effectués et les délégations conditionnelles sont retirées.
 
 ### Moteur conditionnel
 

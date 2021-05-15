@@ -21,13 +21,48 @@ Un jeu de délégation :
 
 #### Méthodes 
 
-##### `computeFixation`
-
-Méthode permettant le calcul des conditions sans contexte
-
 ##### `computeFixationWithContext`
 
-Méthode permettant le calcul des conditions avec contexte
+Méthode permettant le calcul des délégations avec contexte en utilisant le moteur conditionnel.
+
+Trois paramètres : 
+
+- instance : instance des électeurs qui prennent part au vote
+- motion : motion qui est votée, une partie du contexte
+- votes : un tableau de vote, permet de savoir qui a voté, deuxième partie du contexte
+
+###### Initialisation
+
+L'instance nous permet d'avoir trois élements essentiels : 
+
+- Le maximum initial de pouvoirs de vote d'un membre de cette instance
+- Les éligibles, sans pouvoir de vote initialement
+- Les votants, avec le pouvoir maximal initialement
+
+Une personne peut être membre des deux collèges éligibles ou votants, dans ce cas, elle possède tout son pouvoir de vote initial.
+
+Une passe de nettoyage des données des membres est effectuée
+
+On va chercher les délégations AVEC conditions
+
+###### Nettoyage des délégations inutiles
+
+Sur l'ensemble des délégations on applique les choses suivantes : 
+
+- On cherche les membres pour lesquels :
+    - la délégation s'applique
+    - la délégation leur appartient
+- On indique dans le contexte courant que la personne courante sur laquelle s'applique le moteur conditionnel est le propriétaire de la délégation
+- S'il y a une condition, on décode la condition, on appplique le moteur conditionnel sur cette condition sur le contexte
+- Si le propriétaire de la délégation ou la personne sur laquelle elle s'applique ne sont pas trouvées ou bien que la condition n'est pas réalisée, alors la délégation est mise de côtée et ne sera pas appliquée dans la suite du calcul.
+
+###### Réarrangement des délégations
+
+On range les délégations par membre puis selon leur ordre intrinsèque
+
+##### `computeFixation`
+
+Méthode permettant le calcul des délégations sans contexte.
 
 ### Moteur conditionnel
 

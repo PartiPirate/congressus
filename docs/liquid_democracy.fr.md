@@ -60,6 +60,34 @@ Sur l'ensemble des délégations on applique les choses suivantes :
 
 On range les délégations par membre puis selon leur ordre intrinsèque
 
+###### Le nettoyage des délégations dans leur ordre d'application avec fin de délégation possible
+
+Sur cette passe on fait les choses suivantes : 
+
+- On part d'un index initial
+- On récupère à partir de cet index l'ensemble des délégations du membre de notre première délégation
+- On vérifie si le membre a conditionné préalablement une fin de délégation
+    - Pour chaque délégation on vérifie qu'il y a assez de pouvoir à distribuer pour que celle ci soit effective, s'il n'en reste pas assez, le reliquat est appliquat, s'il n'y en a plus, la délégation est écartée.
+    - S'il y a une fin de délégation signalée dans cette délégation, alors la fin délégation est positionnée
+- On saute autant de délégations que nécessaire dans l'ensemble des délégations pour refaire le processeus
+
+###### 
+
+On initialise le facteur de dilution / érosion, qui correspond au pourcentage de pouvoir conservé véritablement apres chaque délégation.
+
+Tant qu'on a des délégations : 
+
+- Pour l'ensemble des délégations on détermine l'ensemble des personnes qui donnent (givers) et qui reçoivent (takers) des pouvoirs de votes par l'intermédiaire d'une délégation
+- Tout personne qui reçoit du pouvoir de vote (un `taker`) n'est pas prise en compte sur cette passe et est donc retirée des `givers`
+- Sur l'ensemble des `givers` restants
+    - On cherche la personne `giver` concernée
+    - On cherche sur l'ensemble des délégations, ses délégations
+    - On cherche sur chacune des délégations la personne qui reçoit `taker`
+    - On calcul le pouvoir que le `giver` va donner en fonction de la délégation, ainsi que le pouvoir 'dilué' qui va être reçu par le `taker`. Une absence d'érosion du pouvoir permet de passer l'intégralité des points de pouvoirs entre un `giver` et un `taker`.
+    - On ajoute au `taker` ce pouvoir de vote, on calcule son max de pouvoir de vote, on indique au `giver` le nombre de point qu'il a donné et on l'ajoute à l'ensemble des `givers` du `taker` pour construire l'arborescence des `givers` niveau par niveau.
+    - On réajuste le niveau du `taker` en fonction du niveau le plus haut de ses `givers`
+- On réarrange les personnes en fonction de leur pouvoir final de vote
+
 ##### `computeFixation`
 
 Méthode permettant le calcul des délégations sans contexte.

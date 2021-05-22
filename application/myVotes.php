@@ -52,11 +52,12 @@ if (isset($_REQUEST["meetingId"])) {
 	$filters["mee_id"] = intval($_REQUEST["meetingId"]);
 }
 
+// echo "<!-- \n";
 //print_r($filters);
 
 $motions = $motionBo->getByFilters($filters);
 
-// echo "<!-- \n";
+// print_r($filters);
 // print_r($motions);
 // echo "\n -->";
 
@@ -171,7 +172,7 @@ foreach($sortedMotions as $motionId => $motion) {
 	<button class="btn btn-default btn-next pull-right" type="button" style="display: none;"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
 	<button class="btn btn-default btn-show-summary" type="button"><span class="glyphicon glyphicon-list-alt"></span> <?=lang("myVotes_showSummary")?></button>
-	<button class="btn btn-default btn-paper-vote" type="button"><span class="glyphicon glyphicon-list-alt"></span> <?=lang("myVotes_printBallot")?></button>
+	<button class="btn btn-default btn-paper-vote" type="button" style="display: none;"><span class="glyphicon glyphicon-list-alt"></span> <?=lang("myVotes_printBallot")?></button>
 	<a href="#" class="ballot-link" download="bulletin.pdf" style="display: none;"><?=lang("myVotes_downloadBallot")?></a>
 </div>
 <?php	} ?>

@@ -204,6 +204,9 @@ $lang["meeting_motion_close_vote"] = "La motion {motionTitle} dans le point {age
 $lang["meeting_next_point"] = "Point suivant";
 $lang["meeting_previous_point"] = "Point précédent";
 $lang["meeting_godown_point"] = "Descendre";
+$lang["meeting_status_waiting"] = "En attente";
+$lang["meeting_status_open"] = "En cours";
+$lang["meeting_status_closed"] = "Finie";
 
 $lang["addAgendaFrom_title"]        = "Ajouter un point d'agenda à partir d'une source";
 $lang["addTag_title"]               = "Gestion des libellés de la motion";

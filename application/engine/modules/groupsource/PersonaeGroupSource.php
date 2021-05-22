@@ -47,7 +47,7 @@ class PersonaeGroupSource {
 		
     }
 
-    function getGroupLabel($groupId) {
+    function getGroupLabel($groupId, $options = array()) {
         require_once("engine/bo/GroupBo.php");
         global $config;
         global $connection;

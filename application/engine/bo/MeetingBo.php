@@ -129,6 +129,10 @@ class MeetingBo {
 			$queryBuilder->join("locations", "loc_meeting_id = $this->ID_FIELD AND loc_principal = 1", null, "left");
 		}
 
+		if (isset($filters["by_notice"])) {
+			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD");
+		}
+
 		if (isset($filters["limit_to_viewable_groups"])) {
 			$queryBuilder->join("notices", "not_meeting_id = $this->ID_FIELD");
 

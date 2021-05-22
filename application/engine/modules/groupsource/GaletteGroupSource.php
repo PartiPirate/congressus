@@ -46,7 +46,7 @@ class GaletteGroupSource {
 		}
     }
 
-    function getGroupLabel($groupId) {
+    function getGroupLabel($groupId, $options = array()) {
         require_once("engine/bo/GaletteBo.php");
         global $config;
         global $connection;

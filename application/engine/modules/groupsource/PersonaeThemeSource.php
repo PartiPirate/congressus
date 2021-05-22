@@ -61,13 +61,22 @@ class PersonaeThemeSource {
 
     }
 
-    function getGroupLabel($groupId) {
+    function getGroupLabel($groupId, $options = array()) {
         require_once("engine/bo/ThemeBo.php");
         global $config;
         global $connection;
 
         $themeBo = ThemeBo::newInstance($connection, $config);
-        $themes = $themeBo->getThemes(array("with_group_information" => true, "the_id" => $groupId, "with_deleted" => true));
+        
+        $filters = array("with_group_information" => true, "the_id" => $groupId);
+        
+        if (isset($options["without_deleted"])) {
+        }
+        else {
+        	$filters["with_deleted"] = true;
+        }
+
+        $themes = $themeBo->getThemes($filters);
 
         if (count($themes)) return $themes[0]["the_label"];
 

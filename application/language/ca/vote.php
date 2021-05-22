@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2018 Cédric Levieux, Parti Pirate
+    Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -17,10 +17,10 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-$lang["language_fr"] = "Français";  // French
-$lang["language_en"] = "English";   // English
-$lang["language_de"] = "Deutsch";   // German
-$lang["language_cs"] = "český";     // Czech
-$lang["language_sv"] = "Svenska";   // Swedish
-$lang["language_ca"] = "Català";    // Catalan
-$lang["language_es"] = "Español";   // Spanish
+$lang["vote_yes"]       = "Sí";
+$lang["vote_no"]        = "No";
+$lang["vote_pro"]       = "A favor";
+$lang["vote_against"]   = "En contra";
+$lang["vote_abstain"]   = "Abstenir-se";
+
+?>

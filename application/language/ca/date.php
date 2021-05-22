@@ -17,10 +17,23 @@
     along with Congressus.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-$lang["language_fr"] = "Français";  // French
-$lang["language_en"] = "English";   // English
-$lang["language_de"] = "Deutsch";   // German
-$lang["language_cs"] = "český";     // Czech
-$lang["language_sv"] = "Svenska";   // Swedish
-$lang["language_ca"] = "Català";    // Catalan
-$lang["language_es"] = "Español";   // Spanish
+$lang["Sunday"] = "Diumenge";
+$lang["Monday"] = "Dilluns";
+$lang["Tuesday"] = "Dimarts";
+$lang["Wednesday"] = "Dimecres";
+$lang["Thursday"] = "Dijous";
+$lang["Friday"] = "Divendres";
+$lang["Saturday"] = "Dissabte";
+
+$lang["January"] = "Gener";
+$lang["February"] = "Febrer";
+$lang["March"] = "Març";
+$lang["April"] = "Abril";
+$lang["May"] = "Maig";
+$lang["June"] = "Juny";
+$lang["July"] = "Juliol";
+$lang["August"] = "Agost";
+$lang["September"] = "Setembre";
+$lang["October"] = "Octubre";
+$lang["November"] = "Novembre";
+$lang["December"] = "Desembre";

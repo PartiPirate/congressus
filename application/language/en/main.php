@@ -306,6 +306,8 @@ $lang["motion_open_debate_success"] = "Le débat a été ouvert avec succès";
 $lang["motion_open_debate_failure"] = "Le débat n'a pas été ouvert";
 $lang["motion_expired"]             = "Expired";
 
+$lang["motion_default_title"]       =  "Title of the motion";
+$lang["motion_default_description"] =  "Description of the motion (won't be exported if unchanged)";
 
 $lang["trash_title"]        = "Trash";
 $lang["trash_description"]  = "The trash guarantees the transparency of the construction process. It contains motions that do not respect this process."; // Todo

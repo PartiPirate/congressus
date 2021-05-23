@@ -52,4 +52,5 @@ $lang["breadcrumb_myMeetings"]     = "Mes réunions";
 $lang["breadcrumb_mypreferences"]  = "Mes préférences";
 $lang["breadcrumb_search"]         = "Rechercher";
 $lang["breadcrumb_calendar"]       = "Calendrier";
+$lang["breadcrumb_administrators"] = "Administrateurs";
 ?>

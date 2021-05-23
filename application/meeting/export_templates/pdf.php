@@ -42,7 +42,18 @@ function showMotion($motions, $id, &$voters) {
 		if ($motion["mot_id"] == $id) {
 			if ($first) {
 				echo "<div class=\"title\">" . $motion["mot_title"] . "</div>";
-				echo "<div class=\"description\">" . $motion["mot_description"] . "</div>";
+
+				$defaultDescriptionTranslations = langs("motion_default_description", "../");
+				foreach($defaultDescriptionTranslations as $index => $text) {
+			    	$text = htmlentities($text, ENT_NOQUOTES);
+		    		$text = htmlspecialchars_decode($text);
+		    		$defaultDescriptionTranslations[$index] = $text;
+				}
+
+				if ($motion["mot_description"] && !in_array($motion["mot_description"], $defaultDescriptionTranslations)) {
+					echo "<div class=\"description\">" . $motion["mot_description"] . "</div>";
+				}
+
 				$first = false;
 			}
 

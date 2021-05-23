@@ -281,6 +281,7 @@ $lang["motion_ballot_majority_50"] = "Majorité simple";
 $lang["motion_ballot_majority_66"] = "Majorité 66%";
 $lang["motion_ballot_majority_80"] = "Majorité 80%";
 
+$lang["motion_majorityJudgment_"]  = "N/A";
 $lang["motion_majorityJudgment_1"] = "À rejeter";
 $lang["motion_majorityJudgment_2"] = "Insuffisant";
 $lang["motion_majorityJudgment_3"] = "Passable";
@@ -312,6 +313,9 @@ $lang["motion_open_debate"]         = "Ouvrir le &laquo; débat &raquo;";
 $lang["motion_open_debate_success"] = "Le débat a été ouvert avec succès";
 $lang["motion_open_debate_failure"] = "Le débat n'a pas été ouvert";
 $lang["motion_expired"]             = "Expiré";
+
+$lang["motion_default_title"]       =  "Titre de la motion";
+$lang["motion_default_description"] =  "Description de la motion (ne sera pas exportée si elle reste inchangée)";
 
 $lang["trash_title"] = "<span class='glyphicon glyphicon-trash'></span> Corbeille";
 $lang["trash_description"] = "La corbeille garantit la transparence du processus de la construction. Elle contient les motions qui ne respectent pas ce processus.";

@@ -156,7 +156,7 @@ if ($meeting["mee_chat_plugin"] == "discourse") {
         require_once("engine/discourse/DiscourseAPI.php");
         require_once("engine/utils/DiscourseUtils.php");
         
-        $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+        $discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
         
         $author = null;
         if ($motion["mot_author_id"]) {

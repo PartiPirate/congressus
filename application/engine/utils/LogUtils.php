@@ -23,7 +23,7 @@ function addLog($server, $session, $action = null, $data = null) {
 
 	if (!$data) {
 		$data = array();
-		$data["q"] = 	$server['QUERY_STRING'];
+		$data["q"] = $server['QUERY_STRING'];
 	}
 	
 	$log = array();
@@ -37,9 +37,9 @@ function addLog($server, $session, $action = null, $data = null) {
 	else if (isset($session["guestId"])) {
 		$log["log_user_id"] = "G" . $session["guestId"];
 	}
-	
+
 	$now = getNow();
-	
+
 	$log["log_datetime"] = $now->format("Y-m-d H:i:s");
 
 	$logBo->save($log);

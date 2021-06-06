@@ -57,9 +57,7 @@
 
 <li id="description-<?=$object["mot_id"]?>" class="list-group-item motion">
     <h4>Contenu de la proposition</h4>
-    <?=$agenda["age_description"]?>
-</li>
-    
+    <?=$emojiClient->shortnameToImage($parsedown->text($agenda["age_description"]))?>
 </li>
 
 <li id="motion-<?=$object["mot_id"]?>" data-id="<?=$object["mot_id"]?>" class="list-group-item motion">
@@ -79,4 +77,5 @@
 <?php       } ?>
     </div>
 <?php   } ?>
+
 </li>

@@ -68,7 +68,7 @@ function notifyByMail($contacts, $templates, $data) {
 function notifyByDiscourseGroup($contacts, $templates, $data) {
     global $config;
 
-    $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+    $discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
     $subject = evaluateTemplate($templates[0], $data);
     $message = evaluateTemplate($templates[1], $data);
@@ -79,7 +79,7 @@ function notifyByDiscourseGroup($contacts, $templates, $data) {
 function notifyByDiscourseCategory($contacts, $templates, $data) {
     global $config;
 
-    $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+    $discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 	$categories = $discourseApi->getSite()->apiresult->categories;
 

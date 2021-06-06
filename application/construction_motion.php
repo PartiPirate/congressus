@@ -688,19 +688,38 @@ include("construction/pieChart.php");
 				include_once("config/discourse.config.php");
 				require_once("engine/discourse/DiscourseAPI.php");
 
-				$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+				$discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 				$topic = $discourseApi->getTopic($motion["mot_external_chat_id"]);
 				
 				$numberOfArguments = 0;
 
 				$closed = $topic->apiresult->closed;
 
+				$trueNumberOfPosts = $topic->apiresult->posts_count;
+
+				echo "<!--\n";
+				echo $trueNumberOfPosts . "\n";
+				print_r($topic->apiresult->post_stream->posts);
+				echo "!-->\n";
+
 				if (!$topic->apiresult->visible) {
 					$topic->apiresult->post_stream->posts = array();
 					$closed = true;
 				}
 
-				foreach($topic->apiresult->post_stream->posts as $chat) {
+				$chats = $topic->apiresult->post_stream->posts;
+
+
+				for($offset = 20; $offset < $trueNumberOfPosts; $offset += 20) {
+					$topic = $discourseApi->getTopic($motion["mot_external_chat_id"], $offset);
+					$chats = array_merge($chats, $topic->apiresult->post_stream->posts);
+				}
+
+				$viewIds = array();
+
+				foreach($chats as $chat) {
+					if (in_array($chat->id, $viewIds)) continue; // already processed
+					$viewIds[] = $chat->id;
 					if (!$chat->cooked) continue; // technical post
 					if ($chat->hidden) continue; // hidden
 
@@ -729,7 +748,11 @@ include("construction/pieChart.php");
 <?php
 				$internalOrder = 0;
 
-				foreach($topic->apiresult->post_stream->posts as $chat) {
+				$viewIds = array();
+
+				foreach($chats as $chat) {
+					if (in_array($chat->id, $viewIds)) continue; // already processed
+					$viewIds[] = $chat->id;
 					if (!$chat->cooked) continue; // technical post
 					if ($chat->hidden) continue; // hidden
 

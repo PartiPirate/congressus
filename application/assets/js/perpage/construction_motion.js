@@ -369,6 +369,8 @@ function toMarkdownWithEmoji(source) {
 		source = source.replace(search, replace);
 	}
 
+	source = source.replaceAll('&gt;', '>');
+
 	var converter = new showdown.Converter({tables: true, strikethrough: true});
 	source = converter.makeHtml(source);
 

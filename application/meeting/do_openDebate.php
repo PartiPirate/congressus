@@ -30,7 +30,7 @@ require_once("engine/bo/MotionBo.php");
 require_once("engine/bo/SourceBo.php");
 require_once("engine/bo/UserBo.php");
 
-$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+$discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);

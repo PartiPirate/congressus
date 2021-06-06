@@ -24,7 +24,7 @@ include_once("config/discourse.structure.php");
 require_once("engine/discourse/DiscourseAPI.php");
 require_once("engine/utils/DiscourseUtils.php");
 
-$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+$discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 require_once("engine/utils/LogUtils.php");
 addLog($_SERVER, $_SESSION, null, $_POST);

@@ -45,7 +45,7 @@ function createDiscoursePost($discourseApi, $content, $topicId, $username) {
 	// make stuff
 	
 	$content = sanitizeDiscourseContent($content);
-	$response = $discourseApi->createPost($content, $topicId, $username);
+	$response = $discourseApi->createPost($content, $topicId, $username, new DateTime());
 
 	return $response;
 }

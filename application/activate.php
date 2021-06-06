@@ -56,7 +56,6 @@ else {
 	$activation = "danger";
 }
 
-
 ?>
 <div class="container theme-showcase" role="main">
 	<ol class="breadcrumb">

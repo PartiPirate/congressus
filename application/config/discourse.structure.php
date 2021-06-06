@@ -29,7 +29,7 @@ function discourseApi($url, $api_key, $protocol) {
     if ($protocol=="") {
         throw new Exception('Discourse protocol missing.');
     }
-    $discourseApi = new richp10\discourseAPI\DiscourseAPI($url, $api_key, $protocol);
+    $discourseApi = new pnoeric\DiscourseAPI($url, $api_key, $protocol);
     return $discourseApi;
 }
 

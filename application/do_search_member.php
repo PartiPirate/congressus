@@ -22,6 +22,7 @@ error_reporting(E_ALL);
 
 include_once("config/database.php");
 include_once("language/language.php");
+require_once("engine/utils/LogUtils.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/ThemeBo.php");
@@ -41,6 +42,29 @@ $sessionUserId = SessionUtils::getUserId($_SESSION);
 
 // No session user, no result
 if (!$sessionUserId) exit();
+
+addLog($_SERVER, $_SESSION, null, $_POST);
+
+$logBo = LogBo::newInstance($connection, $config);
+
+$filter = array();
+
+$filter["log_user_id"] = $sessionUserId;
+$filter["log_action"] = "do_search_member";
+
+$now = getNow();
+$now->sub(new DateInterval('PT10M'));
+$tenMinutesAgo = $now->format("Y-m-d H:i:s");
+
+$filter["after_log_datetime"] = $tenMinutesAgo;
+
+$logs = array();
+$logs = $logBo->getByFilters($filter);
+
+if (count($logs) > 3) {
+	echo json_encode(array("ok" => "ok", "rows" => array(), "numberOfRows" => 0));
+	exit();
+}
 
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 $groupBo = GroupBo::newInstance($connection, $config);

@@ -103,7 +103,7 @@ if ($meeting["mee_chat_plugin"] == "discourse") {
 	$motionBo = MotionBo::newInstance($connection, $config);
 	$motion = $motionBo->getById($chat["cha_motion_id"]);
 
-	$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+	$discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 	$topic = $discourseApi->getTopic($motion["mot_external_chat_id"]);
 
 	$queryBuilder = QueryFactory::getInstance($config["database"]["dialect"]);
@@ -129,9 +129,13 @@ if ($meeting["mee_chat_plugin"] == "discourse") {
 	$data["ok"] = "ok";
 	$data["user"] = $results[0]["email_adh"];
 
+//	print_r($data);
+
 	$discourseUser = $discourseApi->getUserByEmail($data["user"]);
 
 	$data["discourse_user"] = $discourseUser;
+
+//	print_r($discourseUser);
 
 	$response = createDiscoursePost($discourseApi, $chat["cha_text"], $motion["mot_external_chat_id"], $discourseUser->username);
 

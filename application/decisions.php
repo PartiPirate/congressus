@@ -499,32 +499,27 @@ foreach($config["modules"]["groupsources"] as $groupSourceId) {
                         }
                     }
 ?>
-                     
-                     
+
                 </div>           
 <?php
             }
 ?>
 
-            </div>           
+            </div>
 <?php
             }
 ?>
 
 <?php   include("decisions/decisions_pagination.php"); ?>
 
-    		</div>
-
-
-
 <?php
             
         }
 ?>
 
+		</div>
+
 <?php } ?>
-
-
 
 
 

@@ -126,7 +126,7 @@ class CreateCrewHook implements WinningMotionHook {
 
         /* DISCOURSE */
 
-        $discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
+        $discourseApi = new pnoeric\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
         // Create category discourse
 

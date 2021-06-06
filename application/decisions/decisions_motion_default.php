@@ -33,7 +33,6 @@
         include("decisions/decisions_motion_charts.php");
 ?>
 
-    </div>
 <?php   if (count($object["mot_tags"])) { ?>
     <div class="motion-tags">
 <?php       foreach($object["mot_tags"] as $tag) { ?>

@@ -75,6 +75,21 @@ class LogBo {
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
+		if (isset($filters["log_action"])) {
+			$args["log_action"] = $filters["log_action"];
+			$queryBuilder->where("log_action = :log_action");
+		}
+
+		if (isset($filters["log_user_id"])) {
+			$args["log_user_id"] = $filters["log_user_id"];
+			$queryBuilder->where("log_user_id = :log_user_id");
+		}
+
+		if (isset($filters["after_log_datetime"])) {
+			$args["after_log_datetime"] = $filters["after_log_datetime"];
+			$queryBuilder->where("log_datetime > :after_log_datetime");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

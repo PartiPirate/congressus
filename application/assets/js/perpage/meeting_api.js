@@ -1,5 +1,5 @@
 /*
-    Copyright 2019 Cédric Levieux, Parti Pirate
+    Copyright 2019-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -25,7 +25,7 @@ function m_ping(meetingId, userId) {
 //	console.log("m_ping");
 	const event = {id: meetingId, event: "m_ping"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event);
 	}
 	else {
@@ -38,7 +38,7 @@ function m_computeVote(motionId, save, force, callback) {
 //	console.log("m_computeVote");
     const event = {motionId: motionId, save: save, force: force, event: "m_computeVote"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
@@ -50,7 +50,7 @@ function m_vote(motionId, propositionId, votePower, callback) {
 //	console.log("m_vote");
     const event = {motionId: motionId, propositionId: propositionId, power: votePower, event: "m_vote"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
@@ -62,7 +62,7 @@ function m_getAgendaPoint(meetingId, agendaId, requestId, callback) {
 //	console.log("m_getAgendaPoint");
     const event = {id: meetingId, pointId: agendaId, requestId: requestId, event: "m_getAgendaPoint"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
@@ -74,7 +74,7 @@ function m_getAgenda(meetingId, callback) {
 //	console.log("m_getAgenda");
     const event = {id: meetingId, event: "m_getAgenda"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
@@ -86,7 +86,7 @@ function m_getPeople(meetingId, callback) {
 //	console.log("m_getPeople");
     const event = {id: meetingId, event: "m_getPeople"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
@@ -98,10 +98,27 @@ function m_getEvents(meetingId, callback) {
 //	console.log("m_getEvents");
     const event = {meetingId: meetingId, event: "m_getEvents"};
 
-	if (socket) {
+	if (typeof socket !== "undefined" && socket) {
 		sendEvent(event, callback);
 	}
 	else {
         $.post("meeting_api.php?method=do_getEvents", event, callback, "json");
+	}
+}
+
+function m_moveObject(meetingId, agendaId, objectId, objectType, destinationMeetingId, destinationAgendaId, callback) {
+    const event = {	meetingId: meetingId,
+				    agendaId: agendaId,
+				    objectId: objectId,
+				    objectType: objectType,
+				    destinationMeetingId: destinationMeetingId,
+				    destinationAgendaId: destinationAgendaId,
+    				event: "m_moveObject"};
+
+	if (typeof socket !== "undefined" && socket) {
+		sendEvent(event, callback);
+	}
+	else {
+        $.post("meeting_api.php?method=do_moveObject", event, callback, "json");
 	}
 }

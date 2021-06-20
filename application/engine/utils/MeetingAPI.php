@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2019-2020 Cédric Levieux, Parti Pirate
+    Copyright 2019-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -105,11 +105,11 @@ class MeetingAPI {
 
 	function computeVote($motionId, $save) {
 		require_once("engine/utils/PersonaeClient.php");
-		
+
 		$memcache = openMemcacheConnection();
 
 		$personaeClient = PersonaeClient::newInstance($this->config["personae"]["api"]);
-		
+
 		$meetingBo = MeetingBo::newInstance($this->pdo, $this->config);
 		$motionBo  = MotionBo::newInstance($this->pdo, $this->config);
 		$agendaBo  = AgendaBo::newInstance($this->pdo, $this->config);
@@ -1207,5 +1207,123 @@ class MeetingAPI {
 							}
 						}
 */						
+	}
+	
+	function moveObject($from, $to, $object, $user) {
+		$data = array();
+
+		$chatBo = ChatBo::newInstance($this->pdo, $this->config);
+		$agendaBo = AgendaBo::newInstance($this->pdo, $this->config);
+		$meetingBo = MeetingBo::newInstance($this->pdo, $this->config);
+
+		$fullObject = null;
+
+		switch($object["type"]) {
+			case "chat":
+				$objectBo  = ChatBo::newInstance($this->pdo, $this->config);
+				$fullObject = $objectBo->getById(intval($object["id"]));
+				$agendaFieldLabel = "cha_agenda_id";
+
+				foreach($fullObject as $key => $value) {
+					if (substr($key, 0, 4) != "cha_") {
+						unset($fullObject[$key]);
+					}
+				}
+
+				$objectLink = array("chatId" => $object["id"]);
+				$objectLinkLabel = "chatId";
+
+				break;
+			case "motion":
+				$objectBo  = MotionBo::newInstance($this->pdo, $this->config);
+				$fullObject = $objectBo->getById(intval($object["id"]));
+				$agendaFieldLabel = "mot_agenda_id";
+
+				foreach($fullObject as $key => $value) {
+					if (substr($key, 0, 4) != "mot_") {
+						unset($fullObject[$key]);
+					}
+				}
+
+				$objectLink = array("motionId" => $object["id"]);
+				$objectLinkLabel = "motionId";
+
+				$amendmentAgendaFilters = array("age_label" => "amendments-" . $object["id"], "age_parent_id" => $from["agendaId"]);
+				$amendmentAgendas = $agendaBo->getByFilters($amendmentAgendaFilters);
+
+				if (count($amendmentAgendas)) {
+					foreach($amendmentAgendas as $amendmentAgenda) {
+						$amendmentAgenda["age_parent_id"] = $to["agendaId"];
+						$amendmentAgenda["age_meeting_id"] = $to["meetingId"];
+
+						$agendaBo->save($amendmentAgenda);
+					}
+				}
+
+				$chatFilters = array("cha_motion_id" => $object["id"]);
+				$motionChats = $chatBo->getByFilters($chatFilters);
+
+				foreach($motionChats as $motionChat) {
+					$this->moveobject($from, $to, array("type" => "chat", "id" => $motionChat["cha_id"]), $user);
+				}
+
+				// we take the motion out of the trash
+				$fullObject["mot_trashed"] = 0;
+
+				break;
+		}
+
+		if (!$fullObject) {
+			$data["ko"] = "no object";
+
+			return $data;
+		}
+		else if ($fullObject[$agendaFieldLabel] != $from["agendaId"]) {
+			$data["ko"] = "bad agenda id";
+
+			return $data;
+		}
+
+		$fullObject[$agendaFieldLabel] = $to["agendaId"];
+		$data["object"] = $fullObject;
+
+		$objectBo->save($fullObject);
+
+		$fromAgenda = $agendaBo->getById($from["agendaId"]);
+		$toAgenda = $agendaBo->getById($to["agendaId"]);
+
+		$fromAgenda["age_objects"] = json_decode($fromAgenda["age_objects"], true);
+		$toAgenda["age_objects"] = json_decode($toAgenda["age_objects"], true);
+
+		$data["from"] = $fromAgenda;
+		$data["to"] = $toAgenda;
+
+		$newFromAgendaObjects = array();
+
+		foreach($fromAgenda["age_objects"] as $index => $agendaObject) {
+			if (isset($agendaObject[$objectLinkLabel]) && $agendaObject[$objectLinkLabel] == $objectLink[$objectLinkLabel]) {
+//				unset($fromAgenda["age_objects"][$index]);
+//				break;
+			}
+			else {
+				$newFromAgendaObjects[] = $agendaObject;
+			}
+		}
+
+		$fromAgenda["age_objects"] = $newFromAgendaObjects;
+		$toAgenda["age_objects"][] = $objectLink;
+
+		$data["from_after"] = $fromAgenda;
+		$data["to_after"] = $toAgenda;
+
+		$fromAgenda["age_objects"] = json_encode($fromAgenda["age_objects"]);
+		$toAgenda["age_objects"] = json_encode($toAgenda["age_objects"]);
+
+		$agendaBo->save($fromAgenda);
+		$agendaBo->save($toAgenda);
+
+		$data["ok"] = "ok";
+
+		return $data;
 	}
 }

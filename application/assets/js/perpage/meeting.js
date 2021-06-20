@@ -1,5 +1,5 @@
 /*
-    Copyright 2015-2017 Cédric Levieux, Parti Pirate
+    Copyright 2015-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -590,12 +590,66 @@ function addConclusion() {
 }
 
 function addMotion(event) {
-	var agendaId = $("#agenda_point").data("id");
-	var meetingId = $(".meeting").data("id");
-	var startingText = $("#starting-text").val();
+	const agendaId = $("#agenda_point").data("id");
+	const meetingId = $(".meeting").data("id");
+	let startingText = $("#starting-text").val();
 
-	$.get("meeting_api.php?method=do_addMotion", {meetingId: meetingId, pointId: agendaId, startingText: startingText}, function(data) {
+	const motionForm = {meetingId: meetingId, pointId: agendaId, startingText: startingText};
+
+	const lineSeparatorIndex = startingText.indexOf("---");
+
+	if (lineSeparatorIndex != -1) {
+		const description = startingText.substr(lineSeparatorIndex + 3).trim();
+		startingText = startingText.substr(0, lineSeparatorIndex).trim();
+
+		motionForm["startingText"] = startingText;
+		motionForm["description"] = description;
+	}
+
+	$.get("meeting_api.php?method=do_addMotion", motionForm, function(data) {
 		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+
+		setAgendaMotion(data.motion.mot_id, [data.motion]);
+
+		$("#agenda_point ul.objects li.motion#motion-" + data.motion.mot_id + " h4").click();
+
+		$("#starting-text").val("");
+		$("#starting-text").keyup();
+
+		goDownPoint();
+	}, "json");
+}
+
+function addYesNoMotion(event) {
+	const agendaId = $("#agenda_point").data("id");
+	const meetingId = $(".meeting").data("id");
+	let startingText = $("#starting-text").val();
+
+	const motionForm = {meetingId: meetingId, pointId: agendaId, startingText: startingText, noProposition: true};
+
+	const lineSeparatorIndex = startingText.indexOf("---");
+
+	if (lineSeparatorIndex != -1) {
+		const description = startingText.substr(lineSeparatorIndex + 3).trim();
+		startingText = startingText.substr(0, lineSeparatorIndex).trim();
+
+		motionForm["startingText"] = startingText;
+		motionForm["description"] = description;
+	}
+
+	$.get("meeting_api.php?method=do_addMotion", motionForm, function(data) {
+		if (data.gamifiedUser) testBadges(data.gamifiedUser.data);
+
+		var motionId = data.motion.mot_id;
+		// Add propositions
+		var addPropositionForm = {meetingId: meetingId, pointId: agendaId, motionId: motionId, label: ""};
+		var propositions = ["Oui", "Non"];
+
+		for(var index = 0; index < propositions.length; ++index) {
+			addPropositionForm.label = propositions[index];
+			$.post("meeting_api.php?method=do_addMotionProposition", addPropositionForm, function(data) {
+			}, "json");
+		}
 
 		setAgendaMotion(data.motion.mot_id, [data.motion]);
 
@@ -1957,7 +2011,10 @@ $(function() {
 	$("#agenda_point").on("click", "button.btn-add-chat", addOwnChat);
 	$("#agenda_point").on("click", "button.btn-add-task", addOwnTask);
 	$("#agenda_point").on("click", "button.btn-add-conclusion", addConclusion);
-	$("#agenda_point").on("click", "button.btn-add-motion", addMotion);
+
+	$("#agenda_point").on("click", "a.lnk-add-motion", addMotion);
+	$("#agenda_point").on("click", "a.lnk-add-yes-no-motion", addYesNoMotion);
+
 	$("#agenda_point").on("click", "button.btn-advice", setAdvice);
 
 	$("#agenda_point ul.objects").on("click", ".btn-do-vote, .btn-do-close", changeMotionStatus);
@@ -2168,10 +2225,10 @@ function addStartingTextHandler() {
 		}, 30000);
 
 		if (startingText) {
-			$("#starting-text-buttons button").removeAttr("disabled");
+			$("#starting-text-buttons button, #starting-text-buttons .btn-add-motion").removeAttr("disabled").removeClass("disabled");
 		}
 		else {
-			$("#starting-text-buttons button").attr("disabled", "disabled");
+			$("#starting-text-buttons button, #starting-text-buttons .btn-add-motion").attr("disabled", "disabled").addClass("disabled");
 			// set en event, stop typing
 			var event = {meetingId: meetingId, event: "user_stop_typing", pointId: agendaId};
 			console.log(event);

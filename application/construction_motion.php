@@ -597,23 +597,31 @@ include("construction/pieChart.php");
 
 							<?php addShareButton("dropdownMotionShareButton", "btn-primary btn-share-motion", "height: 36px;", $config["server"]["base"] ."construction_motion.php?motionId=" . $motion["mot_id"], $motion["mot_title"], "congressus"); ?>
 
-							<?php		if ($userId == $motion["mot_author_id"] || $userId == $meeting["mee_secretary_member_id"]) {?>
+							<?php		if ($userId == $motion["mot_author_id"] || $isCoAuthor || $userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-danger btn-delete-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
-								<span class="glyphicon glyphicon-remove"></span> <?php echo lang("common_delete"); ?> &nbsp;
+								data-motion-id="<?=$motion["mot_id"]?>" data-agenda-point-id="<?=$motion["mot_agenda_id"]?>" data-meeting-id="<?=$meeting["mee_id"]?>">
+								<span class="glyphicon glyphicon-remove"></span> <?=lang("common_delete")?> &nbsp;
 							</div>
 							<?php		} ?>
-							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
+							<?php		if ($userId == $motion["mot_author_id"] || $isCoAuthor || $userId == $meeting["mee_secretary_member_id"]) {?>
+							<div class="btn btn-info btn-move-motion" type="button" style="height: 36px;"
+								data-motion-id="<?=$motion["mot_id"]?>" data-agenda-point-id="<?=$motion["mot_agenda_id"]?>" data-meeting-id="<?=$meeting["mee_id"]?>">
+								<i class="fa fa-share-square-o"></i> </span> <?=lang("motion_move")?> &nbsp;
+							</div>
+							<?php		} ?>
+							<?php		if (!$motion["mot_trashed"]) { ?>
+							<?php			if ($userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-warning btn-trash-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
-								<span class="glyphicon glyphicon-trash"></span> <?php echo lang("motion_trash"); ?> &nbsp;
+								data-motion-id="<?=$motion["mot_id"]?>" data-agenda-point-id="<?=$motion["mot_agenda_id"]?>" data-meeting-id="<?=$meeting["mee_id"]?>">
+								<span class="glyphicon glyphicon-trash"></span> <?=lang("motion_trash")?> &nbsp;
 							</div>
-							<?php		} ?>
-							<?php		if ($userId == $meeting["mee_secretary_member_id"]) {?>
+							<?php			} ?>
+							<?php			if ($userId == $meeting["mee_secretary_member_id"]) {?>
 							<div class="btn btn-info btn-open-debate-motion" type="button" style="height: 36px;"
-								data-motion-id="<?php echo $motion["mot_id"]; ?>" data-agenda-point-id="<?php echo $motion["mot_agenda_id"]; ?>" data-meeting-id="<?=$meeting["mee_id"]?>">
-								<i class="fa fa-comments"></i> <?php echo lang("motion_open_debate"); ?> &nbsp;
+								data-motion-id="<?=$motion["mot_id"]?>" data-agenda-point-id="<?=$motion["mot_agenda_id"]?>" data-meeting-id="<?=$meeting["mee_id"]?>">
+								<i class="fa fa-comments"></i> <?=lang("motion_open_debate")?> &nbsp;
 							</div>
+							<?php			} ?>
 							<?php		} ?>
 
 							</form>
@@ -656,6 +664,7 @@ include("construction/pieChart.php");
 	include("construction/amendment_modal.php");
 	include("construction/source_modal.php");
 	include("construction/trash_modal.php");
+	include("construction/move_modal.php");
 	include("construction/authorship_modal.php");
 ?>
 
@@ -1382,6 +1391,7 @@ include("construction/pieChart.php");
 <script src="assets/js/perpage/construction_source_save.js?r=<?=filemtime("assets/js/perpage/construction_source_save.js")?>"></script>
 <script src="assets/js/perpage/construction_motion_save.js?r=<?=filemtime("assets/js/perpage/construction_motion_save.js")?>"></script>
 <script src="assets/js/perpage/construction_motion_authorship.js?r=<?=filemtime("assets/js/perpage/construction_motion_authorship.js")?>"></script>
+<script src="assets/js/perpage/meeting_api.js?r=<?=filemtime("assets/js/perpage/meeting_api.js")?>"></script>
 <script src="assets/js/perpage/meeting_events.js?r=<?=filemtime("assets/js/perpage/meeting_events.js")?>"></script>
 <script>
 sourceEnabled = false;

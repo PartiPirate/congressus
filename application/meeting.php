@@ -1,5 +1,5 @@
 <?php /*
-    Copyright 2015-2020 Cédric Levieux, Parti Pirate
+    Copyright 2015-2021 Cédric Levieux, Parti Pirate
 
     This file is part of Congressus.
 
@@ -483,7 +483,18 @@ if (($meeting["loc_type"] == "discord") AND ($meeting["loc_channel"] !== "")) {
 					<div style="margin-top: 5px;" id="starting-text-buttons">
 						<button class="btn btn-default btn-xs btn-add-chat disabled"><?php echo lang("meeting_chat"); ?> <span class="fa fa-comment"></span></button>
 						<button class="btn btn-default btn-xs btn-add-speaker-chat disabled" disabled="disabled"><span class="speaker"></span> <span class="fa fa-comment"></span></button>
-						<button class="btn btn-default btn-xs btn-add-motion disabled"><?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"></span></button>
+
+						<div class="dropdown motion-btn-container disabled" style="display: inline-block;">
+							<div class="btn btn-default btn-xs btn-add-motion dropdown-toggle" data-toggle="dropdown" type="button">
+								<?php echo lang("meeting_motion"); ?> <span class="fa fa-archive"> <span class="caret"></span>
+							</div>
+					
+							<div class="dropdown-menu">
+								<a class="dropdown-item lnk-add-motion" href="#" data-popup-width="550" data-popup-height="285" ><i class="fa fa-archive" aria-hidden="true"></i>Motion standard</a><br>
+								<a class="dropdown-item lnk-add-yes-no-motion" href="#" data-popup-width="550" data-popup-height="285" ><i class="fa fa-archive" aria-hidden="true"></i>Motion Oui - Non</a><br>
+							</div>
+						</div>
+
 						<button class="btn btn-default btn-xs btn-add-task disabled"><?php echo lang("meeting_task"); ?> <span class="fa fa-tasks"></span></button>
 						<button class="btn btn-default btn-xs btn-add-conclusion disabled"><?php echo lang("meeting_conclusion"); ?> <span class="fa fa-lightbulb-o"></span></button>
 						

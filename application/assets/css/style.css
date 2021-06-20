@@ -567,17 +567,19 @@ a[disabled] {
 
 /* Share */
 
-.share-container .dropdown-menu {
+.share-container .dropdown-menu, .motion-btn-container .dropdown-menu {
     min-width: 0 !important;
     padding: 5px 10px;
 }
 
 
-.share-container .dropdown-menu .dropdown-item {
+.share-container .dropdown-menu .dropdown-item, .motion-btn-container .dropdown-menu .dropdown-item {
 	white-space: nowrap;
 }
 
-.share-container .dropdown-menu .dropdown-item .fa, .share-container .dropdown-menu .dropdown-item .fa:hover {
+.share-container .dropdown-menu .dropdown-item .fa, .share-container .dropdown-menu .dropdown-item .fa:hover,
+.motion-btn-container .dropdown-menu .dropdown-item .fa, .motion-btn-container .dropdown-menu .dropdown-item .fa:hover
+{
 	width: 18px;
     text-align: center;
     text-decoration: none;

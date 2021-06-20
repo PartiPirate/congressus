@@ -606,6 +606,125 @@ function addGoToTabListeners() {
 	});
 }
 
+// Move methods
+
+function showMoveDialog(event) {
+
+//	$("#move-modal #explanationArea").val("");
+	$('#move-modal').one('shown.bs.modal', function () {
+//		$("#move-modal #explanationArea").keyup();
+	});
+
+	$.get("meeting_api.php?method=do_getMeetings", {"status[]":["open", "waiting"]}, function(data) {
+		if (data.ok) {
+			var constructionGroup = $("#move-modal #meetingSelect");
+//			var meetingGroup = $("#add-agenda-from-modal #meeting-group");
+
+			// clear meetings
+			constructionGroup.children().remove();
+//			meetingGroup.children().remove();
+
+			for(var index = data.meetings.length - 1; index >=0 ; --index) {
+				var meeting = data.meetings[index];
+
+				var option = $("<option></option>");
+				option.val(meeting.mee_id);
+				option.text(meeting.mee_label);
+				option.data("meeting", meeting);
+
+				if (meeting.mee_type == "construction") {
+					constructionGroup.append(option);
+				}
+//				else if (meeting.mee_type == "meeting") {
+//					meetingGroup.append(option);
+//				}
+			}
+
+			var actualMeetingId = $("#move-modal #meetingIdInput").val();
+
+			$("#move-modal #meetingSelect").val(actualMeetingId).change();
+
+			// Then show the modal
+			$("#move-modal").modal('show');
+		}
+	}, "json");
+}
+
+function moveMotion(event) {
+	var actualMeetingId 		= $("#move-modal #meetingIdInput").val();
+	var actualAgendaId			= $("#move-modal #agendaIdInput").val();
+	var motionId				= $("#move-modal #motionIdInput").val();
+	var destinationMeetingId	= $("#move-modal #meetingSelect").val();
+	var destinationAgendaId		= $("#move-modal #agendaSelect").val();
+
+	m_moveObject(actualMeetingId, actualAgendaId, motionId, "motion", destinationMeetingId, destinationAgendaId, function(data) {
+		window.location.reload();
+	});
+}
+
+function changeDestinationMeetingHandler(event) {
+	var meetingId		= $("#move-modal #meetingSelect").val();
+	var agendaSelect	= $("#move-modal #agendaSelect");
+	var actualMeetingId = $("#move-modal #meetingIdInput").val();
+	var actualAgendaId	= $("#move-modal #agendaIdInput").val();
+
+	$("#move-modal #agendaSelectDiv").hide();
+	agendaSelect.children().remove();
+
+	if (!meetingId) return;
+
+//	$.get("meeting_api.php?method=do_getAgenda", {id: meetingId}, function(data) {
+	m_getAgenda(meetingId, function(data) {
+		if (meetingId != actualMeetingId) {
+			var option = $("<option value=\"\" disabled=\"disabled\" selected=\"selected\"></option>");
+			option.data("agenda", agenda);
+	
+			agendaSelect.append(option);
+		}
+
+		for(var index = 0; index < data.agendas.length; ++index) {
+			var agenda = data.agendas[index];
+
+			if (agenda.age_label.indexOf("amendments") == 0) continue;
+
+			var option = $("<option></option>");
+			option.val(agenda.age_id);
+			option.text(agenda.age_label);
+			option.data("agenda", agenda);
+
+			if (meetingId == actualMeetingId && actualAgendaId == agenda.age_id) {
+				option.prop("selected", true);
+				option.prop("disabled", true);
+			}
+
+			agendaSelect.append(option);
+		}
+
+		agendaSelect.change();
+
+		if (data.agendas.length) {
+			$("#move-modal #agendaSelectDiv").show();
+		}
+	});
+	
+}
+
+function changeDestinationAgendaHandler(event) {
+	var agendaSelect	= $("#move-modal #agendaSelect");
+	var actualAgendaId	= $("#move-modal #agendaIdInput").val();
+
+	$("#move-modal .btn-move-motion").prop("disabled", !agendaSelect.val() || agendaSelect.val() == actualAgendaId);
+}
+
+function addMoveListeners() {
+	$("body").on("click", "#motion-buttons-bar .btn-move-motion", showMoveDialog);
+	$("body").on("click", "#move-modal .btn-move-motion", moveMotion);
+	$("body").on("change", "#move-modal #meetingSelect", changeDestinationMeetingHandler);
+	$("body").on("change", "#move-modal #agendaSelect", changeDestinationAgendaHandler);
+}
+
+// Trash methods
+
 function showTrashDialog(event) {
 
 	$("#save-trash-modal #explanationArea").val("");
@@ -707,6 +826,7 @@ $(function() {
 	addGoToTabListeners();
 	addOpenDebateListeners();
 	addTitleListeners();
+	addMoveListeners();
 
 	$("body").on("keyup", "*[data-provide=markdown]", function(event) {
 		//console.log(event)	

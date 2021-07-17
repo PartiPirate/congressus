@@ -26,7 +26,11 @@ class RedmineHook implements TaskHook {
 
     function __construct() {
 //        $json = file_get_contents("task_hooks/redmine.json");
-        include("task_hooks/redmine/config.php");
+        // This if statement only exists to avoid breaking existing deployments
+        if(file_exists("config/redmine.config.php"))
+          include("config/redmine.config.php");
+        else
+          include("task_hooks/redmine/config.php");
 //        $json = file_get_contents("task_hooks/redmine.json");
         $this->configuration = json_decode($json, true);
     }

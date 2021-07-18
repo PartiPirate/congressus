@@ -212,11 +212,11 @@ class MeetingAPI {
 		            $delegations = $personaeClient->getNoticePowers($notice["not_target_id"], $motion, $votes);
 
 //					return $data;
-/*
-		            echo "<!--\n";
-		            print_r($delegations);
-		            echo "\n-->";
-*/
+
+//		            echo "<!--\n";
+//		            print_r($delegations);
+//		            echo "\n-->";
+
 //					return $data;
 		//            $data["response"] = $delegations; // TODO compute in a better way
 		        }
@@ -267,11 +267,11 @@ class MeetingAPI {
 
 		//    $data["notices"] = $notices;
 		    
-		    /*
+/*		    
 		    echo "#";
 		    print_r($delegations);
 		    echo "#";
-		    */
+*/		    
 		    
 		    /*
 		    $results = json_decode($_REQUEST["explanations"], true);
@@ -391,12 +391,12 @@ class MeetingAPI {
 		        }
 		    }
 		    
-		    /*
+/*		    
 		    print_r($propositions);
 		    echo "----\n";
 		    print_r($motion);
 		    echo "----\n";
-		    */
+*/		    
 
 		    if ($motion["mot_anonymous"] && $motion["mot_status"] != "resolved") {
 		        usort($propositions, "sortPropositionsOnLabel");

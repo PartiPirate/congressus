@@ -22,22 +22,38 @@
 /* global hasRight */
 /* global speakingStats */
 /* global clearKeyup */
-/* gloabl keyupTimeoutId */
+/* global keyupTimeoutId */
+/* global users */
 
 var peoples = {};
 var numberOfConnected = 0;
 
+var meMemberTemplate = $("li[data-template-id=me-member]");
+var memberTemplate = $("li[data-template-id=member]");
+
 function getMemberLi(people) {
+//	var start = new Date().getTime();
+
 	var userId = getUserId();
 
 	var memberContainer = null;
+	var template = null;
+
 	if (people.mem_id == userId) {
-		memberContainer = $("li[data-template-id=me-member]").template("use", {data: people});
+		template = meMemberTemplate;
 	}
 	else {
-		memberContainer = $("li[data-template-id=member]").template("use", {data: people});
+		template = memberTemplate;
 	}
+
+//	var end = new Date().getTime();
+//	console.log("After template retrieve : " + (end - start) + "ms");
+
+	memberContainer = template.template("use", {data: people});
 	memberContainer.find("*").tooltip({placement: "top"});
+
+//	var end = new Date().getTime();
+//	console.log("After template usage : " + (end - start) + "ms");
 
 	return memberContainer;
 }
@@ -171,7 +187,9 @@ function updateMemberLi(member, people) {
 		$(".secretary select option[val='"+people.mem_id+"']").attr("checked", "checked");
 	}
 
-	member.children(".member-nickname").text(people.mem_nickname);
+	if (member.children(".member-nickname").text() != people.mem_nickname) {
+		member.children(".member-nickname").text(people.mem_nickname);
+	}
 
 	if (people.mem_speaking && people.mem_speaking != "0") {
 		
@@ -261,19 +279,58 @@ function updateMemberLi(member, people) {
 	return member;
 }
 
+function getNoticeLis(notice) {
+	const noticeKey = notice ? notice.attr("id").replace("-", "_") : "visitors";
+
+//	console.log("getNoticeLis : " + noticeKey);
+
+	const noticeLis = [];
+
+	for(let userId in users) {
+		const li = users[userId].lis[noticeKey];
+		if (li) noticeLis.push(li);
+	}
+
+	return noticeLis;
+}
+
 function handlePages(notice) {
+	const noticeKey = notice ? notice.attr("id").replace("-", "_") : "visitors";
+
+//	console.log("handlePages : " + noticeKey);
+
 	var members = notice.children("ul.members");
 	var memberPages = notice.children("div.member-pages");
 
 	var currentPage = memberPages.data("current-page");
 
-	var memberLists = members.children(".member");
+	let flush = false;
+
+	if (currentPage == -1) {
+		currentPage = 1;
+		flush = true;
+		memberPages.data("current-page", 1);
+	}
+
+//	var memberLists = members.children(".member");
+	var memberLists = getNoticeLis(notice);
+
 	var numberOfMembers = 0;
+
+	for(let index = 0; index < memberLists.length; ++index) {
+		const userLi = memberLists[index];
+		if (!userLi.hasClass("hide-missing")) {
+			numberOfMembers++;
+		}
+	}
+
+/*
 	memberLists.each(function() {
 		if (!$(this).hasClass("hide-missing")) {
 			numberOfMembers++;
 		}
 	});
+*/
 
 	var numberOfPages = Math.ceil(numberOfMembers / 10);
 //	console.log("Number of members : " + numberOfMembers);
@@ -283,47 +340,55 @@ function handlePages(notice) {
 		var pagePage = page.data("page");
 
 		if (pagePage > numberOfPages) {
-			page.hide();
+			if (page.is(":visible")) page.hide();
 		}
 		else if (pagePage < 0) {
-			page.show();
+			if (!page.is(":visible")) page.show();
 		}
 		else if (pagePage < currentPage - 2) {
-			page.hide();
+			if (page.is(":visible")) page.hide();
 		}
 		else if (pagePage > currentPage + 2) {
-			page.hide();
+			if (page.is(":visible")) page.hide();
 		}
 		else {
-			page.show();
+			if (!page.is(":visible")) page.show();
 		}
 
 		if (pagePage == currentPage) {
-			page.addClass("active");
+			if (!page.hasClass("active")) page.addClass("active");
 		}
 		else {
-			page.removeClass("active");
+			if (page.hasClass("active")) page.removeClass("active");
 		}
 	});
 
-	var index = 0;
-	memberLists.each(function() {
-		if (!$(this).hasClass("hide-missing")) {
+//	var index = 0;
+//	memberLists.each(function() {
+	for(let index = 0; index < memberLists.length; ++index) {
+		const userLi = memberLists[index];
+
+		if (!userLi.hasClass("hide-missing")) {
 			if (index >= ((currentPage - 1) * 10) && index < currentPage * 10) {
-				$(this).removeClass("hide-paged");
+				if (flush) userLi.detach();
+				if (!userLi.parent().length) userLi.appendTo(notice.find("ul"));
+//				userLi.removeClass("hide-paged");
 			}
 			else {
-				$(this).addClass("hide-paged");
+				if (userLi.parent().length) userLi.detach();
+//				userLi.addClass("hide-paged");
 			}
 
-			index++;
+//			index++;
 		}
-	});
+	}
+//	);
 
 	memberPages.find(".page-first").attr("disabled", "disabled");
 	memberPages.find(".page-previous").attr("disabled", "disabled");
 	memberPages.find(".page-next").attr("disabled", "disabled");
 	memberPages.find(".page-last").attr("disabled", "disabled");
+
 	if (currentPage != 1) {
 		memberPages.find(".page-first").removeAttr("disabled");
 		memberPages.find(".page-previous").removeAttr("disabled");
@@ -334,10 +399,10 @@ function handlePages(notice) {
 	}
 
 	if (numberOfPages < 2) {
-		memberPages.hide();
+		if (memberPages.is(":visible")) memberPages.hide();
 	}
 	else {
-		memberPages.show();
+		if (!memberPages.is(":visible")) memberPages.show();
 	}
 }
 
@@ -408,51 +473,74 @@ function addNotice(notice, parent) {
 
 	// Set paging system
 	if (notice.not_people.length) {
-		memberPages.show();
-		memberPages.children().remove();
+//		debugger;
+		const noticeMembers = getNoticeLis(noticeHtml);
+		if (noticeMembers.length != noticeHtml.data("numberOfMembers")) {
+			noticeHtml.data("numberOfMembers", noticeMembers.length);
 
-		var currentPage = memberPages.data("current-page");
-
-		for(var page = 1; page < Math.ceil(notice.not_people.length / 10) + 1; ++page) {
-			var pageLink = $("<a />", {"class": "page"});
-
-			if (page == currentPage) {
-				pageLink.addClass("active");
+			memberPages.show();
+			memberPages.children().remove();
+	
+			var currentPage = memberPages.data("current-page");
+	
+			for(var page = 1; page < Math.ceil(notice.not_people.length / 10) + 1; ++page) {
+				var pageLink = $("<a />", {"class": "page"});
+	
+				if (page == currentPage) {
+					pageLink.addClass("active");
+				}
+				else if (page < currentPage - 2 || page > currentPage + 2) {
+					pageLink.hide();
+				}
+	
+				pageLink.attr("href", "#");
+				pageLink.data("page", page);
+				pageLink.text(page);
+	
+				memberPages.append(pageLink);
 			}
-			else if (page < currentPage - 2 || page > currentPage + 2) {
-				pageLink.hide();
-			}
-
-			pageLink.attr("href", "#");
-			pageLink.data("page", page);
-			pageLink.text(page);
-
-			memberPages.append(pageLink);
+	
+			memberPages.append($("<a href='#' data-page='-2' class='pull-left page-first'><span class='glyphicon glyphicon-backward'></span></span></a>"));
+			memberPages.append($("<a href='#' data-page='-1' class='pull-left page-previous'><span class='glyphicon glyphicon-triangle-left'></span></a>"));
+	
+			memberPages.append($("<a href='#' data-page='-4' class='pull-right page-last'><span class='glyphicon glyphicon-forward'></span></span></a>"));
+			memberPages.append($("<a href='#' data-page='-3' class='pull-right page-next'><span class='glyphicon glyphicon-triangle-right'></span></a>"));
+	
+	//		if (memberPages.children("a.page").length < 2) {
+	//			memberPages.hide();
+	//		}
 		}
-
-		memberPages.append($("<a href='#' data-page='-2' class='pull-left page-first'><span class='glyphicon glyphicon-backward'></span></span></a>"));
-		memberPages.append($("<a href='#' data-page='-1' class='pull-left page-previous'><span class='glyphicon glyphicon-triangle-left'></span></a>"));
-
-		memberPages.append($("<a href='#' data-page='-4' class='pull-right page-last'><span class='glyphicon glyphicon-forward'></span></span></a>"));
-		memberPages.append($("<a href='#' data-page='-3' class='pull-right page-next'><span class='glyphicon glyphicon-triangle-right'></span></a>"));
-
-//		if (memberPages.children("a.page").length < 2) {
-//			memberPages.hide();
-//		}
 	}
 	else {
-		memberPages.hide();
+		if (memberPages.is(":visible")) memberPages.hide();
 	}
 
 	var userId = getUserId();
 
-//		var start = new Date().getTime();
+//	var start = new Date().getTime();
 
 	for(var index = 0; index < notice.not_people.length; ++index) {
 		var people = notice.not_people[index];
 
 		var previousPeople = peoples[people.mem_id];
-		var member = members.find("li.member#member-" + people.mem_id);
+		let user = users[people.mem_id];
+
+		if (!user) {
+			user = {data: {id : people.mem_id, nickname: people.mem_nickname}, lis: {}};
+			users[people.mem_id] = user;
+		}
+		
+		// update data
+		user.data.nickname = people.mem_nickname;
+
+		const noticeKey = "notice_" + notice.not_id;
+		let member = user.lis[noticeKey];
+
+		if (!member) {
+			member = getMemberLi(people); // members.find("li.member#member-" + people.mem_id);
+			users[people.mem_id].lis[noticeKey] = member;
+//			members.append(member); // TODO change this mechanism
+		}
 
 		if (showMissing || people.mem_connected) {
 			member.removeClass("hide-missing");
@@ -491,10 +579,18 @@ function addNotice(notice, parent) {
 
 		peoples[people.mem_id] = people;
 
+/*
 		if (!member.length) {
 			member = getMemberLi(people);
 			members.append(member);
 		}
+*/
+/*
+		if (!users[people.mem_id]) {
+			users[people.mem_id] = {data: {id : people.mem_id}, lis: {}};
+			users[people.mem_id].lis["notice_" + notice.not_id] = member;
+		}
+*/
 
 		updateMemberLi(member, people);
 
@@ -510,7 +606,7 @@ function addNotice(notice, parent) {
 
 //		var end = new Date().getTime();
 
-//		console.log((end - start) + "ms");
+//		console.log("addNotice : " + (end - start) + "ms");
 
 
 	handlePages(noticeHtml);
@@ -582,7 +678,7 @@ function updatePeople() {
 		}
 
 		// if there is a quorum OR the user has writing rights
-		if ((data["mee_computed_quorum"] && data["mee_computed_quorum"] != "0") || hasWritingRight($(".meeting").data("user-id"))) {
+		if ((data["mee_computed_quorum"] && data["mee_computed_quorum"] != "0") || hasWritingRight(getUserId())) {
 				$(".quorum-container").show();
 		}
 		else {
@@ -611,14 +707,35 @@ function updatePeople() {
 		for(var index = 0; index < data.visitors.length; ++index) {
 			var people = data.visitors[index];
 
-			var member = parent.children("li#member-" + people.mem_id);
+			let user = users[people.mem_id];
+
+			if (!user) {
+				user = {data: {id : people.mem_id, nickname: people.mem_nickname}, lis: {}};
+				users[people.mem_id] = user;
+			}
+			
+			// update data
+			user.data.nickname = people.mem_nickname;
+	
+			const noticeKey = "visitors";
+			let member = user.lis[noticeKey];
+	
+			if (!member) {
+				member = getMemberLi(people); // parent.find("li.member#member-" + people.mem_id);
+				users[people.mem_id].lis[noticeKey] = member;
+				parent.append(member); // TODO change this mechanism
+			}
+
+//			var member = parent.children("li#member-" + people.mem_id);
 
 			updateSpeaking(people);
 
+/*
 			if (!member.length) {
 				member = getMemberLi(people);
 				parent.append(member);
 			}
+*/
 
 			updateMemberLi(member, people);
 			member.find(".voting").hide();
@@ -653,7 +770,7 @@ function updatePeople() {
 			}
 		}
 
-		var userId = $(".meeting").data("user-id");
+		var userId = getUserId();
 
 		if (hasWritingRight(userId)) {
 			$(".btn-add-motion, .btn-add-task").show();
@@ -819,7 +936,7 @@ function changeOffice(select) {
 	var type = select.data("type");
 	var memberId = select.val();
 	var meetingId = $(".meeting").data("id");
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 
 	if (hasWritingRight(userId)) {
 		$.post("meeting_api.php?method=do_changeOfficeMember", {meetingId: meetingId, memberId: memberId, type: type}, function(data) {
@@ -831,7 +948,7 @@ function changeOffice(select) {
 function addPresidentHandlers() {
 	$(".president select, .secretary select").hide();
 	$(".president, .secretary").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+		if (hasWritingRight(getUserId()) && $(this).find(".read-data").is(":visible")) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {
@@ -858,16 +975,50 @@ function addPresidentHandlers() {
 }
 
 function toggleMissingPeople() {
+	
+	let toggleAction = "hideMissing";
+
 	if ($("#noticed-people .btn-hide-missing span").hasClass("glyphicon-eye-close")) {
-		$("#noticed-people .member.text-danger").removeClass("hide-missing");
+//		$("#noticed-people .member.text-danger").removeClass("hide-missing");
+		toggleAction = "showMissing";
 	}
+/*	
 	else {
 		$("#noticed-people .member.text-danger").addClass("hide-missing");
 	}
+*/	
 
 	$(".notice").each(function() {
+		var memberLists = getNoticeLis($(this));
+	
+		var numberOfMembers = 0;
+
+		if (toggleAction == "showMissing") {
+			for(let index = 0; index < memberLists.length; ++index) {
+				const userLi = memberLists[index];
+				userLi.removeClass("hide-missing");
+				
+				numberOfMembers++;
+			}
+		}
+		else {
+			for(let index = 0; index < memberLists.length; ++index) {
+				const userLi = memberLists[index];
+
+				if (userLi.hasClass("text-danger")) {
+					userLi.addClass("hide-missing");
+				}
+				else {
+					numberOfMembers++;
+				}
+			}
+		}
+
+		$(this).children(".member-pages").data("numberOfVisibleMembers", numberOfMembers);
+
 		handlePages($(this));
 	});
+	
 }
 
 function addNoticeHandlers() {
@@ -908,13 +1059,15 @@ function addNoticeHandlers() {
 
 		var page = $(this).parent().data("current-page") - (-1);
 
+		var numberOfMembers = $(this).parent().data("numberOfVisibleMembers");
+/*
 		var numberOfMembers = 0;
 		$(this).parent().parent().children(".members").children("li.member").each(function() {
 			if (!$(this).hasClass("hide-missing")) {
 				numberOfMembers++;
 			}
 		});
-
+*/
 		var numberOfPages = Math.ceil(numberOfMembers / 10);
 
 		if (page > numberOfPages) page = numberOfPages;
@@ -927,13 +1080,15 @@ function addNoticeHandlers() {
 		event.stopPropagation();
 		event.preventDefault();
 
+		var numberOfMembers = $(this).parent().data("numberOfVisibleMembers");
+/*
 		var numberOfMembers = 0;
 		$(this).parent().parent().children(".members").children("li.member").each(function() {
 			if (!$(this).hasClass("hide-missing")) {
 				numberOfMembers++;
 			}
 		});
-
+*/
 		var numberOfPages = Math.ceil(numberOfMembers / 10);
 
 		$(this).parent().data("current-page", numberOfPages);
@@ -988,7 +1143,7 @@ function addNoticeHandlers() {
 		$("#noticed-people .btn-hide-missing span").toggleClass("glyphicon-eye-close").toggleClass("glyphicon-eye-open");
 
 		$("#noticed-people .member-pages").each(function() {
-			$(this).data("current-page", 1);
+			$(this).data("current-page", -1);
 		});
 
 		toggleMissingPeople();

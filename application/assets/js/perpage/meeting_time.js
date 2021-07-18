@@ -67,7 +67,7 @@ function addTimeHandlers() {
 	});
 */
 	$(".start-date-time, .end-date-time").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+		if (hasWritingRight(getUserId()) && $(this).find(".read-data").is(":visible")) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {

@@ -36,10 +36,24 @@ function replaceData(string, data) {
 
 	use = function(selector, options) {
 		var templated = [];
-		$(selector).each(function() {
-			var templateInstance = $(this).clone().removeClass("template").removeAttr("data-template-id");
+		
+//		console.log(selector);
+		
+		selector.each(function() {
+
+//			var start = new Date().getTime();
+			
+			var templateInstance = $(this).clone();
+
+//			var end = new Date().getTime();
+//			console.log("After clone : " + (end - start) + "ms");
+
+			templateInstance.removeClass("template").removeAttr("data-template-id");
 
 			var html = templateInstance.prop("outerHTML");
+
+//			var end = new Date().getTime();
+//			console.log("After html retrieve : " + (end - start) + "ms");
 
 /*
 			if (options.data) {
@@ -55,6 +69,9 @@ function replaceData(string, data) {
 			}
 */
 			html = replaceData(html, options.data);
+
+//			var end = new Date().getTime();
+//			console.log("After html replace : " + (end - start) + "ms");
 
 			templated[templated.length] = $(html)[0];
 		});

@@ -19,6 +19,7 @@
 /* global $ */
 /* global computeEventPositions */
 /* global addEventAlert */
+/* global users */
 
 var lastEventTimestamp = 0;
 var isWriting = " is writing";
@@ -29,20 +30,28 @@ function getEventText(event) {
 
 	var text = "";
 
+	let user = null;
+	let userNickname = null;
+
+	if (event.options.userId) {
+		user = users[event.options.userId];
+		userNickname = user.data.nickname;
+	}
+
 	if (event.type == "speak_request") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+//		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> " + meeting_speakingAsk;
 	}
 	else if (event.type == "speak_set") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+//		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> " + meeting_speaking;
 	}
 	else if (event.type == "speak_renounce") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+//		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		text = "<i><b>" + userNickname + "</b></i> " + meeting_speakingRenounce;
 	}
 	else if (event.type == "join") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+//		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		if (userNickname) {
 			text = "<i><b>" + userNickname + "</b></i> " + meeting_arrival;
 		}
@@ -51,7 +60,7 @@ function getEventText(event) {
 		}
 	}
 	else if (event.type == "left") {
-		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
+//		var userNickname = $("li#member-"+event.options.userId+" .member-nickname").eq(0).text();
 		if (userNickname) {
 			text = "<i><b>" + userNickname + "</b></i> " + meeting_left;
 		}

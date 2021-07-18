@@ -43,6 +43,9 @@ var judgmentVoteIsMandatory = false;
 var approval_values = [1, 2];
 var maybe_values = [1, 2, 3];
 
+// user data and their <code>li</code>s
+var users = {};
+
 keyupTimeoutId = null;
 
 function clearKeyup() {
@@ -52,10 +55,13 @@ function clearKeyup() {
 	}
 }
 
+var localUserId = null;
 function getUserId() {
-	var userId = $(".meeting").data("user-id");
+	if (localUserId) return localUserId;
 
-	return userId;
+	localUserId = $(".meeting").data("user-id");
+
+	return localUserId;
 }
 
 function isGuest() {
@@ -69,17 +75,35 @@ function isGuest() {
 }
 
 function hasVotingRight(id) {
-	return $("#noticed-people .members li#member-"+id+" .voting.can-vote").length > 0;
+	
+	const user = users[id];
+	for(noticeId in user.lis) {
+		if (user.lis[noticeId].find(".voting.can-vote").length) return true;
+	}
+
+	return true;
+
+//	return $("#noticed-people .members li#member-"+id+" .voting.can-vote").length > 0;
 }
 
 function getVotingPower(id) {
 	var power = 0;
 
+	const user = users[id];
+	for(noticeId in user.lis) {
+		const noticeUserLi = user.lis[noticeId];
+		if (noticeUserLi.find(".voting.can-vote").length) {
+			power -= - noticeUserLi.find(".power").text();
+		}
+	}
+
+/*
 	$("#noticed-people .members li#member-"+id+" .voting").each(function() {
 		if($(this).css("display") != "none") {
 			power -= - $(this).parent().find(".power").text();
 		}
 	});
+*/	
 
 	return power;
 }
@@ -276,7 +300,7 @@ function setAgendaPoint(point) {
 }
 
 function setAgendaMotion(id, motions) {
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var list = $("#agenda_point ul.objects");
 	var motionContainer = list.find("li#motion-" + id);
 	var meeting = $(".meeting").data("json");
@@ -492,7 +516,7 @@ function setAgendaMotion(id, motions) {
 }
 
 function setAdvice() {
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 
@@ -531,7 +555,7 @@ function addSpeakerChat() {
 
 function addOwnChat() {
 	var focus = arguments.length > 0 ? arguments[0] : true;
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
 	var startingText = $("#starting-text").val();
@@ -552,7 +576,7 @@ function addOwnChat() {
 function addOwnTask() {
 	var focus = arguments.length > 0 ? arguments[0] : true;
 
-	var targetId = $(".meeting").data("user-id");
+	var targetId = getUserId();
 	var targetType = "galette_adherents";
 	var agendaId = $("#agenda_point").data("id");
 	var meetingId = $(".meeting").data("id");
@@ -1080,7 +1104,7 @@ function addVotes(votes, proposition, motion) {
 }
 
 function retrievePreviousVotes(motion, propositionsHolder) {
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
 
 	if (!votes.length) return;
@@ -1124,7 +1148,7 @@ function setSchulzeOrderStyle(propositionsHolder) {
 }
 
 function retrieveJMPreviousVotes(motion, propositionsHolder) {
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var votes = motion.find(".vote[data-member-id=" + userId + "]").sort(function(a,b) { return $(b).data("power") - $(a).data("power"); });
 
 	votes.each(function() {
@@ -1150,7 +1174,7 @@ function retrieveJMPreviousVotes(motion, propositionsHolder) {
 function vote(event) {
 	event.stopPropagation();
 
-	var userId = $(".meeting").data("user-id");
+	var userId = getUserId();
 	var motion = $(this).parents(".motion");
 	var motionWinLimit = motion.find(".btn-motion-limits.active").attr("value") - 0;
 	var proposition = $(this).parents(".proposition");
@@ -2144,7 +2168,7 @@ function addMeetingLabelHandlers() {
 	$(".breadcrumb .active input").hide();
 
 	$(".breadcrumb .active").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+		if (hasWritingRight(getUserId()) && $(this).find(".read-data").is(":visible")) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {
@@ -2212,14 +2236,14 @@ function addStartingTextHandler() {
 		else {
 			// set en event, starting typing
 			var event = {meetingId: meetingId, event: "user_start_typing", pointId: agendaId};
-			console.log(event);
+//			console.log(event);
 			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
 		}
 
 		startingKeyupTimeoutId = setTimeout(function() {
 			// set en event, stop typing
 			var event = {meetingId: meetingId, event: "user_stop_typing", pointId: agendaId};
-			console.log(event);
+//			console.log(event);
 			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
 			clearStartingKeyup();
 		}, 30000);
@@ -2231,7 +2255,7 @@ function addStartingTextHandler() {
 			$("#starting-text-buttons button, #starting-text-buttons .btn-add-motion").attr("disabled", "disabled").addClass("disabled");
 			// set en event, stop typing
 			var event = {meetingId: meetingId, event: "user_stop_typing", pointId: agendaId};
-			console.log(event);
+//			console.log(event);
 			$.post("meeting_api.php?method=do_addEvent", event, function(data) {}, "json");
 			clearStartingKeyup();
 		}
@@ -2268,7 +2292,7 @@ function addMeetingSpeekingPanelsHandler() {
 
 function addMeetingQuorumHanbdlers() {
 	$(".show-quorum-modal-btn").click(function() {
-		if (hasWritingRight($(".meeting").data("user-id"))) {
+		if (hasWritingRight(getUserId())) {
 			
 			$("#set-quorum-modal").one("shown.bs.modal", function() {
 				$("#quorum-formula-area").keyup();
@@ -2286,7 +2310,7 @@ function addMeetingQuorumHanbdlers() {
 	});
 
 	$(".quorum-container").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id"))) {
+		if (hasWritingRight(getUserId())) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {
@@ -2301,7 +2325,7 @@ function addMeetingQuorumHanbdlers() {
 
 function addSynchroHandlers() {
 	$(".synchro-vote").hover(function() {
-		if (hasWritingRight($(".meeting").data("user-id")) && $(this).find(".read-data").is(":visible")) {
+		if (hasWritingRight(getUserId()) && $(this).find(".read-data").is(":visible")) {
 			$(this).find(".update-btn").show();
 		}
 	}, function() {

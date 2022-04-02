@@ -3,12 +3,18 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  192.168.0.100:3306
--- Généré le :  Jeu 13 Décembre 2018 à 20:17
+-- Généré le :  Sam 02 Avril 2022 à 14:46
 -- Version du serveur :  10.1.11-MariaDB-1~jessie
 -- Version de PHP :  5.6.4-4ubuntu6.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données :  `personae`
@@ -52,6 +58,7 @@ CREATE TABLE `dlp_delegations` (
 
 CREATE TABLE `dlp_delegation_conditions` (
   `dco_id` bigint(20) NOT NULL,
+  `dco_label` varchar(2048) DEFAULT NULL,
   `dco_theme_id` int(11) NOT NULL,
   `dco_theme_type` enum('dlp_themes','dlp_groups') NOT NULL,
   `dco_member_from` bigint(20) NOT NULL,
@@ -95,8 +102,12 @@ CREATE TABLE `dlp_groups` (
   `gro_id` int(11) NOT NULL,
   `gro_deleted` tinyint(4) NOT NULL DEFAULT '0',
   `gro_label` varchar(255) NOT NULL,
+  `gro_description` varchar(2047) DEFAULT NULL,
   `gro_contact_type` enum('mail','discourse_group','discourse_category','none') DEFAULT NULL,
-  `gro_contact` varchar(255) DEFAULT NULL
+  `gro_contact` varchar(255) DEFAULT NULL,
+  `gro_tasker_type` varchar(255) DEFAULT NULL,
+  `gro_tasker_project_id` varchar(255) DEFAULT NULL,
+  `gro_entry_theme_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -137,6 +148,28 @@ CREATE TABLE `dlp_group_themes` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `dlp_servers`
+--
+
+CREATE TABLE `dlp_servers` (
+  `ser_id` bigint(20) NOT NULL,
+  `ser_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `dlp_server_admins`
+--
+
+CREATE TABLE `dlp_server_admins` (
+  `sad_server_id` bigint(20) NOT NULL,
+  `sad_member_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `dlp_themes`
 --
 
@@ -164,7 +197,10 @@ CREATE TABLE `dlp_themes` (
   `the_eligible_group_type` enum('galette_adherents','galette_groups','dlp_themes','dlp_groups') DEFAULT NULL,
   `the_delegate_only` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1 for delegation only (no mandat)',
   `the_delegation_closed` tinyint(4) NOT NULL DEFAULT '0',
-  `the_free_fixed` tinyint(4) NOT NULL DEFAULT '0'
+  `the_free_fixed` tinyint(4) NOT NULL DEFAULT '0',
+  `the_entry_condition` varchar(2047) DEFAULT NULL,
+  `the_tasker_type` varchar(255) DEFAULT NULL,
+  `the_tasker_project_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -265,6 +301,18 @@ ALTER TABLE `dlp_group_themes`
   ADD KEY `gth_target_id` (`gth_theme_id`,`gth_theme_type`);
 
 --
+-- Index pour la table `dlp_servers`
+--
+ALTER TABLE `dlp_servers`
+  ADD PRIMARY KEY (`ser_id`);
+
+--
+-- Index pour la table `dlp_server_admins`
+--
+ALTER TABLE `dlp_server_admins`
+  ADD PRIMARY KEY (`sad_server_id`,`sad_member_id`);
+
+--
 -- Index pour la table `dlp_themes`
 --
 ALTER TABLE `dlp_themes`
@@ -296,34 +344,42 @@ ALTER TABLE `dlp_user_properties`
 -- AUTO_INCREMENT pour la table `dlp_candidates`
 --
 ALTER TABLE `dlp_candidates`
-  MODIFY `can_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `can_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_delegations`
 --
 ALTER TABLE `dlp_delegations`
-  MODIFY `del_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=467;
+  MODIFY `del_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_delegation_conditions`
 --
 ALTER TABLE `dlp_delegation_conditions`
-  MODIFY `dco_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `dco_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_fixations`
 --
 ALTER TABLE `dlp_fixations`
-  MODIFY `fix_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
+  MODIFY `fix_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_groups`
 --
 ALTER TABLE `dlp_groups`
-  MODIFY `gro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `gro_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `dlp_servers`
+--
+ALTER TABLE `dlp_servers`
+  MODIFY `ser_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_themes`
 --
 ALTER TABLE `dlp_themes`
-  MODIFY `the_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `the_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `dlp_user_properties`
 --
 ALTER TABLE `dlp_user_properties`
-  MODIFY `upr_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `upr_id` bigint(20) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

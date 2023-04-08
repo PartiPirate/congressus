@@ -129,7 +129,7 @@ if (!$hasConditionDelegations) {
 <div class="panel panel-default conditional-delegation">
 	<div class="panel-heading">
         <button type="button" class="btn btn-danger remove-conditional-delegation-btn pull-right" title="<?php echo lang("conditional_remove_conditional") ;?>"><i class="fa fa-minus" aria-hidden="true"></i></button>
-		<input class="conditional-delegation-label-input form-control" name="conditional-delegation-label-input" value="<?=$conditionalDelegation["dco_label"]?>" placeholder="<?php echo lang("conditional_conditional_label") ;?>" style="width: calc(100% - 42px); display: inline-block;">
+		<input class="conditional-delegation-label-input form-control" name="conditional-delegation-label-input" value="<?= $conditionalDelegation["dco_label"] ?? null ?>" placeholder="<?php echo lang("conditional_conditional_label") ;?>" style="width: calc(100% - 42px); display: inline-block;">
 	</div>
 	<div class="panel-body">
 
